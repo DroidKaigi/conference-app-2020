@@ -1,0 +1,12 @@
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/main"
+    >
+    <fragment
+        android:id="@+id/main"
+        android:name="io.github.droidkaigi.confsched2020.session.ui.SessionFragment"
+        android:label="@string/session_label"
+        >
+    </fragment>
+</navigation>

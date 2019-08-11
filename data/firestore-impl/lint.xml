@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="InvalidPackage">
+        <!-- Firebase dependencies caused this issue -->
+        <ignore path="*/io.grpc/grpc-core/*"/>
+    </issue>
+</lint>

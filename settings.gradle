@@ -1,0 +1,19 @@
+include ':android-root',
+        ':feature:session',
+        ':corecomponent:androidcomponent',
+        ':model',
+        ':data:api',
+        ':data:api-impl',
+        ':data:db',
+        ':data:db-room',
+        ':data:device',
+        ':data:device-impl',
+        ':data:repository',
+        ':data:repository-impl',
+        ':data:firestore',
+        ':data:firestore-impl',
+        ':ext:log'
+
+enableFeaturePreview('GRADLE_METADATA')
+
+rootProject.name='conference-app-2020'

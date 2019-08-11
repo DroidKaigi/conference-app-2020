@@ -1,0 +1,31 @@
+import dependencies.Dep
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlinx-serialization'
+apply plugin: 'kotlin-kapt'
+
+apply from: rootProject.file('gradle/android.gradle')
+
+dependencies {
+    api project(":data:db")
+    api project(":model")
+    api project(":data:api")
+
+    implementation Dep.Kotlin.stdlibJvm
+    implementation Dep.Kotlin.serializationCommon
+    api Dep.Kotlin.coroutines
+    api Dep.AndroidX.Room.runtime
+    api Dep.AndroidX.Room.coroutine
+    api Dep.AndroidX.lifecycleLiveData
+    kapt Dep.AndroidX.Room.compiler
+
+    implementation Dep.Dagger.core
+    implementation Dep.Dagger.androidSupport
+    kapt Dep.Dagger.compiler
+    kapt Dep.Dagger.androidProcessor
+
+    testImplementation Dep.Test.junit
+}
+
+

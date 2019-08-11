@@ -1,0 +1,37 @@
+import dependencies.Versions
+
+android {
+    compileSdkVersion Versions.androidCompileSdkVersion
+
+    defaultConfig {
+        minSdkVersion Versions.androidMinSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    libraryVariants.all {
+        // TODO replace with https://issuetracker.google.com/issues/72050365 once released.
+        it.generateBuildConfig.enabled = false
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        def lintFile = file("${project.projectDir}/lint.xml")
+        if (lintFile.exists()) {
+            lintConfig lintFile
+        }
+
+        checkReleaseBuilds !isCi
+        abortOnError !isCi
+    }
+}
+
+kotlin.sourceSets.all {
+    languageSettings {
+        progressiveMode = true
+    }
+}
+

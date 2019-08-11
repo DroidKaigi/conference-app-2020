@@ -1,0 +1,1 @@
+-keepnames class io.github.droidkaigi.confsched2020.session.ui.SessionFragment

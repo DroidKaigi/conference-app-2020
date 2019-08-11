@@ -1,0 +1,72 @@
+import dependencies.Dep
+
+apply plugin: 'kotlin-multiplatform'
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-kapt'
+
+apply from: rootProject.file('gradle/android.gradle')
+android.libraryVariants.all {
+    // TODO replace with https://issuetracker.google.com/issues/72050365 once released.
+    it.generateBuildConfig.enabled = true
+}
+
+kotlin {
+    targets {
+        fromPreset(presets.android, 'android')
+
+        def buildForDevice = project.findProperty("device")?.toBoolean() ?: false
+        def iosPreset = (buildForDevice) ? presets.iosArm64 : presets.iosX64
+        fromPreset(iosPreset, 'ios') {
+            binaries {
+                framework {
+                    // Disable bitcode embedding for the simulator build.
+                    if (!buildForDevice) {
+                        embedBitcode("disable")
+                    }
+                }
+            }
+        }
+    }
+    sourceSets {
+        commonMain.dependencies {
+            api project(":model")
+            api project(":data:device")
+            implementation Dep.Kotlin.stdlibCommon
+            implementation Dep.Ktor.clientCommon
+            implementation Dep.Timber.common
+        }
+        androidMain {
+            dependsOn commonMain
+            dependencies {
+                implementation Dep.Kotlin.stdlibJvm
+                implementation Dep.Dagger.core
+                implementation Dep.Dagger.androidSupport
+                implementation Dep.Timber.android
+            }
+        }
+        androidTest {
+            dependsOn androidMain
+            dependencies {
+                implementation Dep.Test.junit
+                implementation Dep.Test.slf4j
+            }
+        }
+        iOSMain {
+            dependsOn commonMain
+            dependencies {
+            }
+        }
+    }
+}
+
+dependencies {
+    api project(":model")
+    api project(":data:device")
+    kapt Dep.Dagger.compiler
+    kapt Dep.Dagger.androidProcessor
+}
+
+configurations {
+    compileClasspath
+}
+

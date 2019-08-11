@@ -1,0 +1,68 @@
+import dependencies.Dep
+import dependencies.Packages
+import dependencies.Versions
+
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId Packages.name
+        minSdkVersion Versions.androidMinSdkVersion
+        targetSdkVersion 28
+        versionCode Versions.androidVersionCode
+        versionName Versions.androidVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix Packages.debugNameSuffix
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    packagingOptions {
+        exclude 'META-INF/*.kotlin_module'
+        exclude 'META-INF/*.version'
+        exclude 'META-INF/proguard/*.pro'
+    }
+}
+
+dependencies {
+    implementation project(':feature:session')
+
+    implementation project(':data:db-room')
+    implementation project(':data:repository-impl')
+    implementation project(':data:firestore-impl')
+    implementation project(':data:api-impl')
+    implementation project(':data:device-impl')
+    implementation project(':corecomponent:androidcomponent')
+
+    implementation Dep.Kotlin.stdlibJvm
+    implementation Dep.AndroidX.appCompat
+    implementation Dep.AndroidX.coreKtx
+    implementation Dep.AndroidX.constraint
+    implementation Dep.Firebase.fireStore
+
+    api Dep.Dagger.core
+    api Dep.Dagger.androidSupport
+    api Dep.Dagger.android
+    kapt Dep.Dagger.compiler
+    kapt Dep.Dagger.androidProcessor
+    compileOnly Dep.Dagger.assistedInjectAnnotations
+    kapt Dep.Dagger.assistedInjectProcessor
+
+    testImplementation Dep.Test.junit
+    androidTestImplementation Dep.Test.testRunner
+    androidTestImplementation Dep.Test.espressoCore
+}
+
+apply plugin: 'com.google.gms.google-services'
