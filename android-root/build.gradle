@@ -52,9 +52,9 @@ dependencies {
     implementation Dep.AndroidX.constraint
     implementation Dep.Firebase.fireStore
 
-    api Dep.Dagger.core
-    api Dep.Dagger.androidSupport
-    api Dep.Dagger.android
+    implementation Dep.Dagger.core
+    implementation Dep.Dagger.androidSupport
+    implementation Dep.Dagger.android
     kapt Dep.Dagger.compiler
     kapt Dep.Dagger.androidProcessor
     compileOnly Dep.Dagger.assistedInjectAnnotations

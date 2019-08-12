@@ -24,12 +24,12 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            api Dep.Kotlin.stdlibCommon
+            implementation Dep.Kotlin.stdlibCommon
             api Dep.Timber.common
         }
         androidMain {
             dependencies {
-                api Dep.Kotlin.stdlibJvm
+                implementation Dep.Kotlin.stdlibJvm
                 api Dep.Timber.jdk
             }
         }

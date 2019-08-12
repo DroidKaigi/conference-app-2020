@@ -25,22 +25,22 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            api Dep.Kotlin.stdlibCommon
-            api project(":model")
-            api Dep.Kotlin.coroutinesCommon
+            implementation Dep.Kotlin.stdlibCommon
+            implementation project(":model")
+            implementation Dep.Kotlin.coroutinesCommon
         }
         androidMain {
             dependsOn commonMain
             dependencies {
-                api Dep.Kotlin.stdlibJvm
-                api Dep.Kotlin.coroutines
-                api project(":corecomponent:androidcomponent")
-                api project(':ext:log')
+                implementation Dep.Kotlin.stdlibJvm
+                implementation Dep.Kotlin.coroutines
+                implementation project(":corecomponent:androidcomponent")
+                implementation project(':ext:log')
 
                 implementation Dep.Kotlin.coroutinesPlayServices
                 implementation Dep.Firebase.auth
                 implementation Dep.Firebase.fireStore
-                api Dep.AndroidX.lifecycleLiveData
+                implementation Dep.AndroidX.lifecycleLiveData
 
                 implementation Dep.Dagger.core
                 implementation Dep.Dagger.androidSupport

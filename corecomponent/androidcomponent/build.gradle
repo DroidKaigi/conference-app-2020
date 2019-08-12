@@ -11,13 +11,13 @@ android.buildTypes.release {
 }
 
 dependencies {
-    api project(":model")
-    api Dep.AndroidX.constraint
-    api Dep.AndroidX.design
-    api Dep.AndroidX.coreKtx
+    implementation project(":model")
+    implementation Dep.AndroidX.constraint
+    implementation Dep.AndroidX.design
+    implementation Dep.AndroidX.coreKtx
     implementation Dep.Kotlin.stdlibJvm
 
-    api Dep.Dagger.androidSupport
+    implementation Dep.Dagger.androidSupport
     implementation Dep.Kotlin.stdlibJvm
     api Dep.Kotlin.coroutines
 
@@ -26,7 +26,7 @@ dependencies {
     api Dep.AndroidX.Navigation.fragmentKtx
     api Dep.AndroidX.Navigation.uiKtx
 
-    api Dep.AndroidX.liveDataKtx
+    implementation Dep.AndroidX.liveDataKtx
 
     implementation Dep.Dagger.core
     implementation Dep.Dagger.androidSupport
