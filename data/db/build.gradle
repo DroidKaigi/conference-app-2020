@@ -2,6 +2,7 @@ import dependencies.Dep
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-multiplatform'
+apply plugin: 'kotlin-kapt'
 
 apply from: rootProject.file('gradle/android.gradle')
 
@@ -27,7 +28,7 @@ kotlin {
             api Dep.Kotlin.stdlibCommon
             api project(":model")
             api project(":data:api")
-            api Dep.Kotlin.coroutines
+            api Dep.Kotlin.coroutinesCommon
         }
         androidMain {
             dependsOn commonMain
@@ -36,6 +37,12 @@ kotlin {
                 api project(":model")
                 api project(":data:api")
                 api Dep.Kotlin.coroutines
+                api Dep.AndroidX.lifecycleLiveData
+
+                api Dep.AndroidX.Room.runtime
+                api Dep.AndroidX.Room.coroutine
+                implementation Dep.Dagger.core
+                implementation Dep.Dagger.androidSupport
             }
         }
         commonTest.dependencies {
@@ -54,6 +61,11 @@ kotlin {
     }
 }
 
+dependencies{
+    kapt Dep.AndroidX.Room.compiler
+    kapt Dep.Dagger.compiler
+    kapt Dep.Dagger.androidProcessor
+}
 
 configurations {
     compileClasspath

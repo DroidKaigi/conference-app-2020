@@ -2,6 +2,7 @@ import dependencies.Dep
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-multiplatform'
+apply plugin: 'kotlin-kapt'
 
 apply from: rootProject.file('gradle/android.gradle')
 
@@ -32,6 +33,9 @@ kotlin {
             dependencies {
                 api Dep.Kotlin.stdlibJvm
                 api Dep.Kotlin.coroutines
+                implementation Dep.Dagger.core
+                implementation Dep.Dagger.androidSupport
+                implementation Dep.Timber.android
             }
         }
         commonTest.dependencies {
@@ -48,6 +52,11 @@ kotlin {
             }
         }
     }
+}
+
+dependencies {
+    kapt Dep.Dagger.compiler
+    kapt Dep.Dagger.androidProcessor
 }
 
 

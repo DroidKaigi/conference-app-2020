@@ -40,6 +40,8 @@ allprojects {
         maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
         maven { url "https://dl.bintray.com/soywiz/soywiz" }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url "https://dl.bintray.com/kotlin/ktor" }
+        maven { url "https://dl.bintray.com/kotlin/kotlinx" }
     }
     plugins.whenPluginAdded {
         if (it instanceof AppPlugin || it instanceof LibraryPlugin) {
@@ -48,6 +50,9 @@ allprojects {
                 targetCompatibility JavaVersion.VERSION_1_8
             }
         }
+    }
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile).all {
+        kotlinOptions.freeCompilerArgs += ["-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"]
     }
 }
 

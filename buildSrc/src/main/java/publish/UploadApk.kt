@@ -75,7 +75,6 @@ class UploadApk(
                 Track().setReleases(listOf(releaseContent))
             ).execute()
 
-
             val mapping = FileContent("application/octet-stream", mappingFile)
             editsService.deobfuscationfiles()
                 .upload(packageName, editId, versionCode.toInt(), "proguard", mapping)

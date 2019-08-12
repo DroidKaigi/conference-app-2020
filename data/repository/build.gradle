@@ -2,6 +2,7 @@ import dependencies.Dep
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-multiplatform'
+apply plugin: 'kotlin-kapt'
 
 apply from: rootProject.file('gradle/android.gradle')
 
@@ -27,14 +28,24 @@ kotlin {
             api Dep.Kotlin.stdlibCommon
             api project(":model")
             api project(":data:api")
-            api Dep.Kotlin.coroutines
+            api Dep.Kotlin.coroutinesCommon
             api Dep.Klock.common
         }
         androidMain {
             dependsOn commonMain
             dependencies {
                 api Dep.Kotlin.stdlibJvm
-                api project(":model")
+                implementation project(":data:device")
+                implementation project(":data:firestore")
+                implementation project(':ext:log')
+                implementation project(":data:db")
+
+                implementation Dep.Kotlin.stdlibJvm
+                api Dep.Kotlin.coroutines
+                implementation Dep.AndroidX.lifecycleLiveData
+
+                implementation Dep.Dagger.core
+                implementation Dep.Dagger.androidSupport
             }
         }
         commonTest.dependencies {
@@ -53,6 +64,10 @@ kotlin {
     }
 }
 
+dependencies {
+    kapt Dep.Dagger.compiler
+    kapt Dep.Dagger.androidProcessor
+}
 
 configurations {
     compileClasspath

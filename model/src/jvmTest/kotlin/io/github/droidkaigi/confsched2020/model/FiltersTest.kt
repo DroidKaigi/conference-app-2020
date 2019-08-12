@@ -193,13 +193,13 @@ class FiltersTest {
                 Param.forAudienceCategory(
                     title = "filter has Beginners and Unspecified passes beginners session",
                     filterItem = setOf(AudienceCategory.BEGINNERS, AudienceCategory.UNSPECIFIED),
-                    isForBeginners= true,
+                    isForBeginners = true,
                     expected = true
                 ),
                 Param.forAudienceCategory(
                     title = "filter has Beginners and Unspecified passes non beginners session",
                     filterItem = setOf(AudienceCategory.BEGINNERS, AudienceCategory.UNSPECIFIED),
-                    isForBeginners =  false,
+                    isForBeginners = false,
                     expected = true
                 )
             )

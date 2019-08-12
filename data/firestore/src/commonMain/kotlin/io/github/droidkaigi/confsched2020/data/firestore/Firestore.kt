@@ -1,4 +1,5 @@
 package io.github.droidkaigi.confsched2020.data.firestore
+
 import kotlinx.coroutines.flow.Flow
 
 interface Firestore {

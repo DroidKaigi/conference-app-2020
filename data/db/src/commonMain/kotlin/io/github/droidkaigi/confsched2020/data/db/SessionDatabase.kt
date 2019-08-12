@@ -12,5 +12,5 @@ interface SessionDatabase {
     fun allSpeaker(): Flow<List<SpeakerEntity>>
     suspend fun save(apiResponse: Response)
     suspend fun sessionFeedbacks(): List<SessionFeedbackEntity>
-    suspend fun saveSessionFeedback(sessionFeedbackEntity: SessionFeedback)
+    suspend fun saveSessionFeedback(sessionFeedback: SessionFeedback)
 }

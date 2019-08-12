@@ -39,11 +39,11 @@ android {
 dependencies {
     implementation project(':feature:session')
 
-    implementation project(':data:db-room')
-    implementation project(':data:repository-impl')
-    implementation project(':data:firestore-impl')
-    implementation project(':data:api-impl')
-    implementation project(':data:device-impl')
+    implementation project(':data:repository')
+    implementation project(':data:db')
+    implementation project(':data:firestore')
+    implementation project(':data:api')
+    implementation project(':data:device')
     implementation project(':corecomponent:androidcomponent')
 
     implementation Dep.Kotlin.stdlibJvm

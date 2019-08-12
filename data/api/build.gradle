@@ -1,55 +1,107 @@
 import dependencies.Dep
 
-apply plugin: 'com.android.library'
 apply plugin: 'kotlin-multiplatform'
+apply plugin: 'com.android.library'
+apply plugin: 'kotlinx-serialization'
+apply plugin: 'kotlin-kapt'
 
 apply from: rootProject.file('gradle/android.gradle')
+android.libraryVariants.all {
+    // TODO replace with https://issuetracker.google.com/issues/72050365 once released.
+    it.generateBuildConfig.enabled = true
+}
 
 kotlin {
     targets {
         fromPreset(presets.android, 'android')
-        def buildForDevice = project.findProperty("device")?.toBoolean() ?: false
-        def iosPreset = (buildForDevice) ? presets.iosArm64 : presets.iosX64
-        fromPreset(iosPreset, 'ios') {
-            binaries {
-                framework {
-                    // Disable bitcode embedding for the simulator build.
-                    if (!buildForDevice) {
-                        embedBitcode("disable")
-                    }
-                }
-            }
-        }
+        fromPreset(presets.iosX64, 'iosX64')
+        fromPreset(presets.iosArm64, 'iosArm64')
+
     }
     sourceSets {
         commonMain.dependencies {
-            api Dep.Kotlin.stdlibCommon
-            api Dep.Kotlin.coroutines
-            implementation project(":model")
+            implementation Dep.Kotlin.stdlibCommon
+            implementation Dep.Kotlin.coroutinesCommon
+            implementation Dep.Ktor.clientCommon
+            implementation Dep.Ktor.jsonCommon
+            implementation Dep.Ktor.serializationCommon
+            implementation Dep.Kotlin.serializationCommon
         }
         androidMain {
             dependsOn commonMain
             dependencies {
-                api Dep.Kotlin.stdlibJvm
-                api Dep.Kotlin.coroutines
+                implementation Dep.Kotlin.stdlibJvm
+                implementation Dep.Kotlin.androidCoroutinesDispatcher
+                implementation Dep.Ktor.clientAndroid
+                implementation Dep.Ktor.jsonJvm
+                implementation Dep.Ktor.serializationJvm
+                implementation Dep.Kotlin.serializationAndroid
+                implementation Dep.OkHttp.client
+                implementation Dep.Stetho.stetho
+                implementation Dep.Dagger.core
+                implementation Dep.Dagger.androidSupport
+                implementation Dep.OkHttp.loggingInterceptor
             }
         }
-        commonTest.dependencies {
-            implementation Dep.Test.KotlinMultiPlatform.commonModuleTest
-            implementation Dep.Test.KotlinMultiPlatform.commonModuleTestAnnotations
-            implementation Dep.MockK.common
-        }
         androidTest {
+            dependsOn androidMain
+            dependencies {
+                implementation Dep.Test.junit
+                implementation Dep.Test.slf4j
+            }
+        }
+        iOSMain {
+            final String mode = project.findProperty("XCODE_CONFIGURATION")?.toUpperCase() ?: 'DEBUG'
+            if (mode == "RELEASE") {
+                kotlin.srcDirs += "src/iosMain/kotlinRelease"
+            } else {
+                kotlin.srcDirs += "src/iosMain/kotlinDebug"
+            }
             dependsOn commonMain
             dependencies {
-                implementation Dep.Test.KotlinMultiPlatform.jvmModuleTest
-                implementation Dep.Test.KotlinMultiPlatform.jvmModuleTestJunit
-                implementation Dep.MockK.jvm
+                implementation Dep.Kotlin.coroutinesNative
+                implementation Dep.Ktor.clientIos
+                implementation Dep.Ktor.jsonNative
+                implementation Dep.Ktor.serializationNative
+                implementation Dep.Kotlin.serializationIos
+            }
+        }
+        configure(iosX64Main) {
+            dependsOn iOSMain
+            dependencies {
+                implementation Dep.Ktor.clientIosX64
+                implementation Dep.Ktor.jsonIosIosX64
+                implementation Dep.Ktor.serializationIosX64
+            }
+        }
+        configure(iosArm64Main) {
+            dependsOn iOSMain
+            dependencies {
+                implementation Dep.Ktor.clientIosArm64
+                implementation Dep.Ktor.jsonIosArm64
+                implementation Dep.Ktor.serializationIosArm64
             }
         }
     }
 }
 
+android {
+    defaultConfig {
+        buildConfigField "String", "API_ENDPOINT", "\"https://droidkaigi2019-dev.appspot.com/api\""
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "API_ENDPOINT", "\"https://droidkaigi-api.appspot.com/2019/api\""
+        }
+    }
+}
+
+dependencies {
+    kapt Dep.Dagger.compiler
+    kapt Dep.Dagger.androidProcessor
+}
 
 configurations {
     compileClasspath

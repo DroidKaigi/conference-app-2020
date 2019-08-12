@@ -3,15 +3,10 @@ include ':android-root',
         ':corecomponent:androidcomponent',
         ':model',
         ':data:api',
-        ':data:api-impl',
         ':data:db',
-        ':data:db-room',
         ':data:device',
-        ':data:device-impl',
-        ':data:repository',
-        ':data:repository-impl',
         ':data:firestore',
-        ':data:firestore-impl',
+        ':data:repository',
         ':ext:log'
 
 enableFeaturePreview('GRADLE_METADATA')

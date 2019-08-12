@@ -2,8 +2,6 @@ package io.github.droidkaigi.confsched2020
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.liveData
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import dagger.Binds
@@ -13,14 +11,9 @@ import dagger.android.ContributesAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.di.PageScope
-import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.session.ui.SessionFragment
 import io.github.droidkaigi.confsched2020.session.ui.SessionFragmentModule
 import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -43,7 +36,6 @@ abstract class MainActivityModule {
         modules = [SessionFragmentModule::class, SessionAssistedInjectModule::class]
     )
     abstract fun contributeSessionPagesFragment(): SessionFragment
-
 
     @Module
     companion object {
