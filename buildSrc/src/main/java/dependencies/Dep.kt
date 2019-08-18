@@ -46,7 +46,8 @@ object Dep {
         val coreKtx = "androidx.core:core-ktx:1.2.0-alpha03"
         val preference = "androidx.preference:preference:1.0.0"
         val browser = "androidx.browser:browser:1.0.0"
-        val fragment = "androidx.fragment:fragment:1.1.0-alpha03"
+        val activityKtx = "androidx.activity:activity-ktx:1.1.0-alpha02"
+        val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.0-alpha02"
 
         val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
         val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:2.2.0-alpha03"
@@ -152,6 +153,8 @@ object Dep {
         val okio = "com.squareup.okio:okio:1.14.0"
     }
 
+    val shopifyLiveDataKtx =  "com.shopify:livedata-ktx:3.0.0"
+
     object LeakCanary {
         val version = "1.6.3"
         val leakCanary = "com.squareup.leakcanary:leakcanary-android:$version"
@@ -193,13 +196,6 @@ object Dep {
     object MockK {
         val jvm = "io.mockk:mockk:1.9.3"
         val common = "io.mockk:mockk-common:1.9.3"
-    }
-
-    object InjectedVmProvider {
-        val version = 2.0
-        val injectedVmProvider = "me.tatarka.injectedvmprovider:injectedvmprovider:$version"
-        val extension = "me.tatarka.injectedvmprovider:injectedvmprovider-extensions:$version"
-        val ktx = "me.tatarka.injectedvmprovider:injectedvmprovider-ktx:$version"
     }
 
     object Timber {

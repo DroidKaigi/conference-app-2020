@@ -23,19 +23,10 @@ dependencies {
     implementation Dep.AndroidX.design
 
 
-    implementation Dep.AndroidX.lifecycleExtensions
-    implementation Dep.AndroidX.Navigation.runtime
-    implementation Dep.AndroidX.Navigation.runtimeKtx
-    implementation Dep.AndroidX.coreKtx
-    implementation Dep.AndroidX.liveDataKtx
-
     implementation Dep.Dagger.core
     implementation Dep.Dagger.androidSupport
     kapt Dep.Dagger.compiler
     kapt Dep.Dagger.androidProcessor
-    implementation Dep.InjectedVmProvider.extension
-    implementation Dep.InjectedVmProvider.injectedVmProvider
-    implementation Dep.InjectedVmProvider.ktx
     compileOnly Dep.Dagger.assistedInjectAnnotations
     kapt Dep.Dagger.assistedInjectProcessor
 
@@ -49,6 +40,4 @@ dependencies {
     androidTestImplementation Dep.Test.espressoCore
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions { jvmTarget = "1.8" }
-}
+

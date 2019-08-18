@@ -50,6 +50,7 @@ dependencies {
     implementation Dep.AndroidX.appCompat
     implementation Dep.AndroidX.coreKtx
     implementation Dep.AndroidX.constraint
+    implementation Dep.AndroidX.activityKtx
     implementation Dep.Firebase.fireStore
 
     implementation Dep.Dagger.core

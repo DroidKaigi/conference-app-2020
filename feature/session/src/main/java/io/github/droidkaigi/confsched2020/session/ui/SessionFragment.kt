@@ -14,24 +14,26 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
-import io.github.droidkaigi.confsched2020.model.SessionContents
+import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
-import me.tatarka.injectedvmprovider.InjectedViewModelProviders
 import javax.inject.Inject
-import javax.inject.Provider
 
 class SessionFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentSessionBinding
 
-    @Inject lateinit var sessionViewModelProvider: Provider<SessionViewModel>
-    private val sessionViewModel: SessionViewModel by lazy {
-        InjectedViewModelProviders.of(requireActivity())[sessionViewModelProvider]
+    @Inject lateinit var sessionFactory: SessionViewModel.Factory
+    private val sessionViewModel by assistedViewModels {
+        sessionFactory.create(it)
     }
+
+    @Inject lateinit var sessionItemFactory: SessionItem.Factory
+
     private lateinit var progressTimeLatch: ProgressTimeLatch
 
     override fun onCreateView(
@@ -58,8 +60,19 @@ class SessionFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
-        sessionViewModel.sessionContents.observe(viewLifecycleOwner) { sessions: SessionContents ->
-            groupAdapter.update(sessions.sessions.map { SessionItem(it) })
+        sessionViewModel.sessionContentsLoadingState.observe(viewLifecycleOwner) { state ->
+            progressTimeLatch.loading = state.isLoading
+            when (state) {
+                is LoadingState.Loaded -> {
+                    groupAdapter.update(state.value.sessions.map {
+                        sessionItemFactory.create(it, sessionViewModel)
+                    })
+                }
+                LoadingState.Loading -> Unit
+                is LoadingState.Error -> {
+                    state.e.printStackTrace()
+                }
+            }
         }
     }
 }

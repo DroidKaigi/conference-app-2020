@@ -12,7 +12,6 @@ import io.github.droidkaigi.confsched2020.data.firestore.Firestore
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
@@ -22,7 +21,7 @@ import javax.inject.Inject
 internal class FirestoreImpl @Inject constructor() : Firestore {
 
     override suspend fun getFavoriteSessionIds(): Flow<List<String>> {
-        if (FirebaseAuth.getInstance().currentUser?.uid == null) return flowOf(listOf())
+        signInIfNeeded()
         val favoritesRef = getFavoritesRef()
         val snapshot = favoritesRef
             .fastGet()
@@ -35,6 +34,7 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
     }
 
     override suspend fun toggleFavorite(sessionId: String) {
+        signInIfNeeded()
         val document = getFavoritesRef().document(sessionId).fastGet()
         val nowFavorite = document.exists() && (document.data?.get(sessionId) == true)
         val newFavorite = !nowFavorite
@@ -58,6 +58,14 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
         return FirebaseFirestore
             .getInstance()
             .collection("users/$firebaseUserId/favorites")
+    }
+
+    private suspend fun signInIfNeeded() {
+        val firebaseAuth = FirebaseAuth.getInstance()
+        if (firebaseAuth.currentUser != null) {
+            return
+        }
+        firebaseAuth.signInAnonymously().await()
     }
 }
 

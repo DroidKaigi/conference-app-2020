@@ -14,7 +14,6 @@ dependencies {
     implementation project(":model")
     implementation Dep.AndroidX.constraint
     implementation Dep.AndroidX.design
-    implementation Dep.AndroidX.coreKtx
     implementation Dep.Kotlin.stdlibJvm
 
     implementation Dep.Dagger.androidSupport
@@ -27,6 +26,14 @@ dependencies {
     api Dep.AndroidX.Navigation.uiKtx
 
     implementation Dep.AndroidX.liveDataKtx
+
+    api Dep.AndroidX.lifecycleExtensions
+    api Dep.AndroidX.Navigation.runtimeKtx
+    api Dep.AndroidX.fragmentKtx
+    api Dep.AndroidX.coreKtx
+    api Dep.AndroidX.liveDataKtx
+    api Dep.AndroidX.liveDataCoreKtx
+    api Dep.shopifyLiveDataKtx
 
     implementation Dep.Dagger.core
     implementation Dep.Dagger.androidSupport
