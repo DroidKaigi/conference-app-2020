@@ -7,7 +7,7 @@
  * Kotlin Multiplatform Project
  * Groupie
 
-![project dependency](https://github.com/DroidKaigi/conference-app-2019/blob/master/project.dot.png)
+![project dependency](https://github.com/DroidKaigi/conference-app-2020/blob/master/project.dot.png)
 
 
 Fragment
