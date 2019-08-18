@@ -16,7 +16,7 @@ import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import kotlinx.coroutines.flow.collect
 
-class SessionViewModel @AssistedInject constructor(
+class SessionsViewModel @AssistedInject constructor(
     @Assisted private val state: SavedStateHandle,
     val sessionRepository: SessionRepository
 ) : ViewModel() {
@@ -47,6 +47,6 @@ class SessionViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(state: SavedStateHandle): SessionViewModel
+        fun create(state: SavedStateHandle): SessionsViewModel
     }
 }

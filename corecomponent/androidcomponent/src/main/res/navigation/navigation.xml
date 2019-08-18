@@ -5,8 +5,22 @@
     >
     <fragment
         android:id="@+id/main"
-        android:name="io.github.droidkaigi.confsched2020.session.ui.SessionFragment"
+        android:name="io.github.droidkaigi.confsched2020.session.ui.SessionsFragment"
         android:label="@string/session_label"
         >
+        <action
+            android:id="@+id/action_session_to_session_detail"
+            app:destination="@id/session_detail"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/session_detail"
+        android:name="io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment"
+        android:label="@string/session_label"
+        >
+        <argument
+            android:name="sessionId"
+            app:argType="io.github.droidkaigi.confsched2020.model.SessionId"
+            />
     </fragment>
 </navigation>

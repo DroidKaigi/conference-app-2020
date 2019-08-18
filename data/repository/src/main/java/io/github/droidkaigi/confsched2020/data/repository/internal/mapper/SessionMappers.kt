@@ -12,6 +12,7 @@ import io.github.droidkaigi.confsched2020.model.Room
 import io.github.droidkaigi.confsched2020.model.ServiceSession
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionFeedback
+import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.SessionType
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
@@ -25,7 +26,7 @@ fun SessionWithSpeakers.toSession(
 ): Session {
     return if (session.isServiceSession) {
         ServiceSession(
-            id = session.id,
+            id = SessionId(session.id),
             // dayNumber is starts with 1.
             // Example: First day = 1, Second day = 2. So I plus 1 to period days
             dayNumber = DateTime(session.stime).toOffset(jstOffset).dayOfYear -
@@ -51,7 +52,7 @@ fun SessionWithSpeakers.toSession(
         }
         require(speakers.isNotEmpty())
         SpeechSession(
-            id = session.id,
+            id = SessionId(session.id),
             // dayNumber is starts with 1.
             // Example: First day = 1, Second day = 2. So I plus 1 to period days
             dayNumber = DateTime(session.stime).toOffset(jstOffset).dayOfYear -

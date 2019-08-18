@@ -6,7 +6,7 @@ import com.soywiz.klock.TimeSpan
 import com.soywiz.klock.hours
 
 sealed class Session(
-    open val id: String,
+    open val id: SessionId,
     open val dayNumber: Int,
     open val startTime: DateTime,
     open val endTime: DateTime,
@@ -56,7 +56,7 @@ sealed class Session(
 
 @AndroidParcelize
 data class SpeechSession(
-    override val id: String,
+    override val id: SessionId,
     override val dayNumber: Int,
     override val startTime: DateTime,
     override val endTime: DateTime,
@@ -89,7 +89,7 @@ data class SpeechSession(
 
 @AndroidParcelize
 data class ServiceSession(
-    override val id: String,
+    override val id: SessionId,
     override val dayNumber: Int,
     override val startTime: DateTime,
     override val endTime: DateTime,

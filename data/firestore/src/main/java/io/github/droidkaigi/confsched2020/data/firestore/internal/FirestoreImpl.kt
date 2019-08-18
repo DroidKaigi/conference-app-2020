@@ -9,6 +9,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
 import io.github.droidkaigi.confsched2020.data.firestore.Firestore
+import io.github.droidkaigi.confsched2020.model.SessionId
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -33,10 +34,10 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
         return favorites.mapNotNull { list -> list.mapNotNull { item -> item.id } }
     }
 
-    override suspend fun toggleFavorite(sessionId: String) {
+    override suspend fun toggleFavorite(sessionId: SessionId) {
         signInIfNeeded()
-        val document = getFavoritesRef().document(sessionId).fastGet()
-        val nowFavorite = document.exists() && (document.data?.get(sessionId) == true)
+        val document = getFavoritesRef().document(sessionId.id).fastGet()
+        val nowFavorite = document.exists() && (document.data?.get(sessionId.id) == true)
         val newFavorite = !nowFavorite
         Timber.debug { "toggleFavorite:" + sessionId }
         if (document.exists()) {

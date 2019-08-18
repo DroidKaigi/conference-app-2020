@@ -11,6 +11,7 @@ import com.soywiz.klock.DateTimeSpan
 import com.soywiz.klock.minutes
 import io.github.droidkaigi.confsched2020.model.ServiceSession
 import io.github.droidkaigi.confsched2020.model.Session
+import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.widget.component.R
@@ -88,7 +89,7 @@ class SessionAlarm @Inject constructor(private val app: Application) {
 
     private fun createNotificationIntentForSessionStart(
         context: Context,
-        sessionId: String,
+        sessionId: SessionId,
         title: String,
         text: String
     ): Intent {
@@ -97,7 +98,7 @@ class SessionAlarm @Inject constructor(private val app: Application) {
             Class.forName(BROADCAST_RECEIVER_CLASS_NAME)
         ).apply {
             action = ACTION_FAVORITED_SESSION_START
-            putExtra(EXTRA_SESSION_ID, sessionId)
+            putExtra(EXTRA_SESSION_ID, sessionId.id)
             putExtra(EXTRA_TITLE, title)
             putExtra(EXTRA_TEXT, text)
         }

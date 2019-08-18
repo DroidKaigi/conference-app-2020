@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.navArgs
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -16,20 +19,22 @@ import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.model.LoadingState
+import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
-import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionViewModel
+import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 
-class SessionFragment : DaggerFragment() {
+class SessionDetailFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentSessionBinding
 
-    @Inject lateinit var sessionFactory: SessionViewModel.Factory
-    private val sessionViewModel by assistedViewModels {
-        sessionFactory.create(it)
+    @Inject lateinit var sessionDetailViewModelFactory: SessionDetailViewModel.Factory
+    private val navArgs: SessionDetailFragmentArgs by navArgs()
+    private val sessionDetailViewModel by assistedViewModels {
+        sessionDetailViewModelFactory.create(it, navArgs.sessionId)
     }
 
     @Inject lateinit var sessionItemFactory: SessionItem.Factory
@@ -60,13 +65,13 @@ class SessionFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
-        sessionViewModel.sessionContentsLoadingState.observe(viewLifecycleOwner) { state ->
+        sessionDetailViewModel.sessionLoadingState.observe(viewLifecycleOwner) { state: LoadingState<Session?> ->
             progressTimeLatch.loading = state.isLoading
             when (state) {
                 is LoadingState.Loaded -> {
-                    groupAdapter.update(state.value.sessions.map {
-                        sessionItemFactory.create(it, sessionViewModel)
-                    })
+                    if (state.value!=null){
+                        Toast.makeText(context, state.value.toString(),Toast.LENGTH_LONG).show()
+                    }
                 }
                 LoadingState.Loading -> Unit
                 is LoadingState.Error -> {
@@ -78,14 +83,14 @@ class SessionFragment : DaggerFragment() {
 }
 
 @Module
-abstract class SessionFragmentModule {
+abstract class SessionDetailFragmentModule {
     @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifecycle(
-            sessionFragment: SessionFragment
-        ): Lifecycle {
-            return sessionFragment.viewLifecycleOwner.lifecycle
+        @JvmStatic @Provides fun providesLifeCycleLiveData(
+            sessionDetailFragment: SessionDetailFragment
+        ): LiveData<LifecycleOwner> {
+            return sessionDetailFragment.viewLifecycleOwnerLiveData
         }
     }
 }

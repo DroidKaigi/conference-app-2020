@@ -18,6 +18,7 @@ import io.github.droidkaigi.confsched2020.model.Room
 import io.github.droidkaigi.confsched2020.model.ServiceSession
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
+import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.SessionType
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
@@ -70,7 +71,7 @@ private fun SessionResponse.toSession(
             categoryResponse.category(2, it)
         }
         SpeechSession(
-            id = response.id,
+            id = SessionId(response.id),
             // dayNumber is starts with 1.
             // Example: First day = 1, Second day = 2. So I plus 1 to period days
             dayNumber = startTime.dayOfYear - firstDay.dayOfYear + 1,
@@ -127,7 +128,7 @@ private fun SessionResponse.toSession(
         )
     } else {
         ServiceSession(
-            id = response.id,
+            id = SessionId(response.id),
             // dayNumber is starts with 1.
             // Example: First day = 1, Second day = 2. So I plus 1 to period days
             dayNumber = startTime.dayOfYear - firstDay.dayOfYear + 1,

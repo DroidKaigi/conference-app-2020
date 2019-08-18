@@ -11,8 +11,10 @@ import dagger.android.ContributesAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.di.PageScope
-import io.github.droidkaigi.confsched2020.session.ui.SessionFragment
-import io.github.droidkaigi.confsched2020.session.ui.SessionFragmentModule
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentModule
+import io.github.droidkaigi.confsched2020.session.ui.SessionsFragmentModule
+import io.github.droidkaigi.confsched2020.session.ui.SessionsFragment
 import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
 import javax.inject.Inject
 
@@ -33,9 +35,15 @@ abstract class MainActivityModule {
 
     @PageScope
     @ContributesAndroidInjector(
-        modules = [SessionFragmentModule::class, SessionAssistedInjectModule::class]
+        modules = [SessionsFragmentModule::class, SessionAssistedInjectModule::class]
     )
-    abstract fun contributeSessionPagesFragment(): SessionFragment
+    abstract fun contributeSessionsFragment(): SessionsFragment
+
+    @PageScope
+    @ContributesAndroidInjector(
+        modules = [SessionDetailFragmentModule::class, SessionAssistedInjectModule::class]
+    )
+    abstract fun contributeSessionDetailFragment(): SessionDetailFragment
 
     @Module
     companion object {

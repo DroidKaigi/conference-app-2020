@@ -14,6 +14,7 @@ import io.github.droidkaigi.confsched2020.model.LangSupport
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionFeedback
+import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -104,7 +105,7 @@ class DataSessionRepository @Inject constructor(
         sessionFeedback: SessionFeedback
     ) {
         val response = googleFormApi.submitSessionFeedback(
-            sessionId = session.id,
+            sessionId = session.id.id,
             sessionTitle = session.title.ja,
             totalEvaluation = sessionFeedback.totalEvaluation,
             relevancy = sessionFeedback.relevancy,

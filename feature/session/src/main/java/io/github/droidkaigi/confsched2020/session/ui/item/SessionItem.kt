@@ -2,8 +2,11 @@ package io.github.droidkaigi.confsched2020.session.ui.item
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.view.View
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.observe
+import androidx.navigation.NavController
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
@@ -13,12 +16,14 @@ import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionBinding
-import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionViewModel
+import io.github.droidkaigi.confsched2020.session.ui.SessionsFragmentDirections.actionSessionToSessionDetail
+import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 
 class SessionItem @AssistedInject constructor(
     @Assisted val session: Session,
-    @Assisted val sessionViewModel: SessionViewModel,
-    val lifecycle: Lifecycle
+    @Assisted val sessionsViewModel: SessionsViewModel,
+    val lifecycleOwnerLiveData: LiveData<LifecycleOwner>,
+    val navController: NavController
 ) : BindableItem<ItemSessionBinding>(session.id.hashCode().toLong()),
     EqualableContentsProvider {
     override fun getLayout(): Int = R.layout.item_session
@@ -27,9 +32,13 @@ class SessionItem @AssistedInject constructor(
         viewBinding.root.background =
             ColorDrawable(if (session.isFavorited) Color.GRAY else Color.TRANSPARENT)
 
-        viewBinding.root.setOnClickListener {
-            sessionViewModel.favorite(session).observe({ lifecycle }) {
+        viewBinding.title.setOnClickListener {
+            sessionsViewModel.favorite(session).observe(lifecycleOwnerLiveData.value!!){
+
             }
+        }
+        viewBinding.root.setOnClickListener {
+            navController.navigate(actionSessionToSessionDetail(session.id))
         }
         viewBinding.title.text = when (session) {
             is SpeechSession -> session.title
@@ -51,6 +60,6 @@ class SessionItem @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(session: Session, sessionViewModel: SessionViewModel): SessionItem
+        fun create(session: Session, sessionsViewModel: SessionsViewModel): SessionItem
     }
 }
