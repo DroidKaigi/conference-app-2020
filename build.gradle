@@ -1,4 +1,5 @@
 import com.android.build.gradle.AppPlugin
+import com.android.build.gradle.DynamicFeaturePlugin
 import com.android.build.gradle.LibraryPlugin
 import dependencies.Dep
 
@@ -30,6 +31,7 @@ buildscript {
         classpath Dep.GradlePlugin.licensesPlugin
         classpath Dep.GradlePlugin.iconRibbonPlugin
         classpath Dep.GradlePlugin.gradleVersionsPlugin
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -46,7 +48,7 @@ allprojects {
         maven { url "https://dl.bintray.com/kotlin/kotlinx" }
     }
     plugins.whenPluginAdded {
-        if (it instanceof AppPlugin || it instanceof LibraryPlugin) {
+        if (it instanceof AppPlugin || it instanceof LibraryPlugin || it instanceof DynamicFeaturePlugin) {
             android.compileOptions {
                 sourceCompatibility JavaVersion.VERSION_1_8
                 targetCompatibility JavaVersion.VERSION_1_8

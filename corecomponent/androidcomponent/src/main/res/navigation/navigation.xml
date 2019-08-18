@@ -23,4 +23,9 @@
             app:argType="io.github.droidkaigi.confsched2020.model.SessionId"
             />
     </fragment>
+    <fragment
+        android:id="@+id/staffs"
+        android:name="io.github.droidkaigi.confsched2020.staff.ui.StaffsFragment"
+        android:label="@string/staffs_label">
+    </fragment>
 </navigation>

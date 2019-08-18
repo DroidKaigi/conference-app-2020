@@ -1,5 +1,6 @@
-include ':android-root',
+include ':android-base',
         ':feature:session',
+        ':feature:staff',
         ':corecomponent:androidcomponent',
         ':model',
         ':data:api',

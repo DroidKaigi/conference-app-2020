@@ -23,6 +23,7 @@ task projectDependencyGraph {
         def multiplatformProjects = []
         def jsProjects = []
         def androidProjects = []
+        def androidDynamicFeatureProjects = []
         def javaProjects = []
 
         queue = [rootProject]
@@ -36,8 +37,12 @@ task projectDependencyGraph {
             if (project.plugins.hasPlugin('kotlin2js')) {
                 jsProjects.add(project)
             }
-            if (project.plugins.hasPlugin('com.android.library') || project.plugins.hasPlugin('com.android.application')) {
+            if (project.plugins.hasPlugin('com.android.library') ||
+                    project.plugins.hasPlugin('com.android.application')) {
                 androidProjects.add(project)
+            }
+            if (project.plugins.hasPlugin('com.android.dynamic-feature')) {
+                androidDynamicFeatureProjects.add(project)
             }
             if (project.plugins.hasPlugin('java-library') || project.plugins.hasPlugin('java')) {
                 javaProjects.add(project)
@@ -79,6 +84,8 @@ task projectDependencyGraph {
                 traits.add('fillcolor="#ffffba"')
             } else if (androidProjects.contains(project)) {
                 traits.add('fillcolor="#baffc9"')
+            } else if (androidDynamicFeatureProjects.contains(project)) {
+                traits.add('fillcolor="#c9baff"')
             } else if (javaProjects.contains(project)) {
                 traits.add('fillcolor="#ffb3ba"')
             } else {

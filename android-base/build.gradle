@@ -1,0 +1,70 @@
+import dependencies.Dep
+import dependencies.Packages
+import dependencies.Versions
+
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId Packages.name
+        minSdkVersion Versions.androidMinSdkVersion
+        targetSdkVersion 28
+        versionCode Versions.androidVersionCode
+        versionName Versions.androidVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix Packages.debugNameSuffix
+        }
+        release {
+            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    packagingOptions {
+        exclude 'META-INF/*.kotlin_module'
+        exclude 'META-INF/*.version'
+        exclude 'META-INF/proguard/*.pro'
+    }
+    dynamicFeatures = [':feature:staff']
+}
+
+dependencies {
+    implementation project(':feature:session')
+
+    implementation project(':data:repository')
+    implementation project(':data:db')
+    implementation project(':data:firestore')
+    implementation project(':data:api')
+    implementation project(':data:device')
+    implementation project(':corecomponent:androidcomponent')
+
+    implementation Dep.Kotlin.stdlibJvm
+    implementation Dep.AndroidX.appCompat
+    implementation Dep.AndroidX.coreKtx
+    implementation Dep.AndroidX.constraint
+    implementation Dep.AndroidX.activityKtx
+    implementation Dep.Firebase.fireStore
+
+    implementation Dep.Dagger.core
+    implementation Dep.Dagger.androidSupport
+    implementation Dep.Dagger.android
+    kapt Dep.Dagger.compiler
+    kapt Dep.Dagger.androidProcessor
+    compileOnly Dep.Dagger.assistedInjectAnnotations
+    kapt Dep.Dagger.assistedInjectProcessor
+
+    testImplementation Dep.Test.junit
+    androidTestImplementation Dep.Test.testRunner
+    androidTestImplementation Dep.Test.espressoCore
+}
+
+apply plugin: 'com.google.gms.google-services'

@@ -129,7 +129,7 @@ internal class RoomDatabase @Inject constructor(
         }
     }
 
-    override suspend fun staffs(): List<StaffEntity> = staffDao.allStaffs()
+    override fun staffs(): Flow<List<StaffEntity>> = staffDao.allStaffs()
 
     override suspend fun save(apiResponse: StaffResponse) {
         withContext(coroutineContext) {

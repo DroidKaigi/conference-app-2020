@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
@@ -37,6 +38,7 @@ class SessionDetailFragment : DaggerFragment() {
         sessionDetailViewModelFactory.create(it, navArgs.sessionId)
     }
 
+    @Inject lateinit var navController: NavController
     @Inject lateinit var sessionItemFactory: SessionItem.Factory
 
     private lateinit var progressTimeLatch: ProgressTimeLatch
@@ -69,8 +71,8 @@ class SessionDetailFragment : DaggerFragment() {
             progressTimeLatch.loading = state.isLoading
             when (state) {
                 is LoadingState.Loaded -> {
-                    if (state.value!=null){
-                        Toast.makeText(context, state.value.toString(),Toast.LENGTH_LONG).show()
+                    if (state.value != null) {
+                        Toast.makeText(context, state.value.toString(), Toast.LENGTH_LONG).show()
                     }
                 }
                 LoadingState.Loading -> Unit
