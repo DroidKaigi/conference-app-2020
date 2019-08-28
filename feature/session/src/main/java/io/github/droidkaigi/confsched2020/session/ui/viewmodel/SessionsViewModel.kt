@@ -15,9 +15,9 @@ import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
+import javax.inject.Inject
 
-class SessionsViewModel @AssistedInject constructor(
-    @Assisted private val state: SavedStateHandle,
+class SessionsViewModel @Inject constructor(
     val sessionRepository: SessionRepository
 ) : ViewModel() {
 
@@ -43,10 +43,5 @@ class SessionsViewModel @AssistedInject constructor(
         return liveData {
             sessionRepository.toggleFavorite(session)
         }
-    }
-
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(state: SavedStateHandle): SessionsViewModel
     }
 }

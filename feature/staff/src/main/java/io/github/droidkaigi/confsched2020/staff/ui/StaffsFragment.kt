@@ -27,14 +27,15 @@ import io.github.droidkaigi.confsched2020.staff.ui.item.StaffItem
 import io.github.droidkaigi.confsched2020.staff.ui.viewmodel.StaffsViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
+import javax.inject.Provider
 
 class StaffsFragment : Fragment() {
 
     private lateinit var binding: FragmentStaffsBinding
 
-    @Inject lateinit var staffsFactory: StaffsViewModel.Factory
+    @Inject lateinit var staffsFactory: Provider<StaffsViewModel>
     private val staffsViewModel by assistedViewModels {
-        staffsFactory.create(it)
+        staffsFactory.get()
     }
 
     @Inject lateinit var staffItemFactory: StaffItem.Factory

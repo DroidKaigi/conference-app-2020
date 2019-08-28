@@ -11,9 +11,9 @@ import io.github.droidkaigi.confsched2020.ext.asLiveData
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.StaffContents
+import javax.inject.Inject
 
-class StaffsViewModel @AssistedInject constructor(
-    @Assisted private val state: SavedStateHandle,
+class StaffsViewModel @Inject constructor(
     val staffRepository: StaffRepository
 ) : ViewModel() {
 
@@ -24,10 +24,5 @@ class StaffsViewModel @AssistedInject constructor(
                 .asLiveData()
         )
         staffRepository.refresh()
-    }
-
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(state: SavedStateHandle): StaffsViewModel
     }
 }

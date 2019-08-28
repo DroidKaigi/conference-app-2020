@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 
 class SessionDetailViewModel @AssistedInject constructor(
-    @Assisted private val state: SavedStateHandle,
     @Assisted private val sessionId: SessionId,
     val sessionRepository: SessionRepository
 ) : ViewModel() {
@@ -38,7 +37,6 @@ class SessionDetailViewModel @AssistedInject constructor(
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            state: SavedStateHandle,
             sessionId: SessionId
         ): SessionDetailViewModel
     }

@@ -8,6 +8,9 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
@@ -23,14 +26,15 @@ import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
+import javax.inject.Provider
 
 class SessionsFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentSessionBinding
 
-    @Inject lateinit var sessionsFactory: SessionsViewModel.Factory
-    private val sessionsViewModel by assistedViewModels {
-        sessionsFactory.create(it)
+    @Inject lateinit var sessionsFactory: Provider<SessionsViewModel>
+    private val sessionsViewModel:SessionsViewModel by assistedViewModels {
+        sessionsFactory.get()
     }
 
     @Inject lateinit var sessionItemFactory: SessionItem.Factory

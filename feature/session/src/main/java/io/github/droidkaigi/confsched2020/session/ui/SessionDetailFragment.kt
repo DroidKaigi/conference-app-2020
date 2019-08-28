@@ -19,6 +19,7 @@ import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.session.R
@@ -35,7 +36,7 @@ class SessionDetailFragment : DaggerFragment() {
     @Inject lateinit var sessionDetailViewModelFactory: SessionDetailViewModel.Factory
     private val navArgs: SessionDetailFragmentArgs by navArgs()
     private val sessionDetailViewModel by assistedViewModels {
-        sessionDetailViewModelFactory.create(it, navArgs.sessionId)
+        sessionDetailViewModelFactory.create(navArgs.sessionId)
     }
 
     @Inject lateinit var navController: NavController
