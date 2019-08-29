@@ -19,7 +19,7 @@ import io.github.droidkaigi.confsched2020.App
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.model.LoadingState
+import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.staff.R
 import io.github.droidkaigi.confsched2020.staff.databinding.FragmentStaffsBinding
 import io.github.droidkaigi.confsched2020.staff.ui.di.StaffAssistedInjectModule
@@ -74,16 +74,16 @@ class StaffsFragment : Fragment() {
         }.apply {
             loading = true
         }
-        staffsViewModel.staffContentsLoadingState.observe(viewLifecycleOwner) { state ->
+        staffsViewModel.staffContentsLoadState.observe(viewLifecycleOwner) { state ->
             progressTimeLatch.loading = state.isLoading
             when (state) {
-                is LoadingState.Loaded -> {
+                is LoadState.Loaded -> {
                     groupAdapter.update(state.value.staffs.map {
                         staffItemFactory.create(it, staffsViewModel)
                     })
                 }
-                LoadingState.Loading -> Unit
-                is LoadingState.Error -> {
+                LoadState.Loading -> Unit
+                is LoadState.Error -> {
                     state.e.printStackTrace()
                 }
             }

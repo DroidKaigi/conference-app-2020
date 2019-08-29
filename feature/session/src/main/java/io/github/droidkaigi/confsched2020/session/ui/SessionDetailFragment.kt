@@ -19,8 +19,7 @@ import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.model.LoadingState
+import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionBinding
@@ -68,16 +67,16 @@ class SessionDetailFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
-        sessionDetailViewModel.sessionLoadingState.observe(viewLifecycleOwner) { state: LoadingState<Session?> ->
+        sessionDetailViewModel.sessionLoadingState.observe(viewLifecycleOwner) { state: LoadState<Session?> ->
             progressTimeLatch.loading = state.isLoading
             when (state) {
-                is LoadingState.Loaded -> {
+                is LoadState.Loaded -> {
                     if (state.value != null) {
                         Toast.makeText(context, state.value.toString(), Toast.LENGTH_LONG).show()
                     }
                 }
-                LoadingState.Loading -> Unit
-                is LoadingState.Error -> {
+                LoadState.Loading -> Unit
+                is LoadState.Error -> {
                     state.e.printStackTrace()
                 }
             }

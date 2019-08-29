@@ -8,9 +8,6 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
@@ -19,7 +16,7 @@ import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.model.LoadingState
+import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
@@ -65,16 +62,16 @@ class SessionsFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
-        sessionsViewModel.sessionContentsLoadingState.observe(viewLifecycleOwner) { state ->
+        sessionsViewModel.loadState.observe(viewLifecycleOwner) { state ->
             progressTimeLatch.loading = state.isLoading
             when (state) {
-                is LoadingState.Loaded -> {
+                is LoadState.Loaded -> {
                     groupAdapter.update(state.value.sessions.map {
                         sessionItemFactory.create(it, sessionsViewModel)
                     })
                 }
-                LoadingState.Loading -> Unit
-                is LoadingState.Error -> {
+                LoadState.Loading -> Unit
+                is LoadState.Error -> {
                     state.e.printStackTrace()
                 }
             }
