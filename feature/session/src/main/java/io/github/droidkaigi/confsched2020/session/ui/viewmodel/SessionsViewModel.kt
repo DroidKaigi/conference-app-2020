@@ -49,7 +49,7 @@ class SessionsViewModel @Inject constructor(
     }
 
     // LiveDatas
-    private val loadState: LiveData<LoadState<SessionContents>> = liveData {
+    private val sessionLoadState: LiveData<LoadState<SessionContents>> = liveData {
         emitSource(
             sessionRepository.sessionContents()
                 .toLoadingState()
@@ -63,7 +63,7 @@ class SessionsViewModel @Inject constructor(
     // Compose UiModel
     val uiModel: LiveData<UiModel> = composeBy(
         initialValue = UiModel.EMPTY,
-        liveData1 = loadState,
+        liveData1 = sessionLoadState,
         liveData2 = favoriteLoadingState
     ) { current: UiModel,
         sessionsLoadState: LoadState<SessionContents>,

@@ -59,13 +59,7 @@ class SessionsViewModel @Inject constructor(
                     sessionContentsLoadState: LoadState<SessionContents>,
                     favoriteLoadingState: LoadingState
                 ): Error {
-                    if (sessionContentsLoadState is LoadState.Error) {
-                        return FailLoadSessions(sessionContentsLoadState.e)
-                    }
-                    if (favoriteLoadingState is LoadingState.Error) {
-                        return FailFavorite(favoriteLoadingState.e)
-                    }
-                    return None
+                    ...
                 }
             }
         }
@@ -76,7 +70,7 @@ class SessionsViewModel @Inject constructor(
     }
 
     // LiveDatas
-    private val loadState: LiveData<LoadState<SessionContents>> = liveData {
+    private val sessionLoadState: LiveData<LoadState<SessionContents>> = liveData {
         emitSource(
             sessionRepository.sessionContents()
                 .toLoadingState()
@@ -90,7 +84,7 @@ class SessionsViewModel @Inject constructor(
     // Compose UiModel
     val uiModel: LiveData<UiModel> = composeBy(
         initialValue = UiModel.EMPTY,
-        liveData1 = loadState,
+        liveData1 = sessionLoadState,
         liveData2 = favoriteLoadingState
     ) { current: UiModel,
         sessionsLoadState: LoadState<SessionContents>,
@@ -112,6 +106,19 @@ class SessionsViewModel @Inject constructor(
                 favoriteLoadingState = favoriteLoadingState
             )
         )
+    }
+
+    // Functions
+    fun favorite(session: Session): LiveData<Unit> {
+        return liveData {
+            try {
+                favoriteLoadingState.value = LoadingState.Loading
+                sessionRepository.toggleFavorite(session)
+                favoriteLoadingState.value = LoadingState.Loaded
+            } catch (e: Exception) {
+                favoriteLoadingState.value = LoadingState.Error(e)
+            }
+        }
     }
 }
 ```
