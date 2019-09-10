@@ -49,35 +49,4 @@
         <item name="fontFamily">@font/notosans_regular</item>
         <item name="android:textColor">@color/colorOnBackground</item>
     </style>
-
-    <!-- Lekton-Bold 24sp -->
-    <style name="TextAppearance.Lekton.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
-        <item name="android:fontFamily">@font/lekton</item>
-        <item name="fontFamily">@font/lekton</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/colorOnBackground</item>
-    </style>
-
-    <!-- Lekton-Bold 16sp -->
-    <style name="TextAppearance.Lekton.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="android:fontFamily">@font/lekton</item>
-        <item name="fontFamily">@font/lekton</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/colorOnBackground</item>
-    </style>
-
-    <!-- Lekton 16sp -->
-    <style name="TextAppearance.Lekton.Body1" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:fontFamily">@font/lekton</item>
-        <item name="fontFamily">@font/lekton</item>
-        <item name="android:textColor">@color/colorOnBackground</item>
-    </style>
-
-    <!-- Lekton 12sp -->
-    <style name="TextAppearance.Lekton.Caption" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="android:fontFamily">@font/lekton</item>
-        <item name="fontFamily">@font/lekton</item>
-        <item name="android:textColor">@color/colorOnBackground</item>
-    </style>
-
 </resources>

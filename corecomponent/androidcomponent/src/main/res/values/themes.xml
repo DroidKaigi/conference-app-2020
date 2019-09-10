@@ -7,31 +7,9 @@
     <style name="AppTheme" parent="Platform.AppTheme">
         <!-- Colors -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorAccent">@color/colorPrimary</item>
-        <item name="colorSurface">@color/colorSurface</item>
-        <item name="colorOnSurface">@color/colorOnSurface</item>
-        <item name="colorOnBackground">@color/colorOnBackground</item>
-        <item name="colorControlHighlight">@color/ripple</item>
-        <item name="colorControlNormal">@color/colorOnBackgroundSecondary</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:editTextColor">@color/colorOnBackground</item>
-        <item name="android:textColorHint">@color/colorOnBackgroundSecondary</item>
-
-        <!-- Drawables -->
-        <item name="android:colorBackground">@color/colorBackground</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
-        <item name="android:listDivider">@color/border_on_bg_secondary</item>
-
-        <!-- Window configurations -->
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-
-        <!-- Widget styles -->
-        <item name="searchViewStyle">@style/SearchViewStyle</item>
-        <item name="filterChipStyle">@style/Widget.App.FilterChip</item>
-        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
+        <item name="colorSecondary">?attr/colorPrimary</item>
+        <item name="colorOnSecondary">@color/colorOnPrimary</item>
 
         <!-- Text appearances -->
         <item name="textAppearanceHeadline5">@style/TextAppearance.App.Headline5</item>

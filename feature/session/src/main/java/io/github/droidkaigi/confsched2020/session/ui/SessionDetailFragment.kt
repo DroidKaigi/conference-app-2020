@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -19,8 +20,6 @@ import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.model.LoadState
-import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
@@ -67,19 +66,26 @@ class SessionDetailFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
-        sessionDetailViewModel.sessionLoadingState.observe(viewLifecycleOwner) { state: LoadState<Session?> ->
-            progressTimeLatch.loading = state.isLoading
-            when (state) {
-                is LoadState.Loaded -> {
-                    if (state.value != null) {
-                        Toast.makeText(context, state.value.toString(), Toast.LENGTH_LONG).show()
-                    }
-                }
-                LoadState.Loading -> Unit
-                is LoadState.Error -> {
-                    state.e.printStackTrace()
-                }
+        sessionDetailViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionDetailViewModel.UiModel ->
+            progressTimeLatch.loading = uiModel.isLoading
+            if (uiModel.session != null) {
+                Toast.makeText(context, uiModel.session.toString(), Toast.LENGTH_LONG).show()
             }
+            showError(uiModel.error)
+        }
+    }
+
+    private fun showError(error: SessionDetailViewModel.UiModel.Error) {
+        when (error) {
+            is SessionDetailViewModel.UiModel.Error.FailLoadSessions -> {
+                error.e.printStackTrace()
+                Snackbar.make(requireView(), "Fail to load sessions", Snackbar.LENGTH_LONG).show()
+            }
+            is SessionDetailViewModel.UiModel.Error.FailFavorite -> {
+                error.e.printStackTrace()
+                Snackbar.make(requireView(), "Fail to toggle favorite", Snackbar.LENGTH_LONG).show()
+            }
+            SessionDetailViewModel.UiModel.Error.None -> Unit
         }
     }
 }

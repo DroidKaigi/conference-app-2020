@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -16,11 +17,11 @@ import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
+import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel.UiModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
@@ -30,7 +31,7 @@ class SessionsFragment : DaggerFragment() {
     private lateinit var binding: FragmentSessionBinding
 
     @Inject lateinit var sessionsFactory: Provider<SessionsViewModel>
-    private val sessionsViewModel:SessionsViewModel by assistedViewModels {
+    private val sessionsViewModel: SessionsViewModel by assistedViewModels {
         sessionsFactory.get()
     }
 
@@ -62,19 +63,26 @@ class SessionsFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
-        sessionsViewModel.loadState.observe(viewLifecycleOwner) { state ->
-            progressTimeLatch.loading = state.isLoading
-            when (state) {
-                is LoadState.Loaded -> {
-                    groupAdapter.update(state.value.sessions.map {
-                        sessionItemFactory.create(it, sessionsViewModel)
-                    })
-                }
-                LoadState.Loading -> Unit
-                is LoadState.Error -> {
-                    state.e.printStackTrace()
-                }
+        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
+            progressTimeLatch.loading = uiModel.isLoading
+            groupAdapter.update(uiModel.sessionContents?.sessions.orEmpty().map {
+                sessionItemFactory.create(it, sessionsViewModel)
+            })
+            showError(uiModel.error)
+        }
+    }
+
+    private fun showError(error: UiModel.Error) {
+        when (error) {
+            is UiModel.Error.FailLoadSessions ->{
+                error.e.printStackTrace()
+                Snackbar.make(requireView(), "Fail to load sessions", Snackbar.LENGTH_LONG).show()
             }
+            is UiModel.Error.FailFavorite ->{
+                error.e.printStackTrace()
+                Snackbar.make(requireView(), "Fail to toggle favorite", Snackbar.LENGTH_LONG).show()
+            }
+            is UiModel.Error.None -> Unit
         }
     }
 }

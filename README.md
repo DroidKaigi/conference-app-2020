@@ -20,20 +20,20 @@ Fragment
     
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        ...
-        
-        sessionsViewModel.sessionContentsLoadingState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is LoadingState.Loaded -> {
-                    groupAdapter.update(state.value.sessions.map {
-                        sessionItemFactory.create(it, sessionsViewModel)
-                    })
-                }
-                LoadingState.Loading -> Unit
-                is LoadingState.Error -> {
-                    state.e.printStackTrace()
-                }
+        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        binding.sessionRecycler.adapter = groupAdapter
+
+        progressTimeLatch = ProgressTimeLatch { showProgress ->
+            binding.progressBar.isVisible = showProgress
+        }.apply {
+            loading = true
+        }
+        sessionDetailViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionDetailViewModel.UiModel ->
+            progressTimeLatch.loading = uiModel.isLoading
+            if (uiModel.session != null) {
+                Toast.makeText(context, uiModel.session.toString(), Toast.LENGTH_LONG).show()
             }
+            showError(uiModel.error)
         }
     }
 ```
@@ -41,12 +41,42 @@ Fragment
 ViewModel
 
 ```kotlin
-class SessionsViewModel @AssistedInject constructor(
-    @Assisted private val state: SavedStateHandle,
+class SessionsViewModel @Inject constructor(
     val sessionRepository: SessionRepository
 ) : ViewModel() {
+    // UiModel definition
+    data class UiModel(
+        val sessionContents: SessionContents?,
+        val isLoading: Boolean,
+        val error: Error
+    ) {
+        sealed class Error {
+            class FailLoadSessions(val e: Throwable) : Error()
+            class FailFavorite(val e: Throwable) : Error()
+            object None : Error()
+            companion object {
+                fun of(
+                    sessionContentsLoadState: LoadState<SessionContents>,
+                    favoriteLoadingState: LoadingState
+                ): Error {
+                    if (sessionContentsLoadState is LoadState.Error) {
+                        return FailLoadSessions(sessionContentsLoadState.e)
+                    }
+                    if (favoriteLoadingState is LoadingState.Error) {
+                        return FailFavorite(favoriteLoadingState.e)
+                    }
+                    return None
+                }
+            }
+        }
 
-    val sessionContentsLoadingState: LiveData<LoadingState<SessionContents>> = liveData {
+        companion object {
+            val EMPTY = UiModel(null, false, Error.None)
+        }
+    }
+
+    // LiveDatas
+    private val loadState: LiveData<LoadState<SessionContents>> = liveData {
         emitSource(
             sessionRepository.sessionContents()
                 .toLoadingState()
@@ -54,12 +84,34 @@ class SessionsViewModel @AssistedInject constructor(
         )
         sessionRepository.refresh()
     }
-    
-    ...
-    
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(state: SavedStateHandle): SessionsViewModel
+    private val favoriteLoadingState: MutableLiveData<LoadingState> =
+        MutableLiveData(LoadingState.Initialized)
+
+    // Compose UiModel
+    val uiModel: LiveData<UiModel> = composeBy(
+        initialValue = UiModel.EMPTY,
+        liveData1 = loadState,
+        liveData2 = favoriteLoadingState
+    ) { current: UiModel,
+        sessionsLoadState: LoadState<SessionContents>,
+        favoriteLoadingState: LoadingState ->
+        val isLoading = sessionsLoadState.isLoading || favoriteLoadingState.isLoading
+        val sessionContents = when (sessionsLoadState) {
+            is LoadState.Loaded -> {
+                sessionsLoadState.value
+            }
+            else -> {
+                current.sessionContents
+            }
+        }
+        UiModel(
+            sessionContents = sessionContents,
+            isLoading = isLoading,
+            error = UiModel.Error.of(
+                sessionContentsLoadState = sessionsLoadState,
+                favoriteLoadingState = favoriteLoadingState
+            )
+        )
     }
 }
 ```
@@ -78,6 +130,36 @@ Repository
 Extensions
 
 ```kotlin
+inline fun <T : Any, LIVE1 : Any, LIVE2 : Any> composeBy(
+    initialValue: T,
+    liveData1: LiveData<LIVE1>,
+    liveData2: LiveData<LIVE2>,
+    crossinline block: (T, LIVE1, LIVE2) -> T
+): LiveData<T> {
+    return MediatorLiveData<T>().apply {
+        value = initialValue
+        addSource(liveData1) { data ->
+            callBlockWhenNonNullValue(liveData1, liveData2, block)
+        }
+        addSource(liveData2) { data ->
+            callBlockWhenNonNullValue(liveData1, liveData2, block)
+        }
+    }
+}
+
+inline fun <LIVE1 : Any, LIVE2 : Any, T : Any> MediatorLiveData<T>.callBlockWhenNonNullValue(
+    liveData1: LiveData<LIVE1>,
+    liveData2: LiveData<LIVE2>,
+    crossinline block: (T, LIVE1, LIVE2) -> T
+) {
+    val currentValue = value
+    val liveData1Value = liveData1.value
+    val liveData2Value = liveData2.value
+    if (currentValue != null && liveData1Value != null && liveData2Value != null) {
+        value = block(currentValue, liveData1Value, liveData2Value)
+    }
+}
+
 fun <reified T : ViewModel> Fragment.assistedViewModels(
     crossinline body: (state: SavedStateHandle) -> T
 ): Lazy<T> {

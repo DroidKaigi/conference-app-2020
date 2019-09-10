@@ -44,7 +44,7 @@ object Dep {
         val emoji = "androidx.emoji:emoji-appcompat:1.0.0"
         val design = "com.google.android.material:material:1.1.0-alpha09"
         val coreKtx = "androidx.core:core-ktx:1.2.0-alpha03"
-        val preference = "androidx.preference:preference:1.0.0"
+        val preference = "androidx.preference:preference:1.1.0-rc01"
         val browser = "androidx.browser:browser:1.0.0"
         val activityKtx = "androidx.activity:activity-ktx:1.1.0-alpha02"
         val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.0-alpha02"
