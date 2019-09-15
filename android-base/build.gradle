@@ -34,7 +34,10 @@ android {
         exclude 'META-INF/*.version'
         exclude 'META-INF/proguard/*.pro'
     }
-    dynamicFeatures = [':feature:staff']
+    dynamicFeatures = [
+            ':feature:staff',
+            ':feature:preference'
+    ]
 }
 
 dependencies {
@@ -52,7 +55,7 @@ dependencies {
     implementation Dep.AndroidX.coreKtx
     implementation Dep.AndroidX.constraint
     implementation Dep.AndroidX.activityKtx
-    implementation Dep.Firebase.fireStore
+    implementation Dep.Firebase.firestoreKtx
 
     implementation Dep.Dagger.core
     implementation Dep.Dagger.androidSupport
