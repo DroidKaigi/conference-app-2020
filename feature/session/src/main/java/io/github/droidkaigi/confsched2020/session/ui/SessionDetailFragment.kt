@@ -12,31 +12,37 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
+import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
+import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
+import javax.inject.Provider
 
 class SessionDetailFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentSessionBinding
 
     @Inject lateinit var sessionDetailViewModelFactory: SessionDetailViewModel.Factory
-    private val navArgs: SessionDetailFragmentArgs by navArgs()
     private val sessionDetailViewModel by assistedViewModels {
         sessionDetailViewModelFactory.create(navArgs.sessionId)
     }
+    @Inject lateinit var systemViewModelProvider: Provider<SystemViewModel>
+    private val systemViewModel: SystemViewModel by assistedActivityViewModels {
+        systemViewModelProvider.get()
+    }
 
+    private val navArgs: SessionDetailFragmentArgs by navArgs()
     @Inject lateinit var navController: NavController
     @Inject lateinit var sessionItemFactory: SessionItem.Factory
 
@@ -71,21 +77,9 @@ class SessionDetailFragment : DaggerFragment() {
             if (uiModel.session != null) {
                 Toast.makeText(context, uiModel.session.toString(), Toast.LENGTH_LONG).show()
             }
-            showError(uiModel.error)
-        }
-    }
-
-    private fun showError(error: SessionDetailViewModel.UiModel.Error) {
-        when (error) {
-            is SessionDetailViewModel.UiModel.Error.FailLoadSessions -> {
-                error.e.printStackTrace()
-                Snackbar.make(requireView(), "Fail to load sessions", Snackbar.LENGTH_LONG).show()
+            uiModel.error?.let {
+                systemViewModel.onError(it)
             }
-            is SessionDetailViewModel.UiModel.Error.FailFavorite -> {
-                error.e.printStackTrace()
-                Snackbar.make(requireView(), "Fail to toggle favorite", Snackbar.LENGTH_LONG).show()
-            }
-            SessionDetailViewModel.UiModel.Error.None -> Unit
         }
     }
 }

@@ -2,7 +2,6 @@ package io.github.droidkaigi.confsched2020.session.ui.item
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -33,8 +32,7 @@ class SessionItem @AssistedInject constructor(
             ColorDrawable(if (session.isFavorited) Color.GRAY else Color.TRANSPARENT)
 
         viewBinding.title.setOnClickListener {
-            sessionsViewModel.favorite(session).observe(lifecycleOwnerLiveData.value!!){
-
+            sessionsViewModel.favorite(session).observe(lifecycleOwnerLiveData.value!!) {
             }
         }
         viewBinding.root.setOnClickListener {

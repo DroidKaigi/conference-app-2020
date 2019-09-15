@@ -35,20 +35,23 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
     }
 
     override suspend fun toggleFavorite(sessionId: SessionId) {
+        Timber.debug { "toggleFavorite: start" }
         signInIfNeeded()
         val document = getFavoritesRef().document(sessionId.id).fastGet()
         val nowFavorite = document.exists() && (document.data?.get(sessionId.id) == true)
         val newFavorite = !nowFavorite
-        Timber.debug { "toggleFavorite:" + sessionId }
         if (document.exists()) {
+            Timber.debug { "toggleFavorite: $sessionId document exits" }
             document.reference
                 .delete()
                 .await()
         } else {
+            Timber.debug { "toggleFavorite: $sessionId document not exits" }
             document.reference
                 .set(mapOf("favorite" to newFavorite))
                 .await()
         }
+        Timber.debug { "toggleFavorite: end" }
     }
 
     private fun getFavoritesRef(): CollectionReference {

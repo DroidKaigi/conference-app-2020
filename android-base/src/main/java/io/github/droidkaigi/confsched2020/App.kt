@@ -7,19 +7,26 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.createAppComponent
+import timber.log.LogcatTree
+import timber.log.Timber
 
 open class App : DaggerApplication() {
     val appComponent: AppComponent by lazy {
         createAppComponent()
     }
 
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return appComponent
+    }
+
     override fun onCreate() {
         super.onCreate()
+        setupTimber()
         setupFirestore()
     }
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return appComponent
+    private fun setupTimber() {
+        Timber.plant(LogcatTree())
     }
 
     private fun setupFirestore() {

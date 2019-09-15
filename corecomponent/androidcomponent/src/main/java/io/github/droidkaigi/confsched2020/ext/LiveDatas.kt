@@ -2,6 +2,9 @@ package io.github.droidkaigi.confsched2020.ext
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
+import com.hadilq.liveevent.LiveEvent
 
 inline fun <T : Any, LIVE1 : Any, LIVE2 : Any> composeBy(
     initialValue: T,
@@ -31,4 +34,21 @@ inline fun <LIVE1 : Any, LIVE2 : Any, T : Any> MediatorLiveData<T>.callBlockWhen
     if (currentValue != null && liveData1Value != null && liveData2Value != null) {
         value = block(currentValue, liveData1Value, liveData2Value)
     }
+}
+
+fun <T> LiveData<T>.setOnEach(mutableLiveData: MutableLiveData<T>): LiveData<T> {
+    return map {
+        mutableLiveData.value = it
+        it
+    }
+}
+
+fun <T : Any> LiveData<T?>.toNonNullSingleEvent(): LiveData<T> {
+    val result = LiveEvent<T>()
+    result.addSource(this) {
+        if (it != null) {
+            result.value = it
+        }
+    }
+    return result
 }

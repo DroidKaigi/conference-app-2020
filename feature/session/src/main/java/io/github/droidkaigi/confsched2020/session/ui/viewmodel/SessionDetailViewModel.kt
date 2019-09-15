@@ -8,7 +8,10 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.ext.composeBy
+import io.github.droidkaigi.confsched2020.ext.setOnEach
+import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
+import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Session
@@ -24,35 +27,15 @@ class SessionDetailViewModel @AssistedInject constructor(
     data class UiModel(
         val session: Session?,
         val isLoading: Boolean,
-        val error: Error
+        val error: AppError?
     ) {
-        sealed class Error {
-            class FailLoadSessions(val e: Throwable) : Error()
-            class FailFavorite(val e: Throwable) : Error()
-            object None : Error()
-            companion object {
-                fun of(
-                    sessionLoadState: LoadState<Session>,
-                    favoriteLoadingState: LoadingState
-                ): UiModel.Error {
-                    if (sessionLoadState is LoadState.Error) {
-                        return FailLoadSessions(sessionLoadState.e)
-                    }
-                    if (favoriteLoadingState is LoadingState.Error) {
-                        return FailFavorite(favoriteLoadingState.e)
-                    }
-                    return UiModel.Error.None
-                }
-            }
-        }
-
         companion object {
-            val EMPTY = UiModel(null, false, Error.None)
+            val EMPTY = UiModel(null, false, null)
         }
     }
 
     // LiveDatas
-    private val sessionLoadState: LiveData<LoadState<Session>> = liveData {
+    private val sessionLoadStateLiveData: LiveData<LoadState<Session>> = liveData {
         sessionRepository.sessionContents()
             .map { it.sessions.first { session -> sessionId == session.id } }
             .toLoadingState()
@@ -61,14 +44,14 @@ class SessionDetailViewModel @AssistedInject constructor(
             }
     }
 
-    private val favoriteLoadingState: MutableLiveData<LoadingState> =
+    private val favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
         MutableLiveData(LoadingState.Initialized)
 
     // Compose UiModel
     val uiModel: LiveData<UiModel> = composeBy(
         initialValue = UiModel.EMPTY,
-        liveData1 = sessionLoadState,
-        liveData2 = favoriteLoadingState
+        liveData1 = sessionLoadStateLiveData,
+        liveData2 = favoriteLoadingStateLiveData
     ) { current: UiModel,
         sessionLoadState: LoadState<Session>,
         favoriteLoadingState: LoadingState ->
@@ -84,24 +67,22 @@ class SessionDetailViewModel @AssistedInject constructor(
         UiModel(
             session = sessions,
             isLoading = isLoading,
-            error = UiModel.Error.of(
-                sessionLoadState = sessionLoadState,
-                favoriteLoadingState = favoriteLoadingState
-            )
+            error = (sessionLoadState.getExceptionIfExists()
+                ?: favoriteLoadingState.getExceptionIfExists()).toAppError()
         )
     }
 
     // Functions
-    fun favorite(session: Session): LiveData<Unit> {
+    fun favorite(session: Session): LiveData<LoadingState> {
         return liveData {
             try {
-                favoriteLoadingState.value = LoadingState.Loading
+                emit(LoadingState.Loading)
                 sessionRepository.toggleFavorite(session)
-                favoriteLoadingState.value = LoadingState.Loaded
+                emit(LoadingState.Loaded)
             } catch (e: Exception) {
-                favoriteLoadingState.value = LoadingState.Error(e)
+                emit(LoadingState.Error(e))
             }
-        }
+        }.setOnEach(favoriteLoadingStateLiveData)
     }
 
     @AssistedInject.Factory

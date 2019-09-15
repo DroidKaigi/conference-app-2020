@@ -39,17 +39,13 @@ inline fun <reified T : ViewModel> Fragment.assistedSavedStateViewModels(
 }
 
 inline fun <reified T : ViewModel> Fragment.assistedActivityViewModels(
-    crossinline body: (state: SavedStateHandle) -> T
+    crossinline body: () -> T
 ): Lazy<T> {
     return activityViewModels {
-        object : AbstractSavedStateViewModelFactory(this, arguments) {
-            override fun <T : ViewModel> create(
-                key: String,
-                modelClass: Class<T>,
-                handle: SavedStateHandle
-            ): T {
+        object : ViewModelProvider.NewInstanceFactory() {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return body(handle) as T
+                return body() as T
             }
         }
     }

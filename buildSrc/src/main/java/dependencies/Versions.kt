@@ -1,6 +1,7 @@
 package dependencies
 
 private object Versions {
+    val androidTargetSdkVersion = 28
     val androidCompileSdkVersion = 28
     val androidMinSdkVersion = 21
 

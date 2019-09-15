@@ -39,7 +39,7 @@ kotlin {
 
                 implementation Dep.Kotlin.coroutinesPlayServices
                 implementation Dep.Firebase.auth
-                implementation Dep.Firebase.fireStore
+                implementation Dep.Firebase.firestoreKtx
                 implementation Dep.AndroidX.lifecycleLiveData
 
                 implementation Dep.Dagger.core

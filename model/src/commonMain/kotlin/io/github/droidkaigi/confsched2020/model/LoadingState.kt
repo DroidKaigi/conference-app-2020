@@ -7,4 +7,5 @@ sealed class LoadingState {
     class Error(val e: Throwable) : LoadingState()
 
     val isLoading get() = this is Loading
+    fun getExceptionIfExists() = if (this is Error) e else null
 }

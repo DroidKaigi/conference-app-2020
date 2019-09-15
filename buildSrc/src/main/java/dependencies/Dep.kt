@@ -8,7 +8,7 @@ object Dep {
         val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}"
         val playServices = "com.google.gms:google-services:4.3.0"
         val safeArgs =
-            "android.arch.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.version}"
+            "androidx.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.version}"
         val jetifier = "com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta05"
         val licensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.9.5"
         val crashlytics = "io.fabric.tools:gradle:1.26.1"
@@ -24,7 +24,7 @@ object Dep {
         val espressoCore = "androidx.test.espresso:espresso-core:3.3.0-alpha02"
         val kotlinTestAssertions = "io.kotlintest:kotlintest-assertions:3.1.10"
         val testingKtx =
-            "android.arch.navigation:navigation-testing-ktx:${AndroidX.Navigation.version}"
+            "androidx.navigation:navigation-testing-ktx:${AndroidX.Navigation.version}"
 
         object KotlinMultiPlatform {
             val jvmModuleTest = "org.jetbrains.kotlin:kotlin-test"
@@ -46,7 +46,7 @@ object Dep {
         val coreKtx = "androidx.core:core-ktx:1.2.0-alpha03"
         val preference = "androidx.preference:preference:1.1.0-rc01"
         val browser = "androidx.browser:browser:1.0.0"
-        val activityKtx = "androidx.activity:activity-ktx:1.1.0-alpha02"
+        val activityKtx = "androidx.activity:activity-ktx:1.1.0-alpha03"
         val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.0-alpha02"
 
         val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
@@ -62,13 +62,13 @@ object Dep {
         }
 
         object Navigation {
-            val version = "1.0.0"
-            val runtime = "android.arch.navigation:navigation-runtime:$version"
-            val runtimeKtx = "android.arch.navigation:navigation-runtime-ktx:$version"
-            val fragment = "android.arch.navigation:navigation-fragment:$version"
-            val ui = "android.arch.navigation:navigation-ui:1.0.0-alpha10"
-            val fragmentKtx = "android.arch.navigation:navigation-fragment-ktx:$version"
-            val uiKtx = "android.arch.navigation:navigation-ui-ktx:$version"
+            val version = "2.2.0-alpha01"
+            val runtime = "androidx.navigation:navigation-runtime:$version"
+            val runtimeKtx = "androidx.navigation:navigation-runtime-ktx:$version"
+            val fragment = "androidx.navigation:navigation-fragment:$version"
+            val ui = "androidx.navigation:navigation-ui:$version"
+            val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
+            val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
         }
 
         object Work {
@@ -104,7 +104,7 @@ object Dep {
 
     object Firebase {
         val core = "com.google.firebase:firebase-core:16.0.4"
-        val fireStore = "com.google.firebase:firebase-firestore:20.2.0"
+        val firestoreKtx = "com.google.firebase:firebase-firestore-ktx:20.2.0"
         val auth = "com.google.firebase:firebase-auth:18.1.0"
         val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.9.8"
         val messaging = "com.google.firebase:firebase-messaging:17.3.3"
@@ -153,7 +153,8 @@ object Dep {
         val okio = "com.squareup.okio:okio:1.14.0"
     }
 
-    val shopifyLiveDataKtx =  "com.shopify:livedata-ktx:3.0.0"
+    val shopifyLiveDataKtx = "com.shopify:livedata-ktx:3.0.0"
+    val liveEvent = "com.github.hadilq.liveevent:liveevent:1.0.1"
 
     object LeakCanary {
         val version = "1.6.3"

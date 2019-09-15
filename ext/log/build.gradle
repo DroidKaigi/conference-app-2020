@@ -30,7 +30,7 @@ kotlin {
         androidMain {
             dependencies {
                 implementation Dep.Kotlin.stdlibJvm
-                api Dep.Timber.jdk
+                api Dep.Timber.android
             }
         }
         commonTest.dependencies {

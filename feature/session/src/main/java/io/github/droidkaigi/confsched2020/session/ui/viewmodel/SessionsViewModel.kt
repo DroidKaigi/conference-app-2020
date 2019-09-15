@@ -4,14 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.ext.asLiveData
 import io.github.droidkaigi.confsched2020.ext.composeBy
+import io.github.droidkaigi.confsched2020.ext.setOnEach
+import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
+import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
+import timber.log.Timber
+import timber.log.debug
 import javax.inject.Inject
 
 class SessionsViewModel @Inject constructor(
@@ -21,53 +27,38 @@ class SessionsViewModel @Inject constructor(
     data class UiModel(
         val sessionContents: SessionContents?,
         val isLoading: Boolean,
-        val error: Error
+        val error: AppError?
     ) {
-        sealed class Error {
-            class FailLoadSessions(val e: Throwable) : Error()
-            class FailFavorite(val e: Throwable) : Error()
-            object None : Error()
-            companion object {
-                fun of(
-                    sessionContentsLoadState: LoadState<SessionContents>,
-                    favoriteLoadingState: LoadingState
-                ): Error {
-                    if (sessionContentsLoadState is LoadState.Error) {
-                        return FailLoadSessions(sessionContentsLoadState.e)
-                    }
-                    if (favoriteLoadingState is LoadingState.Error) {
-                        return FailFavorite(favoriteLoadingState.e)
-                    }
-                    return None
-                }
-            }
-        }
-
         companion object {
-            val EMPTY = UiModel(null, false, Error.None)
+            val EMPTY = UiModel(null, false, null)
         }
     }
 
     // LiveDatas
-    private val sessionLoadState: LiveData<LoadState<SessionContents>> = liveData {
+    private val sessionsLoadStateLiveData: LiveData<LoadState<SessionContents>> = liveData {
         emitSource(
             sessionRepository.sessionContents()
                 .toLoadingState()
                 .asLiveData()
         )
-        sessionRepository.refresh()
+        try {
+            sessionRepository.refresh()
+        } catch (ignored: Exception) {
+            // We can show sessions with cache
+        }
     }
-    private val favoriteLoadingState: MutableLiveData<LoadingState> =
+    private val favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
         MutableLiveData(LoadingState.Initialized)
 
     // Compose UiModel
     val uiModel: LiveData<UiModel> = composeBy(
         initialValue = UiModel.EMPTY,
-        liveData1 = sessionLoadState,
-        liveData2 = favoriteLoadingState
+        liveData1 = sessionsLoadStateLiveData,
+        liveData2 = favoriteLoadingStateLiveData
     ) { current: UiModel,
         sessionsLoadState: LoadState<SessionContents>,
         favoriteLoadingState: LoadingState ->
+        Timber.debug { "sessionsLoadState:" + sessionsLoadState + " favoriteLoadingState:" + favoriteLoadingState }
         val isLoading = sessionsLoadState.isLoading || favoriteLoadingState.isLoading
         val sessionContents = when (sessionsLoadState) {
             is LoadState.Loaded -> {
@@ -80,23 +71,21 @@ class SessionsViewModel @Inject constructor(
         UiModel(
             sessionContents = sessionContents,
             isLoading = isLoading,
-            error = UiModel.Error.of(
-                sessionContentsLoadState = sessionsLoadState,
-                favoriteLoadingState = favoriteLoadingState
-            )
+            error = (sessionsLoadState.getExceptionIfExists()
+                ?: favoriteLoadingState.getExceptionIfExists()).toAppError()
         )
     }
 
     // Functions
-    fun favorite(session: Session): LiveData<Unit> {
+    fun favorite(session: Session): LiveData<LoadingState> {
         return liveData {
             try {
-                favoriteLoadingState.value = LoadingState.Loading
+                emit(LoadingState.Loading)
                 sessionRepository.toggleFavorite(session)
-                favoriteLoadingState.value = LoadingState.Loaded
+                emit(LoadingState.Loaded)
             } catch (e: Exception) {
-                favoriteLoadingState.value = LoadingState.Error(e)
+                emit(LoadingState.Error(e))
             }
-        }
+        }.setOnEach(favoriteLoadingStateLiveData)
     }
 }
