@@ -3,7 +3,7 @@ package dependencies
 @Suppress("unused")
 object Dep {
     object GradlePlugin {
-        val android = "com.android.tools.build:gradle:3.5.0-rc03"
+        val android = "com.android.tools.build:gradle:3.5.0"
         val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}"
         val playServices = "com.google.gms:google-services:4.3.0"
@@ -19,9 +19,12 @@ object Dep {
     object Test {
         val junit = "junit:junit:4.12"
         val testRunner = "androidx.test:runner:1.3.0-alpha02"
+        val testCore = "androidx.test:core:1.1.0"
         val androidJunit4 = "androidx.test.ext.junit:1.1.0"
-        val archCore = "androidx.arch.core:core-testing:2.0.0"
+        val archCore = "androidx.arch.core:core-testing:2.1.0"
+        val liveDataTestingKtx = "com.jraska.livedata:testing-ktx:1.1.0"
         val espressoCore = "androidx.test.espresso:espresso-core:3.3.0-alpha02"
+        val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Kotlin.coroutinesVersion}"
         val kotlinTestAssertions = "io.kotlintest:kotlintest-assertions:3.1.10"
         val testingKtx =
             "androidx.navigation:navigation-testing-ktx:${AndroidX.Navigation.version}"
@@ -79,10 +82,10 @@ object Dep {
     }
 
     object Kotlin {
-        val version = "1.3.50-eap-5"
+        val version = "1.3.50"
         val stdlibCommon = "org.jetbrains.kotlin:kotlin-stdlib-common:$version"
         val stdlibJvm = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
-        val coroutinesVersion = "1.3.0-RC2"
+        val coroutinesVersion = "1.3.0"
         val coroutinesCommon =
             "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutinesVersion"
         val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
@@ -95,11 +98,11 @@ object Dep {
         val coroutinesPlayServices =
             "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutinesVersion"
         val serializationCommon =
-            "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.11.2-1.3.50-eap-5"
+            "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.13.0"
         val serializationAndroid =
-            "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.11.2-1.3.50-eap-5"
+            "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.13.0"
         val serializationIos =
-            "org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:0.11.2-1.3.50-eap-5"
+            "org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:0.13.0"
     }
 
     object Firebase {
@@ -128,7 +131,7 @@ object Dep {
     }
 
     object Ktor {
-        val version = "1.2.3-1.3.50-eap-5"
+        val version = "1.3.0-beta-1"
         val clientCommon = "io.ktor:ktor-client-core:$version"
         val clientAndroid = "io.ktor:ktor-client-okhttp:$version"
         val clientIos = "io.ktor:ktor-client-ios:$version"

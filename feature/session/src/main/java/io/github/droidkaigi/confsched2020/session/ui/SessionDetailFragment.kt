@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
@@ -72,7 +73,8 @@ class SessionDetailFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
-        sessionDetailViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionDetailViewModel.UiModel ->
+        sessionDetailViewModel.uiModel.distinctUntilChanged()
+            .observe(viewLifecycleOwner) { uiModel: SessionDetailViewModel.UiModel ->
             progressTimeLatch.loading = uiModel.isLoading
             if (uiModel.session != null) {
                 Toast.makeText(context, uiModel.session.toString(), Toast.LENGTH_LONG).show()

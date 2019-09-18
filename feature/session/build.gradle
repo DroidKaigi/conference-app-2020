@@ -37,6 +37,9 @@ dependencies {
     implementation Dep.Groupie.groupie
     implementation Dep.Groupie.databinding
 
+    // FIXME: Why Unresolved reference in test without this??
+    testImplementation project(":data:repository")
+    testImplementation project(':corecomponent:androidtestcomponent')
     testImplementation Dep.Test.junit
     testImplementation Dep.Test.kotlinTestAssertions
     testImplementation Dep.MockK.jvm

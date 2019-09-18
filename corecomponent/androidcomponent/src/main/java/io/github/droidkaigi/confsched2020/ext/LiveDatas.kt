@@ -14,10 +14,10 @@ inline fun <T : Any, LIVE1 : Any, LIVE2 : Any> composeBy(
 ): LiveData<T> {
     return MediatorLiveData<T>().apply {
         value = initialValue
-        addSource(liveData1) { data ->
+        addSource(liveData1) {
             callBlockWhenNonNullValue(liveData1, liveData2, block)
         }
-        addSource(liveData2) { data ->
+        addSource(liveData2) {
             callBlockWhenNonNullValue(liveData1, liveData2, block)
         }
     }
