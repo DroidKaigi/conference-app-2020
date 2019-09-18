@@ -1,8 +1,8 @@
 package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.distinctUntilChanged
 import com.jraska.livedata.test
+import io.github.droidkaigi.confsched2019.widget.component.ViewModelTestRule
 import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionId
@@ -10,19 +10,12 @@ import io.kotlintest.should
 import io.kotlintest.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.setMain
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class SessionDetailViewModelTest {
-    @get:Rule val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
-    @Before
-    fun setup() {
-        Dispatchers.setMain(Dispatchers.Unconfined)
-    }
+    @get:Rule val viewModelTestRule = ViewModelTestRule()
 
     @Test
     fun load() {
