@@ -115,6 +115,7 @@ orbs:
         steps:
           - setup_workspace
           - use_gradle_cache:
+              key-prefix: 'assemble'
               steps:
                 - run:
                     name: Assemble apk
