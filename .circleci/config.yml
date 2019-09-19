@@ -17,7 +17,7 @@ commands: &commands
   setup_workspace:
     steps:
       - checkout
-      - run: "$(git rev-parse --show-toplevel)/.circleci/init_ci_stuff"
+      - run: "$(git rev-parse --show-toplevel)/.circleci/scripts/init_ci_stuff"
 
   change_working_directory:
     parameters:
