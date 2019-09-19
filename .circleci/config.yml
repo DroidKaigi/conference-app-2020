@@ -120,10 +120,17 @@ orbs:
                     name: Assemble apk
                     command: |
                       build_flavor="<< parameters.build-flavor >>"
-                      ./gradlew ":android-base:assemble${build_flavor^}" \
-                        --offline \
-                        -PdisablePreDex \
-                        -x "android-base:lintVital${build_flavor^}"
+                      vitalTaskName="android-base:lintVital${build_flavor^}"
+                      if ./gradlew tasks | grep "$vitalTaskName"; then
+                        ./gradlew ":android-base:assemble${build_flavor^}" \
+                          --offline \
+                          -PdisablePreDex \
+                          -x "$vitalTaskName"
+                      else
+                        ./gradlew ":android-base:assemble${build_flavor^}" \
+                          --offline \
+                          -PdisablePreDex
+                      fi
                 - store_artifacts:
                     path: android-base/build/outputs/mapping/release/mapping.txt
                 - store_artifacts:
