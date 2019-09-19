@@ -19,11 +19,12 @@ class SessionDetailViewModelTest {
 
     @Test
     fun load() {
-        val sessionRepository = mockk<SessionRepository>() {
+        val sessionRepository = mockk<SessionRepository> {
             coEvery { sessionContents() } returns flowOf(SessionContents.EMPTY)
         }
+        val sessionDetailViewModel = SessionDetailViewModel(SessionId("1"), sessionRepository)
 
-        val testObserver = SessionDetailViewModel(SessionId("1"), sessionRepository)
+        val testObserver = sessionDetailViewModel
             .uiModel
             .distinctUntilChanged()
             .test()
