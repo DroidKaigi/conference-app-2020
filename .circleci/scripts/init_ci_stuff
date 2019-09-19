@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+set -eu
+
+# THIS FILE IS ONLY FOR CIRCLECI
+
+# CIRCLE_WORKING_DIRECTORY does not always mean the repository root!
+
+cat<<'EOF' >> $BASH_ENV
+export REPOSITORY_ROOT=$(git rev-parse --show-toplevel)
+export PATH="$REPOSITORY_ROOT/.circleci/scripts:$PATH"
+export ANDROID_PROJECT_ROOT="$REPOSITORY_ROOT"
+
+find_xxx_seed() {
+  local -r ext="$1"
+  echo "alias find_${ext}s='find . -name \"*.${ext}\""
+}
+
+eval $(find_xxx_seed "apk")
+
+# Change the current working directory if the special file exists
+
+if [[ -f "$HOME/working_directory" ]]; then
+  cd "$(cat "$HOME/working_directory")"
+fi
+EOF
+
+source $BASH_ENV
+
+# Run scripts on initialized
+
+./cache/gradle_cache
