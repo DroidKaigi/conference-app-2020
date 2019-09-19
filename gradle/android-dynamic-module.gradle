@@ -1,0 +1,52 @@
+import dependencies.Versions
+
+android {
+    compileSdkVersion Versions.androidCompileSdkVersion
+
+    defaultConfig {
+        minSdkVersion Versions.androidMinSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    libraryVariants.all {
+        // TODO replace with https://issuetracker.google.com/issues/72050365 once released.
+        it.generateBuildConfig.enabled = false
+    }
+    buildTypes {
+        release {
+            proguardFiles 'proguard-rules-dynamic-features.pro'
+        }
+    }
+    lintOptions {
+        def lintFile = file("${project.projectDir}/lint.xml")
+        if (lintFile.exists()) {
+            lintConfig lintFile
+        }
+
+        checkReleaseBuilds !isCi
+        abortOnError !isCi
+    }
+}
+
+kotlin.sourceSets.all {
+    languageSettings {
+        progressiveMode = true
+    }
+}
+
+task androidDependenciesExtra(dependsOn: 'androidDependencies') {
+    def extraConfigurationNames = [
+            "annotationProcessor",
+            "kapt",
+            "_internal_aapt2_binary",
+            "lintClassPath"
+    ]
+
+    description 'Download extra dependencies for the CI Gradle Cache'
+    doLast {
+        // androidDependencies do not touch some configurations
+        configurations.findAll {
+            extraConfigurationNames.contains(it.name) && it.canBeResolved
+        }.files
+    }
+}
