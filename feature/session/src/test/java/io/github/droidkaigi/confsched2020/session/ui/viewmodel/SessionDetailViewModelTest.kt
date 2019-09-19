@@ -23,11 +23,12 @@ class SessionDetailViewModelTest {
             coEvery { sessionContents() } returns flowOf(SessionContents.EMPTY)
         }
 
-        val valueHistory = SessionDetailViewModel(SessionId("1"), sessionRepository)
+        val testObserver = SessionDetailViewModel(SessionId("1"), sessionRepository)
             .uiModel
             .distinctUntilChanged()
             .test()
-            .valueHistory()
+
+        val valueHistory = testObserver.valueHistory()
         valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true)
         valueHistory[1] should { it.isLoading && it.session == null && it.error != null }
         valueHistory[2] should { !it.isLoading && it.session == null && it.error != null }
