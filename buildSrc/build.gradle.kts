@@ -11,6 +11,9 @@ buildscript {
 plugins {
     `kotlin-dsl`
 }
+
+apply(from = "${rootProject.projectDir}/../gradle/jvm.gradle")
+
 repositories {
     jcenter()
 }

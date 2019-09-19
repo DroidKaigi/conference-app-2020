@@ -75,13 +75,12 @@ commands: &commands
         default: []
         description: steps to be executed after bundle artifacts. This parameter is not required but just for adding a *scope*.
     steps:
-      - run: ./scripts/check_sum.bash > all-gradle.md5
+      - run: gradle_cache > all-gradle.md5
       - restore_cache:
           keys:
             - gradle-<< parameters.key-prefix >>-<< parameters.cache_version >>-{{ checksum "all-gradle.md5" }}
             - gradle-<< parameters.key-prefix >>-<< parameters.cache_version >>-
             - gradle-<< parameters.key-prefix >>-
-      - run: ./scripts/prepare_release_build.bash
       - run: ./gradlew androidDependenciesExtra dependenciesExtra
       - save_cache:
           paths:
@@ -152,12 +151,15 @@ workflows:
   feature-deployment:
     jobs:
       - android/create-apk:
+          name: "create-debug-apk"
           build-flavor: debug
           <<: *except_release
       - android/assertions:
+          name: "assertions-on-feature-branch"
           <<: *except_release
   release-deployment:
     jobs:
       - android/create-apk:
+          name: "create-release-apk"
           build-flavor: release
           <<: *only_release

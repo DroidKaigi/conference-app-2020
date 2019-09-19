@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -eu
+
+circleci config process .circleci/config.yml > .circleci/config.2.0.yml
+circleci local execute --job "$1" --config .circleci/config.2.0.yml
