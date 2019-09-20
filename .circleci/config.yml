@@ -139,7 +139,8 @@ orbs:
               path: .circleci/scripts
               steps:
                 - run: curl -sL "https://raw.githubusercontent.com/jmatsu/dpg/master/install.bash" | bash; dpg -v
-          - run: dpg procedure app-manage on-feature-branch --app "$(find_apks | head -1)" --android
+          # Run this after introducing Danger.system
+          # - run: dpg procedure app-manage on-feature-branch --app "$(find_apks | head -1)" --android
           - << parameters.after-steps >>
 
 
