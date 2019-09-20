@@ -6,7 +6,7 @@ executors: &executors
       - image: circleci/android:api-28
     working_directory: ~/conference-app-2020
     environment:
-      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx3072m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.daemon=false'
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.daemon=false'
 
   ruby:
     docker:
