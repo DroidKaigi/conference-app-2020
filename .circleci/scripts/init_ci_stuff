@@ -15,7 +15,7 @@ export ANDROID_PROJECT_ROOT="$REPOSITORY_ROOT"
 
 find_xxx_seed() {
   local -r ext="$1"
-  echo "alias find_${ext}s='find . -name \"*.${ext}\"'"
+  echo "function find_${ext}s() { find . -name \"*.${ext}\"; }"
 }
 
 eval $(find_xxx_seed "apk")
