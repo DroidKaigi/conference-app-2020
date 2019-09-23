@@ -1,0 +1,6 @@
+task dependenciesExtra() {
+    description 'Download extra dependencies for the CI Gradle Cache'
+    doLast {
+        configurations.findAll { it.canBeResolved }.files
+    }
+}

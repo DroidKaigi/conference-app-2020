@@ -6,30 +6,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
 
-android {
-    compileSdkVersion Versions.androidCompileSdkVersion
-
-    defaultConfig {
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        minSdkVersion Versions.androidMinSdkVersion
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            consumerProguardFiles 'proguard-rules.pro'
-        }
-    }
-    dataBinding.enabled = true
-    lintOptions {
-        def lintFile = file("${project.projectDir}/lint.xml")
-        if (lintFile.exists()) {
-            lintConfig lintFile
-        }
-
-        checkReleaseBuilds !isCi
-        abortOnError !isCi
-    }
-}
+apply from: rootProject.file('gradle/android-dynamic-module.gradle')
 
 dependencies {
     implementation project(':corecomponent:androidcomponent')

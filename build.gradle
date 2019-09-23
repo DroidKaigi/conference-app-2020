@@ -4,6 +4,7 @@ import com.android.build.gradle.LibraryPlugin
 import dependencies.Dep
 
 apply from: file('gradle/dependencyGraph.gradle')
+apply from: file('gradle/jvm.gradle')
 
 buildscript {
     ext {

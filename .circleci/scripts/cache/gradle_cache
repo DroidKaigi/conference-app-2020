@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+set -eu
+
+# THIS FILE IS ONLY FOR CI
+# ANDROID_PROJECT_ROOT is required
+
+: "${OUTPUT_DIR:=${DEBUG_OUTPUT_DIR:-$HOME}}"
+
+### FUNCTIONS
+
+mkhash() {
+  for_buildSrc() {
+    local path=
+    while read path; do
+      md5sum $path
+    done < <(find buildSrc -type f | sort)
+  }
+
+  for_gradle_files() {
+    local path=
+    while read path; do
+      md5sum $path
+    done < <(find . -name "build.gradle" | sort)
+  }
+
+  for_gradle_kts_files() {
+    local path=
+    while read path; do
+      md5sum $path
+    done < <(find . -name "build.gradle.kts" | sort)
+  }
+
+  for_buildSrc
+  for_gradle_files
+  for_gradle_kts_files
+}
+
+### FUNCTIONS: END
+
+pushd "$ANDROID_PROJECT_ROOT"
+
+mkhash > "${OUTPUT_DIR}/project_hash.txt"
