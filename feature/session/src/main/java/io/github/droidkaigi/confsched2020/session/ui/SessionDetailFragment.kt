@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -13,8 +12,6 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
@@ -65,11 +62,9 @@ class SessionDetailFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
-        binding.sessionRecycler.adapter = groupAdapter
 
         progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
+//            binding.progressBar.isVisible = showProgress
         }.apply {
             loading = true
         }

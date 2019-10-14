@@ -6,33 +6,46 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/session"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="io.github.droidkaigi.confsched2020.session.ui.SessionPagesFragment"
+        android:background="@color/colorBrandBackground"
+        tools:context="io.github.droidkaigi.confsched2019.session.ui.SessionPagesFragment"
         >
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/session_recycler"
-            android:orientation="vertical"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/sessions_tab_layout"
+            style="@style/Widget.MaterialComponents.TabLayout.Colored"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="56dp"
+            android:background="@color/colorBrandBackground"
+            android:paddingBottom="16dp"
+            android:tabStripEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_session"
+            app:tabGravity="fill"
+            app:tabIndicatorGravity="stretch"
+            app:tabRippleColor="@null"
+            />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/sessions_viewpager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sessions_tab_layout"
             />
 
         <ProgressBar
-            android:id="@+id/progress_bar"
+            android:id="@+id/sessions_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
