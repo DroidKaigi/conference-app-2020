@@ -24,6 +24,16 @@
             />
     </fragment>
     <fragment
+        android:id="@+id/bottom_session_day"
+        android:name="io.github.droidkaigi.confsched2019.session.ui.BottomSheetDaySessionsFragment"
+        android:label="@string/session_label"
+        >
+        <argument
+            android:name="day"
+            app:argType="integer"
+            />
+    </fragment>
+    <fragment
         android:id="@+id/session_detail"
         android:name="io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment"
         android:label="@string/session_label"

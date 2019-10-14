@@ -11,6 +11,8 @@ import io.github.droidkaigi.confsched2020.ext.setOnEach
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
+import io.github.droidkaigi.confsched2020.model.Filters
+import io.github.droidkaigi.confsched2020.model.Lang
 import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Session
@@ -26,12 +28,13 @@ class SessionsViewModel @Inject constructor(
     // UiModel definition
     data class UiModel(
         val sessionContents: SessionContents?,
+        val filters: Filters,
         val dayToSessions: Map<SessionPage.Day, List<Session>>,
         val isLoading: Boolean,
         val error: AppError?
     ) {
         companion object {
-            val EMPTY = UiModel(null, mapOf(), false, null)
+            val EMPTY = UiModel(null, Filters(), mapOf(), false, null)
         }
     }
 
@@ -51,14 +54,19 @@ class SessionsViewModel @Inject constructor(
     private val favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
         MutableLiveData(LoadingState.Initialized)
 
+    private val filterLiveData: MutableLiveData<Filters> = MutableLiveData(Filters())
+
     // Compose UiModel
     val uiModel: LiveData<UiModel> = composeBy(
         initialValue = UiModel.EMPTY,
         liveData1 = sessionsLoadStateLiveData,
-        liveData2 = favoriteLoadingStateLiveData
+        liveData2 = favoriteLoadingStateLiveData,
+        liveData3 = filterLiveData
     ) { current: UiModel,
         sessionsLoadState: LoadState<SessionContents>,
-        favoriteLoadingState: LoadingState ->
+        favoriteLoadingState: LoadingState,
+        filters: Filters
+        ->
         Timber.debug { "sessionsLoadState:" + sessionsLoadState + " favoriteLoadingState:" + favoriteLoadingState }
         val isLoading = sessionsLoadState.isLoading || favoriteLoadingState.isLoading
         val sessionContents = when (sessionsLoadState) {
@@ -71,11 +79,17 @@ class SessionsViewModel @Inject constructor(
         }
         UiModel(
             sessionContents = sessionContents,
-            dayToSessions = sessionContents?.sessions.orEmpty().groupBy { it.dayNumber }.mapKeys {
-                SessionPage.dayOfNumber(
-                    it.key
-                )
-            },
+            dayToSessions = sessionContents
+                ?.sessions
+                .orEmpty()
+                .filter { filters.isPass(it) }
+                .groupBy { it.dayNumber }
+                .mapKeys {
+                    SessionPage.dayOfNumber(
+                        it.key
+                    )
+                },
+            filters = filters,
             isLoading = isLoading,
             error = (sessionsLoadState.getExceptionIfExists()
                 ?: favoriteLoadingState.getExceptionIfExists()).toAppError()
@@ -93,5 +107,11 @@ class SessionsViewModel @Inject constructor(
                 emit(LoadingState.Error(e))
             }
         }.setOnEach(favoriteLoadingStateLiveData)
+    }
+
+    fun onFilterIsOnlyEnglishChanged(isOnlyEnglish: Boolean) {
+        filterLiveData.value = filterLiveData.value?.copy(
+            langs = if (isOnlyEnglish) setOf(Lang.EN) else setOf()
+        )
     }
 }

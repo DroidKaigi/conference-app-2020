@@ -5,19 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
+import dagger.android.ContributesAndroidInjector
 import dagger.android.support.DaggerFragment
+import io.github.droidkaigi.confsched2019.session.ui.BottomSheetDaySessionsFragmentArgs
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
+import io.github.droidkaigi.confsched2020.model.Lang
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionsBinding
+import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
@@ -45,6 +48,12 @@ class SessionsFragment : DaggerFragment() {
         SessionsFragmentArgs.fromBundle(arguments ?: Bundle())
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            setupSessionsFragment()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,21 +71,43 @@ class SessionsFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
-        binding.sessionRecycler.adapter = groupAdapter
-
+        binding.filterEnglish.setOnCheckedChangeListener { buttonView, isChecked ->
+            sessionsViewModel.onFilterIsOnlyEnglishChanged(isChecked)
+        }
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
+            binding.filterEnglish.isChecked = uiModel.filters.langs.contains(Lang.EN)
             // TODO: support favorite list
             val page = SessionPage.pages[args.tabIndex] as? SessionPage.Day ?: return@observe
-            val sessions = uiModel.dayToSessions[page]
-            groupAdapter.update(sessions.orEmpty().map {
-                sessionItemFactory.create(it, sessionsViewModel)
-            })
-            uiModel.error?.let {
-                systemViewModel.onError(it)
-            }
+//            val sessions = uiModel.dayToSessions[page]
+//            uiModel.error?.let {
+//                systemViewModel.onError(it)
+//            }
         }
     }
+
+    private fun setupSessionsFragment() {
+        val tab = SessionPage.pages[args.tabIndex]
+        val fragment: Fragment = when (tab) {
+            is SessionPage.Day -> {
+                BottomSheetDaySessionsFragment.newInstance(
+                    BottomSheetDaySessionsFragmentArgs
+                        .Builder(tab.day)
+                        .build()
+                )
+            }
+            SessionPage.Favorite -> {
+                // TODO: FIXME
+                return
+            }
+        }
+
+        childFragmentManager
+            .beginTransaction()
+            .replace(R.id.sessions_sheet, fragment, tab.title)
+            .disallowAddToBackStack()
+            .commit()
+    }
+
 
     companion object {
         fun newInstance(args: SessionsFragmentArgs): SessionsFragment {
@@ -89,6 +120,11 @@ class SessionsFragment : DaggerFragment() {
 
 @Module
 abstract class SessionsFragmentModule {
+    @ContributesAndroidInjector(
+        modules = [SessionAssistedInjectModule::class]
+    )
+    abstract fun contributeBottomSheetDaySessionsFragment(): BottomSheetDaySessionsFragment
+
     @Module
     companion object {
         @PageScope

@@ -1,3 +1,4 @@
+-keepnames class io.github.droidkaigi.confsched2019.session.ui.BottomSheetDaySessionsFragment
 -keepnames class io.github.droidkaigi.confsched2020.model.SessionId
 -keepnames class io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragment
 -keepnames class io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment
