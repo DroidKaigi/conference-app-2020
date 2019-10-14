@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/session"
+        android:checkableBehavior="single"
+        >
+        <item
+            android:id="@id/main"
+            android:icon="@drawable/ic_event_outline_black_24dp"
+            android:title="@string/session_label"
+            />
+        <item
+            android:id="@id/staffs"
+            android:icon="@drawable/ic_event_outline_black_24dp"
+            android:title="@string/staffs_label"
+            />
+    </group>
+</menu>

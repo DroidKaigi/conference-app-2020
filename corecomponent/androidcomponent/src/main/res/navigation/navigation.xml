@@ -5,7 +5,7 @@
     >
     <fragment
         android:id="@+id/main"
-        android:name="io.github.droidkaigi.confsched2020.session.ui.SessionsFragment"
+        android:name="io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragment"
         android:label="@string/session_label"
         >
         <action

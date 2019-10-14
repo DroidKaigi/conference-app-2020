@@ -15,4 +15,11 @@
     <color name="colorSurface">@color/white</color>
     <color name="colorOnSurface">@color/gray1</color>
     <color name="colorOnSurfaceSecondary">@color/gray2</color>
+
+    <!-- Gray scale -->
+    <color name="gray1">#353435</color>
+    <color name="gray2">#95959C</color>
+    <color name="gray3">#D8D7DC</color>
+    <color name="gray4">#F4F4F4</color>
+    <color name="white">#FFFFFF</color>
 </resources>

@@ -65,7 +65,7 @@ object Dep {
         }
 
         object Navigation {
-            val version = "2.2.0-alpha01"
+            val version = "2.2.0-beta01"
             val runtime = "androidx.navigation:navigation-runtime:$version"
             val runtimeKtx = "androidx.navigation:navigation-runtime-ktx:$version"
             val fragment = "androidx.navigation:navigation-fragment:$version"

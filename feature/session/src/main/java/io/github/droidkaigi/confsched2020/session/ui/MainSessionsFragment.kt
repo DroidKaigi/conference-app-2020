@@ -26,7 +26,7 @@ import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
-class SessionsFragment : DaggerFragment() {
+class MainSessionsFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentSessionsBinding
 
@@ -80,7 +80,7 @@ class SessionsFragment : DaggerFragment() {
 }
 
 @Module
-abstract class SessionsFragmentModule {
+abstract class MainSessionsFragmentModule {
     @Module
     companion object {
         @PageScope

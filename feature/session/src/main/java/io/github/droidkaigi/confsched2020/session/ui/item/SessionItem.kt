@@ -15,7 +15,7 @@ import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionBinding
-import io.github.droidkaigi.confsched2020.session.ui.SessionsFragmentDirections.actionSessionToSessionDetail
+import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.actionSessionToSessionDetail
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 
 class SessionItem @AssistedInject constructor(
