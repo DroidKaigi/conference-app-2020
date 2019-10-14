@@ -14,6 +14,16 @@
             />
     </fragment>
     <fragment
+        android:id="@+id/sessions"
+        android:name="io.github.droidkaigi.confsched2020.session.ui.SessionsFragment"
+        android:label="@string/session_label"
+        >
+        <argument
+            android:name="tabIndex"
+            app:argType="integer"
+            />
+    </fragment>
+    <fragment
         android:id="@+id/session_detail"
         android:name="io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment"
         android:label="@string/session_label"
@@ -26,6 +36,6 @@
     <fragment
         android:id="@+id/staffs"
         android:name="io.github.droidkaigi.confsched2020.staff.ui.StaffsFragment"
-        android:label="@string/staffs_label">
-    </fragment>
+        android:label="@string/staffs_label"
+        />
 </navigation>

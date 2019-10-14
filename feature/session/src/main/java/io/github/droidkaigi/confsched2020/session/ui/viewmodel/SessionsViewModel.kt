@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import androidx.lifecycle.map
 import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.ext.asLiveData
 import io.github.droidkaigi.confsched2020.ext.composeBy
@@ -16,6 +15,7 @@ import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
+import io.github.droidkaigi.confsched2020.model.SessionPage
 import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
@@ -26,11 +26,12 @@ class SessionsViewModel @Inject constructor(
     // UiModel definition
     data class UiModel(
         val sessionContents: SessionContents?,
+        val dayToSessions: Map<SessionPage.Day, List<Session>>,
         val isLoading: Boolean,
         val error: AppError?
     ) {
         companion object {
-            val EMPTY = UiModel(null, false, null)
+            val EMPTY = UiModel(null, mapOf(), false, null)
         }
     }
 
@@ -70,6 +71,11 @@ class SessionsViewModel @Inject constructor(
         }
         UiModel(
             sessionContents = sessionContents,
+            dayToSessions = sessionContents?.sessions.orEmpty().groupBy { it.dayNumber }.mapKeys {
+                SessionPage.dayOfNumber(
+                    it.key
+                )
+            },
             isLoading = isLoading,
             error = (sessionsLoadState.getExceptionIfExists()
                 ?: favoriteLoadingState.getExceptionIfExists()).toAppError()

@@ -24,9 +24,9 @@ import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.stringRes
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragment
+import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentModule
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentModule
-import io.github.droidkaigi.confsched2020.session.ui.SessionsFragmentModule
 import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import timber.log.Timber
@@ -104,7 +104,7 @@ abstract class MainActivityModule {
 
     @PageScope
     @ContributesAndroidInjector(
-        modules = [SessionsFragmentModule::class, SessionAssistedInjectModule::class]
+        modules = [MainSessionsFragmentModule::class, SessionAssistedInjectModule::class]
     )
     abstract fun contributeSessionsFragment(): MainSessionsFragment
 

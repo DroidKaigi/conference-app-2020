@@ -19,7 +19,7 @@ sealed class SessionPage {
     companion object {
         val pages = listOf(Day1, Day2, Favorite)
 
-        fun pageOfDay(dayNumber: Int): Day {
+        fun dayOfNumber(dayNumber: Int): Day {
             return pages.filterIsInstance<Day>().first { it.day == dayNumber }
         }
     }

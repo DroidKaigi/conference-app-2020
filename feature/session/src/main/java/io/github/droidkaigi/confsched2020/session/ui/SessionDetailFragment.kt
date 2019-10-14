@@ -69,7 +69,7 @@ class SessionDetailFragment : DaggerFragment() {
         binding.sessionRecycler.adapter = groupAdapter
 
         progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
+//            binding.progressBar.isVisible = showProgress
         }.apply {
             loading = true
         }
