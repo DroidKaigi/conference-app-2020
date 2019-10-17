@@ -20,4 +20,12 @@
         <attr name="dotSize" format="dimension"/>
         <attr name="dotPadding" format="dimension"/>
     </declare-styleable>
+
+    <!-- workaround for https://issuetracker.google.com/issues/136103084#comment23 -->
+    <attr name="flow_horizontalSeparator"/>
+    <attr name="flow_verticalSeparator"/>
+    <attr name="motionProgress"/>
+    <attr name="waveDecay"/>
+    <attr name="motionPathRotate"/>
+    <attr name="duration"/>
 </resources>
