@@ -34,6 +34,11 @@
             />
     </fragment>
     <fragment
+        android:id="@+id/bottom_session_favorite"
+        android:name="io.github.droidkaigi.confsched2019.session.ui.BottomSheetFavoriteSessionsFragment"
+        android:label="@string/session_label"
+        />
+    <fragment
         android:id="@+id/session_detail"
         android:name="io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment"
         android:label="@string/session_label"

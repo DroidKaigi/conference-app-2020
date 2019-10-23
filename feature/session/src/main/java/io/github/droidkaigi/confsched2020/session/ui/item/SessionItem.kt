@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -32,8 +31,9 @@ class SessionItem @AssistedInject constructor(
             ColorDrawable(if (session.isFavorited) Color.GRAY else Color.TRANSPARENT)
 
         viewBinding.title.setOnClickListener {
-            sessionsViewModel.favorite(session).observe(lifecycleOwnerLiveData.value!!) {
-            }
+            sessionsViewModel
+                .favorite(session)
+                .observeBy(lifecycleOwnerLiveData.value!!)
         }
         viewBinding.root.setOnClickListener {
             navController.navigate(actionSessionToSessionDetail(session.id))

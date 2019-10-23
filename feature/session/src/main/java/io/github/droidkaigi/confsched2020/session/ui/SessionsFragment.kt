@@ -23,7 +23,6 @@ import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionsBi
 import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
-import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -35,11 +34,6 @@ class SessionsFragment : DaggerFragment() {
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
     private val sessionsViewModel: SessionsViewModel by assistedActivityViewModels {
         sessionsViewModelProvider.get()
-    }
-    @Inject
-    lateinit var systemViewModelProvider: Provider<SystemViewModel>
-    private val systemViewModel: SystemViewModel by assistedActivityViewModels {
-        systemViewModelProvider.get()
     }
 
     @Inject
@@ -76,12 +70,6 @@ class SessionsFragment : DaggerFragment() {
         }
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
             binding.filterEnglish.isChecked = uiModel.filters.langs.contains(Lang.EN)
-            // TODO: support favorite list
-            val page = SessionPage.pages[args.tabIndex] as? SessionPage.Day ?: return@observe
-//            val sessions = uiModel.dayToSessions[page]
-//            uiModel.error?.let {
-//                systemViewModel.onError(it)
-//            }
         }
     }
 
@@ -96,8 +84,7 @@ class SessionsFragment : DaggerFragment() {
                 )
             }
             SessionPage.Favorite -> {
-                // TODO: FIXME
-                return
+                BottomSheetFavoriteSessionsFragment.newInstance()
             }
         }
 
@@ -107,7 +94,6 @@ class SessionsFragment : DaggerFragment() {
             .disallowAddToBackStack()
             .commit()
     }
-
 
     companion object {
         fun newInstance(args: SessionsFragmentArgs): SessionsFragment {
@@ -124,6 +110,11 @@ abstract class SessionsFragmentModule {
         modules = [SessionAssistedInjectModule::class]
     )
     abstract fun contributeBottomSheetDaySessionsFragment(): BottomSheetDaySessionsFragment
+
+    @ContributesAndroidInjector(
+        modules = [SessionAssistedInjectModule::class]
+    )
+    abstract fun contributeBottomSheetFavoriteSessionsFragment(): BottomSheetFavoriteSessionsFragment
 
     @Module
     companion object {

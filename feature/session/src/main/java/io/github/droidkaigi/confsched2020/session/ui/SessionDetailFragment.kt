@@ -16,16 +16,13 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
-import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionsBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
-import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
-import javax.inject.Provider
 
 class SessionDetailFragment : DaggerFragment() {
 
@@ -34,10 +31,6 @@ class SessionDetailFragment : DaggerFragment() {
     @Inject lateinit var sessionDetailViewModelFactory: SessionDetailViewModel.Factory
     private val sessionDetailViewModel by assistedViewModels {
         sessionDetailViewModelFactory.create(navArgs.sessionId)
-    }
-    @Inject lateinit var systemViewModelProvider: Provider<SystemViewModel>
-    private val systemViewModel: SystemViewModel by assistedActivityViewModels {
-        systemViewModelProvider.get()
     }
 
     private val navArgs: SessionDetailFragmentArgs by navArgs()
@@ -64,20 +57,17 @@ class SessionDetailFragment : DaggerFragment() {
         super.onActivityCreated(savedInstanceState)
 
         progressTimeLatch = ProgressTimeLatch { showProgress ->
-//            binding.progressBar.isVisible = showProgress
+            //            binding.progressBar.isVisible = showProgress
         }.apply {
             loading = true
         }
         sessionDetailViewModel.uiModel.distinctUntilChanged()
             .observe(viewLifecycleOwner) { uiModel: SessionDetailViewModel.UiModel ->
-            progressTimeLatch.loading = uiModel.isLoading
-            if (uiModel.session != null) {
-                Toast.makeText(context, uiModel.session.toString(), Toast.LENGTH_LONG).show()
+                progressTimeLatch.loading = uiModel.isLoading
+                if (uiModel.session != null) {
+                    Toast.makeText(context, uiModel.session.toString(), Toast.LENGTH_LONG).show()
+                }
             }
-            uiModel.error?.let {
-                systemViewModel.onError(it)
-            }
-        }
     }
 }
 
