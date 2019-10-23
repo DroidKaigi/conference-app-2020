@@ -63,10 +63,13 @@ class SessionsFragment : DaggerFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.filterEnglish.setOnCheckedChangeListener { buttonView, isChecked ->
-            sessionsViewModel.onFilterIsOnlyEnglishChanged(isChecked)
+            if(buttonView.isPressed) {
+                // ignore saved state change
+                sessionsViewModel.onFilterIsOnlyEnglishChanged(isChecked)
+            }
         }
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
             binding.filterEnglish.isChecked = uiModel.filters.langs.contains(Lang.EN)
