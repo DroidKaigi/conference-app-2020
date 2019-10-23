@@ -1,13 +1,15 @@
 package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 
+import androidx.annotation.CheckResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
+import io.github.droidkaigi.confsched2020.ext.LifecycleRunnable
 import io.github.droidkaigi.confsched2020.ext.asLiveData
 import io.github.droidkaigi.confsched2020.ext.composeBy
-import io.github.droidkaigi.confsched2020.ext.setOnEach
+import io.github.droidkaigi.confsched2020.ext.onChanged
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
@@ -18,23 +20,21 @@ import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionPage
-import timber.log.Timber
-import timber.log.debug
 import javax.inject.Inject
 
 class SessionsViewModel @Inject constructor(
-    val sessionRepository: SessionRepository
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
     // UiModel definition
     data class UiModel(
-        val sessionContents: SessionContents?,
-        val filters: Filters,
-        val dayToSessions: Map<SessionPage.Day, List<Session>>,
         val isLoading: Boolean,
-        val error: AppError?
+        val error: AppError?,
+        val filters: Filters,
+        val dayToSessionsMap: Map<SessionPage.Day, List<Session>>,
+        val favoritedSessions: List<Session>
     ) {
         companion object {
-            val EMPTY = UiModel(null, Filters(), mapOf(), false, null)
+            val EMPTY = UiModel(false, null, Filters(), mapOf(), listOf())
         }
     }
 
@@ -67,37 +67,38 @@ class SessionsViewModel @Inject constructor(
         favoriteLoadingState: LoadingState,
         filters: Filters
         ->
-        Timber.debug { "sessionsLoadState:" + sessionsLoadState + " favoriteLoadingState:" + favoriteLoadingState }
         val isLoading = sessionsLoadState.isLoading || favoriteLoadingState.isLoading
         val sessionContents = when (sessionsLoadState) {
             is LoadState.Loaded -> {
                 sessionsLoadState.value
             }
             else -> {
-                current.sessionContents
+                SessionContents.EMPTY
             }
         }
+        val filteredSessions = sessionContents
+            .sessions
+            .filter { filters.isPass(it) }
         UiModel(
-            sessionContents = sessionContents,
-            dayToSessions = sessionContents
-                ?.sessions
-                .orEmpty()
-                .filter { filters.isPass(it) }
+            isLoading = isLoading,
+            error = (sessionsLoadState.getExceptionIfExists()
+                ?: favoriteLoadingState.getExceptionIfExists()).toAppError(),
+            filters = filters,
+            dayToSessionsMap = filteredSessions
                 .groupBy { it.dayNumber }
                 .mapKeys {
                     SessionPage.dayOfNumber(
                         it.key
                     )
                 },
-            filters = filters,
-            isLoading = isLoading,
-            error = (sessionsLoadState.getExceptionIfExists()
-                ?: favoriteLoadingState.getExceptionIfExists()).toAppError()
+            favoritedSessions = filteredSessions
+                .filter { it.isFavorited }
         )
     }
 
     // Functions
-    fun favorite(session: Session): LiveData<LoadingState> {
+    @CheckResult
+    fun favorite(session: Session): LifecycleRunnable {
         return liveData {
             try {
                 emit(LoadingState.Loading)
@@ -106,7 +107,9 @@ class SessionsViewModel @Inject constructor(
             } catch (e: Exception) {
                 emit(LoadingState.Error(e))
             }
-        }.setOnEach(favoriteLoadingStateLiveData)
+        }.onChanged {
+            favoriteLoadingStateLiveData.value = it
+        }
     }
 
     fun onFilterIsOnlyEnglishChanged(isOnlyEnglish: Boolean) {

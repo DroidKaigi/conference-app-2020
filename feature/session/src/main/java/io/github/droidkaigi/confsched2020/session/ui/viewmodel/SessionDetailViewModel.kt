@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 
+import androidx.annotation.CheckResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,8 +8,9 @@ import androidx.lifecycle.liveData
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
+import io.github.droidkaigi.confsched2020.ext.LifecycleRunnable
 import io.github.droidkaigi.confsched2020.ext.composeBy
-import io.github.droidkaigi.confsched2020.ext.setOnEach
+import io.github.droidkaigi.confsched2020.ext.onChanged
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
@@ -25,12 +27,12 @@ class SessionDetailViewModel @AssistedInject constructor(
 ) : ViewModel() {
     // UiModel definition
     data class UiModel(
-        val session: Session?,
         val isLoading: Boolean,
-        val error: AppError?
+        val error: AppError?,
+        val session: Session?
     ) {
         companion object {
-            val EMPTY = UiModel(null, false, null)
+            val EMPTY = UiModel(false, null, null)
         }
     }
 
@@ -65,15 +67,16 @@ class SessionDetailViewModel @AssistedInject constructor(
             }
         }
         UiModel(
-            session = sessions,
             isLoading = isLoading,
             error = (sessionLoadState.getExceptionIfExists()
-                ?: favoriteLoadingState.getExceptionIfExists()).toAppError()
+                ?: favoriteLoadingState.getExceptionIfExists()).toAppError(),
+            session = sessions
         )
     }
 
     // Functions
-    fun favorite(session: Session): LiveData<LoadingState> {
+    @CheckResult
+    fun favorite(session: Session): LifecycleRunnable {
         return liveData {
             try {
                 emit(LoadingState.Loading)
@@ -82,7 +85,9 @@ class SessionDetailViewModel @AssistedInject constructor(
             } catch (e: Exception) {
                 emit(LoadingState.Error(e))
             }
-        }.setOnEach(favoriteLoadingStateLiveData)
+        }.onChanged {
+            favoriteLoadingStateLiveData.value = it
+        }
     }
 
     @AssistedInject.Factory
