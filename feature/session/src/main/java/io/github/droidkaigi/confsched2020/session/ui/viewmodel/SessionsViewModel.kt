@@ -29,13 +29,12 @@ class SessionsViewModel @Inject constructor(
     data class UiModel(
         val sessionContents: SessionContents?,
         val filters: Filters,
-        val searchQuery: String,
         val dayToSessions: Map<SessionPage.Day, List<Session>>,
         val isLoading: Boolean,
         val error: AppError?
     ) {
         companion object {
-            val EMPTY = UiModel(null, Filters(), "", mapOf(), false, null)
+            val EMPTY = UiModel(null, Filters(), mapOf(), false, null)
         }
     }
 
@@ -56,20 +55,17 @@ class SessionsViewModel @Inject constructor(
         MutableLiveData(LoadingState.Initialized)
 
     private val filterLiveData: MutableLiveData<Filters> = MutableLiveData(Filters())
-    private val searchQueryLiveData: MutableLiveData<String> = MutableLiveData("")
 
     // Compose UiModel
     val uiModel: LiveData<UiModel> = composeBy(
         initialValue = UiModel.EMPTY,
         liveData1 = sessionsLoadStateLiveData,
         liveData2 = favoriteLoadingStateLiveData,
-        liveData3 = filterLiveData,
-        liveData4 = searchQueryLiveData
+        liveData3 = filterLiveData
     ) { current: UiModel,
         sessionsLoadState: LoadState<SessionContents>,
         favoriteLoadingState: LoadingState,
-        filters: Filters,
-        searchQuery: String
+        filters: Filters
         ->
         Timber.debug { "sessionsLoadState:" + sessionsLoadState + " favoriteLoadingState:" + favoriteLoadingState }
         val isLoading = sessionsLoadState.isLoading || favoriteLoadingState.isLoading
@@ -94,7 +90,6 @@ class SessionsViewModel @Inject constructor(
                     )
                 },
             filters = filters,
-            searchQuery = searchQuery,
             isLoading = isLoading,
             error = (sessionsLoadState.getExceptionIfExists()
                 ?: favoriteLoadingState.getExceptionIfExists()).toAppError()
@@ -112,10 +107,6 @@ class SessionsViewModel @Inject constructor(
                 emit(LoadingState.Error(e))
             }
         }.setOnEach(favoriteLoadingStateLiveData)
-    }
-
-    fun updateSearchQuery(query: String) {
-        searchQueryLiveData.postValue(query)
     }
 
     fun onFilterIsOnlyEnglishChanged(isOnlyEnglish: Boolean) {
