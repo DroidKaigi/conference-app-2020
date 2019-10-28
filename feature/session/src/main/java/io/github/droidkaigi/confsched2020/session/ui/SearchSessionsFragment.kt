@@ -21,7 +21,9 @@ import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSearchSessionsBinding
+import io.github.droidkaigi.confsched2020.session.ui.item.SectionHeaderItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
+import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SearchSessionsViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
@@ -50,6 +52,12 @@ class SearchSessionsFragment : DaggerFragment() {
     @Inject
     lateinit var sessionItemFactory: SessionItem.Factory
 
+    @Inject
+    lateinit var speakerItemFactory: SpeakerItem.Factory
+
+    @Inject
+    lateinit var sectionHeaderItemFactory: SectionHeaderItem.Factory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -75,9 +83,21 @@ class SearchSessionsFragment : DaggerFragment() {
         binding.searchSessionRecycler.adapter = groupAdapter
 
         searchSessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SearchSessionsViewModel.UiModel ->
-            groupAdapter.update(uiModel.searchResult.sessions.map {
-                sessionItemFactory.create(it, sessionsViewModel)
-            })
+            groupAdapter.clear()
+
+            if (uiModel.searchResult.speakers.isNotEmpty()) {
+                groupAdapter.add(sectionHeaderItemFactory.create("Speaker"))
+                groupAdapter.addAll(uiModel.searchResult.speakers.map {
+                    speakerItemFactory.create(it)
+                })
+            }
+            
+            if (uiModel.searchResult.sessions.isNotEmpty()) {
+                groupAdapter.add(sectionHeaderItemFactory.create("Session"))
+                groupAdapter.addAll(uiModel.searchResult.sessions.map {
+                    sessionItemFactory.create(it, sessionsViewModel)
+                })
+            }
         }
     }
 
