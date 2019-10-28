@@ -11,17 +11,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.model.ServiceSession
-import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSearchSessionsBinding
+import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SearchSessionsViewModel
+import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import javax.inject.Inject
 import javax.inject.Provider
@@ -35,10 +37,18 @@ class SearchSessionsFragment : DaggerFragment() {
         searchSessionsModelFactory.create()
     }
 
+    @Inject lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
+    private val sessionsViewModel: SessionsViewModel by assistedActivityViewModels {
+        sessionsViewModelProvider.get()
+    }
+
     @Inject lateinit var systemViewModelProvider: Provider<SystemViewModel>
     private val systemViewModel: SystemViewModel by assistedActivityViewModels {
         systemViewModelProvider.get()
     }
+
+    @Inject
+    lateinit var sessionItemFactory: SessionItem.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,15 +71,13 @@ class SearchSessionsFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        binding.searchSessionRecycler.adapter = groupAdapter
 
         searchSessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SearchSessionsViewModel.UiModel ->
-            binding.dummy.text =
-                uiModel.searchResult.sessions.joinToString("\n・", "・") {
-                    when (it) {
-                        is SpeechSession -> it.title
-                        is ServiceSession -> it.title
-                    }.ja
-                }
+            groupAdapter.update(uiModel.searchResult.sessions.map {
+                sessionItemFactory.create(it, sessionsViewModel)
+            })
         }
     }
 
