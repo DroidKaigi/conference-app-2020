@@ -118,7 +118,7 @@ abstract class MainActivityModule {
 
     @PageScope
     @ContributesAndroidInjector(
-        modules = [SearchSessionsFragmentModule::class]
+        modules = [SearchSessionsFragmentModule::class, SessionAssistedInjectModule::class]
     )
     abstract fun contributeSearchSessionsFragment(): SearchSessionsFragment
 

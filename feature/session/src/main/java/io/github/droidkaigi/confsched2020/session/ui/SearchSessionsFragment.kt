@@ -16,11 +16,12 @@ import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
+import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.model.ServiceSession
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSearchSessionsBinding
-import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
+import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SearchSessionsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import javax.inject.Inject
 import javax.inject.Provider
@@ -29,13 +30,12 @@ class SearchSessionsFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentSearchSessionsBinding
 
-    @Inject
-    lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
-    private val sessionsViewModel: SessionsViewModel by assistedActivityViewModels {
-        sessionsViewModelProvider.get()
+    @Inject lateinit var searchSessionsModelFactory: SearchSessionsViewModel.Factory
+    private val searchSessionsViewModel by assistedViewModels {
+        searchSessionsModelFactory.create()
     }
-    @Inject
-    lateinit var systemViewModelProvider: Provider<SystemViewModel>
+
+    @Inject lateinit var systemViewModelProvider: Provider<SystemViewModel>
     private val systemViewModel: SystemViewModel by assistedActivityViewModels {
         systemViewModelProvider.get()
     }
@@ -62,16 +62,14 @@ class SearchSessionsFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
-            uiModel.sessionContents?.let { searchContents ->
-                binding.dummy.text =
-                    searchContents.search(uiModel.searchQuery).sessions.joinToString("\n・", "・") {
-                        when (it) {
-                            is SpeechSession -> it.title
-                            is ServiceSession -> it.title
-                        }.ja
-                    }
-            }
+        searchSessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SearchSessionsViewModel.UiModel ->
+            binding.dummy.text =
+                uiModel.searchResult.sessions.joinToString("\n・", "・") {
+                    when (it) {
+                        is SpeechSession -> it.title
+                        is ServiceSession -> it.title
+                    }.ja
+                }
         }
     }
 
@@ -85,8 +83,9 @@ class SearchSessionsFragment : DaggerFragment() {
             override fun onQueryTextSubmit(s: String): Boolean {
                 return false
             }
+
             override fun onQueryTextChange(s: String): Boolean {
-                sessionsViewModel.updateSearchQuery(s)
+                searchSessionsViewModel.updateSearchQuery(s)
                 return false
             }
         })
