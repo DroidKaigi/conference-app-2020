@@ -1,9 +1,12 @@
 package io.github.droidkaigi.confsched2020.ext
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.map
+import androidx.lifecycle.observe
 import com.hadilq.liveevent.LiveEvent
 
 inline fun <T : Any, LIVE1 : Any, LIVE2 : Any> composeBy(
@@ -24,7 +27,7 @@ inline fun <T : Any, LIVE1 : Any, LIVE2 : Any> composeBy(
                 }
             }
         }
-    }
+    }.distinctUntilChanged()
 }
 
 inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any> composeBy(
@@ -47,7 +50,7 @@ inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any> composeBy(
                 }
             }
         }
-    }
+    }.distinctUntilChanged()
 }
 
 inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any, LIVE4 : Any> composeBy(
@@ -90,4 +93,18 @@ fun <T : Any> LiveData<T?>.toNonNullSingleEvent(): LiveData<T> {
         }
     }
     return result
+}
+
+interface LifecycleRunnable {
+    fun observeBy(lifecycleOwner: LifecycleOwner)
+}
+
+fun <T> LiveData<T>.onChanged(
+    observeBlock: (T) -> Unit
+): LifecycleRunnable {
+    return object : LifecycleRunnable {
+        override fun observeBy(lifecycleOwner: LifecycleOwner) {
+            observe(lifecycleOwner, observeBlock)
+        }
+    }
 }
