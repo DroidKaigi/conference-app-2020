@@ -25,6 +25,8 @@ import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.stringRes
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragment
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentModule
+import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragment
+import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragmentModule
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentModule
 import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
@@ -113,6 +115,12 @@ abstract class MainActivityModule {
         modules = [SessionDetailFragmentModule::class, SessionAssistedInjectModule::class]
     )
     abstract fun contributeSessionDetailFragment(): SessionDetailFragment
+
+    @PageScope
+    @ContributesAndroidInjector(
+        modules = [SearchSessionsFragmentModule::class, SessionAssistedInjectModule::class]
+    )
+    abstract fun contributeSearchSessionsFragment(): SearchSessionsFragment
 
     @Module
     companion object {
