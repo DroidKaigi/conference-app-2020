@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Theme -->
+    <color name="indigo_50">#e4e8ed</color>
+    <color name="indigo_100">#bbc5d5</color>
+    <color name="indigo_200">#8f9fb8</color>
+    <color name="indigo_300">#667b9c</color>
+    <color name="indigo_400">#456089</color>
+    <color name="indigo_500">#214779</color>
+    <color name="indigo_600">#1a4071</color>
+    <color name="indigo_700">#103766</color>
+    <color name="indigo_800">#092e59</color>
+    <color name="indigo_900">#041e42</color>
+
+    <color name="cyan_50">#e2f8ed</color>
+    <color name="cyan_100">#b9edd2</color>
+    <color name="cyan_200">#89e1b6</color>
+    <color name="cyan_300">#48d598</color>
+    <color name="cyan_400">#00cb81</color>
+    <color name="cyan_500">#00c06b</color>
+    <color name="cyan_600">#00b060</color>
+    <color name="cyan_700">#009d53</color>
+    <color name="cyan_800">#008b47</color>
+    <color name="cyan_900">#006b31</color>
+
     <color name="colorBrand">#F63529</color>
     <color name="colorOnBrand">@color/white</color>
     <color name="colorPrimary">#F63529</color>
@@ -22,4 +44,5 @@
     <color name="gray3">#D8D7DC</color>
     <color name="gray4">#F4F4F4</color>
     <color name="white">#FFFFFF</color>
+    <color name="black_alpha_87">#DE000000</color>
 </resources>
