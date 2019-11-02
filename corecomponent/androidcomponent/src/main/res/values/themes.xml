@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme. -->
-    <style name="Base.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Base.Theme.DroidKaigi" parent="Theme.MaterialComponents.DayNight.NoActionBar">
     </style>
 
-    <style name="AppTheme" parent="Base.AppTheme">
+    <style name="Theme.DroidKaigi" parent="Base.Theme.DroidKaigi">
         <!-- Colors -->
         <item name="colorPrimary">@color/indigo_900</item>
         <item name="colorPrimaryVariant">@color/indigo_900</item>
@@ -30,7 +30,7 @@
         <item name="textAppearanceCaption">@style/TextAppearance.App.Caption</item>
     </style>
 
-    <style name="AppTheme.WithActionBar">
+    <style name="Theme.DroidKaigi.WithActionBar">
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">false</item>
         <item name="colorPrimary">@color/white</item>

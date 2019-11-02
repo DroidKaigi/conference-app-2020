@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.App.FilterChip" parent="">
+    <style name="Widget.DroidKaigi.FilterChip" parent="">
         <item name="android:textColor">@color/colorOnSurface</item>
         <item name="android:textSize">14sp</item>
         <item name="strokeColor">@color/filter_bg_disabled_gray</item>
@@ -15,11 +15,11 @@
         <item name="dotPadding">7dp</item>
     </style>
 
-    <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+    <style name="Widget.DroidKaigi.Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
         <item name="tint">@color/colorOnBackground</item>
     </style>
 
-    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+    <style name="Widget.DroidKaigi.SearchView" parent="Widget.AppCompat.SearchView">
         <item name="searchHintIcon">@null</item>
     </style>
 </resources>
