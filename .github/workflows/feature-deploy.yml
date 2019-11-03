@@ -16,14 +16,14 @@ jobs:
     - uses: actions/cache@preview
       id: cache-android
       with:
-        path: ${{ env.HOME }}/.android
+        path: ~/.android
         key: ${{ runner.os }}-android-${{ hashFiles('**/.gradle-lock') }}
         restore-keys: |
           ${{ runner.os }}-android-
     - uses: actions/cache@preview
       id: cache-home-gradle
       with:
-        path: ${{ env.HOME }}/.gradle
+        path: ~/.gradle
         key: ${{ runner.os }}-home-gradle-${{ hashFiles('**/.gradle-lock') }}
         restore-keys: |
           ${{ runner.os }}-home-gradle-
@@ -37,7 +37,7 @@ jobs:
     - uses: actions/cache@preview
       id: cache-m2
       with:
-        path: ${{ env.HOME }}/.m2
+        path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/.gradle-lock') }}
         restore-keys: |
           ${{ runner.os }}-m2-
