@@ -3,7 +3,9 @@ on:
 
 jobs:
   feature-deploy:
-    runs-on: macOS-latest
+    # need to rewrite actions in Javascript
+    # runs-on: macOS-latest
+    runs-on: ubuntu-latest
     name: A job to build an staging android apk
 
     steps:
