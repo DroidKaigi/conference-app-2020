@@ -1,0 +1,19 @@
+name: Extented Run action for Android projects
+author: Jumpei Matsuda
+description: An action to execute a given statement on an android build environment
+inputs:
+  source:
+    required: false
+    description: A shell file that should be sourced before running a statement
+  work_dir:
+    required: false
+    description: A working directory that must have ./gradlew
+  run:
+    required: true
+    description: A statement to be executed
+runs:
+  using: 'docker'
+  image: './Dockerfile'
+branding:
+  color: 'white'
+  icon: 'anchor'

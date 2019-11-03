@@ -3,11 +3,6 @@
 set -o pipefail
 set -eu
 
-# THIS FILE IS ONLY FOR CI
-# ANDROID_PROJECT_ROOT is required
-
-: "${OUTPUT_DIR:=${DEBUG_OUTPUT_DIR:-$HOME}}"
-
 ### FUNCTIONS
 
 mkhash() {
@@ -39,6 +34,4 @@ mkhash() {
 
 ### FUNCTIONS: END
 
-pushd "$ANDROID_PROJECT_ROOT"
-
-mkhash > "${OUTPUT_DIR}/project_hash.txt"
+mkhash

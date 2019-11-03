@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-if [[ -n "${1:-}" ]]; then
-    echo "$1" > "$HOME/working_directory"
-else
-    rm "$HOME/working_directory"
-fi

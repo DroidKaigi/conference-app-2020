@@ -1,0 +1,13 @@
+name: Decrypt a file
+author: Jumpei Matsuda
+description: An action to decrypt gpg encrypted file
+inputs:
+  filename:
+    required: true
+    description: A filename to be decrypted
+runs:
+  using: 'docker'
+  image: './Dockerfile'
+branding:
+  color: 'red'
+  icon: 'anchor'
