@@ -3,6 +3,8 @@
 set -eu
 set -o pipefail
 
+source /toolkit.sh
+
 if [[ -z "${INPUT_BUILD_FLAVOR:-}" ]]; then
   github::error "inputs.build_flavor is required"
   github::failure

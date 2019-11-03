@@ -1,6 +1,10 @@
 name: Get assemble tasks
 author: Jumpei Matsuda
 description: An action to get gradle tasks for assemble without vital etc.
+inputs:
+  build_flavor:
+    required: true
+    description: lowerCamelCase build flavor
 outputs:
   args:
     description: task names separated by half-width space
