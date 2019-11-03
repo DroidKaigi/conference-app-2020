@@ -3,7 +3,7 @@ on:
 
 jobs:
   feature-deploy:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     name: A job to build an staging android apk
 
     steps:
@@ -52,6 +52,6 @@ jobs:
         build_flavor: debug
     - uses: ./.github/actions/android-gradle
       with:
-        run: ${{ steps.assemble-task-finder.outputs.args }} --offline -PdisablePreDex
+        run: ${{ steps.assemble-task-finder.outputs.args }} -PdisablePreDex
       env:
         GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.daemon=false'
