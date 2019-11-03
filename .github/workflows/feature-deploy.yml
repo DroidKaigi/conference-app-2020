@@ -15,28 +15,28 @@ jobs:
       id: cache-android
       with:
         path: ${{ env.HOME }}/.android
-        key: ${{ runner.os }}-android-${{ hashFiles('.gradle-lock') }}
+        key: ${{ runner.os }}-android-${{ hashFiles('**/.gradle-lock') }}
         restore-keys: |
           ${{ runner.os }}-android-
     - uses: actions/cache@preview
       id: cache-home-gradle
       with:
         path: ${{ env.HOME }}/.gradle
-        key: ${{ runner.os }}-home-gradle-${{ hashFiles('.gradle-lock') }}
+        key: ${{ runner.os }}-home-gradle-${{ hashFiles('**/.gradle-lock') }}
         restore-keys: |
           ${{ runner.os }}-home-gradle-
     - uses: actions/cache@preview
       id: cache-gradle
       with:
         path: .gradle
-        key: ${{ runner.os }}-gradle-${{ hashFiles('.gradle-lock') }}
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/.gradle-lock') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
     - uses: actions/cache@preview
       id: cache-m2
       with:
         path: ${{ env.HOME }}/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('.gradle-lock') }}
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/.gradle-lock') }}
         restore-keys: |
           ${{ runner.os }}-m2-
     - name: Install dependencies
