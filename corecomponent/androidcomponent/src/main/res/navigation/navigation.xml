@@ -63,4 +63,9 @@
         android:name="io.github.droidkaigi.confsched2020.staff.ui.StaffsFragment"
         android:label="@string/staffs_label"
         />
+    <fragment
+        android:id="@+id/sponsors"
+        android:name="io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragment"
+        android:label="@string/sponsor_label"
+        />
 </navigation>

@@ -20,5 +20,10 @@
             android:icon="@drawable/ic_event_outline_black_24dp"
             android:title="@string/staffs_label"
             />
+        <item
+            android:id="@id/sponsors"
+            android:icon="@drawable/ic_event_outline_black_24dp"
+            android:title="@string/sponsor_label"
+            />
     </group>
 </menu>

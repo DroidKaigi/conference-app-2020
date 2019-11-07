@@ -30,6 +30,9 @@ import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragmentModul
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentModule
 import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
+import io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragment
+import io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragmentModule
+import io.github.droidkaigi.confsched2020.sponsor.ui.di.SponsorsAssistedInjectModule
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import timber.log.Timber
 import timber.log.debug
@@ -121,6 +124,12 @@ abstract class MainActivityModule {
         modules = [SearchSessionsFragmentModule::class, SessionAssistedInjectModule::class]
     )
     abstract fun contributeSearchSessionsFragment(): SearchSessionsFragment
+
+    @PageScope
+    @ContributesAndroidInjector(
+        modules = [SponsorsFragmentModule::class, SponsorsAssistedInjectModule::class]
+    )
+    abstract fun contributeSponsorsFragment(): SponsorsFragment
 
     @Module
     companion object {
