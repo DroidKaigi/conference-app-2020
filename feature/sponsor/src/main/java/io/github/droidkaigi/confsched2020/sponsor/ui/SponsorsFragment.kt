@@ -18,7 +18,9 @@ import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.sponsor.R
 import io.github.droidkaigi.confsched2020.di.PageScope
+import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.Sponsor
 import io.github.droidkaigi.confsched2020.model.SponsorCategory
@@ -26,8 +28,10 @@ import io.github.droidkaigi.confsched2020.sponsor.databinding.FragmentSponsorsBi
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.CategoryHeaderItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.SponsorItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.viewmodel.SponsorsViewModel
+import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
+import javax.inject.Provider
 
 class SponsorsFragment : DaggerFragment() {
 
@@ -36,6 +40,10 @@ class SponsorsFragment : DaggerFragment() {
     @Inject lateinit var sponsorsModelFactory: SponsorsViewModel.Factory
     private val sponsorsViewModel by assistedViewModels {
         sponsorsModelFactory.create()
+    }
+    @Inject lateinit var systemViewModelProvider: Provider<SystemViewModel>
+    private val systemViewModel: SystemViewModel by assistedActivityViewModels {
+        systemViewModelProvider.get()
     }
 
     @Inject lateinit var sponsorItemFactory: SponsorItem.Factory
@@ -73,28 +81,30 @@ class SponsorsFragment : DaggerFragment() {
             progressTimeLatch.loading = state.isLoading
             when (state) {
                 is LoadState.Loaded -> {
-                    groupAdapter.update(state.value.map { category ->
-                        category.toSection(state.value.last() == category)
-                    })
+                    val sponsorCategories = state.value
+                    val items = sponsorCategories.map { category ->
+                        category.toSection()
+                        // TODO: Add FooterItem() if needed.
+                    }
+                    groupAdapter.update(items)
                 }
                 LoadState.Loading -> Unit
                 is LoadState.Error -> {
-                    state.e.printStackTrace()
+                    state.e.toAppError()?.let {
+                        systemViewModel.onError(it)
+                    }
                 }
             }
         }
     }
 
-    private fun SponsorCategory.toSection(isLastItem: Boolean) = Section().apply {
-        add(categoryHeaderItemFactory.create(category, sponsorsViewModel))
+    private fun SponsorCategory.toSection() = Section().apply {
+        setHeader(categoryHeaderItemFactory.create(category, sponsorsViewModel))
         addAll(
             sponsors.map { sponsor ->
                 sponsor.toItem(category)
             }
         )
-        if (!isLastItem) {
-            // TODO: Add FooterItem
-        }
         setHideWhenEmpty(true)
     }
 
