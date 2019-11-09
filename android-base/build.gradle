@@ -51,6 +51,7 @@ android {
 dependencies {
     implementation project(':feature:session')
     implementation project(':feature:system')
+    implementation project(':feature:sponsor')
 
     implementation project(':data:repository')
     implementation project(':data:db')

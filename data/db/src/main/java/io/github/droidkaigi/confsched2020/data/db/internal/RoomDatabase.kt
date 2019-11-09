@@ -91,7 +91,7 @@ internal class RoomDatabase @Inject constructor(
         sessionFeedbackDao.upsert(sessionFeedback.toSessionFeedbackEntity())
     }
 
-    override suspend fun sponsors(): List<SponsorEntity> {
+    override fun sponsors(): Flow<List<SponsorEntity>> {
         return sponsorDao.allSponsors()
     }
 
