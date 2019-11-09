@@ -3,7 +3,7 @@ package dependencies
 @Suppress("unused")
 object Dep {
     object GradlePlugin {
-        val android = "com.android.tools.build:gradle:3.6.0-beta01"
+        val android = "com.android.tools.build:gradle:3.6.0-beta03"
         val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}"
         val playServices = "com.google.gms:google-services:4.3.0"
@@ -190,6 +190,11 @@ object Dep {
         val version = "2.4.0-alpha1"
         val groupie = "com.xwray:groupie:$version"
         val databinding = "com.xwray:groupie-databinding:$version"
+    }
+
+    object Coil {
+        val version = "0.8.0"
+        val coil = "io.coil-kt:coil:$version"
     }
 
     object Klock {
