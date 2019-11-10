@@ -21,6 +21,7 @@ import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetDaySessionsBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
+import io.github.droidkaigi.confsched2020.session.ui.widget.SessionsItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import javax.inject.Inject
 import javax.inject.Provider
@@ -64,6 +65,7 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
         super.onActivityCreated(savedInstanceState)
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
+        binding.sessionRecycler.addItemDecoration(SessionsItemDecoration(groupAdapter, resources))
 
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
             // TODO: support favorite list
