@@ -113,10 +113,10 @@ class SponsorsFragment : DaggerFragment() {
             SponsorCategory.Category.PLATINUM,
             SponsorCategory.Category.GOLD -> {
                 // TODO: Should change Large-width Design?
-                sponsorItemFactory.create(this, sponsorsViewModel)
+                sponsorItemFactory.create(this, sponsorsViewModel, systemViewModel)
             }
             else -> {
-                sponsorItemFactory.create(this, sponsorsViewModel)
+                sponsorItemFactory.create(this, sponsorsViewModel, systemViewModel )
             }
         }
     }
