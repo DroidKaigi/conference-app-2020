@@ -22,7 +22,6 @@ class SessionsItemDecoration(val adapter: GroupAdapter<*>, val res: Resources) :
     private val sessionTimeTextSizeInPx by lazy {
         res.getDimensionPixelSize(R.dimen.session_time_text_size).toFloat()
     }
-
     private val sessionTimeSpaceInPx by lazy {
         res.getDimensionPixelSize(R.dimen.session_time_space)
     }
