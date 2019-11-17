@@ -7,6 +7,7 @@ import com.soywiz.klock.hours
 
 sealed class Session(
     open val id: SessionId,
+    open val title: LocaledString,
     open val dayNumber: Int,
     open val startTime: DateTime,
     open val endTime: DateTime,
@@ -14,6 +15,8 @@ sealed class Session(
     open val isFavorited: Boolean
 ) {
     val startDayText by lazy { startTime.toOffset(9.hours).format("yyyy.M.d") }
+
+    val startTimeText by lazy { startTime.format("HH:mm")}
 
     fun timeSummary(lang: Lang, timezoneOffset: DateTimeSpan) = buildString {
         val startTimeTZ = startTime.toOffset(timezoneOffset.timeSpan)
@@ -60,7 +63,7 @@ data class SpeechSession(
     override val dayNumber: Int,
     override val startTime: DateTime,
     override val endTime: DateTime,
-    val title: LocaledString,
+    override val title: LocaledString,
     val desc: String,
     override val room: Room,
     val format: String,
@@ -74,7 +77,7 @@ data class SpeechSession(
     val speakers: List<Speaker>,
     val forBeginners: Boolean,
     val message: LocaledString?
-) : Session(id, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
+) : Session(id, title, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
 
     override fun shortSummary() = buildString {
         append(timeInMinutes)
@@ -93,12 +96,12 @@ data class ServiceSession(
     override val dayNumber: Int,
     override val startTime: DateTime,
     override val endTime: DateTime,
-    val title: LocaledString,
+    override val title: LocaledString,
     val desc: String,
     override val room: Room,
     val sessionType: SessionType,
     override val isFavorited: Boolean
-) : Session(id, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
+) : Session(id, title, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
 
     override fun shortSummary() = buildString {
         append(timeInMinutes)

@@ -80,6 +80,10 @@ dependencies {
     testImplementation Dep.Test.junit
     androidTestImplementation Dep.Test.testRunner
     androidTestImplementation Dep.Test.espressoCore
+
+    Dep.Hyperion.hyperionPlugins.forEach{
+        debugImplementation it
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'
