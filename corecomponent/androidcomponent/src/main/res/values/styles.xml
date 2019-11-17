@@ -2,9 +2,9 @@
 <resources>
 
     <style name="Widget.DroidKaigi.FilterChip" parent="">
-        <item name="android:textColor">@color/colorOnSurface</item>
+        <item name="android:textColor">?colorOnSurface</item>
         <item name="android:textSize">14sp</item>
-        <item name="strokeColor">@color/filter_bg_disabled_gray</item>
+        <item name="strokeColor">?colorPrimaryVariant</item>
         <item name="strokeWidth">1dp</item>
         <item name="horizontalPadding">10dp</item>
         <item name="verticalPadding">5dp</item>
@@ -13,10 +13,6 @@
         <item name="showIcons">true</item>
         <item name="dotSize">10dp</item>
         <item name="dotPadding">7dp</item>
-    </style>
-
-    <style name="Widget.DroidKaigi.Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
-        <item name="tint">@color/colorOnBackground</item>
     </style>
 
     <style name="Widget.DroidKaigi.SearchView" parent="Widget.AppCompat.SearchView">

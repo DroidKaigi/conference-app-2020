@@ -20,6 +20,7 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
 import com.xwray.groupie.databinding.ViewHolder
+import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
@@ -119,10 +120,7 @@ class SessionItem @AssistedInject constructor(
                 null
             )?.apply {
                 setTint(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.colorOnBackgroundSecondary
-                    )
+                    context.getThemeColor(R.attr.colorOnBackground)
                 )
             }
         }?.also {
