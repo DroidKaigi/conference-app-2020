@@ -9,8 +9,8 @@
         android:id="@+id/session"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorSurface"
         tools:context="io.github.droidkaigi.confsched2020.session.ui.SessionPagesFragment"
+        android:theme="@style/Theme.DroidKaigi.Cyan"
         >
 
         <androidx.recyclerview.widget.RecyclerView

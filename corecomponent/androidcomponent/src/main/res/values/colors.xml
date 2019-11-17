@@ -23,12 +23,7 @@
     <color name="cyan_800">#008b47</color>
     <color name="cyan_900">#006b31</color>
 
-    <color name="colorBrand">#F63529</color>
-    <color name="colorOnBrand">@color/white</color>
-    <color name="colorPrimary">#F63529</color>
-    <color name="colorOnPrimary">@color/white</color>
-    <color name="colorPrimaryDark">#A81F20</color>
-    <color name="colorSecondary">#E6650F</color>
+    <!-- deprecated theme colors -->
     <color name="colorBackground">@color/white</color>
     <color name="colorOnBackground">@color/gray1</color>
     <color name="colorOnBackgroundSecondary">@color/gray2</color>
@@ -38,6 +33,7 @@
     <color name="colorOnSurface">@color/gray1</color>
     <color name="colorOnSurfaceSecondary">@color/gray2</color>
 
+    <!-- deprecated theme colors -->
     <!-- Gray scale -->
     <color name="gray1">#353435</color>
     <color name="gray2">#95959C</color>

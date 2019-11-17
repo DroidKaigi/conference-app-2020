@@ -4,7 +4,7 @@
     <style name="Base.Theme.DroidKaigi" parent="Theme.MaterialComponents.DayNight.NoActionBar">
     </style>
 
-    <style name="Theme.DroidKaigi" parent="Base.Theme.DroidKaigi">
+    <style name="Theme.DroidKaigi.Indigo" parent="Base.Theme.DroidKaigi">
         <!-- Colors -->
         <item name="colorPrimary">@color/indigo_900</item>
         <item name="colorPrimaryVariant">@color/indigo_900</item>

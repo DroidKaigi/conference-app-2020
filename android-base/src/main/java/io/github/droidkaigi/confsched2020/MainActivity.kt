@@ -1,11 +1,15 @@
 package io.github.droidkaigi.confsched2020
 
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.IdRes
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
@@ -34,6 +38,8 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragment
 import io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragmentModule
 import io.github.droidkaigi.confsched2020.sponsor.ui.di.SponsorsAssistedInjectModule
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
+import io.github.droidkaigi.confsched2020.ui.PageConfiguration
+import io.github.droidkaigi.confsched2020.ui.widget.StatusBarColorManager
 import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
@@ -57,10 +63,30 @@ class MainActivity : DaggerAppCompatActivity() {
         Navigation.findNavController(this, R.id.root_nav_host_fragment)
     }
 
+    private val statusBarColors: StatusBarColorManager by lazy {
+        StatusBarColorManager(this)
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(binding.toolbar)
 
+        setupNavigation()
+
+        systemViewModel.errorLiveData.observe(this) { appError ->
+            Timber.debug(appError) { "AppError occured" }
+            Snackbar
+                .make(
+                    findViewById(R.id.root_nav_host_fragment),
+                    appError.stringRes(),
+                    Snackbar.LENGTH_LONG
+                )
+                .show()
+        }
+    }
+
+    private fun setupNavigation() {
         val appBarConfiguration = AppBarConfiguration(
             setOf(R.id.main),
             binding.drawerLayout
@@ -72,17 +98,30 @@ class MainActivity : DaggerAppCompatActivity() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             handleNavigation(item.itemId)
-        });
+        })
 
-        systemViewModel.errorLiveData.observe(this) { appError ->
-            Timber.debug(appError) { "AppError occured" }
-            Snackbar
-                .make(
-                    findViewById(R.id.root_nav_host_fragment),
-                    appError.stringRes(),
-                    Snackbar.LENGTH_LONG
-                )
-                .show()
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            onDestinationChange(destination)
+        }
+    }
+
+    private fun onDestinationChange(destination: NavDestination) {
+        val config = PageConfiguration.getConfiguration(destination.id)
+        statusBarColors.isIndigoBackground = config.isIndigoBackground
+    }
+
+    private fun setupStatusBarColors() {
+        binding.drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+                statusBarColors.drawerSlideOffset = slideOffset
+            }
+        })
+
+        statusBarColors.systemUiVisibility.distinctUntilChanged().observe(this) { visibility ->
+            window.decorView.systemUiVisibility = visibility
+        }
+        statusBarColors.statusBarColor.distinctUntilChanged().observe(this) { color ->
+            window.statusBarColor = color
         }
     }
 

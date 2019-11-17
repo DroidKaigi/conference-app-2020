@@ -9,7 +9,6 @@
         android:id="@+id/fragment_sessions_coodinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBrandBackground"
         tools:context="io.github.droidkaigi.confsched2019.session.ui.SessionPagesFragment"
         >
 
@@ -34,13 +33,15 @@
         </ScrollView>
 
         <FrameLayout
+            style="@style/Widget.DroidKaigi.BottomSheet"
             android:id="@+id/sessions_sheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
             app:behavior_hideable="false"
             app:behavior_peekHeight="64dp"
-            app:behavior_skipCollapsed="false"
+            app:behavior_skipCollapsed="true"
+            app:backgroundTint="?attr/colorSurface"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             tools:layout="@layout/fragment_bottom_sheet_day_sessions"
             />
