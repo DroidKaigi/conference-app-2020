@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -29,6 +31,13 @@ import javax.inject.Provider
 class SessionsFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentSessionsBinding
+
+    private val sessionSheetBehavior: BottomSheetBehavior<*>
+        get() {
+            val layoutParams = binding.sessionsSheet.layoutParams as CoordinatorLayout.LayoutParams
+            val behavior = layoutParams.behavior
+            return (behavior as BottomSheetBehavior)
+        }
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -60,13 +69,14 @@ class SessionsFragment : DaggerFragment() {
             container,
             false
         )
+        sessionSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.filterEnglish.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(buttonView.isPressed) {
+            if (buttonView.isPressed) {
                 // ignore saved state change
                 sessionsViewModel.onFilterIsOnlyEnglishChanged(isChecked)
             }
