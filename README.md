@@ -19,7 +19,7 @@ Fragment
     }
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
 
