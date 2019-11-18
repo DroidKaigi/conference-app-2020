@@ -47,7 +47,6 @@
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toBottomOf="@id/start_filter"
-
             />
 
         <androidx.recyclerview.widget.RecyclerView

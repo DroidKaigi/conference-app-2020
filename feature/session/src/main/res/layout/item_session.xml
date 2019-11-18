@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:theme="@style/Theme.DroidKaigi.Indigo"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -11,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:layout_marginBottom="18dp"
+        tools:theme="@style/Theme.DroidKaigi.Indigo"
         >
 
         <androidx.constraintlayout.widget.Guideline
