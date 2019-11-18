@@ -20,6 +20,7 @@ import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetDaySessionsBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
+import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.session.ui.widget.SessionsItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
@@ -35,6 +36,14 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
     private val sessionsViewModel: SessionsViewModel by assistedActivityViewModels {
         sessionsViewModelProvider.get()
     }
+    @Inject
+    lateinit var sessionTabViewModelProvider: Provider<SessionTabViewModel>
+    private val sessionTabViewModel: SessionTabViewModel by assistedActivityViewModels({
+        SessionPage.dayOfNumber(args.day).title
+    }) {
+        sessionTabViewModelProvider.get()
+    }
+
     @Inject
     lateinit var systemViewModelProvider: Provider<SystemViewModel>
     private val systemViewModel: SystemViewModel by assistedActivityViewModels {
@@ -61,11 +70,14 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
         binding.sessionRecycler.addItemDecoration(SessionsItemDecoration(groupAdapter, resources))
+        binding.startFilter.setOnClickListener { _ ->
+            sessionTabViewModel.toggleExpand()
+        }
 
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
             // TODO: support favorite list

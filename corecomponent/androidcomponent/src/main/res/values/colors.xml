@@ -25,4 +25,5 @@
 
     <color name="white">#FFFFFF</color>
     <color name="black_alpha_87">#DE000000</color>
+    <color name="black_alpha_12">#1F000000</color>
 </resources>

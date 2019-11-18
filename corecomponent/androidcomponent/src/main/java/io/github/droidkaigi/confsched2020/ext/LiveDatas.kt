@@ -9,6 +9,8 @@ import androidx.lifecycle.map
 import androidx.lifecycle.observe
 import com.hadilq.liveevent.LiveEvent
 
+fun <T : Any>LiveData<T>.requireValue() = requireNotNull(value)
+
 inline fun <T : Any, LIVE1 : Any, LIVE2 : Any> composeBy(
     initialValue: T,
     liveData1: LiveData<LIVE1>,
@@ -71,7 +73,13 @@ inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any, LIVE4 : Any> compose
                 val liveData3Value = liveData3.value
                 val liveData4Value = liveData4.value
                 if (currentValue != null && liveData1Value != null && liveData2Value != null && liveData3Value != null && liveData4Value != null) {
-                    value = block(currentValue, liveData1Value, liveData2Value, liveData3Value, liveData4Value)
+                    value = block(
+                        currentValue,
+                        liveData1Value,
+                        liveData2Value,
+                        liveData3Value,
+                        liveData4Value
+                    )
                 }
             }
         }

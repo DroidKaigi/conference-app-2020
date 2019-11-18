@@ -56,8 +56,8 @@ class StaffsFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val appComponent = (requireContext().applicationContext as App).appComponent
         val component = DaggerStaffComponent.builder()

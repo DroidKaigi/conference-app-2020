@@ -25,9 +25,6 @@ class SessionsItemDecoration(val adapter: GroupAdapter<*>, val res: Resources) :
     private val sessionTimeSpaceInPx by lazy {
         res.getDimensionPixelSize(R.dimen.session_time_space)
     }
-    private val sessionTimeTextMarginStartInPx by lazy {
-        res.getDimensionPixelSize(R.dimen.session_time_text_margin_start).toFloat()
-    }
     private val sessionTimeTextMarginTopInPx by lazy {
         res.getDimensionPixelSize(R.dimen.session_time_text_margin_top).toFloat()
     }
@@ -46,13 +43,15 @@ class SessionsItemDecoration(val adapter: GroupAdapter<*>, val res: Resources) :
         var lastStartTimeText: String? = null
         parent.forEach { view ->
             val layoutParams = view.layoutParams as RecyclerView.LayoutParams
-            val sessionItem = adapter.getItem(layoutParams.viewAdapterPosition) as SessionItem
+            val viewAdapterPosition = layoutParams.viewAdapterPosition
+            if(viewAdapterPosition==-1) return@forEach
+            val sessionItem = adapter.getItem(viewAdapterPosition) as SessionItem
             sessionItem.session.startTime
             val startTimeText = sessionItem.session.startTimeText
             if (lastStartTimeText != startTimeText) {
                 c.drawText(
                     startTimeText,
-                    sessionTimeTextMarginStartInPx,
+                    0F,
                     view.y + sessionTimeTextMarginTopInPx,
                     textPaint
                 )

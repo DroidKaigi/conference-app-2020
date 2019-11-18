@@ -24,6 +24,7 @@ import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionsBinding
 import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
+import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import javax.inject.Inject
 import javax.inject.Provider
@@ -43,6 +44,14 @@ class SessionsFragment : DaggerFragment() {
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
     private val sessionsViewModel: SessionsViewModel by assistedActivityViewModels {
         sessionsViewModelProvider.get()
+    }
+
+    @Inject
+    lateinit var sessionTabViewModelProvider: Provider<SessionTabViewModel>
+    private val sessionTabViewModel: SessionTabViewModel by assistedActivityViewModels({
+        SessionPage.pages[args.tabIndex].title
+    }) {
+        sessionTabViewModelProvider.get()
     }
 
     @Inject
@@ -69,12 +78,18 @@ class SessionsFragment : DaggerFragment() {
             container,
             false
         )
-        sessionSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
+            sessionSheetBehavior.state = if (uiModel.expandedSession) {
+                BottomSheetBehavior.STATE_EXPANDED
+            } else {
+                BottomSheetBehavior.STATE_COLLAPSED
+            }
+        }
         binding.filterEnglish.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isPressed) {
                 // ignore saved state change
