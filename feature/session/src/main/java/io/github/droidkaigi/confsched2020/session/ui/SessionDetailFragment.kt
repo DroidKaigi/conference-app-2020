@@ -73,25 +73,27 @@ class SessionDetailFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
+
         sessionDetailViewModel.uiModel.distinctUntilChanged()
             .observe(viewLifecycleOwner) { uiModel: SessionDetailViewModel.UiModel ->
                 progressTimeLatch.loading = uiModel.isLoading
-                val session = uiModel.session
-                if (session != null) {
-                    binding.session = session
-                    binding.lang = defaultLang()
-                    binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
-                    binding.tags.removeAllViews()
-                    if (session is SpeechSession) {
-                        binding.tags.addView(Chip(context).apply {
-                            text = session.category.name.getByLang(defaultLang())
-                        })
-                        binding.tags.addView(Chip(context).apply {
-                            text = session.lang.text.getByLang(defaultLang())
-                        })
-                    }
-                    binding.speakers.bindSpeaker(session)
+                val session = uiModel.session ?: return@observe
+                binding.sessionFavorite.setOnClickListener {
+                    sessionDetailViewModel.favorite(session).observeBy(viewLifecycleOwner)
                 }
+                binding.session = session
+                binding.lang = defaultLang()
+                binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
+                binding.tags.removeAllViews()
+                if (session is SpeechSession) {
+                    binding.tags.addView(Chip(context).apply {
+                        text = session.category.name.getByLang(defaultLang())
+                    })
+                    binding.tags.addView(Chip(context).apply {
+                        text = session.lang.text.getByLang(defaultLang())
+                    })
+                }
+                binding.speakers.bindSpeaker(session)
             }
     }
 
