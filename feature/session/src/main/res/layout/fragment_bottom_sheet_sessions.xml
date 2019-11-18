@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             app:icon="@drawable/ic_filter_list_black_24dp"
-            android:textAppearance="@style/TextAppearance.App.Body2"
+            android:textAppearance="@style/TextAppearance.DroidKaigi.Body2"
             android:theme="@style/ThemeOverlay.DroidKaigi.Indigo"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toTopOf="parent"
