@@ -21,12 +21,12 @@
         <item name="android:statusBarColor">@color/indigo_900</item>
 
         <!-- Text appearances -->
-        <item name="textAppearanceHeadline5">@style/TextAppearance.App.Headline5</item>
-        <item name="textAppearanceHeadline6">@style/TextAppearance.App.Headline6</item>
-        <item name="textAppearanceSubtitle1">@style/TextAppearance.App.Subtitle1</item>
-        <item name="textAppearanceSubtitle2">@style/TextAppearance.App.Subtitle2</item>
-        <item name="textAppearanceBody1">@style/TextAppearance.App.Body1</item>
-        <item name="textAppearanceBody2">@style/TextAppearance.App.Body2</item>
-        <item name="textAppearanceCaption">@style/TextAppearance.App.Caption</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.DroidKaigi.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.DroidKaigi.Headline6</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.DroidKaigi.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.DroidKaigi.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.DroidKaigi.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.DroidKaigi.Body2</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.DroidKaigi.Caption</item>
     </style>
 </resources>
