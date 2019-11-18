@@ -152,6 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
                 android:text="@{session.desc}"
+                android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/divider_survey_and_text"
