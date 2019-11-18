@@ -43,7 +43,7 @@
             app:behavior_skipCollapsed="true"
             app:backgroundTint="?attr/colorSurface"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-            tools:layout="@layout/fragment_bottom_sheet_day_sessions"
+            tools:layout="@layout/fragment_bottom_sheet_sessions"
             />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

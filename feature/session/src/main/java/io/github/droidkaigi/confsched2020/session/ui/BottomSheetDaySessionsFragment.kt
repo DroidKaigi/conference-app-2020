@@ -18,7 +18,7 @@ import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.session.R
-import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetDaySessionsBinding
+import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetSessionsBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
@@ -29,7 +29,7 @@ import javax.inject.Provider
 
 class BottomSheetDaySessionsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentBottomSheetDaySessionsBinding
+    private lateinit var binding: FragmentBottomSheetSessionsBinding
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -63,7 +63,7 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_bottom_sheet_day_sessions,
+            R.layout.fragment_bottom_sheet_sessions,
             container,
             false
         )
