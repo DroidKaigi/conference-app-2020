@@ -1,10 +1,13 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
+import androidx.core.view.isVisible
+import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -12,17 +15,29 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
+import coil.Coil
+import coil.api.load
+import coil.transform.CircleCropTransformation
+import com.google.android.material.chip.Chip
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.getThemeColor
+import io.github.droidkaigi.confsched2020.model.Session
+import io.github.droidkaigi.confsched2020.model.Speaker
+import io.github.droidkaigi.confsched2020.model.SpeechSession
+import io.github.droidkaigi.confsched2020.model.defaultLang
+import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
+import kotlin.math.max
 
 class SessionDetailFragment : DaggerFragment() {
 
@@ -56,17 +71,109 @@ class SessionDetailFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         progressTimeLatch = ProgressTimeLatch { showProgress ->
-            //            binding.progressBar.isVisible = showProgress
+            binding.progressBar.isVisible = showProgress
         }.apply {
             loading = true
         }
         sessionDetailViewModel.uiModel.distinctUntilChanged()
             .observe(viewLifecycleOwner) { uiModel: SessionDetailViewModel.UiModel ->
                 progressTimeLatch.loading = uiModel.isLoading
-                if (uiModel.session != null) {
-                    Toast.makeText(context, uiModel.session.toString(), Toast.LENGTH_LONG).show()
+                val session = uiModel.session
+                if (session != null) {
+                    binding.session = session
+                    binding.lang = defaultLang()
+                    binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
+                    binding.tags.removeAllViews()
+                    if (session is SpeechSession) {
+                        binding.tags.addView(Chip(context).apply {
+                            text = session.category.name.getByLang(defaultLang())
+                        })
+                        binding.tags.addView(Chip(context).apply {
+                            text = session.lang.text.getByLang(defaultLang())
+                        })
+                    }
+                    binding.speakers.bindSpeaker(session)
                 }
             }
+    }
+
+    private fun ViewGroup.bindSpeaker(session: Session) {
+        (0 until max(
+            size, (session as? SpeechSession)?.speakers.orEmpty().size
+        )).forEach { index ->
+            val existSpeakerView = getChildAt(index) as? ViewGroup
+            val speaker: Speaker? = (session as? SpeechSession)?.speakers?.getOrNull(index)
+            if (existSpeakerView == null && speaker == null) {
+                return@forEach
+            }
+            if (existSpeakerView != null && speaker == null) {
+                // Cache for performance
+                existSpeakerView.isVisible = false
+                return@forEach
+            }
+            if (existSpeakerView == null && speaker != null) {
+                val speakerView = layoutInflater.inflate(
+                    R.layout.layout_speaker, this, false
+                ) as ViewGroup
+                val textView: TextView = speakerView.findViewById(R.id.speaker)
+                bindSpeakerData(speaker, textView)
+
+                addView(speakerView)
+                return@forEach
+            }
+            if (existSpeakerView != null && speaker != null) {
+                existSpeakerView.isVisible = true
+
+                val textView: TextView = existSpeakerView.findViewById(R.id.speaker)
+                textView.text = speaker.name
+                bindSpeakerData(speaker, textView)
+            }
+        }
+    }
+
+    private fun bindSpeakerData(
+        speaker: Speaker,
+        textView: TextView
+    ) {
+        textView.text = speaker.name
+//        setHighlightText(textView, query)
+        val imageUrl = speaker.imageUrl
+        val context = textView.context
+        val placeHolder = run {
+            VectorDrawableCompat.create(
+                context.resources,
+                R.drawable.ic_person_outline_black_32dp,
+                null
+            )?.apply {
+                setTint(
+                    context.getThemeColor(R.attr.colorOnBackground)
+                )
+            }
+        }?.also {
+            textView.setLeftDrawable(it)
+        }
+
+        Coil.load(context, imageUrl) {
+            crossfade(true)
+            placeholder(placeHolder)
+            transformations(CircleCropTransformation())
+            lifecycle(viewLifecycleOwner)
+            target {
+                textView.setLeftDrawable(it)
+            }
+        }
+    }
+
+    fun TextView.setLeftDrawable(drawable: Drawable) {
+        val res = context.resources
+        val widthDp = 32
+        val heightDp = 32
+        val widthPx = (widthDp * res.displayMetrics.density).toInt()
+        val heightPx = (heightDp * res.displayMetrics.density).toInt()
+        drawable.setBounds(0, 0, widthPx, heightPx)
+        setCompoundDrawables(
+            drawable, null, null, null
+        )
     }
 }
 

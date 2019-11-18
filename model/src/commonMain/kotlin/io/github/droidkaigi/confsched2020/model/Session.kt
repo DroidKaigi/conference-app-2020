@@ -1,13 +1,14 @@
 package io.github.droidkaigi.confsched2020.model
 
 import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeSpan
 import com.soywiz.klock.TimeSpan
+import com.soywiz.klock.TimezoneOffset
 import com.soywiz.klock.hours
 
 sealed class Session(
     open val id: SessionId,
     open val title: LocaledString,
+    open val desc: String,
     open val dayNumber: Int,
     open val startTime: DateTime,
     open val endTime: DateTime,
@@ -18,9 +19,9 @@ sealed class Session(
 
     val startTimeText by lazy { startTime.format("HH:mm")}
 
-    fun timeSummary(lang: Lang, timezoneOffset: DateTimeSpan) = buildString {
-        val startTimeTZ = startTime.toOffset(timezoneOffset.timeSpan)
-        val endTimeTZ = endTime.toOffset(timezoneOffset.timeSpan)
+    fun timeSummary(lang: Lang, timezoneOffset: TimezoneOffset) = buildString {
+        val startTimeTZ = startTime.toOffset(timezoneOffset)
+        val endTimeTZ = endTime.toOffset(timezoneOffset)
 
         // ex: 2月2日 10:20-10:40
         if (lang == Lang.EN) {
@@ -39,7 +40,7 @@ sealed class Session(
         append(endTimeTZ.format("HH:mm"))
     }
 
-    fun summary(lang: Lang, timezoneOffset: DateTimeSpan) = buildString {
+    fun summary(lang: Lang, timezoneOffset: TimezoneOffset) = buildString {
         append(timeSummary(lang, timezoneOffset))
         append(" / ")
         append(shortSummary())
@@ -64,7 +65,7 @@ data class SpeechSession(
     override val startTime: DateTime,
     override val endTime: DateTime,
     override val title: LocaledString,
-    val desc: String,
+    override val desc: String,
     override val room: Room,
     val format: String,
     val lang: Lang,
@@ -77,7 +78,7 @@ data class SpeechSession(
     val speakers: List<Speaker>,
     val forBeginners: Boolean,
     val message: LocaledString?
-) : Session(id, title, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
+) : Session(id, title, desc, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
 
     override fun shortSummary() = buildString {
         append(timeInMinutes)
@@ -97,11 +98,11 @@ data class ServiceSession(
     override val startTime: DateTime,
     override val endTime: DateTime,
     override val title: LocaledString,
-    val desc: String,
+    override val desc: String,
     override val room: Room,
     val sessionType: SessionType,
     override val isFavorited: Boolean
-) : Session(id, title, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
+) : Session(id, title, desc, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
 
     override fun shortSummary() = buildString {
         append(timeInMinutes)
