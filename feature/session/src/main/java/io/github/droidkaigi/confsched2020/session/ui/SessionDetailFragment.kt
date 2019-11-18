@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -37,7 +36,6 @@ import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
-import kotlin.math.max
 
 class SessionDetailFragment : DaggerFragment() {
 
@@ -98,36 +96,17 @@ class SessionDetailFragment : DaggerFragment() {
     }
 
     private fun ViewGroup.bindSpeaker(session: Session) {
-        (0 until max(
-            size, (session as? SpeechSession)?.speakers.orEmpty().size
-        )).forEach { index ->
-            val existSpeakerView = getChildAt(index) as? ViewGroup
-            val speaker: Speaker? = (session as? SpeechSession)?.speakers?.getOrNull(index)
-            if (existSpeakerView == null && speaker == null) {
-                return@forEach
-            }
-            if (existSpeakerView != null && speaker == null) {
-                // Cache for performance
-                existSpeakerView.isVisible = false
-                return@forEach
-            }
-            if (existSpeakerView == null && speaker != null) {
-                val speakerView = layoutInflater.inflate(
-                    R.layout.layout_speaker, this, false
-                ) as ViewGroup
-                val textView: TextView = speakerView.findViewById(R.id.speaker)
-                bindSpeakerData(speaker, textView)
+        removeAllViews()
+        (session as? SpeechSession)?.speakers.orEmpty().indices.forEach { index ->
+            val speaker: Speaker =
+                (session as? SpeechSession)?.speakers?.getOrNull(index) ?: return@forEach
+            val speakerView = layoutInflater.inflate(
+                R.layout.layout_speaker, this, false
+            ) as ViewGroup
+            val textView: TextView = speakerView.findViewById(R.id.speaker)
+            bindSpeakerData(speaker, textView)
 
-                addView(speakerView)
-                return@forEach
-            }
-            if (existSpeakerView != null && speaker != null) {
-                existSpeakerView.isVisible = true
-
-                val textView: TextView = existSpeakerView.findViewById(R.id.speaker)
-                textView.text = speaker.name
-                bindSpeakerData(speaker, textView)
-            }
+            addView(speakerView)
         }
     }
 
