@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2020
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
@@ -26,6 +27,7 @@ import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.databinding.ActivityMainBinding
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
+import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.ext.stringRes
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragment
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentModule
@@ -67,12 +69,11 @@ class MainActivity : DaggerAppCompatActivity() {
         StatusBarColorManager(this)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(binding.toolbar)
-
         setupNavigation()
+        setupStatusBarColors()
 
         systemViewModel.errorLiveData.observe(this) { appError ->
             Timber.debug(appError) { "AppError occured" }
@@ -88,7 +89,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private fun setupNavigation() {
         val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.main),
+            PageConfiguration.values().filter { it.isTopLevel }.map { it.id }.toSet(),
             binding.drawerLayout
         ) {
             onBackPressed()
@@ -108,6 +109,21 @@ class MainActivity : DaggerAppCompatActivity() {
     private fun onDestinationChange(destination: NavDestination) {
         val config = PageConfiguration.getConfiguration(destination.id)
         statusBarColors.isIndigoBackground = config.isIndigoBackground
+        binding.isIndigoBackground = config.isIndigoBackground
+        val iconTint = getThemeColor(
+            if (config.isIndigoBackground) {
+                R.attr.colorOnPrimary
+            } else {
+                R.attr.colorOnSurface
+            }
+        )
+        binding.toolbar.navigationIcon = if (config.isTopLevel) {
+            AppCompatResources.getDrawable(this, R.drawable.ic_menu_black_24dp)
+        } else {
+            AppCompatResources.getDrawable(this, R.drawable.ic_arrow_back_black_24dp)
+        }.apply {
+            this?.setTint(iconTint)
+        }
     }
 
     private fun setupStatusBarColors() {

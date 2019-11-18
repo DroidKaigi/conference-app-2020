@@ -18,7 +18,7 @@ import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.session.R
-import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionsBinding
+import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 class SessionDetailFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentSessionsBinding
+    private lateinit var binding: FragmentSessionDetailBinding
 
     @Inject lateinit var sessionDetailViewModelFactory: SessionDetailViewModel.Factory
     private val sessionDetailViewModel by assistedViewModels {
@@ -46,7 +46,7 @@ class SessionDetailFragment : DaggerFragment() {
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_sessions,
+            R.layout.fragment_session_detail,
             container,
             false
         )
