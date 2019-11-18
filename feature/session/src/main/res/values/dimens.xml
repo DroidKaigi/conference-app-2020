@@ -2,6 +2,5 @@
 <resources>
     <dimen name="session_time_text_size">16sp</dimen>
     <dimen name="session_time_space">68dp</dimen>
-    <dimen name="session_time_text_margin_start">16dp</dimen>
     <dimen name="session_time_text_margin_top">18dp</dimen>
 </resources>

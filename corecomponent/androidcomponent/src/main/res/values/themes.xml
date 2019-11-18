@@ -2,23 +2,17 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.DroidKaigi" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-    </style>
-
-    <style name="Theme.DroidKaigi" parent="Base.Theme.DroidKaigi">
-        <!-- Colors -->
-        <item name="colorPrimary">@color/indigo_900</item>
-        <item name="colorPrimaryVariant">@color/indigo_900</item>
-        <item name="colorSecondary">@color/cyan_300</item>
-        <item name="colorSecondaryVariant">@color/cyan_300</item>
-
         <item name="android:colorBackground">@color/white</item>
         <item name="colorSurface">@color/white</item>
 
         <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryDark">?colorPrimaryVariant</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorOnBackground">@color/black_alpha_87</item>
 
-        <item name="android:statusBarColor">@color/indigo_900</item>
+        <!-- Window configurations -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
         <!-- Text appearances -->
         <item name="textAppearanceHeadline5">@style/TextAppearance.App.Headline5</item>
@@ -30,9 +24,36 @@
         <item name="textAppearanceCaption">@style/TextAppearance.App.Caption</item>
     </style>
 
-    <style name="Theme.DroidKaigi.WithActionBar">
+    <style name="Theme.DroidKaigi" parent="Base.Theme.DroidKaigi" />
+
+    <style name="Theme.DroidKaigi.Indigo" parent="Theme.DroidKaigi">
+        <!-- Colors -->
+        <item name="colorPrimary">@color/indigo_900</item>
+        <item name="colorPrimaryVariant">@color/indigo_900</item>
+        <item name="colorSecondary">@color/cyan_300</item>
+        <item name="colorSecondaryVariant">@color/cyan_300</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="Theme.DroidKaigi.Cyan" parent="Theme.DroidKaigi">
+        <!-- Colors -->
+        <item name="colorPrimary">@color/cyan_300</item>
+        <item name="colorPrimaryVariant">@color/cyan_300</item>
+        <item name="colorSecondary">@color/indigo_900</item>
+        <item name="colorSecondaryVariant">@color/indigo_900</item>
+        <item name="colorOnPrimary">@color/black_alpha_87</item>
+    </style>
+
+    <style name="ThemeOverlay.DroidKaigi.Indigo" parent="@style/ThemeOverlay.MaterialComponents.Light">
+        <!-- Colors -->
+        <item name="colorPrimary">@color/indigo_900</item>
+        <item name="colorPrimaryVariant">@color/indigo_900</item>
+        <item name="colorSecondary">@color/cyan_300</item>
+        <item name="colorSecondaryVariant">@color/cyan_300</item>
+    </style>
+
+    <style name="Theme.DroidKaigi.Indigo.WithActionBar">
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">false</item>
-        <item name="colorPrimary">@color/white</item>
     </style>
 </resources>

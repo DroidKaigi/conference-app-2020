@@ -15,21 +15,30 @@ import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
+import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.session.R
-import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetFavoriteSessionsBinding
+import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetSessionsBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
+import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import javax.inject.Inject
 import javax.inject.Provider
 
 class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentBottomSheetFavoriteSessionsBinding
+    private lateinit var binding: FragmentBottomSheetSessionsBinding
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
     private val sessionsViewModel: SessionsViewModel by assistedActivityViewModels {
         sessionsViewModelProvider.get()
+    }
+    @Inject
+    lateinit var sessionTabViewModelProvider: Provider<SessionTabViewModel>
+    private val sessionTabViewModel: SessionTabViewModel by assistedActivityViewModels({
+        SessionPage.Favorite.title
+    }) {
+        sessionTabViewModelProvider.get()
     }
 
     @Inject
@@ -42,17 +51,20 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_bottom_sheet_favorite_sessions,
+            R.layout.fragment_bottom_sheet_sessions,
             container,
             false
         )
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
+        binding.startFilter.setOnClickListener { _ ->
+            sessionTabViewModel.toggleExpand()
+        }
 
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
             // TODO: support favorite list

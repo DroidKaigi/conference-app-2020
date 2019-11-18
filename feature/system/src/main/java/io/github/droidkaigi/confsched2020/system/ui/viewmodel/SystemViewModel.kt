@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.ext.toNonNullSingleEvent
 import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.system.R
@@ -26,7 +27,7 @@ class SystemViewModel @Inject constructor(
         val customTabsIntent = CustomTabsIntent.Builder()
             .setShowTitle(true)
             .enableUrlBarHiding()
-            .setToolbarColor(ContextCompat.getColor(activity, R.color.colorBackground))
+            .setToolbarColor(activity.getThemeColor(R.attr.colorAccent))
             .build()
 
         // block to multiple launch a Activity

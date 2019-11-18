@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched2020.preference.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.preference.PreferenceFragmentCompat
@@ -19,8 +20,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
     private lateinit var progressTimeLatch: ProgressTimeLatch
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val appComponent = (requireContext().applicationContext as App).appComponent
         val component = DaggerPreferenceComponent.builder()

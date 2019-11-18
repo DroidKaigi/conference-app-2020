@@ -13,8 +13,9 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -65,13 +66,18 @@ class MainSessionsFragment : DaggerFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupSessionPager()
     }
 
     private fun setupSessionPager() {
-        binding.sessionsTabLayout.setupWithViewPager(binding.sessionsViewpager)
+        val tabLayoutMediator = TabLayoutMediator(
+            binding.sessionsTabLayout,
+            binding.sessionsViewpager
+        ) { tab, position ->
+            tab.text = SessionPage.pages[position].title
+        }
         // TODO: apply margin design
 //        binding.sessionsViewpager.pageMargin =
 //            resources.getDimensionPixelSize(R.dimen.session_pager_horizontal_padding)
@@ -83,27 +89,19 @@ class MainSessionsFragment : DaggerFragment() {
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
             progressTimeLatch.loading = uiModel.isLoading
         }
-        binding.sessionsViewpager.adapter = object : FragmentStatePagerAdapter(
-            childFragmentManager
+        binding.sessionsViewpager.adapter = object : FragmentStateAdapter(
+            this
         ) {
-            override fun getItem(position: Int): Fragment {
-                return SessionsFragment.newInstance(
+            override fun getItemCount(): Int = SessionPage.pages.size
+
+            override fun createFragment(position: Int): Fragment {
+               return SessionsFragment.newInstance(
                     SessionsFragmentArgs
                         .Builder(position)
                         .build()
                 )
             }
-
-            override fun getPageTitle(position: Int) = SessionPage.pages[position].title
-            override fun getCount(): Int = SessionPage.pages.size
         }
-        binding.sessionsViewpager.addOnPageChangeListener(
-            object : ViewPager.SimpleOnPageChangeListener() {
-                override fun onPageSelected(position: Int) {
-//                    sessionPagesActionCreator.selectTab(SessionPage.pages[position])
-                }
-            }
-        )
 
         binding.sessionsTabLayout.addOnTabSelectedListener(
             object : TabLayout.OnTabSelectedListener {
@@ -125,6 +123,7 @@ class MainSessionsFragment : DaggerFragment() {
 //        if (jstNow.yearInt == 2019 && jstNow.month1 == 2 && jstNow.dayOfMonth == 8) {
 //            binding.sessionsViewpager.currentItem = 1
 //        }
+        tabLayoutMediator.attach()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

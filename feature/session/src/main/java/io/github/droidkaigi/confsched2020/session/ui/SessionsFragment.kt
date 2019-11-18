@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -22,6 +24,7 @@ import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionsBinding
 import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
+import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import javax.inject.Inject
 import javax.inject.Provider
@@ -30,10 +33,25 @@ class SessionsFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentSessionsBinding
 
+    private val sessionSheetBehavior: BottomSheetBehavior<*>
+        get() {
+            val layoutParams = binding.sessionsSheet.layoutParams as CoordinatorLayout.LayoutParams
+            val behavior = layoutParams.behavior
+            return (behavior as BottomSheetBehavior)
+        }
+
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
     private val sessionsViewModel: SessionsViewModel by assistedActivityViewModels {
         sessionsViewModelProvider.get()
+    }
+
+    @Inject
+    lateinit var sessionTabViewModelProvider: Provider<SessionTabViewModel>
+    private val sessionTabViewModel: SessionTabViewModel by assistedActivityViewModels({
+        SessionPage.pages[args.tabIndex].title
+    }) {
+        sessionTabViewModelProvider.get()
     }
 
     @Inject
@@ -65,8 +83,15 @@ class SessionsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
+            sessionSheetBehavior.state = if (uiModel.expandedSession) {
+                BottomSheetBehavior.STATE_EXPANDED
+            } else {
+                BottomSheetBehavior.STATE_COLLAPSED
+            }
+        }
         binding.filterEnglish.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(buttonView.isPressed) {
+            if (buttonView.isPressed) {
                 // ignore saved state change
                 sessionsViewModel.onFilterIsOnlyEnglishChanged(isChecked)
             }

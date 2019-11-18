@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:theme="@style/Theme.DroidKaigi"
+    tools:theme="@style/Theme.DroidKaigi.Indigo"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="16dp"
+            app:layout_constraintGuide_end="0dp"
             />
 
         <TextView
@@ -52,7 +52,7 @@
             android:padding="2dp"
             android:text="@string/session_on_going"
             android:textAppearance="?attr/textAppearanceCaption"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="?attr/colorOnPrimary"
             app:layout_constraintStart_toEndOf="@id/room"
             app:layout_constraintTop_toTopOf="parent"
             />
@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_bookmark_border_black_24dp"
-            android:tint="?colorSecondary"
+            android:tint="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             />
 
@@ -95,6 +95,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/survey"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:theme="@style/ThemeOverlay.DroidKaigi.Indigo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

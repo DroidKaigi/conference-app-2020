@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="session_on_going">LIVE</string>
+    <string name="start_filter">絞り込む</string>
 </resources>
