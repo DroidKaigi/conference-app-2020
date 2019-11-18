@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
     <data>
-        <import type="io.github.droidkaigi.confsched2020.R" />
+        <import type="io.github.droidkaigi.confsched2020.session.R" />
+        <import type="io.github.droidkaigi.confsched2020.ext.ContextsKt" />
         <import type="androidx.databinding.adapters.Converters" />
         <variable
             name="isIndigoBackground"
@@ -17,9 +18,9 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimary"
+        android:background="@{ContextsKt.getThemeColorDrawable(context, isIndigoBackground ? R.attr.colorPrimary : R.attr.colorSurface)}"
         android:fitsSystemWindows="true"
-        app:statusBarBackground="?attr/colorPrimary"
+        app:statusBarBackground="@{ContextsKt.getThemeColorDrawable(context, isIndigoBackground ? R.attr.colorPrimary : R.attr.colorSurface)}"
         tools:context=".MainActivity"
         >
 
@@ -33,6 +34,8 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="0dp"
                 android:layout_height="?actionBarSize"
+                android:background="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorPrimary : R.attr.colorSurface)}"
+                app:titleTextColor="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorOnPrimary : R.attr.colorOnSurface)}"
                 app:contentInsetStartWithNavigation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

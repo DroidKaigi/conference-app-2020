@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'androidx.navigation.safeargs'
 
 apply from: rootProject.file('gradle/android.gradle')
+android.dataBinding.enabled = true
 
 android.buildTypes.release {
     consumerProguardFiles 'proguard-rules-navigation.pro'

@@ -8,9 +8,10 @@ enum class PageConfiguration(
     val isIndigoBackground: Boolean = false,
     val hasTitle: Boolean = true,
     val isShowLogoImage: Boolean = false,
-    val hideToolbar: Boolean = false
+    val hideToolbar: Boolean = false,
+    val isTopLevel: Boolean = false
 ) {
-    MAIN(R.id.main, isIndigoBackground = true, hasTitle = false, isShowLogoImage = true),
+    MAIN(R.id.main, isIndigoBackground = true, hasTitle = false, isShowLogoImage = true, isTopLevel = true),
     DETAIL(R.id.session_detail, hasTitle = false, hideToolbar = true),
     SPEAKER(R.id.speaker, hasTitle = false),
     OTHER(0);
