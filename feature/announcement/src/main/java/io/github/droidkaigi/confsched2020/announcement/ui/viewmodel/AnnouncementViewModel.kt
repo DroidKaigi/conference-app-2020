@@ -20,6 +20,11 @@ class AnnouncementViewModel @AssistedInject constructor(
                 .toLoadingState()
                 .asLiveData()
         )
+        try {
+            announcementRepository.refresh()
+        } catch (ignored: Exception) {
+            // TODO: Show from cache?
+        }
     }
 
     @AssistedInject.Factory
