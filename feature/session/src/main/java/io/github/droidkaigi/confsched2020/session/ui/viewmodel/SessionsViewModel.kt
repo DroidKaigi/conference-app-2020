@@ -98,11 +98,11 @@ class SessionsViewModel @Inject constructor(
 
     // Functions
     @CheckResult
-    fun favorite(session: Session): LifecycleRunnable {
+    fun favorite(sessionn: Session): LifecycleRunnable {
         return liveData {
             try {
                 emit(LoadingState.Loading)
-                sessionRepository.toggleFavorite(session)
+                sessionRepository.toggleFavorite(sessionn)
                 emit(LoadingState.Loaded)
             } catch (e: Exception) {
                 emit(LoadingState.Error(e))
