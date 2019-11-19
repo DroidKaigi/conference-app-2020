@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
-import com.soywiz.klock.DateTime
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.ViewHolder
@@ -83,25 +82,7 @@ class AnnouncementFragment : DaggerFragment() {
                 LoadState.Loading -> Unit
                 is LoadState.Loaded -> {
                     groupAdapter.update(
-//                        state.value.map { announcement -> announcement.toItem() }
-
-                        // FIXME: Remove this debug code.
-                        listOf(
-                            Announcement(
-                                id = 1,
-                                title = "test",
-                                content = "test content",
-                                publishedAt = DateTime.now(),
-                                type = Announcement.Type.NOTIFICATION
-                            ).toItem(),
-                            Announcement(
-                                id = 2,
-                                title = "test",
-                                content = "test content",
-                                publishedAt = DateTime.now(),
-                                type = Announcement.Type.NOTIFICATION
-                            ).toItem()
-                        )
+                        state.value.map { announcement -> announcement.toItem() }
                     )
                 }
                 is LoadState.Error -> {
@@ -114,7 +95,7 @@ class AnnouncementFragment : DaggerFragment() {
     }
 
     private fun Announcement.toItem(): Item<*> {
-        return announcementItemFactory.create(this, announcementViewModel, systemViewModel)
+        return announcementItemFactory.create(this)
     }
 
     @Module

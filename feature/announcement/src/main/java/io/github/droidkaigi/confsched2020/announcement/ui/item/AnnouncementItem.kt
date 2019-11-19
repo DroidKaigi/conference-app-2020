@@ -1,7 +1,5 @@
 package io.github.droidkaigi.confsched2020.announcement.ui.item
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.TimezoneOffset
 import com.squareup.inject.assisted.Assisted
@@ -9,16 +7,11 @@ import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.announcement.R
 import io.github.droidkaigi.confsched2020.announcement.databinding.ItemAnnouncementBinding
-import io.github.droidkaigi.confsched2020.announcement.ui.viewmodel.AnnouncementViewModel
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Announcement
-import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 
 class AnnouncementItem @AssistedInject constructor(
-    @Assisted val announcement: Announcement,
-    @Assisted val announcementViewModel: AnnouncementViewModel,
-    @Assisted val systemViewModel: SystemViewModel,
-    val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
+    @Assisted val announcement: Announcement
 ) : BindableItem<ItemAnnouncementBinding>(announcement.id), EqualableContentsProvider {
 
     companion object {
@@ -57,9 +50,7 @@ class AnnouncementItem @AssistedInject constructor(
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            announcement: Announcement,
-            announcementViewModel: AnnouncementViewModel,
-            systemViewModel: SystemViewModel
+            announcement: Announcement
         ): AnnouncementItem
     }
 }
