@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="Widget.DroidKaigi.BottomSheet" parent="Theme.MaterialComponents.BottomSheetDialog">
-        <item name="shapeAppearance">@style/ShapeAppearanceOverlay.DroidKaigi.BottomSheet</item>
-    </style>
-</resources>
