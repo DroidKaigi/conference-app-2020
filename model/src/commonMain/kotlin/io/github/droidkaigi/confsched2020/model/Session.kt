@@ -17,7 +17,7 @@ sealed class Session(
 ) {
     val startDayText by lazy { startTime.toOffset(9.hours).format("yyyy.M.d") }
 
-    val startTimeText by lazy { startTime.format("HH:mm")}
+    val startTimeText by lazy { startTime.format("HH:mm") }
 
     fun timeSummary(lang: Lang, timezoneOffset: TimezoneOffset) = buildString {
         val startTimeTZ = startTime.toOffset(timezoneOffset)
@@ -56,6 +56,9 @@ sealed class Session(
 
     val timeInMinutes: Int
         get() = TimeSpan(endTime.unixMillis - startTime.unixMillis).minutes.toInt()
+
+    val hasIntendedAudience: Boolean get() = this is SpeechSession
+    val hasSpeaker: Boolean get() = this is SpeechSession
 }
 
 @AndroidParcelize
