@@ -34,13 +34,13 @@ class SessionsViewModel @Inject constructor(
     data class UiModel(
         val isLoading: Boolean,
         val error: AppError?,
-        val filters: Filters,
-        val allFilters: Filters,
         val dayToSessionsMap: Map<SessionPage.Day, List<Session>>,
-        val favoritedSessions: List<Session>
+        val favoritedSessions: List<Session>,
+        val filters: Filters,
+        val allFilters: Filters
     ) {
         companion object {
-            val EMPTY = UiModel(false, null, Filters(), Filters(), mapOf(), listOf())
+            val EMPTY = UiModel(false, null, mapOf(), listOf(), Filters(), Filters())
         }
     }
 
@@ -89,14 +89,6 @@ class SessionsViewModel @Inject constructor(
             isLoading = isLoading,
             error = (sessionsLoadState.getExceptionIfExists()
                 ?: favoriteLoadingState.getExceptionIfExists()).toAppError(),
-            filters = filters,
-            allFilters = Filters(
-                rooms = sessionContents.rooms.toSet(),
-                audienceCategories = sessionContents.audienceCategories.toSet(),
-                categories = sessionContents.category.toSet(),
-                langs = sessionContents.langs.toSet(),
-                langSupports = sessionContents.langSupports.toSet()
-            ),
             dayToSessionsMap = filteredSessions
                 .groupBy { it.dayNumber }
                 .mapKeys {
@@ -105,7 +97,15 @@ class SessionsViewModel @Inject constructor(
                     )
                 },
             favoritedSessions = filteredSessions
-                .filter { it.isFavorited }
+                .filter { it.isFavorited },
+            filters = filters,
+            allFilters = Filters(
+                rooms = sessionContents.rooms.toSet(),
+                audienceCategories = sessionContents.audienceCategories.toSet(),
+                categories = sessionContents.category.toSet(),
+                langs = sessionContents.langs.toSet(),
+                langSupports = sessionContents.langSupports.toSet()
+            )
         )
     }
 

@@ -59,6 +59,7 @@ sealed class Session(
 
     val hasIntendedAudience: Boolean get() = this is SpeechSession
     val hasSpeaker: Boolean get() = this is SpeechSession
+    val shouldCountForFilter: Boolean get() = this is SpeechSession
 }
 
 @AndroidParcelize

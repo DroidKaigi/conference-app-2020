@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -69,6 +70,8 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
             // TODO: support favorite list
             val sessions = uiModel.favoritedSessions
+            binding.filteredSessionCount.text = sessions.filter { it.shouldCountForFilter }.count().toString()
+            binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()
             groupAdapter.update(sessions.map {
                 sessionItemFactory.create(it, sessionsViewModel)
             })
