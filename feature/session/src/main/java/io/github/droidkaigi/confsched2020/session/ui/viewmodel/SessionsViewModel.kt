@@ -10,6 +10,7 @@ import io.github.droidkaigi.confsched2020.ext.LifecycleRunnable
 import io.github.droidkaigi.confsched2020.ext.asLiveData
 import io.github.droidkaigi.confsched2020.ext.composeBy
 import io.github.droidkaigi.confsched2020.ext.onChanged
+import io.github.droidkaigi.confsched2020.ext.requireValue
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
@@ -17,6 +18,7 @@ import io.github.droidkaigi.confsched2020.model.Filters
 import io.github.droidkaigi.confsched2020.model.Lang
 import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.LoadingState
+import io.github.droidkaigi.confsched2020.model.Room
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionPage
@@ -30,11 +32,12 @@ class SessionsViewModel @Inject constructor(
         val isLoading: Boolean,
         val error: AppError?,
         val filters: Filters,
+        val allFilters: Filters,
         val dayToSessionsMap: Map<SessionPage.Day, List<Session>>,
         val favoritedSessions: List<Session>
     ) {
         companion object {
-            val EMPTY = UiModel(false, null, Filters(), mapOf(), listOf())
+            val EMPTY = UiModel(false, null, Filters(), Filters(), mapOf(), listOf())
         }
     }
 
@@ -84,6 +87,13 @@ class SessionsViewModel @Inject constructor(
             error = (sessionsLoadState.getExceptionIfExists()
                 ?: favoriteLoadingState.getExceptionIfExists()).toAppError(),
             filters = filters,
+            allFilters = Filters(
+                rooms = sessionContents.rooms.toSet(),
+                audienceCategories = sessionContents.audienceCategories.toSet(),
+                categories = sessionContents.category.toSet(),
+                langs = sessionContents.langs.toSet(),
+                langSupports = sessionContents.langSupports.toSet()
+            ),
             dayToSessionsMap = filteredSessions
                 .groupBy { it.dayNumber }
                 .mapKeys {
@@ -115,6 +125,13 @@ class SessionsViewModel @Inject constructor(
     fun onFilterIsOnlyEnglishChanged(isOnlyEnglish: Boolean) {
         filterLiveData.value = filterLiveData.value?.copy(
             langs = if (isOnlyEnglish) setOf(Lang.EN) else setOf()
+        )
+    }
+
+    fun roomFilterChanged(room: Room, checked: Boolean) {
+        val filters = filterLiveData.requireValue()
+        filterLiveData.value = filters.copy(
+            rooms = if (checked) filters.rooms + room else filters.rooms - room
         )
     }
 }
