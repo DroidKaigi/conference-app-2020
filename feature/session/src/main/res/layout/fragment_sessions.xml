@@ -28,6 +28,35 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/language_filters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/room_filters"
+                    />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/audience_category_filters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/language_filters"
+                    />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/category_filters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/audience_category_filters"
+                    />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/language_support_filters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/category_filters"
+                    />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 

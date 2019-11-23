@@ -21,6 +21,7 @@ import io.github.droidkaigi.confsched2019.session.ui.BottomSheetDaySessionsFragm
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.model.SessionPage
+import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionsBinding
 import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
@@ -99,7 +100,35 @@ class SessionsFragment : DaggerFragment() {
                 currentFilterSet = uiModel.filters.rooms,
                 filterName = { it.name }
             ) { checked, room ->
-                sessionsViewModel.roomFilterChanged(room, checked)
+                sessionsViewModel.filterChanged(room, checked)
+            }
+            binding.languageFilters.setupFilter(
+                allFilterSet = uiModel.allFilters.langs,
+                currentFilterSet = uiModel.filters.langs,
+                filterName = { it.name }
+            ) { checked, language ->
+                sessionsViewModel.filterChanged(language, checked)
+            }
+            binding.categoryFilters.setupFilter(
+                allFilterSet = uiModel.allFilters.categories,
+                currentFilterSet = uiModel.filters.categories,
+                filterName = { it.name.getByLang(defaultLang()) }
+            ) { checked, category ->
+                sessionsViewModel.filterChanged(category, checked)
+            }
+            binding.audienceCategoryFilters.setupFilter(
+                allFilterSet = uiModel.allFilters.audienceCategories,
+                currentFilterSet = uiModel.filters.audienceCategories,
+                filterName = { it.name }
+            ) { checked, audienceCategory ->
+                sessionsViewModel.filterChanged(audienceCategory, checked)
+            }
+            binding.languageSupportFilters.setupFilter(
+                allFilterSet = uiModel.allFilters.langSupports,
+                currentFilterSet = uiModel.filters.langSupports,
+                filterName = { it.name }
+            ) { checked, level ->
+                sessionsViewModel.filterChanged(level, checked)
             }
         }
     }
