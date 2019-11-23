@@ -140,9 +140,10 @@ class SessionsFragment : DaggerFragment() {
         crossinline onCheckChanged: (Boolean, T) -> Unit
     ) {
         // judge should we inflate chip?
-        val filterToView = if (childCount == 0 || children.withIndex().any { (index, view) ->
-                view.getTag(R.id.tag_filter) != allFilterSet.elementAt(index)
-            }) {
+        val shouldInflateChip = childCount == 0 || children.withIndex().any { (index, view) ->
+            view.getTag(R.id.tag_filter) != allFilterSet.elementAtOrNull(index)
+        }
+        val filterToView = if (shouldInflateChip) {
             // filter data changed, so we should inflate it
             removeAllViews()
             allFilterSet.map { filter ->
@@ -162,6 +163,8 @@ class SessionsFragment : DaggerFragment() {
             // use existing view
             children.map { it.getTag(R.id.tag_filter) as T to it as FilterChip }.toMap()
         }
+
+        // bind chip data
         filterToView.forEach { (filter, chip) ->
             val shouldChecked = currentFilterSet.contains(filter)
             if (chip.isChecked != shouldChecked) {
