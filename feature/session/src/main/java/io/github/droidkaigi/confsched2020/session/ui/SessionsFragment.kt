@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.chip.ChipGroup
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -18,14 +20,16 @@ import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2019.session.ui.BottomSheetDaySessionsFragmentArgs
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
-import io.github.droidkaigi.confsched2020.model.Lang
 import io.github.droidkaigi.confsched2020.model.SessionPage
+import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionsBinding
 import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
+import io.github.droidkaigi.confsched2020.ui.widget.FilterChip
+import io.github.droidkaigi.confsched2020.ui.widget.onCheckedChanged
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -90,14 +94,85 @@ class SessionsFragment : DaggerFragment() {
                 BottomSheetBehavior.STATE_COLLAPSED
             }
         }
-        binding.filterEnglish.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (buttonView.isPressed) {
-                // ignore saved state change
-                sessionsViewModel.onFilterIsOnlyEnglishChanged(isChecked)
+        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
+            binding.roomFilters.setupFilter(
+                allFilterSet = uiModel.allFilters.rooms,
+                currentFilterSet = uiModel.filters.rooms,
+                filterName = { it.name }
+            ) { checked, room ->
+                sessionsViewModel.filterChanged(room, checked)
+            }
+            binding.languageFilters.setupFilter(
+                allFilterSet = uiModel.allFilters.langs,
+                currentFilterSet = uiModel.filters.langs,
+                filterName = { it.name }
+            ) { checked, language ->
+                sessionsViewModel.filterChanged(language, checked)
+            }
+            binding.categoryFilters.setupFilter(
+                allFilterSet = uiModel.allFilters.categories,
+                currentFilterSet = uiModel.filters.categories,
+                filterName = { it.name.getByLang(defaultLang()) }
+            ) { checked, category ->
+                sessionsViewModel.filterChanged(category, checked)
+            }
+            binding.audienceCategoryFilters.setupFilter(
+                allFilterSet = uiModel.allFilters.audienceCategories,
+                currentFilterSet = uiModel.filters.audienceCategories,
+                filterName = { it.name }
+            ) { checked, audienceCategory ->
+                sessionsViewModel.filterChanged(audienceCategory, checked)
+            }
+            binding.languageSupportFilters.setupFilter(
+                allFilterSet = uiModel.allFilters.langSupports,
+                currentFilterSet = uiModel.filters.langSupports,
+                filterName = { it.name }
+            ) { checked, level ->
+                sessionsViewModel.filterChanged(level, checked)
             }
         }
-        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
-            binding.filterEnglish.isChecked = uiModel.filters.langs.contains(Lang.EN)
+    }
+
+    private inline fun <reified T> ChipGroup.setupFilter(
+        allFilterSet: Set<T>,
+        currentFilterSet: Set<T>,
+        filterName: (T) -> String,
+        crossinline onCheckChanged: (Boolean, T) -> Unit
+    ) {
+        // judge should we inflate chip?
+        val shouldInflateChip = childCount == 0 || children.withIndex().any { (index, view) ->
+            view.getTag(R.id.tag_filter) != allFilterSet.elementAtOrNull(index)
+        }
+        val filterToView = if (shouldInflateChip) {
+            // filter data changed, so we should inflate it
+            removeAllViews()
+            allFilterSet.map { filter ->
+                val chip =
+                    layoutInflater.inflate(
+                        R.layout.layout_chip,
+                        this,
+                        false
+                    ) as FilterChip
+                chip.onCheckedChangeListener = null
+                chip.text = filterName(filter)
+                chip.setTag(R.id.tag_filter, filter)
+                addView(chip)
+                filter to chip
+            }.toMap()
+        } else {
+            // use existing view
+            children.map { it.getTag(R.id.tag_filter) as T to it as FilterChip }.toMap()
+        }
+
+        // bind chip data
+        filterToView.forEach { (filter, chip) ->
+            val shouldChecked = currentFilterSet.contains(filter)
+            if (chip.isChecked != shouldChecked) {
+                chip.isChecked = shouldChecked
+            }
+            chip.onCheckedChanged { _, checked ->
+                onCheckChanged(checked, filter)
+            }
         }
     }
 
