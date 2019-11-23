@@ -11,6 +11,25 @@ import com.hadilq.liveevent.LiveEvent
 
 fun <T : Any>LiveData<T>.requireValue() = requireNotNull(value)
 
+inline fun <T : Any, LIVE1 : Any> composeBy(
+    initialValue: T,
+    liveData1: LiveData<LIVE1>,
+    crossinline block: (T, LIVE1) -> T
+): LiveData<T> {
+    return MediatorLiveData<T>().apply {
+        value = initialValue
+        listOf(liveData1).forEach { liveData ->
+            addSource(liveData) {
+                val currentValue = value
+                val liveData1Value = liveData1.value
+                if (currentValue != null && liveData1Value != null) {
+                    value = block(currentValue, liveData1Value)
+                }
+            }
+        }
+    }.distinctUntilChanged()
+}
+
 inline fun <T : Any, LIVE1 : Any, LIVE2 : Any> composeBy(
     initialValue: T,
     liveData1: LiveData<LIVE1>,

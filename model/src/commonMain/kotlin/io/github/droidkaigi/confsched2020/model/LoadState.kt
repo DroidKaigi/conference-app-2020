@@ -6,5 +6,5 @@ sealed class LoadState<out T> {
     class Error<T>(val e: Throwable) : LoadState<T>()
 
     val isLoading get() = this is Loading
-    fun getExceptionIfExists() = if (this is Error) e else null
+    fun getErrorIfExists() = if (this is Error) e else null
 }
