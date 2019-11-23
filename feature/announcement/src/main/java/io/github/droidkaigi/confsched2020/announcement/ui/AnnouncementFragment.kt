@@ -76,24 +76,14 @@ class AnnouncementFragment : DaggerFragment() {
             loading = true
         }
 
-        announcementViewModel.announcementLoadStateLiveData.observe(viewLifecycleOwner) { state ->
-            progressTimeLatch.loading = state.isLoading
-            when (state) {
-                LoadState.Loading -> binding.emptyMessage.visibility = View.GONE
-                is LoadState.Loaded -> {
-                    if (state.value.isEmpty()) {
-                        binding.emptyMessage.visibility = View.VISIBLE
-                    } else {
-                        groupAdapter.update(
-                            state.value.map { announcement -> announcement.toItem() }
-                        )
-                    }
-                }
-                is LoadState.Error -> {
-                    state.e.toAppError()?.let {
-                        systemViewModel.onError(it)
-                    }
-                }
+        announcementViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
+            progressTimeLatch.loading = uiModel.isLoading
+            binding.emptyMessage.isVisible = uiModel.isEmpty
+            groupAdapter.update(
+                uiModel.announcements.map { announcement -> announcement.toItem() }
+            )
+            uiModel.error?.let {
+                systemViewModel.onError(it)
             }
         }
     }

@@ -81,7 +81,7 @@ class SessionsViewModel @Inject constructor(
             .filter { filters.isPass(it) }
         UiModel(
             isLoading = isLoading,
-            error = (sessionsLoadState.getExceptionIfExists()
+            error = (sessionsLoadState.getErrorIfExists()
                 ?: favoriteLoadingState.getExceptionIfExists()).toAppError(),
             filters = filters,
             dayToSessionsMap = filteredSessions
