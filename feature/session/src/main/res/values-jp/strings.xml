@@ -2,4 +2,5 @@
 <resources>
     <string name="session_on_going">LIVE</string>
     <string name="start_filter">絞り込む</string>
+    <string name="intended_audience_title">対象者</string>
 </resources>
