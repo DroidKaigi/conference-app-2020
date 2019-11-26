@@ -116,7 +116,7 @@ internal class RoomDatabase @Inject constructor(
         }
     }
 
-    override suspend fun announcementsByLang(lang: String): Flow<List<AnnouncementEntity>> =
+    override fun announcementsByLang(lang: String): Flow<List<AnnouncementEntity>> =
         announcementDao.announcementsByLang(lang)
 
     override suspend fun save(apiResponse: List<AnnouncementResponse>) {

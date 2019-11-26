@@ -4,6 +4,6 @@ import io.github.droidkaigi.confsched2020.model.Announcement
 import kotlinx.coroutines.flow.Flow
 
 interface AnnouncementRepository {
-    suspend fun announcements(): Flow<List<Announcement>>
+    fun announcements(): Flow<List<Announcement>>
     suspend fun refresh()
 }

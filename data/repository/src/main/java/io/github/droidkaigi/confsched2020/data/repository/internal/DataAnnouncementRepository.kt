@@ -17,7 +17,7 @@ class DataAnnouncementRepository @Inject constructor(
     private val droidKaigiApi: DroidKaigiApi,
     private val announcementDatabase: AnnouncementDatabase
 ) : AnnouncementRepository {
-    override suspend fun announcements(): Flow<List<Announcement>> {
+    override fun announcements(): Flow<List<Announcement>> {
         return announcementDatabase
             .announcementsByLang(defaultLang().toParameter().name)
             .map { announcementList ->

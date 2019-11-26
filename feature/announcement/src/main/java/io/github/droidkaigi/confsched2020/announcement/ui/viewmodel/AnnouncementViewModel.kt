@@ -23,7 +23,7 @@ class AnnouncementViewModel @AssistedInject constructor(
         try {
             announcementRepository.refresh()
         } catch (ignored: Exception) {
-            // TODO: Show from cache?
+            // NOP
         }
     }
 
