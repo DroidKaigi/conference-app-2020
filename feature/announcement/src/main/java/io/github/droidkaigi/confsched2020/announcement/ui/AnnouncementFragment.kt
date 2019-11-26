@@ -22,9 +22,7 @@ import io.github.droidkaigi.confsched2020.announcement.ui.viewmodel.Announcement
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.model.Announcement
-import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
