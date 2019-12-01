@@ -212,4 +212,8 @@ object Dep {
         val jdk = "com.jakewharton.timber:timber-jdk:5.0.0-SNAPSHOT"
         val android = "com.jakewharton.timber:timber-android:5.0.0-SNAPSHOT"
     }
+
+    object Insetter {
+        val insetter = "dev.chrisbanes:insetter-ktx:0.2.0"
+    }
 }

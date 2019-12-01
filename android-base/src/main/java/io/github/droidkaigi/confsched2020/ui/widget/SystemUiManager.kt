@@ -9,7 +9,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-class StatusBarColorManager(
+class SystemUiManager(
     val context: Context
 ) {
     private val _systemUiVisibility = MutableLiveData(0)
@@ -48,17 +48,20 @@ class StatusBarColorManager(
     @TargetApi(23)
     private fun updateColorsM() {
         // Matrix: icon color / bar visibility
-        // | Brand theme | Drawer closed   | Drawer opened   |
-        // | ----------- | --------------- | --------------- |
-        // | Yes         | White/Invisible | White/Visible   |
-        // | No          | Black/Invisible | Black/Invisible |
+        // | indigo background | Drawer closed   | Drawer opened |
+        // | ----------------- | --------------- | ------------- |
+        // | Yes               | White/Invisible | White/Visible   |
+        // | No                | Black/Invisible | Black/Invisible |
 
         // Icon color: change based on theme with View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         _systemUiVisibility.value = if (isIndigoBackground || isNightMode()) {
             0
         } else {
             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
+        } or
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+            View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
 
         // Status bar color
         _statusBarColor.value = if ((isIndigoBackground || isNightMode()) && drawerIsOpened) {
@@ -70,12 +73,14 @@ class StatusBarColorManager(
 
     private fun updateColorsPreM() {
         // Matrix: icon color / bar visibility
-        // | Brand theme | Drawer closed   | Drawer opened |
-        // | ----------- | --------------- | ------------- |
-        // | Yes         | White/Invisible | White/Visible |
-        // | No          | White/Visible   | White/Visible |
+        // | indigo background | Drawer closed   | Drawer opened |
+        // | ----------------- | --------------- | ------------- |
+        // | Yes               | White/Invisible | White/Visible |
+        // | No                | White/Visible   | White/Visible |
 
         // Icon color: can not change. Always white
+        _systemUiVisibility.value = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
         // Status bar color
         _statusBarColor.value = if (!(isIndigoBackground || isNightMode()) || drawerIsOpened) {
