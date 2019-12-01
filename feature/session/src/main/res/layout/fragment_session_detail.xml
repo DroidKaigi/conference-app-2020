@@ -254,6 +254,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:theme="@style/ThemeOverlay.DroidKaigi.Indigo"
+            app:menu="@menu/menu_session_detail_bottomappbar"
             app:fabAlignmentMode="end"
             app:hideOnScroll="true"
             />
@@ -262,7 +263,6 @@
             android:id="@+id/session_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:src="@{session.isFavorited? @drawable/ic_bookmark_black_24dp : @drawable/ic_bookmark_border_black_24dp}"
             app:backgroundTint="?colorPrimary"
             app:layout_anchor="@id/bottom_app_bar"

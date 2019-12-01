@@ -5,18 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2019.session.ui.BottomSheetDaySessionsFragmentArgs
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
+import io.github.droidkaigi.confsched2020.model.ExpandFilterState
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetSessionsBinding
@@ -79,12 +83,26 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
         binding.startFilter.setOnClickListener { _ ->
             sessionTabViewModel.toggleExpand()
         }
+        binding.sessionRecycler.doOnApplyWindowInsets { view, insets, initialState ->
+            view.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+        }
+
+        sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
+            TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
+            binding.sessionRecycler.isVisible = when (uiModel.expandFilterState) {
+                ExpandFilterState.EXPANDED, ExpandFilterState.CHANGING ->
+                    true
+                else ->
+                    false
+            }
+        }
 
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
             // TODO: support favorite list
             val page = SessionPage.dayOfNumber(args.day) as? SessionPage.Day ?: return@observe
             val sessions = uiModel.dayToSessionsMap[page].orEmpty()
-            binding.filteredSessionCount.text = sessions.filter { it.shouldCountForFilter }.count().toString()
+            binding.filteredSessionCount.text =
+                sessions.filter { it.shouldCountForFilter }.count().toString()
             binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()
             groupAdapter.update(sessions.map {
                 sessionItemFactory.create(it, sessionsViewModel)

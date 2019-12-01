@@ -17,9 +17,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.DaggerFragment
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2019.session.ui.BottomSheetDaySessionsFragmentArgs
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
+import io.github.droidkaigi.confsched2020.model.ExpandFilterState
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
@@ -87,11 +89,37 @@ class SessionsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val initialPeekHeight = sessionSheetBehavior.peekHeight
+        binding.sessionsSheet.doOnApplyWindowInsets { view, insets, initialState ->
+            sessionSheetBehavior.peekHeight = insets.systemWindowInsetBottom + initialPeekHeight
+        }
+        sessionSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                sessionTabViewModel.setExpand(
+                    when (newState) {
+                        BottomSheetBehavior.STATE_COLLAPSED -> {
+                            ExpandFilterState.COLLAPSED
+                        }
+                        BottomSheetBehavior.STATE_EXPANDED -> {
+                            ExpandFilterState.EXPANDED
+                        }
+                        else -> {
+                            ExpandFilterState.CHANGING
+                        }
+                    }
+                )
+            }
+        })
+
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            sessionSheetBehavior.state = if (uiModel.expandedSession) {
-                BottomSheetBehavior.STATE_EXPANDED
-            } else {
-                BottomSheetBehavior.STATE_COLLAPSED
+            when (uiModel.expandFilterState) {
+                ExpandFilterState.EXPANDED -> sessionSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                ExpandFilterState.COLLAPSED -> sessionSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                ExpandFilterState.CHANGING -> Unit
             }
         }
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->

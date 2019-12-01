@@ -10,10 +10,6 @@
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorOnBackground">@color/black_alpha_87</item>
 
-        <!-- Window configurations -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-
         <!-- Text appearances -->
         <item name="textAppearanceHeadline5">@style/TextAppearance.DroidKaigi.Headline5</item>
         <item name="textAppearanceHeadline6">@style/TextAppearance.DroidKaigi.Headline6</item>
