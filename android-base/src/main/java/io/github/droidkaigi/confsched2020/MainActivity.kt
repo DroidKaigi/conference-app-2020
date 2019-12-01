@@ -1,9 +1,13 @@
 package io.github.droidkaigi.confsched2020
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
@@ -26,6 +30,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment
 import io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment.AnnouncementFragmentModule
 import io.github.droidkaigi.confsched2020.announcement.ui.di.AnnouncementAssistedInjectModule
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.databinding.ActivityMainBinding
 import io.github.droidkaigi.confsched2020.di.PageScope
@@ -44,7 +49,7 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragmentModule
 import io.github.droidkaigi.confsched2020.sponsor.ui.di.SponsorsAssistedInjectModule
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.PageConfiguration
-import io.github.droidkaigi.confsched2020.ui.widget.StatusBarColorManager
+import io.github.droidkaigi.confsched2020.ui.widget.SystemUiManager
 import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
@@ -68,8 +73,8 @@ class MainActivity : DaggerAppCompatActivity() {
         Navigation.findNavController(this, R.id.root_nav_host_fragment)
     }
 
-    private val statusBarColors: StatusBarColorManager by lazy {
-        StatusBarColorManager(this)
+    private val statusBarColors: SystemUiManager by lazy {
+        SystemUiManager(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +82,15 @@ class MainActivity : DaggerAppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         setupNavigation()
         setupStatusBarColors()
+
+        binding.drawerLayout.doOnApplyWindowInsets { view, insets, initialState ->
+            binding.drawerLayout.setChildInsetsWorkAround(insets)
+        }
+        binding.toolbar.doOnApplyWindowInsets { view, insets, initialState ->
+            binding.toolbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topMargin = insets.systemWindowInsetTop + initialState.margins.top
+            }
+        }
 
         systemViewModel.errorLiveData.observe(this) { appError ->
             Timber.debug(appError) { "AppError occured" }
@@ -88,6 +102,15 @@ class MainActivity : DaggerAppCompatActivity() {
                 )
                 .show()
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun DrawerLayout.setChildInsetsWorkAround(insets: WindowInsetsCompat) {
+        // If we use fitSystemWindows, DrawerLayout will consume windowInsets.
+        // But we want to apply window insets in other places. So we use the inner method for padding
+        setChildInsets(
+            insets.toWindowInsets(), insets.systemWindowInsetTop > 0
+        )
     }
 
     private fun setupNavigation() {

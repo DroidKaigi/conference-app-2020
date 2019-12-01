@@ -3,6 +3,7 @@ import dependencies.Dep
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'kotlin-kapt'
 
 apply from: rootProject.file('gradle/android.gradle')
 android.dataBinding.enabled = true
@@ -16,6 +17,8 @@ dependencies {
     implementation Dep.AndroidX.constraint
     implementation Dep.AndroidX.design
     implementation Dep.Kotlin.stdlibJvm
+
+    api Dep.Insetter.insetter
 
     implementation Dep.Dagger.androidSupport
     implementation Dep.Kotlin.stdlibJvm

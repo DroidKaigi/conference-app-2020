@@ -6,10 +6,14 @@
     >
 
     <data>
-
         <variable
             name="session"
             type="io.github.droidkaigi.confsched2020.model.Session"
+            />
+
+        <variable
+            name="speechSession"
+            type="io.github.droidkaigi.confsched2020.model.SpeechSession"
             />
 
         <variable
@@ -165,14 +169,53 @@
                     />
 
                 <View
-                    android:id="@+id/divider_text_and_speaker"
+                    android:id="@+id/divider_text_and_target"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_marginTop="28dp"
                     android:background="@color/black_alpha_12"
+                    app:isVisible="@{session.hasIntendedAudience}"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/text"
+                    />
+
+                <TextView
+                    android:id="@+id/target_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:text="@string/intended_audience_title"
+                    android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
+                    app:isVisible="@{session.hasIntendedAudience}"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/divider_text_and_target"
+                    />
+
+                <TextView
+                    android:id="@+id/target_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:text="@{speechSession.intendedAudience}"
+                    android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
+                    app:isVisible="@{session.hasIntendedAudience}"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/target_title"
+                    tools:text="target text long target text long target text long target text long target text long target text"
+                    />
+
+                <View
+                    android:id="@+id/divider_target_and_speaker"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="28dp"
+                    android:background="@color/black_alpha_12"
+                    app:isVisible="@{session.hasSpeaker}"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/target_text"
                     />
 
                 <TextView
@@ -182,8 +225,9 @@
                     android:layout_marginTop="28dp"
                     android:text="@string/speaker_label"
                     android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
+                    app:isVisible="@{session.hasSpeaker}"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/divider_text_and_speaker"
+                    app:layout_constraintTop_toBottomOf="@id/divider_target_and_speaker"
                     />
 
                 <LinearLayout
@@ -193,6 +237,7 @@
                     android:layout_marginTop="18dp"
                     android:layout_marginBottom="32dp"
                     android:orientation="vertical"
+                    app:isVisible="@{session.hasSpeaker}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -203,12 +248,13 @@
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.bottomappbar.BottomAppBar
-            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
-            android:theme="@style/ThemeOverlay.DroidKaigi.Indigo"
             android:id="@+id/bottom_app_bar"
+            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:theme="@style/ThemeOverlay.DroidKaigi.Indigo"
+            app:menu="@menu/menu_session_detail_bottomappbar"
             app:fabAlignmentMode="end"
             app:hideOnScroll="true"
             />
@@ -218,11 +264,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@{session.isFavorited? @drawable/ic_bookmark_black_24dp : @drawable/ic_bookmark_border_black_24dp}"
-            tools:src="@drawable/ic_bookmark_black_24dp"
             app:backgroundTint="?colorPrimary"
             app:layout_anchor="@id/bottom_app_bar"
-            android:layout_marginBottom="16dp"
             app:tint="?colorOnPrimary"
+            tools:src="@drawable/ic_bookmark_black_24dp"
             />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -9,7 +9,7 @@
         android:id="@+id/fragment_sessions_coodinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="io.github.droidkaigi.confsched2019.session.ui.SessionPagesFragment"
+        tools:theme="@style/Theme.DroidKaigi.Indigo"
         >
 
         <ScrollView
@@ -21,27 +21,55 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/filter_english"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/room_filters"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="english only(filter test)"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/language_filters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/room_filters"
+                    />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/audience_category_filters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/language_filters"
+                    />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/category_filters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/audience_category_filters"
+                    />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/language_support_filters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/category_filters"
+                    />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
         <FrameLayout
-            style="@style/Widget.DroidKaigi.BottomSheet"
             android:id="@+id/sessions_sheet"
+            style="@style/Widget.DroidKaigi.BottomSheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
+            app:backgroundTint="?attr/colorSurface"
             app:behavior_hideable="false"
             app:behavior_peekHeight="64dp"
             app:behavior_skipCollapsed="true"
-            app:backgroundTint="?attr/colorSurface"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             tools:layout="@layout/fragment_bottom_sheet_sessions"
             />

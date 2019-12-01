@@ -82,6 +82,7 @@ class SessionDetailFragment : DaggerFragment() {
                     sessionDetailViewModel.favorite(session).observeBy(viewLifecycleOwner)
                 }
                 binding.session = session
+                binding.speechSession = (session as? SpeechSession)
                 binding.lang = defaultLang()
                 binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
                 binding.tags.removeAllViews()

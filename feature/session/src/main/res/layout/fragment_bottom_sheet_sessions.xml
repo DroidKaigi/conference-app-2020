@@ -27,6 +27,18 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="16dp"
             />
+        <TextView
+            android:id="@+id/filtered_session_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_filter_list_black_24dp"
+            android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
+            android:theme="@style/ThemeOverlay.DroidKaigi.Indigo"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/start_filter"
+            tools:text="Applicable session: 12"
+            />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/start_filter"
             android:layout_width="wrap_content"
@@ -54,6 +66,7 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
