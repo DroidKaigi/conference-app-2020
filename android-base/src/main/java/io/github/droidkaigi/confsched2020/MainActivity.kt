@@ -27,6 +27,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
+import io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment
+import io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment.AnnouncementFragmentModule
+import io.github.droidkaigi.confsched2020.announcement.ui.di.AnnouncementAssistedInjectModule
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.databinding.ActivityMainBinding
@@ -208,6 +211,12 @@ abstract class MainActivityModule {
         modules = [SponsorsFragmentModule::class, SponsorsAssistedInjectModule::class]
     )
     abstract fun contributeSponsorsFragment(): SponsorsFragment
+
+    @PageScope
+    @ContributesAndroidInjector(
+        modules = [AnnouncementFragmentModule::class, AnnouncementAssistedInjectModule::class]
+    )
+    abstract fun contributeAnnouncementFragment(): AnnouncementFragment
 
     @Module
     companion object {

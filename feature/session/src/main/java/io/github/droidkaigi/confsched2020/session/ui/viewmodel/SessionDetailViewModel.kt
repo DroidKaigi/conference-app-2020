@@ -68,7 +68,7 @@ class SessionDetailViewModel @AssistedInject constructor(
         }
         UiModel(
             isLoading = isLoading,
-            error = (sessionLoadState.getExceptionIfExists()
+            error = (sessionLoadState.getErrorIfExists()
                 ?: favoriteLoadingState.getExceptionIfExists()).toAppError(),
             session = sessions
         )

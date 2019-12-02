@@ -8,7 +8,8 @@ import io.github.droidkaigi.confsched2020.data.repository.AnnouncementRepository
 import io.github.droidkaigi.confsched2020.model.Announcement
 import io.github.droidkaigi.confsched2020.model.Lang
 import io.github.droidkaigi.confsched2020.model.defaultLang
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.util.Locale
 import javax.inject.Inject
 
@@ -16,17 +17,21 @@ class DataAnnouncementRepository @Inject constructor(
     private val droidKaigiApi: DroidKaigiApi,
     private val announcementDatabase: AnnouncementDatabase
 ) : AnnouncementRepository {
-    override suspend fun announcements(): List<Announcement> = coroutineScope {
-        announcementDatabase.announcementsByLang(defaultLang().toParameter().name)
-            .sortedByDescending { it.publishedAt }
-            .map {
-                Announcement(
-                    id = it.id,
-                    type = Announcement.Type.valueOf(it.type.toUpperCase(Locale.US)),
-                    title = it.title,
-                    publishedAt = DateTime(it.publishedAt),
-                    content = it.content
-                )
+    override fun announcements(): Flow<List<Announcement>> {
+        return announcementDatabase
+            .announcementsByLang(defaultLang().toParameter().name)
+            .map { announcementList ->
+                announcementList
+                    .sortedByDescending { it.publishedAt }
+                    .map {
+                        Announcement(
+                            id = it.id,
+                            type = Announcement.Type.valueOf(it.type.toUpperCase(Locale.US)),
+                            title = it.title,
+                            publishedAt = DateTime(it.publishedAt),
+                            content = it.content
+                        )
+                    }
             }
     }
 
