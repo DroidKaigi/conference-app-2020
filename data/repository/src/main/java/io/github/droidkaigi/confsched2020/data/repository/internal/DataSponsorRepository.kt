@@ -21,7 +21,7 @@ class DataSponsorRepository @Inject constructor(
             .sponsors()
             .map {
                 it.sortedBy { sponsorEntity -> sponsorEntity.sort }
-                it.groupBy { sponsorEntity -> sponsorEntity.plan }
+                    .groupBy { sponsorEntity -> sponsorEntity.plan }
                     .mapNotNull { (plan, sponsors) ->
                         val sponsorPlan = SponsorPlan.Plan.from(plan)
                             ?: return@mapNotNull null
