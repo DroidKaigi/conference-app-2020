@@ -44,11 +44,11 @@ class SponsorsViewModel @AssistedInject constructor(
         initialValue = UiModel.EMPTY,
         liveData1 = sponsorsLoadStateLiveData
     ) { _, loadState ->
-        val category = (loadState as? LoadState.Loaded)?.value.orEmpty()
+        val sponsorCategories = (loadState as? LoadState.Loaded)?.value.orEmpty()
         UiModel(
             isLoading = loadState.isLoading,
             error = loadState.getErrorIfExists().toAppError(),
-            sponsorCategories = category
+            sponsorCategories = sponsorCategories
         )
     }
 
