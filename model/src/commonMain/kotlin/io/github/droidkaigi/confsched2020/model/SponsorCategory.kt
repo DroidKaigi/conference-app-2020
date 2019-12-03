@@ -1,11 +1,11 @@
 package io.github.droidkaigi.confsched2020.model
 
-data class SponsorPlan(
-    val plan: Plan,
+data class SponsorCategory(
+    val category: Category,
     val sponsors: List<Sponsor>
 ) {
 
-    enum class Plan(val id: String, val title: String) {
+    enum class Category(val id: String, val title: String) {
         PLATINUM("PLATINUM", "platinum\nsponsors"),
         GOLD("GOLD", "gold\nsponsors"),
         SUPPORTER("SUPPORTER", "sponsors"),

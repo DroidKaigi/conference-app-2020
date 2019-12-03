@@ -11,7 +11,7 @@ import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.model.LoadState
-import io.github.droidkaigi.confsched2020.model.SponsorPlan
+import io.github.droidkaigi.confsched2020.model.SponsorCategory
 
 class SponsorsViewModel @AssistedInject constructor(
     private val sponsorRepository: SponsorRepository
@@ -20,14 +20,14 @@ class SponsorsViewModel @AssistedInject constructor(
     data class UiModel(
         val isLoading: Boolean,
         val error: AppError?,
-        val sponsorPlans: List<SponsorPlan>
+        val sponsorCategories: List<SponsorCategory>
     ) {
         companion object {
             val EMPTY = UiModel(false, null, listOf())
         }
     }
 
-    private val sponsorsLoadStateLiveData: LiveData<LoadState<List<SponsorPlan>>> = liveData {
+    private val sponsorsLoadStateLiveData: LiveData<LoadState<List<SponsorCategory>>> = liveData {
         emitSource(
             sponsorRepository.sponsors()
                 .toLoadingState()
@@ -44,11 +44,11 @@ class SponsorsViewModel @AssistedInject constructor(
         initialValue = UiModel.EMPTY,
         liveData1 = sponsorsLoadStateLiveData
     ) { _, loadState ->
-        val sponsorPlans = (loadState as? LoadState.Loaded)?.value.orEmpty()
+        val category = (loadState as? LoadState.Loaded)?.value.orEmpty()
         UiModel(
             isLoading = loadState.isLoading,
             error = loadState.getErrorIfExists().toAppError(),
-            sponsorPlans = sponsorPlans
+            sponsorCategories = category
         )
     }
 

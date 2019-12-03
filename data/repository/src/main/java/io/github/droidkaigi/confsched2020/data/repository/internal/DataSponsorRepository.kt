@@ -7,7 +7,7 @@ import io.github.droidkaigi.confsched2020.data.repository.SponsorRepository
 import io.github.droidkaigi.confsched2020.model.Company
 import io.github.droidkaigi.confsched2020.model.LocaledString
 import io.github.droidkaigi.confsched2020.model.Sponsor
-import io.github.droidkaigi.confsched2020.model.SponsorPlan
+import io.github.droidkaigi.confsched2020.model.SponsorCategory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -16,17 +16,17 @@ class DataSponsorRepository @Inject constructor(
     private val api: DroidKaigiApi,
     private val sponsorDatabase: SponsorDatabase
 ) : SponsorRepository {
-    override fun sponsors(): Flow<List<SponsorPlan>> {
+    override fun sponsors(): Flow<List<SponsorCategory>> {
         return sponsorDatabase
             .sponsors()
             .map {
                 it.sortedBy { sponsorEntity -> sponsorEntity.sort }
                     .groupBy { sponsorEntity -> sponsorEntity.plan }
                     .mapNotNull { (plan, sponsors) ->
-                        val sponsorPlan = SponsorPlan.Plan.from(plan)
+                        val category = SponsorCategory.Category.from(plan)
                             ?: return@mapNotNull null
-                        SponsorPlan(
-                            sponsorPlan,
+                        SponsorCategory(
+                            category,
                             sponsors.map(SponsorEntity::toSponsor)
                         )
                     }
