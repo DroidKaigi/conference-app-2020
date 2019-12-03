@@ -8,13 +8,13 @@ import io.github.droidkaigi.confsched2020.data.repository.SponsorRepository
 import io.github.droidkaigi.confsched2020.ext.asLiveData
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.LoadState
-import io.github.droidkaigi.confsched2020.model.SponsorCategory
+import io.github.droidkaigi.confsched2020.model.SponsorPlan
 
 class SponsorsViewModel @AssistedInject constructor(
     private val sponsorRepository: SponsorRepository
 ) : ViewModel() {
 
-    val sponsorsLoadStateLiveData: LiveData<LoadState<List<SponsorCategory>>> = liveData {
+    val sponsorsLoadStateLiveData: LiveData<LoadState<List<SponsorPlan>>> = liveData {
         emitSource(
             sponsorRepository.sponsors()
                 .toLoadingState()

@@ -3,7 +3,7 @@ package io.github.droidkaigi.confsched2020.data.db.internal
 import io.github.droidkaigi.confsched2020.data.api.response.AnnouncementResponse
 import io.github.droidkaigi.confsched2020.data.api.response.ContributorResponse
 import io.github.droidkaigi.confsched2020.data.api.response.Response
-import io.github.droidkaigi.confsched2020.data.api.response.SponsorResponse
+import io.github.droidkaigi.confsched2020.data.api.response.SponsorListResponse
 import io.github.droidkaigi.confsched2020.data.api.response.StaffResponse
 import io.github.droidkaigi.confsched2020.data.db.AnnouncementDatabase
 import io.github.droidkaigi.confsched2020.data.db.ContributorDatabase
@@ -34,7 +34,6 @@ import io.github.droidkaigi.confsched2020.data.db.internal.entity.mapper.toSpeak
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.mapper.toSponsorEntities
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.mapper.toStaffEntities
 import io.github.droidkaigi.confsched2020.model.SessionFeedback
-import io.github.droidkaigi.confsched2020.model.SponsorCategory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -95,21 +94,10 @@ internal class RoomDatabase @Inject constructor(
         return sponsorDao.allSponsors()
     }
 
-    override suspend fun save(apiResponse: SponsorResponse) {
+    override suspend fun saveSponsors(apiResponse: SponsorListResponse) {
         withContext(coroutineContext) {
             database.runInTransaction {
-
-                val sponsors = listOf(
-                    SponsorCategory.Category.PLATINUM.id to apiResponse.platinum,
-                    SponsorCategory.Category.GOLD.id to apiResponse.gold,
-                    SponsorCategory.Category.SUPPORT.id to apiResponse.support,
-                    SponsorCategory.Category.TECH.id to apiResponse.tech
-                )
-                    .mapIndexed { categoryIndex, (category, list) ->
-                        list.toSponsorEntities(category, categoryIndex)
-                    }
-                    .flatten()
-
+                val sponsors = apiResponse.toSponsorEntities()
                 sponsorDao.deleteAll()
                 sponsorDao.insert(sponsors)
             }

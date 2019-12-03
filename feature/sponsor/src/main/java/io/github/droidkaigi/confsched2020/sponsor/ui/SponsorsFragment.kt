@@ -23,7 +23,7 @@ import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.Sponsor
-import io.github.droidkaigi.confsched2020.model.SponsorCategory
+import io.github.droidkaigi.confsched2020.model.SponsorPlan
 import io.github.droidkaigi.confsched2020.sponsor.databinding.FragmentSponsorsBinding
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.CategoryHeaderItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.SponsorItem
@@ -98,20 +98,20 @@ class SponsorsFragment : DaggerFragment() {
         }
     }
 
-    private fun SponsorCategory.toSection() = Section().apply {
-        setHeader(categoryHeaderItemFactory.create(category, sponsorsViewModel))
+    private fun SponsorPlan.toSection() = Section().apply {
+        setHeader(categoryHeaderItemFactory.create(plan, sponsorsViewModel))
         addAll(
             sponsors.map { sponsor ->
-                sponsor.toItem(category)
+                sponsor.toItem(plan)
             }
         )
         setHideWhenEmpty(true)
     }
 
-    private fun Sponsor.toItem(category: SponsorCategory.Category): Item<*> {
-        return when (category) {
-            SponsorCategory.Category.PLATINUM,
-            SponsorCategory.Category.GOLD -> {
+    private fun Sponsor.toItem(plan: SponsorPlan.Plan): Item<*> {
+        return when (plan) {
+            SponsorPlan.Plan.PLATINUM,
+            SponsorPlan.Plan.GOLD -> {
                 // TODO: Should change Large-width Design?
                 sponsorItemFactory.create(this, sponsorsViewModel, systemViewModel)
             }

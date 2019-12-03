@@ -4,8 +4,10 @@ import io.github.droidkaigi.confsched2020.data.api.DroidKaigiApi
 import io.github.droidkaigi.confsched2020.data.db.SponsorDatabase
 import io.github.droidkaigi.confsched2020.data.db.entity.SponsorEntity
 import io.github.droidkaigi.confsched2020.data.repository.SponsorRepository
+import io.github.droidkaigi.confsched2020.model.Company
+import io.github.droidkaigi.confsched2020.model.LocaledString
 import io.github.droidkaigi.confsched2020.model.Sponsor
-import io.github.droidkaigi.confsched2020.model.SponsorCategory
+import io.github.droidkaigi.confsched2020.model.SponsorPlan
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -14,17 +16,17 @@ class DataSponsorRepository @Inject constructor(
     private val api: DroidKaigiApi,
     private val sponsorDatabase: SponsorDatabase
 ) : SponsorRepository {
-    override fun sponsors(): Flow<List<SponsorCategory>> {
+    override fun sponsors(): Flow<List<SponsorPlan>> {
         return sponsorDatabase
             .sponsors()
             .map {
-                it.groupBy { sponsorEntity -> sponsorEntity.categoryIndex }
-                    .mapNotNull { (categoryIndex, sponsors) ->
-                        val category = SponsorCategory.Category.from(sponsors.first().category)
+                it.sortedBy { sponsorEntity -> sponsorEntity.sort }
+                it.groupBy { sponsorEntity -> sponsorEntity.plan }
+                    .mapNotNull { (plan, sponsors) ->
+                        val sponsorPlan = SponsorPlan.Plan.from(plan)
                             ?: return@mapNotNull null
-                        SponsorCategory(
-                            category,
-                            categoryIndex,
+                        SponsorPlan(
+                            sponsorPlan,
                             sponsors.map(SponsorEntity::toSponsor)
                         )
                     }
@@ -33,8 +35,21 @@ class DataSponsorRepository @Inject constructor(
 
     override suspend fun refresh() {
         val response = api.getSponsors()
-        sponsorDatabase.save(response)
+        sponsorDatabase.saveSponsors(response)
     }
 }
 
-private fun SponsorEntity.toSponsor(): Sponsor = Sponsor(name, url, image)
+private fun SponsorEntity.toSponsor(): Sponsor = Sponsor(
+    id = id,
+    plan = plan,
+    planDetail = planDetail,
+    company = Company(
+        url = companyUrl,
+        name = LocaledString(
+            companyName.jaName,
+            companyName.enName
+        ),
+        logoUrl = companyLogoUrl
+    ),
+    hasBooth = hasBooth
+)

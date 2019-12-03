@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal abstract class SponsorDao {
-    @Query("SELECT * FROM sponsor ORDER BY categoryIndex, displayOrder ASC")
+    @Query("SELECT * FROM sponsor ORDER BY sort")
     abstract fun allSponsors(): Flow<List<SponsorEntityImpl>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

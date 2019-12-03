@@ -12,7 +12,7 @@ import io.github.droidkaigi.confsched2020.data.api.parameter.LangParameter
 import io.github.droidkaigi.confsched2020.data.api.response.AnnouncementListResponse
 import io.github.droidkaigi.confsched2020.data.api.response.ContributorResponse
 import io.github.droidkaigi.confsched2020.data.api.response.Response
-import io.github.droidkaigi.confsched2020.data.api.response.SponsorResponse
+import io.github.droidkaigi.confsched2020.data.api.response.SponsorListResponse
 import io.github.droidkaigi.confsched2020.data.api.response.StaffResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -76,13 +76,13 @@ internal open class KtorDroidKaigiApi constructor(
         return json.parse(AnnouncementResponseImpl.serializer().list, rawResponse)
     }
 
-    override suspend fun getSponsors(): SponsorResponse {
+    override suspend fun getSponsors(): SponsorListResponse {
         val rawResponse = httpClient.get<String> {
             url("$apiEndpoint/sponsors")
             accept(ContentType.Application.Json)
         }
 
-        return json.parse(SponsorResponseImpl.serializer(), rawResponse)
+        return json.parse(SponsorResponseImpl.serializer().list, rawResponse)
     }
 
     override suspend fun getStaffs(): StaffResponse {
