@@ -14,8 +14,8 @@ android.libraryVariants.all {
 kotlin {
     targets {
         fromPreset(presets.android, 'android')
-        fromPreset(presets.iosX64, 'iosX64')
-        fromPreset(presets.iosArm64, 'iosArm64')
+//        fromPreset(presets.iosX64, 'iosX64')
+//        fromPreset(presets.iosArm64, 'iosArm64')
 
     }
     sourceSets {
@@ -50,38 +50,38 @@ kotlin {
                 implementation Dep.Test.slf4j
             }
         }
-        iOSMain {
-            final String mode = project.findProperty("XCODE_CONFIGURATION")?.toUpperCase() ?: 'DEBUG'
-            if (mode == "RELEASE") {
-                kotlin.srcDirs += "src/iosMain/kotlinRelease"
-            } else {
-                kotlin.srcDirs += "src/iosMain/kotlinDebug"
-            }
-            dependsOn commonMain
-            dependencies {
-                implementation Dep.Kotlin.coroutinesNative
-                implementation Dep.Ktor.clientIos
-                implementation Dep.Ktor.jsonNative
-                implementation Dep.Ktor.serializationNative
-                implementation Dep.Kotlin.serializationIos
-            }
-        }
-        configure(iosX64Main) {
-            dependsOn iOSMain
-            dependencies {
-                implementation Dep.Ktor.clientIosX64
-                implementation Dep.Ktor.jsonIosIosX64
-                implementation Dep.Ktor.serializationIosX64
-            }
-        }
-        configure(iosArm64Main) {
-            dependsOn iOSMain
-            dependencies {
-                implementation Dep.Ktor.clientIosArm64
-                implementation Dep.Ktor.jsonIosArm64
-                implementation Dep.Ktor.serializationIosArm64
-            }
-        }
+//        iOSMain {
+//            final String mode = project.findProperty("XCODE_CONFIGURATION")?.toUpperCase() ?: 'DEBUG'
+//            if (mode == "RELEASE") {
+//                kotlin.srcDirs += "src/iosMain/kotlinRelease"
+//            } else {
+//                kotlin.srcDirs += "src/iosMain/kotlinDebug"
+//            }
+//            dependsOn commonMain
+//            dependencies {
+//                implementation Dep.Kotlin.coroutinesNative
+//                implementation Dep.Ktor.clientIos
+//                implementation Dep.Ktor.jsonNative
+//                implementation Dep.Ktor.serializationNative
+//                implementation Dep.Kotlin.serializationIos
+//            }
+//        }
+//        configure(iosX64Main) {
+//            dependsOn iOSMain
+//            dependencies {
+//                implementation Dep.Ktor.clientIosX64
+//                implementation Dep.Ktor.jsonIosIosX64
+//                implementation Dep.Ktor.serializationIosX64
+//            }
+//        }
+//        configure(iosArm64Main) {
+//            dependsOn iOSMain
+//            dependencies {
+//                implementation Dep.Ktor.clientIosArm64
+//                implementation Dep.Ktor.jsonIosArm64
+//                implementation Dep.Ktor.serializationIosArm64
+//            }
+//        }
     }
 }
 
