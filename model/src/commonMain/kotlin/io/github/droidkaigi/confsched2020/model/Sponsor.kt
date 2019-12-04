@@ -1,7 +1,9 @@
 package io.github.droidkaigi.confsched2020.model
 
 data class Sponsor(
-    val name: String,
-    val url: String,
-    val image: String
+    val id: Int,
+    val plan: String,
+    val planDetail: String,
+    val company: Company,
+    val hasBooth: Boolean
 )

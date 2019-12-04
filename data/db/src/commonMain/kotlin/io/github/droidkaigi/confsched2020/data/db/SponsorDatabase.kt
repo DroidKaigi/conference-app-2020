@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface SponsorDatabase {
     fun sponsors(): Flow<List<SponsorEntity>>
-    suspend fun save(apiResponse: SponsorResponse)
+    suspend fun saveSponsors(apiResponse: List<SponsorResponse>)
 }

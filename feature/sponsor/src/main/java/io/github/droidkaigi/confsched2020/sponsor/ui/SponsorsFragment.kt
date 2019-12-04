@@ -20,8 +20,6 @@ import io.github.droidkaigi.confsched2020.sponsor.R
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.ext.toAppError
-import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.Sponsor
 import io.github.droidkaigi.confsched2020.model.SponsorCategory
 import io.github.droidkaigi.confsched2020.sponsor.databinding.FragmentSponsorsBinding
@@ -77,23 +75,16 @@ class SponsorsFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
-        sponsorsViewModel.sponsorsLoadStateLiveData.observe(viewLifecycleOwner) { state ->
-            progressTimeLatch.loading = state.isLoading
-            when (state) {
-                is LoadState.Loaded -> {
-                    val sponsorCategories = state.value
-                    val items = sponsorCategories.map { category ->
-                        category.toSection()
-                        // TODO: Add FooterItem() if needed.
-                    }
-                    groupAdapter.update(items)
+        sponsorsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
+            progressTimeLatch.loading = uiModel.isLoading
+            groupAdapter.update(
+                uiModel.sponsorCategories.map {
+                    it.toSection()
+                    // TODO: Add FooterItem() if needed.
                 }
-                LoadState.Loading -> Unit
-                is LoadState.Error -> {
-                    state.e.toAppError()?.let {
-                        systemViewModel.onError(it)
-                    }
-                }
+            )
+            uiModel.error?.let {
+                systemViewModel.onError(it)
             }
         }
     }

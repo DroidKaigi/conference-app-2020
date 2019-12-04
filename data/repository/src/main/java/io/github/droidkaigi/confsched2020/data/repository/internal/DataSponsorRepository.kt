@@ -4,6 +4,8 @@ import io.github.droidkaigi.confsched2020.data.api.DroidKaigiApi
 import io.github.droidkaigi.confsched2020.data.db.SponsorDatabase
 import io.github.droidkaigi.confsched2020.data.db.entity.SponsorEntity
 import io.github.droidkaigi.confsched2020.data.repository.SponsorRepository
+import io.github.droidkaigi.confsched2020.model.Company
+import io.github.droidkaigi.confsched2020.model.LocaledString
 import io.github.droidkaigi.confsched2020.model.Sponsor
 import io.github.droidkaigi.confsched2020.model.SponsorCategory
 import kotlinx.coroutines.flow.Flow
@@ -18,13 +20,13 @@ class DataSponsorRepository @Inject constructor(
         return sponsorDatabase
             .sponsors()
             .map {
-                it.groupBy { sponsorEntity -> sponsorEntity.categoryIndex }
-                    .mapNotNull { (categoryIndex, sponsors) ->
-                        val category = SponsorCategory.Category.from(sponsors.first().category)
+                it.sortedBy { sponsorEntity -> sponsorEntity.sort }
+                    .groupBy { sponsorEntity -> sponsorEntity.plan }
+                    .mapNotNull { (plan, sponsors) ->
+                        val category = SponsorCategory.Category.from(plan)
                             ?: return@mapNotNull null
                         SponsorCategory(
                             category,
-                            categoryIndex,
                             sponsors.map(SponsorEntity::toSponsor)
                         )
                     }
@@ -33,8 +35,21 @@ class DataSponsorRepository @Inject constructor(
 
     override suspend fun refresh() {
         val response = api.getSponsors()
-        sponsorDatabase.save(response)
+        sponsorDatabase.saveSponsors(response)
     }
 }
 
-private fun SponsorEntity.toSponsor(): Sponsor = Sponsor(name, url, image)
+private fun SponsorEntity.toSponsor(): Sponsor = Sponsor(
+    id = id,
+    plan = plan,
+    planDetail = planDetail,
+    company = Company(
+        url = companyUrl,
+        name = LocaledString(
+            companyName.jaName,
+            companyName.enName
+        ),
+        logoUrl = companyLogoUrl
+    ),
+    hasBooth = hasBooth
+)

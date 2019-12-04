@@ -5,8 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class SponsorResponseImpl(
-    override val platinum: List<SponsorItemResponseImpl>,
-    override val gold: List<SponsorItemResponseImpl>,
-    override val support: List<SponsorItemResponseImpl>,
-    override val tech: List<SponsorItemResponseImpl>
+    override val id: Int,
+    override val plan: String,
+    override val planDetail: String,
+    override val companyUrl: String,
+    override val companyName: CompanyNameResponseImpl,
+    override val companyLogoUrl: String,
+    override val hasBooth: Boolean,
+    override val sort: Int
 ) : SponsorResponse

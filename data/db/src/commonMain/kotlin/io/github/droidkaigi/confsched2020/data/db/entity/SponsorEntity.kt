@@ -1,11 +1,12 @@
 package io.github.droidkaigi.confsched2020.data.db.entity
 
 interface SponsorEntity {
-    var id: Int
-    var name: String
-    var url: String
-    var image: String
-    var category: String
-    var categoryIndex: Int
-    var displayOrder: Int
+    val id: Int
+    val plan: String
+    val planDetail: String
+    val companyUrl: String
+    val companyName: CompanyNameEntity
+    val companyLogoUrl: String
+    val hasBooth: Boolean
+    val sort: Int
 }

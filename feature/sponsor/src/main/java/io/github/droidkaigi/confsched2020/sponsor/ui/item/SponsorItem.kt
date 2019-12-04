@@ -9,6 +9,7 @@ import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Sponsor
+import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.sponsor.R
 import io.github.droidkaigi.confsched2020.sponsor.databinding.ItemSponsorBinding
 import io.github.droidkaigi.confsched2020.sponsor.ui.viewmodel.SponsorsViewModel
@@ -19,17 +20,17 @@ class SponsorItem @AssistedInject constructor(
     @Assisted val sponsorsViewModel: SponsorsViewModel,
     @Assisted val systemViewModel: SystemViewModel,
     val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
-) : BindableItem<ItemSponsorBinding>(sponsor.name.hashCode().toLong()),
+) : BindableItem<ItemSponsorBinding>(sponsor.id.toLong()),
     EqualableContentsProvider {
     override fun getLayout(): Int = R.layout.item_sponsor
 
     override fun bind(viewBinding: ItemSponsorBinding, position: Int) {
-        viewBinding.title.text = sponsor.name
+        viewBinding.title.text = sponsor.company.name.getByLang(defaultLang())
         viewBinding.title.setOnClickListener {
-            systemViewModel.openUrl(sponsor.url)
+            systemViewModel.openUrl(sponsor.company.url)
         }
 
-        viewBinding.image.load(sponsor.image) {
+        viewBinding.image.load(sponsor.company.logoUrl) {
             crossfade(true)
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
