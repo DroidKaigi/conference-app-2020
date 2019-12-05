@@ -2,7 +2,7 @@ package io.github.droidkaigi.confsched2020.model
 
 @AndroidParcelize
 data class Speaker(
-    val id: String,
+    val id: SpeakerId,
     val name: String,
     val tagLine: String?,
     val bio: String?,

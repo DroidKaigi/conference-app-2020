@@ -43,6 +43,8 @@ import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragment
 import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragmentModule
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentModule
+import io.github.droidkaigi.confsched2020.session.ui.SpeakerFragment
+import io.github.droidkaigi.confsched2020.session.ui.SpeakerFragmentModule
 import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
 import io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragment
 import io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragmentModule
@@ -205,6 +207,12 @@ abstract class MainActivityModule {
         modules = [SearchSessionsFragmentModule::class, SessionAssistedInjectModule::class]
     )
     abstract fun contributeSearchSessionsFragment(): SearchSessionsFragment
+
+    @PageScope
+    @ContributesAndroidInjector(
+        modules = [SpeakerFragmentModule::class, SessionAssistedInjectModule::class]
+    )
+    abstract fun contributeSpeakerFragment(): SpeakerFragment
 
     @PageScope
     @ContributesAndroidInjector(

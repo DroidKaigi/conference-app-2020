@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="speaker"
+            type="io.github.droidkaigi.confsched2020.model.Speaker"
+            />
+
+        <variable
+            name="speechSession"
+            type="io.github.droidkaigi.confsched2020.model.SpeechSession"
+            />
+
+        <variable
+            name="lang"
+            type="io.github.droidkaigi.confsched2020.model.Lang"
+            />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/Theme.DroidKaigi.Cyan"
+        >
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="?colorSurface"
+                >
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="24dp"
+                    />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="24dp"
+                    />
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{speaker.name}"
+                    android:textAppearance="@style/TextAppearance.DroidKaigi.Headline5"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="DroidKaigi App Architecture"
+                    />
+
+                <TextView
+                    android:id="@+id/bio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{speaker.bio}"
+                    android:textAppearance="@style/TextAppearance.DroidKaigi.Headline5"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="DroidKaigi App Architecture"
+                    />
+
+                <View
+                    android:id="@+id/divider_bio"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="22dp"
+                    android:background="@color/black_alpha_12"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/bio"
+                    />
+
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:text="@{speaker.bio}"
+                    android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_bio"
+                    tools:text="This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text."
+                    />
+
+                <View
+                    android:id="@+id/divider_text_and_speaker"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="28dp"
+                    android:background="@color/black_alpha_12"
+                    app:isVisible="@{speechSession.hasSpeaker}"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/text"
+                    />
+
+                <TextView
+                    android:id="@+id/speaker_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:text="@string/speaker_label"
+                    android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
+                    app:isVisible="@{speechSession.hasSpeaker}"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/divider_text_and_speaker"
+                    />
+
+                <ImageView
+                    android:id="@+id/time_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="12dp"
+                    app:isVisible="@{speechSession.hasSpeaker}"
+                    android:src="@drawable/ic_access_time_black_24dp"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/speaker_title"
+                    />
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    app:isVisible="@{speechSession.hasSpeaker}"
+                    android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
+                    app:layout_constraintBottom_toBottomOf="@id/time_icon"
+                    app:layout_constraintStart_toEndOf="@id/time_icon"
+                    app:layout_constraintTop_toTopOf="@id/time_icon"
+                    tools:text="2月20日 11:00-11:20"
+                    />
+                <!--  FIXME: use android:text="@{session.timeSummary(lang, timeOffset)}"-->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>
