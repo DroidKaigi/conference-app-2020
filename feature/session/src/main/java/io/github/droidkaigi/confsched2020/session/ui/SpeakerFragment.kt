@@ -72,12 +72,11 @@ class SpeakerFragment : DaggerFragment() {
                 progressTimeLatch.loading = uiModel.isLoading
                 val speaker = uiModel.speaker ?: return@observe
                 val session = uiModel.session ?: return@observe
-                binding.speaker = uiModel.speaker
-                binding.speechSession = uiModel.session
+                binding.speaker = speaker
+                binding.speechSession = session
                 binding.lang = defaultLang()
                 binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
 
-                binding.speakerTitle.text = uiModel.speaker.name
                 val placeHolder = VectorDrawableCompat.create(
                     requireContext().resources,
                     R.drawable.ic_person_outline_black_32dp,
@@ -87,7 +86,7 @@ class SpeakerFragment : DaggerFragment() {
                         requireContext().getThemeColor(R.attr.colorOnBackground)
                     )
                 }
-                binding.image.load(uiModel.speaker.imageUrl) {
+                binding.speakerImage.load(speaker.imageUrl) {
                     crossfade(true)
                     placeholder(placeHolder)
                     transformations(CircleCropTransformation())

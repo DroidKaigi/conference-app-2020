@@ -34,6 +34,7 @@ import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 
@@ -106,6 +107,9 @@ class SessionDetailFragment : DaggerFragment() {
             val speakerView = layoutInflater.inflate(
                 R.layout.layout_speaker, this, false
             ) as ViewGroup
+            speakerView.setOnClickListener {
+                navController.navigate(actionSessionToSpeaker(speaker.id))
+            }
             val textView: TextView = speakerView.findViewById(R.id.speaker)
             bindSpeakerData(speaker, textView)
 

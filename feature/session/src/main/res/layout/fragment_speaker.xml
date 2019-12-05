@@ -41,16 +41,6 @@
                 android:background="?colorSurface"
                 >
 
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline_start"
                     android:layout_width="wrap_content"
@@ -68,7 +58,7 @@
                     />
 
                 <ImageView
-                    android:id="@+id/image"
+                    android:id="@+id/speaker_image"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
@@ -77,38 +67,42 @@
                     />
 
                 <TextView
-                    android:id="@+id/name"
+                    android:id="@+id/speaker_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{speaker.name}"
+                    android:layout_marginTop="19dp"
                     android:textAppearance="@style/TextAppearance.DroidKaigi.Headline5"
+                    android:gravity="center_horizontal"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/speaker_image"
                     tools:text="DroidKaigi App Architecture"
                     />
 
                 <TextView
-                    android:id="@+id/bio"
-                    android:layout_width="0dp"
+                    android:id="@+id/company_name"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{speaker.bio}"
-                    android:textAppearance="@style/TextAppearance.DroidKaigi.Headline5"
+                    android:text="CompanyName"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_horizontal"
+                    android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/speaker_name"
                     tools:text="DroidKaigi App Architecture"
                     />
 
                 <View
-                    android:id="@+id/divider_bio"
+                    android:id="@+id/divider_company_name"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginTop="22dp"
+                    android:layout_marginTop="26dp"
                     android:background="@color/black_alpha_12"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/bio"
+                    app:layout_constraintTop_toBottomOf="@id/company_name"
                     />
 
                 <TextView
@@ -120,15 +114,15 @@
                     android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@+id/divider_bio"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_company_name"
                     tools:text="This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text."
                     />
 
                 <View
-                    android:id="@+id/divider_text_and_speaker"
+                    android:id="@+id/divider_text_and_speaker_session"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginTop="22dp"
                     android:background="@color/black_alpha_12"
                     app:isVisible="@{speechSession.hasSpeaker}"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
@@ -137,15 +131,27 @@
                     />
 
                 <TextView
-                    android:id="@+id/speaker_title"
+                    android:id="@+id/speaker_session_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
-                    android:text="@string/speaker_label"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/session_label"
                     android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
                     app:isVisible="@{speechSession.hasSpeaker}"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/divider_text_and_speaker"
+                    app:layout_constraintTop_toBottomOf="@id/divider_text_and_speaker_session"
+                    />
+
+                <TextView
+                    android:id="@+id/speaker_session_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@{speechSession.title.getByLang(lang)}"
+                    android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle1"
+                    app:isVisible="@{speechSession.hasSpeaker}"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/speaker_session_title"
                     />
 
                 <ImageView
@@ -156,7 +162,7 @@
                     app:isVisible="@{speechSession.hasSpeaker}"
                     android:src="@drawable/ic_access_time_black_24dp"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/speaker_title"
+                    app:layout_constraintTop_toBottomOf="@id/speaker_session_name"
                     />
 
                 <TextView
@@ -175,6 +181,16 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

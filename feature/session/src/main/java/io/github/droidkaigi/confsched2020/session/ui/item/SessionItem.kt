@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.lifecycle.LifecycleOwner
@@ -28,6 +27,7 @@ import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.actionSessionToSessionDetail
+import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.util.lazyWithParam
 import kotlin.math.max
@@ -89,6 +89,9 @@ class SessionItem @AssistedInject constructor(
                 val speakerView = layoutInflater.get(context).inflate(
                     R.layout.layout_speaker, this, false
                 ) as ViewGroup
+                speakerView.setOnClickListener {
+                    navController.navigate(actionSessionToSpeaker(speaker.id))
+                }
                 val textView: TextView = speakerView.findViewById(R.id.speaker)
                 bindSpeakerData(speaker, textView)
 

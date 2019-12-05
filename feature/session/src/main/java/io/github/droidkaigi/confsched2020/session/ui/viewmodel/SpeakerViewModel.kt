@@ -50,8 +50,8 @@ class SpeakerViewModel @AssistedInject constructor(
                 .first { session -> session.speakers.firstOrNull { speaker -> speakerId == speaker.id } != null }
             }
             .toLoadingState()
-            .collect {
-                emit(it)
+            .collect { loadState: LoadState<SpeechSession> ->
+                emit(loadState)
             }
     }
 
