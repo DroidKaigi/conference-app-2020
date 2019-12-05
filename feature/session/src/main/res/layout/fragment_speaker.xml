@@ -64,6 +64,7 @@
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@tools:sample/avatars"
                     />
 
                 <TextView
@@ -77,32 +78,32 @@
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/speaker_image"
-                    tools:text="DroidKaigi App Architecture"
+                    tools:text="SpeakerName"
                     />
 
                 <TextView
-                    android:id="@+id/company_name"
+                    android:id="@+id/speaker_tag_line"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="CompanyName"
+                    android:text="@{speaker.tagLine}"
                     android:layout_marginTop="4dp"
                     android:gravity="center_horizontal"
                     android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/speaker_name"
-                    tools:text="DroidKaigi App Architecture"
+                    tools:text="DroidKaigi"
                     />
 
                 <View
-                    android:id="@+id/divider_company_name"
+                    android:id="@+id/divider_speaker_tag_line"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_marginTop="26dp"
                     android:background="@color/black_alpha_12"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/company_name"
+                    app:layout_constraintTop_toBottomOf="@id/speaker_tag_line"
                     />
 
                 <TextView
@@ -114,7 +115,7 @@
                     android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@+id/divider_company_name"
+                    app:layout_constraintTop_toBottomOf="@id/divider_speaker_tag_line"
                     tools:text="This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text."
                     />
 
@@ -152,6 +153,7 @@
                     app:isVisible="@{speechSession.hasSpeaker}"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/speaker_session_title"
+                    tools:text="DroidKaigi App Architecture"
                     />
 
                 <ImageView

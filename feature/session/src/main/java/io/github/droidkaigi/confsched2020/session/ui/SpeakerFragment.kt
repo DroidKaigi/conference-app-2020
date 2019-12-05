@@ -25,6 +25,7 @@ import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSpeakerBinding
+import io.github.droidkaigi.confsched2020.session.ui.SpeakerFragmentDirections.actionSpeakerToSessionDetail
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SpeakerViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
@@ -91,6 +92,10 @@ class SpeakerFragment : DaggerFragment() {
                     placeholder(placeHolder)
                     transformations(CircleCropTransformation())
                     lifecycle(viewLifecycleOwner)
+                }
+
+                binding.speakerSessionName.setOnClickListener {
+                    navController.navigate(actionSpeakerToSessionDetail(session.id))
                 }
             }
     }
