@@ -69,7 +69,7 @@ kotlin {
         iOSMain {
             dependsOn commonMain
             dependencies {
-                implementation Dep.Kotlin.serializationIos
+                implementation Dep.Kotlin.serializationNative
             }
         }
     }

@@ -1,7 +1,9 @@
 import dependencies.Dep
 
-apply plugin: 'kotlin-multiplatform'
+def ideaActive = System.getProperty("idea.active") == "true"
+
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-multiplatform'
 apply plugin: 'kotlinx-serialization'
 apply plugin: 'kotlin-kapt'
 
@@ -14,16 +16,17 @@ android.libraryVariants.all {
 kotlin {
     targets {
         fromPreset(presets.android, 'android')
-//        fromPreset(presets.iosX64, 'iosX64')
-//        fromPreset(presets.iosArm64, 'iosArm64')
-
+        fromPreset(presets.iosX64, 'iosX64')
+        fromPreset(presets.iosArm64, 'iosArm64')
+        if (ideaActive) {
+            fromPreset(presets.iosX64, 'ios')
+        }
     }
     sourceSets {
         commonMain.dependencies {
             implementation Dep.Kotlin.stdlibCommon
             implementation Dep.Kotlin.coroutinesCommon
             implementation Dep.Ktor.clientCommon
-            implementation Dep.Ktor.jsonCommon
             implementation Dep.Ktor.serializationCommon
             implementation Dep.Kotlin.serializationCommon
         }
@@ -33,7 +36,6 @@ kotlin {
                 implementation Dep.Kotlin.stdlibJvm
                 implementation Dep.Kotlin.androidCoroutinesDispatcher
                 implementation Dep.Ktor.clientAndroid
-                implementation Dep.Ktor.jsonJvm
                 implementation Dep.Ktor.serializationJvm
                 implementation Dep.Kotlin.serializationAndroid
                 implementation Dep.OkHttp.client
@@ -50,38 +52,27 @@ kotlin {
                 implementation Dep.Test.slf4j
             }
         }
-//        iOSMain {
-//            final String mode = project.findProperty("XCODE_CONFIGURATION")?.toUpperCase() ?: 'DEBUG'
-//            if (mode == "RELEASE") {
-//                kotlin.srcDirs += "src/iosMain/kotlinRelease"
-//            } else {
-//                kotlin.srcDirs += "src/iosMain/kotlinDebug"
-//            }
-//            dependsOn commonMain
-//            dependencies {
-//                implementation Dep.Kotlin.coroutinesNative
-//                implementation Dep.Ktor.clientIos
-//                implementation Dep.Ktor.jsonNative
-//                implementation Dep.Ktor.serializationNative
-//                implementation Dep.Kotlin.serializationIos
-//            }
-//        }
-//        configure(iosX64Main) {
-//            dependsOn iOSMain
-//            dependencies {
-//                implementation Dep.Ktor.clientIosX64
-//                implementation Dep.Ktor.jsonIosIosX64
-//                implementation Dep.Ktor.serializationIosX64
-//            }
-//        }
-//        configure(iosArm64Main) {
-//            dependsOn iOSMain
-//            dependencies {
-//                implementation Dep.Ktor.clientIosArm64
-//                implementation Dep.Ktor.jsonIosArm64
-//                implementation Dep.Ktor.serializationIosArm64
-//            }
-//        }
+        iOSMain {
+            final String mode = project.findProperty("XCODE_CONFIGURATION")?.toUpperCase() ?: 'DEBUG'
+            if (mode == "RELEASE") {
+                kotlin.srcDirs += "src/iosMain/kotlinRelease"
+            } else {
+                kotlin.srcDirs += "src/iosMain/kotlinDebug"
+            }
+            dependsOn commonMain
+            dependencies {
+                implementation Dep.Kotlin.coroutinesNative
+                implementation Dep.Ktor.clientIos
+                implementation Dep.Ktor.serializationNative
+                implementation Dep.Kotlin.serializationNative
+            }
+        }
+        configure(iosX64Main) {
+            dependsOn iOSMain
+        }
+        configure(iosArm64Main) {
+            dependsOn iOSMain
+        }
     }
 }
 
@@ -101,8 +92,4 @@ android {
 dependencies {
     kapt Dep.Dagger.compiler
     kapt Dep.Dagger.androidProcessor
-}
-
-configurations {
-    compileClasspath
 }
