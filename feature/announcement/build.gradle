@@ -1,6 +1,3 @@
-plugins {
-    id 'kotlin-android-extensions'
-}
 import dependencies.Dep
 
 apply plugin: 'com.android.library'
@@ -32,7 +29,6 @@ dependencies {
 
     implementation Dep.Dagger.core
     implementation Dep.Dagger.androidSupport
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt Dep.Dagger.compiler
     kapt Dep.Dagger.androidProcessor
     compileOnly Dep.Dagger.assistedInjectAnnotations
