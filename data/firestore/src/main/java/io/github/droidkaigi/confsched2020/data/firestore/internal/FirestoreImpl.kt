@@ -61,7 +61,7 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
         )
         return FirebaseFirestore
             .getInstance()
-            .collection("users/$firebaseUserId/favorites")
+            .collection("confsched/2020/users/$firebaseUserId/favorites")
     }
 
     private suspend fun signInIfNeeded() {
