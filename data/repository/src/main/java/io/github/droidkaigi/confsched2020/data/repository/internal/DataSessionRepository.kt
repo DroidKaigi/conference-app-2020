@@ -15,7 +15,6 @@ import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionFeedback
 import io.github.droidkaigi.confsched2020.model.SpeechSession
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -33,12 +32,12 @@ class DataSessionRepository @Inject constructor(
     private val firestore: Firestore
 ) : SessionRepository {
 
-    override suspend fun sessionContents(): Flow<SessionContents> = coroutineScope {
+    override fun sessionContents(): Flow<SessionContents> {
         val sessionsFlow = sessions()
             .map {
                 it.sortedBy { it.startTime }
             }
-        sessionsFlow.map { sessions ->
+        return sessionsFlow.map { sessions ->
             val speechSessions = sessions.filterIsInstance<SpeechSession>()
             SessionContents(
                 sessions = sessions,
@@ -52,7 +51,7 @@ class DataSessionRepository @Inject constructor(
         }
     }
 
-    private suspend fun sessions(): Flow<List<Session>> {
+    private fun sessions(): Flow<List<Session>> {
         val sessionsFlow = sessionDatabase.sessions()
             .filter { it.isNotEmpty() }
             .onEach { Timber.debug { "sessionDatabase.sessions" } }

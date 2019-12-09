@@ -27,10 +27,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment
 import io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment.AnnouncementFragmentModule
 import io.github.droidkaigi.confsched2020.announcement.ui.di.AnnouncementAssistedInjectModule
-import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.databinding.ActivityMainBinding
 import io.github.droidkaigi.confsched2020.di.PageScope
@@ -51,7 +51,7 @@ import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.PageConfiguration
 import io.github.droidkaigi.confsched2020.ui.widget.SystemUiManager
 import timber.log.Timber
-import timber.log.debug
+import timber.log.warn
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -93,7 +93,7 @@ class MainActivity : DaggerAppCompatActivity() {
         }
 
         systemViewModel.errorLiveData.observe(this) { appError ->
-            Timber.debug(appError) { "AppError occured" }
+            Timber.warn(appError) { "AppError occured" }
             Snackbar
                 .make(
                     findViewById(R.id.root_nav_host_fragment),
