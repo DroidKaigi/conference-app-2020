@@ -13,7 +13,9 @@ import io.github.droidkaigi.confsched2020.model.SessionId
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import timber.log.debug
@@ -21,17 +23,24 @@ import javax.inject.Inject
 
 internal class FirestoreImpl @Inject constructor() : Firestore {
 
-    override suspend fun getFavoriteSessionIds(): Flow<List<String>> {
-        signInIfNeeded()
-        val favoritesRef = getFavoritesRef()
-        val snapshot = favoritesRef
-            .fastGet()
-        if (snapshot.isEmpty) {
-            favoritesRef.add(mapOf("initialized" to true)).await()
+    override fun getFavoriteSessionIds(): Flow<List<String>> {
+        val setupFavorites = flow {
+            signInIfNeeded()
+            val favoritesRef = getFavoritesRef()
+            val snapshot = favoritesRef
+                .fastGet()
+            if (snapshot.isEmpty) {
+                favoritesRef.add(mapOf("initialized" to true)).await()
+            }
+            emit(favoritesRef)
         }
-
-        val favorites = favoritesRef.whereEqualTo("favorite", true).toFlow()
-        return favorites.mapNotNull { list -> list.mapNotNull { item -> item.id } }
+        val favoritesSnapshotFlow = setupFavorites.flatMapLatest {
+            it.whereEqualTo("favorite", true).toFlow()
+        }
+        return favoritesSnapshotFlow.mapLatest { favorites ->
+            Timber.debug { "favoritesSnapshotFlow onNext" }
+            favorites.mapNotNull { item -> item.id }
+        }
     }
 
     override suspend fun toggleFavorite(sessionId: SessionId) {
@@ -65,11 +74,14 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
     }
 
     private suspend fun signInIfNeeded() {
+        Timber.debug { "signInIfNeeded start" }
         val firebaseAuth = FirebaseAuth.getInstance()
         if (firebaseAuth.currentUser != null) {
+            Timber.debug { "signInIfNeeded user already exists" }
             return
         }
         firebaseAuth.signInAnonymously().await()
+        Timber.debug { "signInIfNeeded end" }
     }
 }
 

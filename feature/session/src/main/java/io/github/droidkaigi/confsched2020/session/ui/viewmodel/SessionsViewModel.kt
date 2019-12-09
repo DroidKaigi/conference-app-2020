@@ -40,7 +40,7 @@ class SessionsViewModel @Inject constructor(
         val allFilters: Filters
     ) {
         companion object {
-            val EMPTY = UiModel(false, null, mapOf(), listOf(), Filters(), Filters())
+            val EMPTY = UiModel(true, null, mapOf(), listOf(), Filters(), Filters())
         }
     }
 
