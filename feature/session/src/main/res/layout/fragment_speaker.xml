@@ -71,10 +71,10 @@
                     android:id="@+id/speaker_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{speaker.name}"
                     android:layout_marginTop="19dp"
+                    android:text="@{speaker.name}"
+                    android:gravity="center"
                     android:textAppearance="@style/TextAppearance.DroidKaigi.Headline5"
-                    android:gravity="center_horizontal"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/speaker_image"
@@ -107,20 +107,24 @@
                     />
 
                 <TextView
-                    android:id="@+id/text"
+                    android:id="@+id/speaker_description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="22dp"
+                    android:autoLink="web"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
                     android:text="@{speaker.bio}"
+                    android:textAlignment="viewStart"
                     android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/divider_speaker_tag_line"
-                    tools:text="This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text."
+                    tools:text="Material is the metaphor A material metaphor is the unifying theory of a rationalized space and a system of motion. The material is grounded in tactile reality, inspired by the study of paper and ink, yet technologically advanced and open to imagination and magic."
                     />
 
                 <View
-                    android:id="@+id/divider_text_and_speaker_session"
+                    android:id="@+id/divider_speaker_description_and_speaker_session"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_marginTop="22dp"
@@ -128,7 +132,7 @@
                     app:isVisible="@{speechSession.hasSpeaker}"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/text"
+                    app:layout_constraintTop_toBottomOf="@id/speaker_description"
                     />
 
                 <TextView
@@ -140,7 +144,7 @@
                     android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
                     app:isVisible="@{speechSession.hasSpeaker}"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/divider_text_and_speaker_session"
+                    app:layout_constraintTop_toBottomOf="@id/divider_speaker_description_and_speaker_session"
                     />
 
                 <TextView

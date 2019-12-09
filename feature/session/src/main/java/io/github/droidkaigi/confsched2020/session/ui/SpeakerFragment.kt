@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +27,6 @@ import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSpeakerBinding
 import io.github.droidkaigi.confsched2020.session.ui.SpeakerFragmentDirections.actionSpeakerToSessionDetail
-import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SpeakerViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
@@ -42,7 +42,6 @@ class SpeakerFragment : DaggerFragment() {
 
     private val navArgs: SpeakerFragmentArgs by navArgs()
     @Inject lateinit var navController: NavController
-    @Inject lateinit var sessionItemFactory: SessionItem.Factory
 
     private lateinit var progressTimeLatch: ProgressTimeLatch
 
@@ -68,6 +67,18 @@ class SpeakerFragment : DaggerFragment() {
             loading = true
         }
 
+        binding.speakerDescription.movementMethod = LinkMovementMethod.getInstance()
+
+        val placeHolder = VectorDrawableCompat.create(
+            requireContext().resources,
+            R.drawable.ic_person_outline_black_32dp,
+            null
+        )?.apply {
+            setTint(
+                requireContext().getThemeColor(R.attr.colorOnBackground)
+            )
+        }
+
         speakerViewModel.uiModel.distinctUntilChanged()
             .observe(viewLifecycleOwner) { uiModel: SpeakerViewModel.UiModel ->
                 progressTimeLatch.loading = uiModel.isLoading
@@ -78,15 +89,6 @@ class SpeakerFragment : DaggerFragment() {
                 binding.lang = defaultLang()
                 binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
 
-                val placeHolder = VectorDrawableCompat.create(
-                    requireContext().resources,
-                    R.drawable.ic_person_outline_black_32dp,
-                    null
-                )?.apply {
-                    setTint(
-                        requireContext().getThemeColor(R.attr.colorOnBackground)
-                    )
-                }
                 binding.speakerImage.load(speaker.imageUrl) {
                     crossfade(true)
                     placeholder(placeHolder)
