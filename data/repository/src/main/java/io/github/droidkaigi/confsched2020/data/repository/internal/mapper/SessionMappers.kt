@@ -15,6 +15,7 @@ import io.github.droidkaigi.confsched2020.model.SessionFeedback
 import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.SessionType
 import io.github.droidkaigi.confsched2020.model.Speaker
+import io.github.droidkaigi.confsched2020.model.SpeakerId
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 
 private val jstOffset = 9.hours
@@ -88,7 +89,7 @@ fun SessionWithSpeakers.toSession(
 }
 
 fun SpeakerEntity.toSpeaker(): Speaker = Speaker(
-    id = id,
+    id = SpeakerId(id),
     name = name,
     tagLine = tagLine,
     bio = bio,

@@ -21,6 +21,7 @@ import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.SessionType
 import io.github.droidkaigi.confsched2020.model.Speaker
+import io.github.droidkaigi.confsched2020.model.SpeakerId
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 
 private val dateFormat: DateFormat =
@@ -99,7 +100,7 @@ private fun SessionResponse.toSession(
                 .map { speakerId -> speakers.first { speakerId == it.id } }
                 .map {
                     Speaker(
-                        id = requireNotNull(it.id),
+                        id = SpeakerId(requireNotNull(it.id)),
                         name = requireNotNull(it.fullName),
                         bio = it.bio,
                         tagLine = it.tagLine,
