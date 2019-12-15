@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.announcement.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -78,7 +79,7 @@ class AnnouncementFragment : DaggerFragment() {
             progressTimeLatch.loading = uiModel.isLoading
             binding.emptyMessage.isVisible = uiModel.isEmpty
             groupAdapter.update(
-                uiModel.announcements.map { announcement -> announcement.toItem() }
+                uiModel.announcements.map { announcement -> announcement.toItem(requireContext()) }
             )
             uiModel.error?.let {
                 systemViewModel.onError(it)
@@ -86,8 +87,8 @@ class AnnouncementFragment : DaggerFragment() {
         }
     }
 
-    private fun Announcement.toItem(): Item<*> {
-        return announcementItemFactory.create(this)
+    private fun Announcement.toItem(context: Context): Item<*> {
+        return announcementItemFactory.create(context, this)
     }
 
     @Module
