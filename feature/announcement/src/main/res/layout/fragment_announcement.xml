@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <!--TODO: Apply Layout-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"

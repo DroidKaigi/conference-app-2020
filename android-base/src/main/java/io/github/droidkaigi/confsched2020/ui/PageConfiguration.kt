@@ -14,6 +14,7 @@ enum class PageConfiguration(
     MAIN(R.id.main, isIndigoBackground = true, hasTitle = false, isShowLogoImage = true, isTopLevel = true),
     DETAIL(R.id.session_detail, hasTitle = false, hideToolbar = true),
     SPEAKER(R.id.speaker, hasTitle = false),
+    ANNOUNCEMENT(R.id.announcement, isTopLevel = true),
     OTHER(0);
 
     operator fun component1() = id
