@@ -28,4 +28,7 @@
     <attr name="waveDecay"/>
     <attr name="motionPathRotate"/>
     <attr name="duration"/>
+
+    <attr name="colorPrimaryOnBackground" format="color" />
+    <attr name="colorCaptionOnBackground" format="color" />
 </resources>

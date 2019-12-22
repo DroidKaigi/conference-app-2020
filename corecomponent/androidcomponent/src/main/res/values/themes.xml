@@ -10,6 +10,9 @@
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorOnBackground">@color/black_alpha_87</item>
 
+        <item name="colorPrimaryOnBackground">@color/indigo_900</item>
+        <item name="colorCaptionOnBackground">@color/black_alpha_38</item>
+
         <!-- Text appearances -->
         <item name="textAppearanceHeadline5">@style/TextAppearance.DroidKaigi.Headline5</item>
         <item name="textAppearanceHeadline6">@style/TextAppearance.DroidKaigi.Headline6</item>
