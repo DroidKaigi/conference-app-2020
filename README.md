@@ -1,11 +1,37 @@
-# DroidKaigi 2020 official Android app [WIP]
+# DroidKaigi 2020 official Android app
+DroidKaigi 2020 is a conference tailored for developers on 20th and 21th February 2020.  
 
- * Modern Android AAC based app
-    * ViewModel using LiveData Kotlin Coroutine builder
-    * Kotlin Coroutine Flow for observing data
- * Dynamic feature modules
- * Kotlin Multiplatform Project
- * Groupie
+You can install the prodution app via Get it on Google Play.  
+// TODO: Add link to Google Play
+
+And also, you can try the binary under development built on master branch through Try it on your device via DeployGate
+// TODO: Add link to DeployGate
+
+# Features
+
+
+# Contributing
+
+We always welcome any and all contributions! See CONTRIBUTING.md for more information
+// TODO: Add link to CONTRIBUTING.md
+
+## Requirements
+
+Android Studio 3.6 and higher. You can download it from this page.
+
+# Development Environment
+
+## Multi module project
+We separate the modules for each feature. We use the Dynamic feature modules for additional features.
+
+![image](https://user-images.githubusercontent.com/1386930/71317852-528aa380-24cb-11ea-886f-8dabf225567a.png)
+
+## Kotlin Multiplatform Project
+
+
+# Architecture
+This app uses an AndroidJetpack(AAC) based architecture using AAC(LiveData, ViewModel, Room), Kotlin, Kotlin Coroutines Flow, DataBinding, Dagger, Firebase.
+![DroidKaigi 2020  All](https://user-images.githubusercontent.com/1386930/71318763-9a63f780-24d8-11ea-82c2-f3d9644af2aa.png)
 
 ![project dependency](https://github.com/DroidKaigi/conference-app-2020/blob/master/project.dot.png)
 
