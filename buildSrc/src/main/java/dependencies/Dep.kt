@@ -85,25 +85,33 @@ object Dep {
         val version = "1.3.61"
         val stdlibCommon = "org.jetbrains.kotlin:kotlin-stdlib-common:$version"
         val stdlibJvm = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
-        val coroutinesVersion = "1.3.1"
+        val coroutinesVersion = "1.3.2"
         val coroutinesCommon =
             "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutinesVersion"
         val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
         val coroutinesNative =
             "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$coroutinesVersion"
+        val coroutinesIosX64 =
+            "org.jetbrains.kotlinx:kotlinx-coroutines-core-iosx64:$coroutinesVersion"
+        val coroutinesIosArm64 =
+            "org.jetbrains.kotlinx:kotlinx-coroutines-core-iosarm64:$coroutinesVersion"
         val androidCoroutinesDispatcher =
             "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
         val coroutinesReactive =
             "org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$coroutinesVersion"
         val coroutinesPlayServices =
             "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutinesVersion"
-        val serializationVersion = "0.12.0"
+        val serializationVersion = "0.13.0"
         val serializationCommon =
             "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion"
         val serializationAndroid =
             "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion"
         val serializationNative =
             "org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$serializationVersion"
+        val serializationIosX64 =
+            "org.jetbrains.kotlinx:kotlinx-serialization-runtime-iosx64:$serializationVersion"
+        val serializationIosArm64 =
+            "org.jetbrains.kotlinx:kotlinx-serialization-runtime-iosarm64:$serializationVersion"
     }
 
     object Firebase {
@@ -136,9 +144,18 @@ object Dep {
         val clientCommon = "io.ktor:ktor-client-core:$version"
         val clientAndroid = "io.ktor:ktor-client-okhttp:$version"
         val clientIos = "io.ktor:ktor-client-ios:$version"
+        val clientIosArm64 = "io.ktor:ktor-client-ios-iosarm64:$version"
+        val clientIosX64 = "io.ktor:ktor-client-ios-iosx64:$version"
+        val jsonCommon = "io.ktor:ktor-client-json:$version"
+        val jsonJvm = "io.ktor:ktor-client-json-jvm:$version"
+        val jsonNative = "io.ktor:ktor-client-json-native:$version"
+        val jsonIosArm64 = "io.ktor:ktor-client-json-iosarm64:$version"
+        val jsonIosIosX64 = "io.ktor:ktor-client-json-iosx64:$version"
         val serializationCommon = "io.ktor:ktor-client-serialization:$version"
         val serializationJvm = "io.ktor:ktor-client-serialization-jvm:$version"
         val serializationNative = "io.ktor:ktor-client-serialization-native:$version"
+        val serializationIosArm64 = "io.ktor:ktor-client-serialization-iosarm64:$version"
+        val serializationIosX64 = "io.ktor:ktor-client-serialization-iosx64:$version"
     }
 
     object OkHttp {

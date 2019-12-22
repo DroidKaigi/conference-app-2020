@@ -55,6 +55,19 @@ allprojects {
                 targetCompatibility JavaVersion.VERSION_1_8
             }
         }
+        if (it.class.name == "org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin"){
+            // Reference for 'kapt' DSL: https://kotlinlang.org/docs/reference/kapt.html#java-compiler-options
+            kapt {
+                // we expect this closure to run over a org.jetbrains.kotlin.gradle.plugin.KaptExtension
+                javacOptions {
+                    option("-source", "8")
+                    option("-target", "8")
+                }
+            }
+            // FIXME workaround
+            // I can not find `javax.annotation.Generated` without this
+            dependencies.compileOnly 'javax.annotation:javax.annotation-api:1.2'
+        }
     }
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile).all {
         kotlinOptions.freeCompilerArgs += ["-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"]
@@ -63,6 +76,7 @@ allprojects {
         kotlinOptions { jvmTarget = "1.8" }
     }
 }
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir
