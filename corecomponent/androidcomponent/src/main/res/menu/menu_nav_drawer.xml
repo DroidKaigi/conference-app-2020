@@ -10,25 +10,41 @@
             android:icon="@drawable/ic_event_outline_black_24dp"
             android:title="@string/session_label"
             />
+    </group>
+    <group
+        android:id="@+id/info"
+        android:checkableBehavior="single"
+        >
+        <item
+            android:icon="@drawable/ic_android_black_24dp"
+            android:title="@string/about_label"
+            />
         <item
             android:id="@id/announcement"
-            android:icon="@drawable/ic_event_outline_black_24dp"
+            android:icon="@drawable/ic_info_outline_black_24dp"
             android:title="@string/announce_label"
             />
         <item
-            android:id="@id/search_sessions"
-            android:icon="@drawable/ic_event_outline_black_24dp"
-            android:title="@string/search_label"
+            android:icon="@drawable/ic_place_black_24dp"
+            android:title="@string/map_label"
             />
-        <item
-            android:id="@id/staffs"
-            android:icon="@drawable/ic_event_outline_black_24dp"
-            android:title="@string/staffs_label"
-            />
+    </group>
+    <group
+        android:id="@+id/other"
+        android:checkableBehavior="single"
+        >
         <item
             android:id="@id/sponsors"
-            android:icon="@drawable/ic_event_outline_black_24dp"
+            android:icon="@drawable/ic_business_black_24dp"
             android:title="@string/sponsor_label"
+            />
+        <item
+            android:icon="@drawable/ic_people_outline_black_24dp"
+            android:title="@string/contributor"
+            />
+        <item
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="@string/setting_label"
             />
     </group>
 </menu>

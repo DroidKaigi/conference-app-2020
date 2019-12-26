@@ -4,10 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     >
+
     <data>
+
         <import type="io.github.droidkaigi.confsched2020.session.R" />
+
         <import type="io.github.droidkaigi.confsched2020.ext.ContextsKt" />
+
         <import type="androidx.databinding.adapters.Converters" />
+
         <variable
             name="isIndigoBackground"
             type="boolean"
@@ -34,11 +39,11 @@
                 android:layout_width="0dp"
                 android:layout_height="?actionBarSize"
                 android:background="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorPrimary : R.attr.colorSurface)}"
-                app:titleTextColor="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorOnPrimary : R.attr.colorOnSurface)}"
                 app:contentInsetStartWithNavigation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:titleTextColor="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorOnPrimary : R.attr.colorOnSurface)}"
                 />
 
             <fragment
@@ -61,6 +66,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            app:headerLayout="@layout/nav_drawer_header"
+            app:itemBackground="@android:color/transparent"
+            app:itemIconTint="@color/nav_drawer_item_selector"
+            app:itemTextColor="@color/nav_drawer_item_selector"
             app:menu="@menu/menu_nav_drawer"
             />
     </androidx.drawerlayout.widget.DrawerLayout>
