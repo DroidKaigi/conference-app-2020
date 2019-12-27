@@ -23,6 +23,8 @@
     <color name="cyan_800">#008b47</color>
     <color name="cyan_900">#006b31</color>
 
+    <color name="light_blue_300">#00b5e2</color>
+
     <color name="white">#FFFFFF</color>
     <color name="black_alpha_87">#DE000000</color>
     <color name="black_alpha_38">#61000000</color>
