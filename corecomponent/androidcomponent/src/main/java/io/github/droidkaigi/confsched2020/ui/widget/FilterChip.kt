@@ -19,6 +19,7 @@ package io.github.droidkaigi.confsched2020.ui.widget
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
@@ -161,8 +162,8 @@ class FilterChip @JvmOverloads constructor(
             0
         )
         outlinePaint = Paint(ANTI_ALIAS_FLAG).apply {
-            color = a.getColorOrThrow(R.styleable.FilterChip_strokeColor)
-            strokeWidth = a.getDimensionOrThrow(R.styleable.FilterChip_strokeWidth)
+            color = a.getColor(R.styleable.FilterChip_strokeColor, Color.TRANSPARENT)
+            strokeWidth = a.getDimension(R.styleable.FilterChip_strokeWidth, 0f)
             style = STROKE
         }
         clear = a.getDrawableOrThrow(R.styleable.FilterChip_clearIcon).apply {
@@ -226,7 +227,7 @@ class FilterChip @JvmOverloads constructor(
         val rounding = (height - strokeWidth) / 2f
 
         // Outline
-        if (progress < 1f) {
+        if (progress < 1f && strokeWidth > 0) {
             canvas.drawRoundRect(
                 halfStroke,
                 halfStroke,
