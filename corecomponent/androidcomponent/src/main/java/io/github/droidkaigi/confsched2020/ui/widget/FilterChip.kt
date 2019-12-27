@@ -191,6 +191,9 @@ class FilterChip @JvmOverloads constructor(
         isChecked = a.getBoolean(R.styleable.FilterChip_android_checked, false)
         showIcons = a.getBoolean(R.styleable.FilterChip_showIcons, true)
         dotSize = a.getDimensionOrThrow(R.styleable.FilterChip_dotSize)
+        if (a.hasValue(R.styleable.FilterChip_backgroundColor)) {
+            setBackgroundColor(a.getColorOrThrow(R.styleable.FilterChip_backgroundColor))
+        }
         a.recycle()
         clipToOutline = true
         setOnClickListener { toggleWithAnimation() }

@@ -11,6 +11,7 @@
         <attr name="android:fontFamily"/>
         <attr name="strokeColor"/>
         <attr name="strokeWidth"/>
+        <attr name="backgroundColor" format="color"/>
         <attr name="horizontalPadding" format="dimension"/>
         <attr name="verticalPadding" format="dimension"/>
         <attr name="selectedTextColor" format="color"/>
