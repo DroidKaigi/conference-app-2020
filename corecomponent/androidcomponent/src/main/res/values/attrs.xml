@@ -15,6 +15,7 @@
         <attr name="verticalPadding" format="dimension"/>
         <attr name="selectedTextColor" format="color"/>
         <attr name="clearIcon" format="reference"/>
+        <attr name="clearIconTint" format="color"/>
         <attr name="foreground" format="reference"/>
         <attr name="showIcons" format="boolean"/>
         <attr name="dotSize" format="dimension"/>
