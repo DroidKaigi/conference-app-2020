@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="empty_message">お知らせなし</string>
+    <string name="ellipsis_label">続きを読む</string>
 </resources>

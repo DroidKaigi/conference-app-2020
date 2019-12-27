@@ -1,7 +1,21 @@
 package io.github.droidkaigi.confsched2020.announcement.ui.item
 
 import android.content.Context
+import android.text.SpannableStringBuilder
+import android.text.TextPaint
+import android.text.TextUtils
 import android.text.format.DateUtils
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.text.buildSpannedString
+import androidx.core.text.color
+import androidx.core.text.inSpans
+import androidx.core.view.doOnPreDraw
+import androidx.transition.TransitionManager
 import com.soywiz.klock.DateFormat
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -18,8 +32,11 @@ class AnnouncementItem @AssistedInject constructor(
 ) : BindableItem<ItemAnnouncementBinding>(announcement.id), EqualableContentsProvider {
 
     companion object {
+        private const val ELLIPSIS_LINE_COUNT = 4
         private val dateFormatter = DateFormat("MM.dd HH:mm")
     }
+
+    private var showEllipsis: Boolean = true
 
     override fun getLayout(): Int = R.layout.item_announcement
 
@@ -33,7 +50,10 @@ class AnnouncementItem @AssistedInject constructor(
             }
         )
         viewBinding.announcementTitle.text = announcement.title
-        viewBinding.announcementContent.text = announcement.content
+        viewBinding.announcementContent.run {
+            text = announcement.content
+            setEllipsis(ELLIPSIS_LINE_COUNT, context.getString(R.string.ellipsis_label))
+        }
         viewBinding.announcementDateTime.text =
             DateUtils.formatDateTime(
                 context,
@@ -52,6 +72,57 @@ class AnnouncementItem @AssistedInject constructor(
 
     override fun hashCode(): Int {
         return contentsHash()
+    }
+
+    private fun TextView.setEllipsis(line: Int, label: String) {
+        doOnPreDraw {
+            val fullText = text
+            if (lineCount > line && showEllipsis) {
+                val lastLineStartPosition = layout.getLineStart(ELLIPSIS_LINE_COUNT - 1)
+                val ellipsisWidth = paint.measureText(label)
+                // Avoid shifting position, delete line feed code after target line.
+                val target = fullText.substring(lastLineStartPosition).replace("\n", "")
+                val lastLineText = TextUtils.ellipsize(
+                    target,
+                    paint,
+                    width - ellipsisWidth,
+                    TextUtils.TruncateAt.END
+                )
+                val ellipsisColor =
+                    ContextCompat.getColor(context, R.color.design_default_color_secondary)
+                val onClickListener = {
+                    TransitionManager.beginDelayedTransition(rootView as ViewGroup)
+                    text = fullText
+                    showEllipsis = !showEllipsis
+                }
+                val detailText = fullText.substring(0, lastLineStartPosition) + lastLineText
+                val text = buildSpannedString {
+                    clickableSpan(onClickListener, {
+                        append(detailText)
+                        color(ellipsisColor) {
+                            append(label)
+                        }
+                    })
+                }
+                setText(text, TextView.BufferType.SPANNABLE)
+                movementMethod = LinkMovementMethod.getInstance()
+            }
+        }
+    }
+
+    private fun SpannableStringBuilder.clickableSpan(
+        clickListener: () -> Unit,
+        builderAction: SpannableStringBuilder.() -> Unit
+    ) {
+        inSpans(object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                clickListener()
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                // NOP
+            }
+        }, builderAction)
     }
 
     @AssistedInject.Factory
