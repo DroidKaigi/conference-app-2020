@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched2020.announcement.ui
 
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +31,10 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class AnnouncementFragment : DaggerFragment() {
+
+    companion object {
+        private const val DEFAULT_NAV_BAR_HEIGHT_PX = 144
+    }
 
     @Inject
     lateinit var announcementModelFactory: AnnouncementViewModel.Factory
@@ -66,6 +71,16 @@ class AnnouncementFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Set a bottom padding for navigation bar height due to the system UI is enabled.
+        binding.root.run {
+            setPadding(
+                paddingLeft,
+                paddingTop,
+                paddingRight,
+                paddingBottom + getNavigationBarHeight(resources)
+            )
+        }
+
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.announcementRecycler.adapter = groupAdapter
 
@@ -89,6 +104,17 @@ class AnnouncementFragment : DaggerFragment() {
 
     private fun Announcement.toItem(context: Context): Item<*> {
         return announcementItemFactory.create(context, this)
+    }
+
+    private fun getNavigationBarHeight(resources: Resources): Int {
+        val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        return if (resourceId > 0) {
+            try {
+                resources.getDimensionPixelSize(resourceId);
+            } catch (e: Resources.NotFoundException) {
+                DEFAULT_NAV_BAR_HEIGHT_PX
+            }
+        } else DEFAULT_NAV_BAR_HEIGHT_PX
     }
 
     @Module
