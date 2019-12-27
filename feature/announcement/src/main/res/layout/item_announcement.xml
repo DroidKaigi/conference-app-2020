@@ -7,25 +7,27 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
-      <ImageView
-          android:id="@+id/announcement_icon"
-          android:layout_width="32dp"
-          android:layout_height="32dp"
-          tools:src="@drawable/ic_feed_notification_blue_20dp"
-          app:layout_constraintStart_toStartOf="parent"
-          android:layout_marginStart="8dp"
-          app:layout_constraintTop_toTopOf="parent"
-          android:layout_marginTop="8dp" />
+        <ImageView
+            android:id="@+id/announcement_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_feed_notification_blue_20dp"
+            />
 
         <TextView
             android:id="@+id/announcement_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:textSize="20sp"
             android:textColor="?colorOnSurface"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/announcement_date_time"
             app:layout_constraintTop_toBottomOf="@+id/announcement_date_time"
@@ -37,6 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
+            android:textColor="?colorOnBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/announcement_title"
             app:layout_constraintTop_toBottomOf="@+id/announcement_title"

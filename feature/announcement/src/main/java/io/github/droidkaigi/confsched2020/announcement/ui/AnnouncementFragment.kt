@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched2020.announcement.ui
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.ViewHolder
@@ -73,6 +75,7 @@ class AnnouncementFragment : DaggerFragment() {
 
         // Set a bottom padding for navigation bar height due to the system UI is enabled.
         binding.announcementRecycler.run {
+            addItemDecoration(AnnouncementItemDecoration(resources.getDimension(R.dimen.announcement_item_offset)))
             setPadding(
                 paddingStart,
                 paddingTop,
@@ -107,14 +110,28 @@ class AnnouncementFragment : DaggerFragment() {
     }
 
     private fun getNavigationBarHeight(resources: Resources): Int {
-        val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        return if (resourceId > 0) {
-            try {
-                resources.getDimensionPixelSize(resourceId);
-            } catch (e: Resources.NotFoundException) {
-                DEFAULT_NAV_BAR_HEIGHT_PX
+        val id = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        return if (id > 0) {
+            resources.getDimensionPixelSize(id)
+        } else {
+            DEFAULT_NAV_BAR_HEIGHT_PX
+        }
+    }
+
+    private class AnnouncementItemDecoration(val offset: Float) : RecyclerView.ItemDecoration() {
+
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            super.getItemOffsets(outRect, view, parent, state)
+            val position = parent.getChildLayoutPosition(view)
+            if (position > 0) {
+                outRect.top = offset.toInt()
             }
-        } else DEFAULT_NAV_BAR_HEIGHT_PX
+        }
     }
 
     @Module
