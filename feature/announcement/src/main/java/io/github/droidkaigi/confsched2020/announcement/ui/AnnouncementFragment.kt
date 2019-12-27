@@ -72,11 +72,11 @@ class AnnouncementFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Set a bottom padding for navigation bar height due to the system UI is enabled.
-        binding.root.run {
+        binding.announcementRecycler.run {
             setPadding(
-                paddingLeft,
+                paddingStart,
                 paddingTop,
-                paddingRight,
+                paddingEnd,
                 paddingBottom + getNavigationBarHeight(resources)
             )
         }
