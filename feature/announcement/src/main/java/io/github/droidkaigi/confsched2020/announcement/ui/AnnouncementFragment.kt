@@ -1,13 +1,13 @@
 package io.github.droidkaigi.confsched2020.announcement.ui
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -19,6 +19,7 @@ import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.announcement.R
 import io.github.droidkaigi.confsched2020.announcement.databinding.FragmentAnnouncementBinding
 import io.github.droidkaigi.confsched2020.announcement.ui.item.AnnouncementItem
@@ -33,10 +34,6 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class AnnouncementFragment : DaggerFragment() {
-
-    companion object {
-        private const val DEFAULT_NAV_BAR_HEIGHT_PX = 144
-    }
 
     @Inject
     lateinit var announcementModelFactory: AnnouncementViewModel.Factory
@@ -73,19 +70,15 @@ class AnnouncementFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set a bottom padding for navigation bar height due to the system UI is enabled.
+        val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.announcementRecycler.run {
             addItemDecoration(AnnouncementItemDecoration(resources.getDimension(R.dimen.announcement_item_offset)))
-            setPadding(
-                paddingStart,
-                paddingTop,
-                paddingEnd,
-                paddingBottom + getNavigationBarHeight(resources)
-            )
+            adapter = groupAdapter
+            doOnApplyWindowInsets { recyclerView, insets, initialState ->
+                // Set a bottom padding due to the system UI is enabled.
+                recyclerView.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+            }
         }
-
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
-        binding.announcementRecycler.adapter = groupAdapter
 
         progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
@@ -107,15 +100,6 @@ class AnnouncementFragment : DaggerFragment() {
 
     private fun Announcement.toItem(context: Context): Item<*> {
         return announcementItemFactory.create(context, this)
-    }
-
-    private fun getNavigationBarHeight(resources: Resources): Int {
-        val id = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        return if (id > 0) {
-            resources.getDimensionPixelSize(id)
-        } else {
-            DEFAULT_NAV_BAR_HEIGHT_PX
-        }
     }
 
     private class AnnouncementItemDecoration(val offset: Float) : RecyclerView.ItemDecoration() {

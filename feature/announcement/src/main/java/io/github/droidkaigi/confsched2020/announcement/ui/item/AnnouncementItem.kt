@@ -52,7 +52,7 @@ class AnnouncementItem @AssistedInject constructor(
         viewBinding.announcementTitle.text = announcement.title
         viewBinding.announcementContent.run {
             text = announcement.content
-            setEllipsis(ELLIPSIS_LINE_COUNT, context.getString(R.string.ellipsis_label))
+            setEllipsis(ELLIPSIS_LINE_COUNT, context.getString(R.string.read_more_label))
         }
         viewBinding.announcementDateTime.text =
             DateUtils.formatDateTime(
@@ -78,7 +78,7 @@ class AnnouncementItem @AssistedInject constructor(
         doOnPreDraw {
             val fullText = text
             if (lineCount > line && showEllipsis) {
-                val lastLineStartPosition = layout.getLineStart(ELLIPSIS_LINE_COUNT - 1)
+                val lastLineStartPosition = layout.getLineStart(line - 1)
                 val ellipsisWidth = paint.measureText(label)
                 // Avoid shifting position, delete line feed code after target line.
                 val target = fullText.substring(lastLineStartPosition).replace("\n", "")

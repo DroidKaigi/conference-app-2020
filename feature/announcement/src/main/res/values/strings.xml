@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="empty_message">No announcement</string>
-    <string name="ellipsis_label">more</string>
+    <string name="read_more_label">more</string>
 </resources>
