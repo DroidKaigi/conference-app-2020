@@ -135,7 +135,7 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     private fun onDestinationChange(destination: NavDestination) {
-        binding.navView.menu.findItem(destination.id).isChecked = true
+        binding.navView.menu.findItem(destination.id)?.isChecked = true
 
         val config = PageConfiguration.getConfiguration(destination.id)
         statusBarColors.isIndigoBackground = config.isIndigoBackground
