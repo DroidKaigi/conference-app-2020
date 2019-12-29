@@ -9,6 +9,7 @@
         <item name="colorPrimaryDark">?colorPrimaryVariant</item>
         <item name="colorOnSecondary">@color/black</item>
         <item name="colorOnBackground">@color/black_alpha_87</item>
+        <item name="colorOnSurface">@color/black</item>
 
         <item name="colorPrimaryOnBackground">@color/indigo_900</item>
         <item name="colorCaptionOnBackground">@color/black_alpha_38</item>

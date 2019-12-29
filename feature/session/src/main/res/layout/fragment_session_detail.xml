@@ -139,7 +139,7 @@
                     app:iconSize="12dp"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/tags"
-                    app:strokeColor="@color/selector_material_button_stroke"
+                    app:strokeColor="@color/survey_button"
                     app:strokeWidth="2dp"
                     tools:enabled="false"
                     />
