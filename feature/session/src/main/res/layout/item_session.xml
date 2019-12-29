@@ -57,13 +57,15 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
             android:src="@drawable/ic_bookmark_border_black_24dp"
-            android:tint="?attr/colorPrimary"
+            android:tint="?colorSecondary"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintTop_toTopOf="parent"
             />
 
         <TextView
