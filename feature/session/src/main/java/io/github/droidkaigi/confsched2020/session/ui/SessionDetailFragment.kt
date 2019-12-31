@@ -92,14 +92,21 @@ class SessionDetailFragment : DaggerFragment() {
                 binding.speechSession = (session as? SpeechSession)
                 binding.lang = defaultLang()
                 binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
-                binding.tags.removeAllViews()
                 if (session is SpeechSession) {
-                    binding.tags.addView(Chip(context).apply {
-                        text = session.category.name.getByLang(defaultLang())
-                    })
-                    binding.tags.addView(Chip(context).apply {
-                        text = session.lang.text.getByLang(defaultLang())
-                    })
+                    val langLabel = session.lang.text.getByLang(defaultLang())
+                    val categoryLabel = session.category.name.getByLang(defaultLang())
+                    val newTag = "$categoryLabel:$categoryLabel"
+                    val savedTag = binding.tags.tag
+                    if (savedTag != newTag) {
+                        binding.tags.removeAllViews()
+                        binding.tags.addView(Chip(context).apply {
+                            text = categoryLabel
+                        })
+                        binding.tags.addView(Chip(context).apply {
+                            text = langLabel
+                        })
+                        binding.tags.tag = newTag
+                    }
                 }
                 binding.speakers.bindSpeaker(session)
                 uiModel.error?.let { systemViewModel.onError(it) }
