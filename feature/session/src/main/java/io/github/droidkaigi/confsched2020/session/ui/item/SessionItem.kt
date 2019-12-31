@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.lifecycle.LifecycleOwner
@@ -123,7 +124,7 @@ class SessionItem @AssistedInject constructor(
                 null
             )?.apply {
                 setTint(
-                    context.getThemeColor(R.attr.colorOnBackground)
+                    ContextCompat.getColor(context, R.color.speaker_icon)
                 )
             }
         }?.also {
