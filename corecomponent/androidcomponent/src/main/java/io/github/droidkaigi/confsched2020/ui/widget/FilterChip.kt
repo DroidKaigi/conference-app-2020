@@ -19,6 +19,7 @@ package io.github.droidkaigi.confsched2020.ui.widget
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
@@ -79,11 +80,6 @@ class FilterChip @JvmOverloads constructor(
         set(value) {
             if (field != value) {
                 field = value
-                if (value != null) {
-                    clear = clear.mutate().apply {
-                        setTint(value)
-                    }
-                }
                 postInvalidateOnAnimation()
             }
         }
@@ -161,14 +157,18 @@ class FilterChip @JvmOverloads constructor(
             0
         )
         outlinePaint = Paint(ANTI_ALIAS_FLAG).apply {
-            color = a.getColorOrThrow(R.styleable.FilterChip_strokeColor)
-            strokeWidth = a.getDimensionOrThrow(R.styleable.FilterChip_strokeWidth)
+            color = a.getColor(R.styleable.FilterChip_strokeColor, Color.TRANSPARENT)
+            strokeWidth = a.getDimension(R.styleable.FilterChip_strokeWidth, 0f)
             style = STROKE
         }
         clear = a.getDrawableOrThrow(R.styleable.FilterChip_clearIcon).apply {
             setBounds(
                 -intrinsicWidth / 2, -intrinsicHeight / 2, intrinsicWidth / 2, intrinsicHeight / 2
             )
+        }
+        if (a.hasValue(R.styleable.FilterChip_clearIconTint)) {
+            val clearIconTint = a.getColorOrThrow(R.styleable.FilterChip_clearIconTint)
+            clear.setTint(clearIconTint)
         }
         textColor = a.getColorOrThrow(R.styleable.FilterChip_android_textColor)
         selectedTextColor = a.getColor(R.styleable.FilterChip_selectedTextColor, 0)
@@ -191,6 +191,9 @@ class FilterChip @JvmOverloads constructor(
         isChecked = a.getBoolean(R.styleable.FilterChip_android_checked, false)
         showIcons = a.getBoolean(R.styleable.FilterChip_showIcons, true)
         dotSize = a.getDimensionOrThrow(R.styleable.FilterChip_dotSize)
+        if (a.hasValue(R.styleable.FilterChip_backgroundColor)) {
+            setBackgroundColor(a.getColorOrThrow(R.styleable.FilterChip_backgroundColor))
+        }
         a.recycle()
         clipToOutline = true
         setOnClickListener { toggleWithAnimation() }
@@ -226,7 +229,7 @@ class FilterChip @JvmOverloads constructor(
         val rounding = (height - strokeWidth) / 2f
 
         // Outline
-        if (progress < 1f) {
+        if (progress < 1f && strokeWidth > 0) {
             canvas.drawRoundRect(
                 halfStroke,
                 halfStroke,

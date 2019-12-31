@@ -5,54 +5,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <!--TODO: Apply Layout-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
-      <ImageView
-          android:id="@+id/announcement_icon"
-          android:layout_width="50dp"
-          android:layout_height="50dp"
-          tools:src="@drawable/ic_feed_notification_blue_20dp"
-          app:layout_constraintStart_toStartOf="parent"
-          android:layout_marginStart="8dp"
-          app:layout_constraintTop_toTopOf="parent"
-          android:layout_marginTop="8dp" />
+        <ImageView
+            android:id="@+id/announcement_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_feed_notification_blue_20dp"
+            />
 
-      <TextView
-          android:id="@+id/announcement_title"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          tools:text="Announcement Title"
-          android:textSize="20sp"
-          android:textColor="@android:color/black"
-          app:layout_constraintTop_toTopOf="@+id/announcement_icon"
-          app:layout_constraintStart_toEndOf="@+id/announcement_icon"
-          android:layout_marginStart="8dp"
-          android:layout_marginBottom="8dp"
-          app:layout_constraintBottom_toTopOf="@+id/announcement_content" />
+        <TextView
+            android:id="@+id/announcement_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="?colorOnSurface"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/announcement_date_time"
+            app:layout_constraintTop_toBottomOf="@+id/announcement_date_time"
+            tools:text="Announcement Title"
+            />
 
-      <TextView
-          android:id="@+id/announcement_content"
-          android:layout_width="285dp"
-          android:layout_height="20dp"
-          tools:text="announcement content..."
-          app:layout_constraintBottom_toBottomOf="@+id/announcement_icon"
-          app:layout_constraintStart_toEndOf="@+id/announcement_icon"
-          android:layout_marginStart="8dp"
-          app:layout_constraintEnd_toEndOf="parent"
-          android:layout_marginEnd="8dp"
-          app:layout_constraintHorizontal_bias="0.050" />
+        <TextView
+            android:id="@+id/announcement_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:textColor="?colorOnBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/announcement_title"
+            app:layout_constraintTop_toBottomOf="@+id/announcement_title"
+            tools:text="announcement..announcement..announcement..announcement..announcement..announcement..announcement..announcement..announcement..announcement..announcement..announcement.."
+            />
 
-      <TextView
-          android:id="@+id/announcement_date_time"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          tools:text="@tools:sample/date/hhmm"
-          app:layout_constraintTop_toTopOf="@+id/announcement_icon"
-          app:layout_constraintEnd_toEndOf="parent"
-          android:layout_marginEnd="8dp" />
+        <TextView
+            android:id="@+id/announcement_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@+id/announcement_icon"
+            app:layout_constraintTop_toTopOf="@+id/announcement_icon"
+            tools:text="February 20, 7:49 PM"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

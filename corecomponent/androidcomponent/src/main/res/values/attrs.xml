@@ -11,10 +11,12 @@
         <attr name="android:fontFamily"/>
         <attr name="strokeColor"/>
         <attr name="strokeWidth"/>
+        <attr name="backgroundColor" format="color"/>
         <attr name="horizontalPadding" format="dimension"/>
         <attr name="verticalPadding" format="dimension"/>
         <attr name="selectedTextColor" format="color"/>
         <attr name="clearIcon" format="reference"/>
+        <attr name="clearIconTint" format="color"/>
         <attr name="foreground" format="reference"/>
         <attr name="showIcons" format="boolean"/>
         <attr name="dotSize" format="dimension"/>
