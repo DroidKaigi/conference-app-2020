@@ -12,9 +12,7 @@ import io.github.droidkaigi.confsched2020.staff.databinding.ItemStaffBinding
 import io.github.droidkaigi.confsched2020.staff.ui.viewmodel.StaffsViewModel
 
 class StaffItem @AssistedInject constructor(
-    @Assisted val staff: Staff,
-    @Assisted val staffsViewModel: StaffsViewModel,
-    val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
+    @Assisted private val staff: Staff
 ) : BindableItem<ItemStaffBinding>(staff.id.hashCode().toLong()),
     EqualableContentsProvider {
     override fun getLayout(): Int = R.layout.item_staff
@@ -37,6 +35,6 @@ class StaffItem @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(staff:Staff, staffsViewModel: StaffsViewModel): StaffItem
+        fun create(staff:Staff): StaffItem
     }
 }

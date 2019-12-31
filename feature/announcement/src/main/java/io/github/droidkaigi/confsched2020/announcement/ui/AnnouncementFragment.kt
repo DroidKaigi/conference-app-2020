@@ -90,16 +90,12 @@ class AnnouncementFragment : DaggerFragment() {
             progressTimeLatch.loading = uiModel.isLoading
             binding.emptyMessage.isVisible = uiModel.isEmpty
             groupAdapter.update(
-                uiModel.announcements.map { announcement -> announcement.toItem(requireContext()) }
+                uiModel.announcements.map { announcement -> announcementItemFactory.create(announcement) }
             )
             uiModel.error?.let {
                 systemViewModel.onError(it)
             }
         }
-    }
-
-    private fun Announcement.toItem(context: Context): Item<*> {
-        return announcementItemFactory.create(context, this)
     }
 
     private class AnnouncementItemDecoration(val offset: Float) : RecyclerView.ItemDecoration() {

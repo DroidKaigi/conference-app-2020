@@ -1,6 +1,8 @@
 package io.github.droidkaigi.confsched2020.ext
 
 import androidx.annotation.StringRes
+import androidx.core.os.OperationCanceledException
+import androidx.work.WorkInfo
 import com.google.firebase.firestore.FirebaseFirestoreException
 import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.widget.component.R
@@ -24,6 +26,13 @@ fun Throwable?.toAppError(): AppError? {
         is TimeoutCancellationException -> AppError.ApiException.NetworkException(this)
         else -> AppError.UnknownException(this)
     }
+}
+
+fun WorkInfo.State.toAppError(): AppError? {
+    if (this == WorkInfo.State.FAILED) {
+        return AppError.ApiException.NetworkException(OperationCanceledException())
+    }
+    return null
 }
 
 @StringRes

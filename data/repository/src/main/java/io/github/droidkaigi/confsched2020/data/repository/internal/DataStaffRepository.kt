@@ -3,7 +3,7 @@ package io.github.droidkaigi.confsched2020.data.repository.internal
 import io.github.droidkaigi.confsched2020.data.api.DroidKaigiApi
 import io.github.droidkaigi.confsched2020.data.db.StaffDatabase
 import io.github.droidkaigi.confsched2020.data.db.entity.StaffEntity
-import io.github.droidkaigi.confsched2020.data.repository.StaffRepository
+import io.github.droidkaigi.confsched2020.model.repository.StaffRepository
 import io.github.droidkaigi.confsched2020.model.Staff
 import io.github.droidkaigi.confsched2020.model.StaffContents
 import kotlinx.coroutines.flow.map

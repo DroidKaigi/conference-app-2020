@@ -39,10 +39,12 @@ kotlin {
                 implementation project(":data:firestore")
                 implementation project(':ext:log')
                 implementation project(":data:db")
+                implementation project(":corecomponent:androidcomponent")
 
                 implementation Dep.Kotlin.stdlibJvm
                 implementation Dep.Kotlin.coroutines
                 implementation Dep.AndroidX.lifecycleLiveData
+                implementation Dep.AndroidX.Work.runtimeKtx
 
                 implementation Dep.Dagger.core
                 implementation Dep.Dagger.androidSupport

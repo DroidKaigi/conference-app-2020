@@ -12,7 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
-import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
@@ -23,6 +23,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
+import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.Session
@@ -32,23 +33,28 @@ import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
-import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.actionSessionToSpeaker
+import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
+import javax.inject.Provider
 
 class SessionDetailFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentSessionDetailBinding
 
+    @Inject lateinit var systemViewModelFactory: Provider<SystemViewModel>
+    private val systemViewModel by assistedActivityViewModels {
+        systemViewModelFactory.get()
+    }
     @Inject lateinit var sessionDetailViewModelFactory: SessionDetailViewModel.Factory
     private val sessionDetailViewModel by assistedViewModels {
         sessionDetailViewModelFactory.create(navArgs.sessionId)
     }
 
     private val navArgs: SessionDetailFragmentArgs by navArgs()
-    @Inject lateinit var navController: NavController
     @Inject lateinit var sessionItemFactory: SessionItem.Factory
 
     private lateinit var progressTimeLatch: ProgressTimeLatch
@@ -80,22 +86,30 @@ class SessionDetailFragment : DaggerFragment() {
                 progressTimeLatch.loading = uiModel.isLoading
                 val session = uiModel.session ?: return@observe
                 binding.sessionFavorite.setOnClickListener {
-                    sessionDetailViewModel.favorite(session).observeBy(viewLifecycleOwner)
+                    sessionDetailViewModel.favorite(session)
                 }
                 binding.session = session
                 binding.speechSession = (session as? SpeechSession)
                 binding.lang = defaultLang()
                 binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
-                binding.tags.removeAllViews()
                 if (session is SpeechSession) {
-                    binding.tags.addView(Chip(context).apply {
-                        text = session.category.name.getByLang(defaultLang())
-                    })
-                    binding.tags.addView(Chip(context).apply {
-                        text = session.lang.text.getByLang(defaultLang())
-                    })
+                    val langLabel = session.lang.text.getByLang(defaultLang())
+                    val categoryLabel = session.category.name.getByLang(defaultLang())
+                    val newTag = "$categoryLabel:$categoryLabel"
+                    val savedTag = binding.tags.tag
+                    if (savedTag != newTag) {
+                        binding.tags.removeAllViews()
+                        binding.tags.addView(Chip(context).apply {
+                            text = categoryLabel
+                        })
+                        binding.tags.addView(Chip(context).apply {
+                            text = langLabel
+                        })
+                        binding.tags.tag = newTag
+                    }
                 }
                 binding.speakers.bindSpeaker(session)
+                uiModel.error?.let { systemViewModel.onError(it) }
             }
     }
 
@@ -108,7 +122,7 @@ class SessionDetailFragment : DaggerFragment() {
                 R.layout.layout_speaker, this, false
             ) as ViewGroup
             speakerView.setOnClickListener {
-                navController.navigate(actionSessionToSpeaker(speaker.id))
+                findNavController().navigate(actionSessionToSpeaker(speaker.id))
             }
             val textView: TextView = speakerView.findViewById(R.id.speaker)
             bindSpeakerData(speaker, textView)

@@ -68,7 +68,6 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
         }
 
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
-            // TODO: support favorite list
             val sessions = uiModel.favoritedSessions
             binding.filteredSessionCount.text = sessions.filter { it.shouldCountForFilter }.count().toString()
             binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()

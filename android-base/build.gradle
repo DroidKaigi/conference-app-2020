@@ -77,6 +77,7 @@ dependencies {
     kapt Dep.Dagger.androidProcessor
     compileOnly Dep.Dagger.assistedInjectAnnotations
     kapt Dep.Dagger.assistedInjectProcessor
+    implementation Dep.Groupie.groupie
 
     testImplementation Dep.Test.junit
     androidTestImplementation Dep.Test.testRunner
@@ -85,6 +86,7 @@ dependencies {
     Dep.Hyperion.hyperionPlugins.forEach{
         debugImplementation it
     }
+    debugImplementation Dep.Stetho.stetho
 }
 
 apply plugin: 'com.google.gms.google-services'

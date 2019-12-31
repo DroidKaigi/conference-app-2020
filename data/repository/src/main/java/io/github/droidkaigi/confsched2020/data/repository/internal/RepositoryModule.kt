@@ -2,11 +2,13 @@ package io.github.droidkaigi.confsched2020.data.repository.internal
 
 import dagger.Binds
 import dagger.Module
-import io.github.droidkaigi.confsched2020.data.repository.AnnouncementRepository
-import io.github.droidkaigi.confsched2020.data.repository.ContributorRepository
-import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
-import io.github.droidkaigi.confsched2020.data.repository.SponsorRepository
-import io.github.droidkaigi.confsched2020.data.repository.StaffRepository
+import io.github.droidkaigi.confsched2020.data.repository.FavoriteToggleWorkerManager
+import io.github.droidkaigi.confsched2020.data.repository.internal.workmanager.FavoriteToggleWorkerManagerImpl
+import io.github.droidkaigi.confsched2020.model.repository.AnnouncementRepository
+import io.github.droidkaigi.confsched2020.model.repository.ContributorRepository
+import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
+import io.github.droidkaigi.confsched2020.model.repository.SponsorRepository
+import io.github.droidkaigi.confsched2020.model.repository.StaffRepository
 
 @Module(includes = [RepositoryModule.Providers::class])
 internal abstract class RepositoryModule {
@@ -20,6 +22,8 @@ internal abstract class RepositoryModule {
     @Binds abstract fun contributorDatabase(impl: DataContributorRepository): ContributorRepository
 
     @Binds abstract fun staffDatabase(impl: DataStaffRepository): StaffRepository
+
+    @Binds abstract fun favoriteToggleWorkerManager(impl: FavoriteToggleWorkerManagerImpl): FavoriteToggleWorkerManager
 
     @Module
     internal object Providers

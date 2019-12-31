@@ -15,8 +15,6 @@ android.libraryVariants.all {
 
 kotlin {
     android("android")
-    // This is for iPhone emulator
-    // Switch here to iosArm64 (or iosArm32) to build library for iPhone device
     iosArm64("iosArm64") {
         binaries {
             framework {

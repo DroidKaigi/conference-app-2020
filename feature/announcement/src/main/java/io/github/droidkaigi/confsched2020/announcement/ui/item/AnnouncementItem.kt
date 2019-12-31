@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched2020.announcement.ui.item
 
-import android.content.Context
 import android.text.SpannableStringBuilder
 import android.text.TextPaint
 import android.text.TextUtils
@@ -27,7 +26,6 @@ import io.github.droidkaigi.confsched2020.model.Announcement
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 
 class AnnouncementItem @AssistedInject constructor(
-    @Assisted val context: Context,
     @Assisted val announcement: Announcement
 ) : BindableItem<ItemAnnouncementBinding>(announcement.id), EqualableContentsProvider {
 
@@ -41,6 +39,7 @@ class AnnouncementItem @AssistedInject constructor(
     override fun getLayout(): Int = R.layout.item_announcement
 
     override fun bind(viewBinding: ItemAnnouncementBinding, position: Int) {
+        val context = viewBinding.root.context
         viewBinding.announcementIcon.setImageResource(
             when (announcement.type) {
                 // TODO: apply new icon.
@@ -128,7 +127,6 @@ class AnnouncementItem @AssistedInject constructor(
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            context: Context,
             announcement: Announcement
         ): AnnouncementItem
     }

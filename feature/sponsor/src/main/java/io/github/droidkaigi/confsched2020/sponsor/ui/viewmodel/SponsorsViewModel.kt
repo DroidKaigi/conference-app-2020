@@ -3,8 +3,6 @@ package io.github.droidkaigi.confsched2020.sponsor.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.squareup.inject.assisted.AssistedInject
-import io.github.droidkaigi.confsched2020.data.repository.SponsorRepository
 import io.github.droidkaigi.confsched2020.ext.asLiveData
 import io.github.droidkaigi.confsched2020.ext.composeBy
 import io.github.droidkaigi.confsched2020.ext.toAppError
@@ -12,8 +10,10 @@ import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.SponsorCategory
+import io.github.droidkaigi.confsched2020.model.repository.SponsorRepository
+import javax.inject.Inject
 
-class SponsorsViewModel @AssistedInject constructor(
+class SponsorsViewModel @Inject constructor(
     private val sponsorRepository: SponsorRepository
 ) : ViewModel() {
 
@@ -50,10 +50,5 @@ class SponsorsViewModel @AssistedInject constructor(
             error = loadState.getErrorIfExists().toAppError(),
             sponsorCategories = sponsorCategories
         )
-    }
-
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(): SponsorsViewModel
     }
 }

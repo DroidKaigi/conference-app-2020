@@ -6,12 +6,13 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import io.github.droidkaigi.confsched2020.di.AppComponent
+import io.github.droidkaigi.confsched2020.di.AppComponentHolder
 import io.github.droidkaigi.confsched2020.di.createAppComponent
 import timber.log.LogcatTree
 import timber.log.Timber
 
-open class App : DaggerApplication() {
-    val appComponent: AppComponent by lazy {
+open class App : DaggerApplication(), AppComponentHolder {
+    override val appComponent: AppComponent by lazy {
         createAppComponent()
     }
 

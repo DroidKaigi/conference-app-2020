@@ -11,7 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
-import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.api.load
@@ -41,8 +41,6 @@ class SpeakerFragment : DaggerFragment() {
     }
 
     private val navArgs: SpeakerFragmentArgs by navArgs()
-    @Inject lateinit var navController: NavController
-
     private lateinit var progressTimeLatch: ProgressTimeLatch
 
     override fun onCreateView(
@@ -97,7 +95,7 @@ class SpeakerFragment : DaggerFragment() {
                 }
 
                 binding.speakerSessionName.setOnClickListener {
-                    navController.navigate(actionSpeakerToSessionDetail(session.id))
+                    findNavController().navigate(actionSpeakerToSessionDetail(session.id))
                 }
             }
     }

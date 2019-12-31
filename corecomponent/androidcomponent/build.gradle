@@ -42,6 +42,7 @@ dependencies {
     api Dep.AndroidX.coreKtx
     api Dep.AndroidX.liveDataKtx
     api Dep.AndroidX.liveDataCoreKtx
+    implementation Dep.AndroidX.Work.runtimeKtx
     api Dep.shopifyLiveDataKtx
     implementation Dep.liveEvent
 

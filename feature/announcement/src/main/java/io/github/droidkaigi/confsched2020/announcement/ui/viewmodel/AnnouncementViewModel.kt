@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.squareup.inject.assisted.AssistedInject
-import io.github.droidkaigi.confsched2020.data.repository.AnnouncementRepository
 import io.github.droidkaigi.confsched2020.ext.asLiveData
+import io.github.droidkaigi.confsched2020.model.repository.AnnouncementRepository
 import io.github.droidkaigi.confsched2020.ext.composeBy
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState

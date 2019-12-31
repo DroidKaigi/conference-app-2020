@@ -31,7 +31,7 @@ import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment
 import io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment.AnnouncementFragmentModule
 import io.github.droidkaigi.confsched2020.announcement.ui.di.AnnouncementAssistedInjectModule
-import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
+import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.databinding.ActivityMainBinding
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
@@ -231,13 +231,7 @@ abstract class MainActivityModule {
     abstract fun contributeAnnouncementFragment(): AnnouncementFragment
 
     @Module
-    companion object {
-        @JvmStatic
-        @Provides
-        fun provideNavController(mainActivity: MainActivity): NavController {
-            return mainActivity.navController
-        }
-    }
+    companion object
 
     @Module
     abstract class MainActivityBuilder {

@@ -9,12 +9,13 @@ import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
 import coil.request.RequestDisposable
 import coil.transform.CircleCropTransformation
+import com.soywiz.klock.DateTime
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
@@ -33,10 +34,9 @@ import io.github.droidkaigi.confsched2020.util.lazyWithParam
 import kotlin.math.max
 
 class SessionItem @AssistedInject constructor(
-    @Assisted val session: Session,
-    @Assisted val sessionsViewModel: SessionsViewModel,
-    val lifecycleOwnerLiveData: LiveData<LifecycleOwner>,
-    val navController: NavController
+    @Assisted private val session: Session,
+    @Assisted private val sessionsViewModel: SessionsViewModel,
+    private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
 ) : BindableItem<ItemSessionBinding>(session.id.hashCode().toLong()),
     EqualableContentsProvider {
 
@@ -52,7 +52,6 @@ class SessionItem @AssistedInject constructor(
         viewBinding.favorite.setOnClickListener {
             sessionsViewModel
                 .favorite(session)
-                .observeBy(lifecycleOwnerLiveData.value!!)
         }
         viewBinding.favorite.setImageResource(
             if (session.isFavorited)
@@ -61,7 +60,8 @@ class SessionItem @AssistedInject constructor(
                 R.drawable.ic_bookmark_border_black_24dp
         )
         viewBinding.root.setOnClickListener {
-            navController.navigate(actionSessionToSessionDetail(session.id))
+            viewBinding.root.findNavController()
+                .navigate(actionSessionToSessionDetail(session.id))
         }
         viewBinding.live.isVisible = session.isOnGoing
         viewBinding.title.text = session.title.ja
@@ -90,7 +90,7 @@ class SessionItem @AssistedInject constructor(
                     R.layout.layout_speaker, this, false
                 ) as ViewGroup
                 speakerView.setOnClickListener {
-                    navController.navigate(actionSessionToSpeaker(speaker.id))
+                    it.findNavController().navigate(actionSessionToSpeaker(speaker.id))
                 }
                 val textView: TextView = speakerView.findViewById(R.id.speaker)
                 bindSpeakerData(speaker, textView)
@@ -158,6 +158,8 @@ class SessionItem @AssistedInject constructor(
         )
     }
 
+    fun startSessionTime(): String = session.startTimeText
+
     override fun providerEqualableContents(): Array<*> {
         return arrayOf(session)
     }
@@ -172,6 +174,9 @@ class SessionItem @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(session: Session, sessionsViewModel: SessionsViewModel): SessionItem
+        fun create(
+            session: Session,
+            sessionsViewModel: SessionsViewModel
+        ): SessionItem
     }
 }

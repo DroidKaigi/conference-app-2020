@@ -79,7 +79,7 @@ class StaffsFragment : Fragment() {
             when (state) {
                 is LoadState.Loaded -> {
                     groupAdapter.update(state.value.staffs.map {
-                        staffItemFactory.create(it, staffsViewModel)
+                        staffItemFactory.create(it)
                     })
                 }
                 LoadState.Loading -> Unit
