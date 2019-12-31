@@ -66,7 +66,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
-            app:backgroundTint="?attr/colorSurface"
             app:behavior_hideable="false"
             app:behavior_peekHeight="64dp"
             app:behavior_skipCollapsed="true"
