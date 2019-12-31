@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2020.data.repository
+package io.github.droidkaigi.confsched2020.model.repository
 
 import io.github.droidkaigi.confsched2020.model.StaffContents
 import kotlinx.coroutines.flow.Flow

@@ -25,6 +25,7 @@ dependencies {
     implementation Dep.AndroidX.recyclerView
     implementation Dep.AndroidX.emoji
     implementation Dep.AndroidX.design
+    implementation Dep.AndroidX.Work.runtimeKtx
 
     implementation Dep.Dagger.core
     implementation Dep.Dagger.androidSupport

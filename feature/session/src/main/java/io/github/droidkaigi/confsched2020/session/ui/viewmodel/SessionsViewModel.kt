@@ -1,15 +1,13 @@
 package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 
-import androidx.annotation.CheckResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
-import io.github.droidkaigi.confsched2020.ext.LifecycleRunnable
+import androidx.work.WorkInfo
+import io.github.droidkaigi.confsched2020.data.repository.FavoriteToggleWorkerManager
 import io.github.droidkaigi.confsched2020.ext.asLiveData
 import io.github.droidkaigi.confsched2020.ext.composeBy
-import io.github.droidkaigi.confsched2020.ext.onChanged
 import io.github.droidkaigi.confsched2020.ext.requireValue
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
@@ -20,15 +18,16 @@ import io.github.droidkaigi.confsched2020.model.Filters
 import io.github.droidkaigi.confsched2020.model.Lang
 import io.github.droidkaigi.confsched2020.model.LangSupport
 import io.github.droidkaigi.confsched2020.model.LoadState
-import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Room
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionPage
+import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import javax.inject.Inject
 
 class SessionsViewModel @Inject constructor(
-    private val sessionRepository: SessionRepository
+    private val sessionRepository: SessionRepository,
+    private val favoriteToggleWorkerManager: FavoriteToggleWorkerManager
 ) : ViewModel() {
     // UiModel definition
     data class UiModel(
@@ -57,8 +56,8 @@ class SessionsViewModel @Inject constructor(
             // We can show sessions with cache
         }
     }
-    private val favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
-        MutableLiveData(LoadingState.Initialized)
+    private val favoriteStateLiveData: LiveData<WorkInfo.State> =
+        favoriteToggleWorkerManager.liveData()
 
     private val filterLiveData: MutableLiveData<Filters> = MutableLiveData(Filters())
 
@@ -66,14 +65,14 @@ class SessionsViewModel @Inject constructor(
     val uiModel: LiveData<UiModel> = composeBy(
         initialValue = UiModel.EMPTY,
         liveData1 = sessionsLoadStateLiveData,
-        liveData2 = favoriteLoadingStateLiveData,
+        liveData2 = favoriteStateLiveData,
         liveData3 = filterLiveData
     ) { current: UiModel,
         sessionsLoadState: LoadState<SessionContents>,
-        favoriteLoadingState: LoadingState,
+        favoriteState: WorkInfo.State,
         filters: Filters
         ->
-        val isLoading = sessionsLoadState.isLoading || favoriteLoadingState.isLoading
+        val isLoading = sessionsLoadState.isLoading || !favoriteState.isFinished
         val sessionContents = when (sessionsLoadState) {
             is LoadState.Loaded -> {
                 sessionsLoadState.value
@@ -87,8 +86,9 @@ class SessionsViewModel @Inject constructor(
             .filter { filters.isPass(it) }
         UiModel(
             isLoading = isLoading,
-            error = (sessionsLoadState.getErrorIfExists()
-                ?: favoriteLoadingState.getExceptionIfExists()).toAppError(),
+            error = sessionsLoadState
+                .getErrorIfExists()
+                .toAppError() ?: favoriteState.toAppError(),
             dayToSessionsMap = filteredSessions
                 .groupBy { it.dayNumber }
                 .mapKeys {
@@ -110,19 +110,8 @@ class SessionsViewModel @Inject constructor(
     }
 
     // Functions
-    @CheckResult
-    fun favorite(session: Session): LifecycleRunnable {
-        return liveData {
-            try {
-                emit(LoadingState.Loading)
-                sessionRepository.toggleFavorite(session)
-                emit(LoadingState.Loaded)
-            } catch (e: Exception) {
-                emit(LoadingState.Error(e))
-            }
-        }.onChanged {
-            favoriteLoadingStateLiveData.value = it
-        }
+    fun favorite(session: Session) {
+        favoriteToggleWorkerManager.start(session.id)
     }
 
     fun filterChanged(room: Room, checked: Boolean) {

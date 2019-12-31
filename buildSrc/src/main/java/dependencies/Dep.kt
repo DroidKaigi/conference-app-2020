@@ -58,7 +58,7 @@ object Dep {
         val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha03"
 
         object Room {
-            val version = "2.2.0-alpha02"
+            val version = "2.2.3"
             val compiler = "androidx.room:room-compiler:$version"
             val runtime = "androidx.room:room-runtime:$version"
             val coroutine = "androidx.room:room-ktx:$version"
@@ -75,9 +75,8 @@ object Dep {
         }
 
         object Work {
-            val version = "1.0.0-alpha12"
-            val runtime = "android.arch.work:work-runtime:$version"
-            val runtimeKtx = "android.arch.work:work-runtime-ktx:$version"
+            val version = "2.3.0-beta02"
+            val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
         }
     }
 
@@ -85,7 +84,7 @@ object Dep {
         val version = "1.3.61"
         val stdlibCommon = "org.jetbrains.kotlin:kotlin-stdlib-common:$version"
         val stdlibJvm = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
-        val coroutinesVersion = "1.3.2"
+        val coroutinesVersion = "1.3.3"
         val coroutinesCommon =
             "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutinesVersion"
         val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
@@ -128,7 +127,7 @@ object Dep {
     }
 
     object Dagger {
-        val version = "2.24"
+        val version = "2.25.4"
         val core = "com.google.dagger:dagger:$version"
         val compiler = "com.google.dagger:dagger-compiler:$version"
         val androidSupport = "com.google.dagger:dagger-android-support:$version"

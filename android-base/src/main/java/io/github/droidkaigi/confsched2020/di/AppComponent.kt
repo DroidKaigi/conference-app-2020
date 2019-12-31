@@ -7,12 +7,14 @@ import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import io.github.droidkaigi.confsched2020.App
 import io.github.droidkaigi.confsched2020.MainActivityModule
-import io.github.droidkaigi.confsched2020.data.repository.StaffRepository
+import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
+import io.github.droidkaigi.confsched2020.model.repository.StaffRepository
 import javax.inject.Singleton
 
 @Singleton
 @Component(
     modules = [
+        AppModule::class,
         AndroidSupportInjectionModule::class,
         MainActivityModule.MainActivityBuilder::class,
         DbComponentModule::class,
@@ -22,7 +24,7 @@ import javax.inject.Singleton
         DeviceComponentModule::class
     ]
 )
-interface AppComponent : AndroidInjector<App> {
+interface AppComponent : AndroidInjector<App>, AppComponentInterface {
     @Component.Builder
     interface Builder {
         @BindsInstance fun application(application: Application): Builder
@@ -32,6 +34,7 @@ interface AppComponent : AndroidInjector<App> {
 
     override fun inject(app: App)
 
+    override fun sessionRepository(): SessionRepository
     fun staffRepository(): StaffRepository
 }
 

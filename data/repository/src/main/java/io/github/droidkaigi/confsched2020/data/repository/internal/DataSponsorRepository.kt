@@ -3,7 +3,7 @@ package io.github.droidkaigi.confsched2020.data.repository.internal
 import io.github.droidkaigi.confsched2020.data.api.DroidKaigiApi
 import io.github.droidkaigi.confsched2020.data.db.SponsorDatabase
 import io.github.droidkaigi.confsched2020.data.db.entity.SponsorEntity
-import io.github.droidkaigi.confsched2020.data.repository.SponsorRepository
+import io.github.droidkaigi.confsched2020.model.repository.SponsorRepository
 import io.github.droidkaigi.confsched2020.model.Company
 import io.github.droidkaigi.confsched2020.model.LocaledString
 import io.github.droidkaigi.confsched2020.model.Sponsor

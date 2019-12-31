@@ -121,17 +121,3 @@ fun <T : Any> LiveData<T?>.toNonNullSingleEvent(): LiveData<T> {
     }
     return result
 }
-
-interface LifecycleRunnable {
-    fun observeBy(lifecycleOwner: LifecycleOwner)
-}
-
-fun <T> LiveData<T>.onChanged(
-    observeBlock: (T) -> Unit
-): LifecycleRunnable {
-    return object : LifecycleRunnable {
-        override fun observeBy(lifecycleOwner: LifecycleOwner) {
-            observe(lifecycleOwner, observeBlock)
-        }
-    }
-}

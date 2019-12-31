@@ -11,7 +11,7 @@ import io.github.droidkaigi.confsched2020.model.Announcement
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 
 class AnnouncementItem @AssistedInject constructor(
-    @Assisted val announcement: Announcement
+    @Assisted private val announcement: Announcement
 ) : BindableItem<ItemAnnouncementBinding>(announcement.id), EqualableContentsProvider {
 
     companion object {

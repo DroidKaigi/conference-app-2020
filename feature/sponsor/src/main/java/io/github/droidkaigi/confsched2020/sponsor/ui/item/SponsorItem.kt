@@ -16,10 +16,9 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.viewmodel.SponsorsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 
 class SponsorItem @AssistedInject constructor(
-    @Assisted val sponsor: Sponsor,
-    @Assisted val sponsorsViewModel: SponsorsViewModel,
-    @Assisted val systemViewModel: SystemViewModel,
-    val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
+    @Assisted private val sponsor: Sponsor,
+    @Assisted private val systemViewModel: SystemViewModel,
+    private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
 ) : BindableItem<ItemSponsorBinding>(sponsor.id.toLong()),
     EqualableContentsProvider {
     override fun getLayout(): Int = R.layout.item_sponsor
@@ -53,7 +52,6 @@ class SponsorItem @AssistedInject constructor(
     interface Factory {
         fun create(
             sponsor: Sponsor,
-            sponsorsViewModel: SponsorsViewModel,
             systemViewModel: SystemViewModel
         ): SponsorItem
     }

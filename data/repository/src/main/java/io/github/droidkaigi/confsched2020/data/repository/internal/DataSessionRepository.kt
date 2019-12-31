@@ -5,7 +5,7 @@ import io.github.droidkaigi.confsched2020.data.api.DroidKaigiApi
 import io.github.droidkaigi.confsched2020.data.api.GoogleFormApi
 import io.github.droidkaigi.confsched2020.data.db.SessionDatabase
 import io.github.droidkaigi.confsched2020.data.firestore.Firestore
-import io.github.droidkaigi.confsched2020.data.repository.SessionRepository
+import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.data.repository.internal.mapper.toSession
 import io.github.droidkaigi.confsched2020.data.repository.internal.mapper.toSessionFeedback
 import io.github.droidkaigi.confsched2020.model.AudienceCategory
@@ -14,6 +14,7 @@ import io.github.droidkaigi.confsched2020.model.LangSupport
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionFeedback
+import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -25,7 +26,7 @@ import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
 
-class DataSessionRepository @Inject constructor(
+internal class DataSessionRepository @Inject constructor(
     private val droidKaigiApi: DroidKaigiApi,
     private val googleFormApi: GoogleFormApi,
     private val sessionDatabase: SessionDatabase,
@@ -76,9 +77,9 @@ class DataSessionRepository @Inject constructor(
         }
     }
 
-    override suspend fun toggleFavorite(session: Session, timeout: Long) {
+    override suspend fun toggleFavorite(sessionId: SessionId, timeout: Long) {
         withTimeout(timeout) {
-            firestore.toggleFavorite(session.id)
+            firestore.toggleFavorite(sessionId)
         }
     }
 

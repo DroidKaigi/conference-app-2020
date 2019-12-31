@@ -44,10 +44,9 @@ class SessionsItemDecoration(val adapter: GroupAdapter<*>, val res: Resources) :
         parent.forEach { view ->
             val layoutParams = view.layoutParams as RecyclerView.LayoutParams
             val viewAdapterPosition = layoutParams.viewAdapterPosition
-            if(viewAdapterPosition==-1) return@forEach
+            if (viewAdapterPosition == -1) return@forEach
             val sessionItem = adapter.getItem(viewAdapterPosition) as SessionItem
-            sessionItem.session.startTime
-            val startTimeText = sessionItem.session.startTimeText
+            val startTimeText = sessionItem.startSessionTime()
             if (lastStartTimeText != startTimeText) {
                 c.drawText(
                     startTimeText,

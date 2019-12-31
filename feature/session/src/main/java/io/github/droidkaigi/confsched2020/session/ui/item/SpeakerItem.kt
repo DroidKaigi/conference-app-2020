@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
@@ -11,8 +12,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.ItemSpeakerBinding
 import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragmentDirections.actionSessionToSpeaker
 
 class SpeakerItem @AssistedInject constructor(
-    @Assisted val speaker: Speaker,
-    val navController: NavController
+    @Assisted val speaker: Speaker
 ) : BindableItem<ItemSpeakerBinding>(speaker.id.hashCode().toLong()),
     EqualableContentsProvider {
     override fun getLayout(): Int = R.layout.item_speaker
@@ -20,7 +20,8 @@ class SpeakerItem @AssistedInject constructor(
     override fun bind(viewBinding: ItemSpeakerBinding, position: Int) {
         viewBinding.title.text = speaker.name
         viewBinding.title.setOnClickListener {
-            navController.navigate(actionSessionToSpeaker(speaker.id))
+            viewBinding.root.findNavController()
+                .navigate(actionSessionToSpeaker(speaker.id))
         }
     }
 
@@ -38,6 +39,8 @@ class SpeakerItem @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(speaker: Speaker): SpeakerItem
+        fun create(
+            speaker: Speaker
+        ): SpeakerItem
     }
 }

@@ -1,5 +1,7 @@
 import dependencies.Dep
 
+def ideaActive = System.getProperty("idea.active") == "true"
+
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-multiplatform'
 apply plugin: 'kotlinx-serialization'
@@ -13,18 +15,26 @@ androidExtensions {
     features = ["parcelize"]
 }
 kotlin {
-    targets {
-        fromPreset(presets.android, 'android')
-        fromPreset(presets.jvm, 'jvm')
-        def buildForDevice = project.findProperty("device")?.toBoolean() ?: false
-        def iosPreset = (buildForDevice) ? presets.iosArm64 : presets.iosX64
-        fromPreset(iosPreset, 'ios') {
+    android("android")
+    iosArm64("iosArm64") {
+        binaries {
+            framework {
+                freeCompilerArgs += "-Xobjc-generics"
+            }
+        }
+    }
+    iosX64("iosX64") {
+        binaries {
+            framework {
+                freeCompilerArgs += "-Xobjc-generics"
+            }
+        }
+    }
+    if (ideaActive) {
+        iosX64("ios") {
             binaries {
                 framework {
-                    // Disable bitcode embedding for the simulator build.
-                    if (!buildForDevice) {
-                        embedBitcode("disable")
-                    }
+                    freeCompilerArgs += "-Xobjc-generics"
                 }
             }
         }
@@ -40,6 +50,7 @@ kotlin {
                 api Dep.Kotlin.stdlibCommon
                 api Dep.Klock.common
                 implementation Dep.Kotlin.serializationCommon
+                implementation Dep.Kotlin.coroutinesCommon
             }
         }
         jvmMain {
@@ -51,6 +62,7 @@ kotlin {
             dependsOn commonMain
             dependencies {
                 implementation Dep.Kotlin.stdlibJvm
+                implementation Dep.Kotlin.coroutines
             }
         }
         commonTest.dependencies {
@@ -69,7 +81,22 @@ kotlin {
         iOSMain {
             dependsOn commonMain
             dependencies {
+                implementation Dep.Kotlin.coroutinesNative
                 implementation Dep.Kotlin.serializationNative
+            }
+        }
+        configure(iosX64Main) {
+            dependsOn iOSMain
+            dependencies {
+                implementation Dep.Kotlin.coroutinesIosX64
+                implementation Dep.Kotlin.serializationIosX64
+            }
+        }
+        configure(iosArm64Main) {
+            dependsOn iOSMain
+            dependencies {
+                implementation Dep.Kotlin.coroutinesIosArm64
+                implementation Dep.Kotlin.serializationIosArm64
             }
         }
     }

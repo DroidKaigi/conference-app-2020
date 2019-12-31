@@ -16,12 +16,12 @@ import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
-import io.github.droidkaigi.confsched2020.sponsor.R
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.model.Sponsor
 import io.github.droidkaigi.confsched2020.model.SponsorCategory
+import io.github.droidkaigi.confsched2020.sponsor.R
 import io.github.droidkaigi.confsched2020.sponsor.databinding.FragmentSponsorsBinding
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.CategoryHeaderItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.SponsorItem
@@ -35,9 +35,9 @@ class SponsorsFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentSponsorsBinding
 
-    @Inject lateinit var sponsorsModelFactory: SponsorsViewModel.Factory
+    @Inject lateinit var sponsorsModelFactory: Provider<SponsorsViewModel>
     private val sponsorsViewModel by assistedViewModels {
-        sponsorsModelFactory.create()
+        sponsorsModelFactory.get()
     }
     @Inject lateinit var systemViewModelProvider: Provider<SystemViewModel>
     private val systemViewModel: SystemViewModel by assistedActivityViewModels {
@@ -90,7 +90,7 @@ class SponsorsFragment : DaggerFragment() {
     }
 
     private fun SponsorCategory.toSection() = Section().apply {
-        setHeader(categoryHeaderItemFactory.create(category, sponsorsViewModel))
+        setHeader(categoryHeaderItemFactory.create(category))
         addAll(
             sponsors.map { sponsor ->
                 sponsor.toItem(category)
@@ -104,10 +104,10 @@ class SponsorsFragment : DaggerFragment() {
             SponsorCategory.Category.PLATINUM,
             SponsorCategory.Category.GOLD -> {
                 // TODO: Should change Large-width Design?
-                sponsorItemFactory.create(this, sponsorsViewModel, systemViewModel)
+                sponsorItemFactory.create(this, systemViewModel)
             }
             else -> {
-                sponsorItemFactory.create(this, sponsorsViewModel, systemViewModel )
+                sponsorItemFactory.create(this, systemViewModel)
             }
         }
     }
