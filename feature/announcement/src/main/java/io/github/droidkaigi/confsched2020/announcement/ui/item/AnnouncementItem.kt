@@ -1,5 +1,21 @@
 package io.github.droidkaigi.confsched2020.announcement.ui.item
 
+import android.content.Context
+import android.text.SpannableStringBuilder
+import android.text.TextPaint
+import android.text.TextUtils
+import android.text.format.DateUtils
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.text.buildSpannedString
+import androidx.core.text.color
+import androidx.core.text.inSpans
+import androidx.core.view.doOnPreDraw
+import androidx.transition.TransitionManager
 import com.soywiz.klock.DateFormat
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -11,27 +27,39 @@ import io.github.droidkaigi.confsched2020.model.Announcement
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 
 class AnnouncementItem @AssistedInject constructor(
+    @Assisted val context: Context,
     @Assisted val announcement: Announcement
 ) : BindableItem<ItemAnnouncementBinding>(announcement.id), EqualableContentsProvider {
 
     companion object {
+        private const val ELLIPSIS_LINE_COUNT = 4
         private val dateFormatter = DateFormat("MM.dd HH:mm")
     }
+
+    private var showEllipsis: Boolean = true
 
     override fun getLayout(): Int = R.layout.item_announcement
 
     override fun bind(viewBinding: ItemAnnouncementBinding, position: Int) {
         viewBinding.announcementIcon.setImageResource(
             when (announcement.type) {
+                // TODO: apply new icon.
                 Announcement.Type.NOTIFICATION -> R.drawable.ic_feed_notification_blue_20dp
                 Announcement.Type.ALERT -> R.drawable.ic_feed_alert_amber_20dp
                 Announcement.Type.FEEDBACK -> R.drawable.ic_feed_feedback_cyan_20dp
             }
         )
         viewBinding.announcementTitle.text = announcement.title
-        viewBinding.announcementContent.text = announcement.content
+        viewBinding.announcementContent.run {
+            text = announcement.content
+            setEllipsis(ELLIPSIS_LINE_COUNT, context.getString(R.string.read_more_label))
+        }
         viewBinding.announcementDateTime.text =
-            dateFormatter.format(announcement.publishedAt.toOffset(defaultTimeZoneOffset()))
+            DateUtils.formatDateTime(
+                context,
+                announcement.publishedAt.toOffset(defaultTimeZoneOffset()).utc.unixMillisLong,
+                DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME
+            )
     }
 
     override fun providerEqualableContents(): Array<*> {
@@ -46,9 +74,61 @@ class AnnouncementItem @AssistedInject constructor(
         return contentsHash()
     }
 
+    private fun TextView.setEllipsis(line: Int, label: String) {
+        doOnPreDraw {
+            val fullText = text
+            if (lineCount > line && showEllipsis) {
+                val lastLineStartPosition = layout.getLineStart(line - 1)
+                val ellipsisWidth = paint.measureText(label)
+                // Avoid shifting position, delete line feed code after target line.
+                val target = fullText.substring(lastLineStartPosition).replace("\n", "")
+                val lastLineText = TextUtils.ellipsize(
+                    target,
+                    paint,
+                    width - ellipsisWidth,
+                    TextUtils.TruncateAt.END
+                )
+                val ellipsisColor =
+                    ContextCompat.getColor(context, R.color.design_default_color_secondary)
+                val onClickListener = {
+                    TransitionManager.beginDelayedTransition(rootView as ViewGroup)
+                    text = fullText
+                    showEllipsis = !showEllipsis
+                }
+                val detailText = fullText.substring(0, lastLineStartPosition) + lastLineText
+                val text = buildSpannedString {
+                    clickableSpan(onClickListener, {
+                        append(detailText)
+                        color(ellipsisColor) {
+                            append(label)
+                        }
+                    })
+                }
+                setText(text, TextView.BufferType.SPANNABLE)
+                movementMethod = LinkMovementMethod.getInstance()
+            }
+        }
+    }
+
+    private fun SpannableStringBuilder.clickableSpan(
+        clickListener: () -> Unit,
+        builderAction: SpannableStringBuilder.() -> Unit
+    ) {
+        inSpans(object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                clickListener()
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                // NOP
+            }
+        }, builderAction)
+    }
+
     @AssistedInject.Factory
     interface Factory {
         fun create(
+            context: Context,
             announcement: Announcement
         ): AnnouncementItem
     }
