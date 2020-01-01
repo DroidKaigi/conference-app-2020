@@ -10,10 +10,11 @@
         android:id="@+id/speaker"
         android:layout_width="match_parent"
         android:layout_height="32dp"
+        android:drawableStart="@drawable/ic_person_outline_black_32dp"
+        android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:textAppearance="?attr/textAppearanceCaption"
-        android:drawableStart="@drawable/ic_person_outline_black_32dp"
-        android:drawablePadding="4dp"
+        android:textColor="@color/speaker_name"
         tools:text="taka"
         />
 </LinearLayout>

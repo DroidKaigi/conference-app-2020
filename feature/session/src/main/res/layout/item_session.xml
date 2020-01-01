@@ -57,13 +57,15 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
             android:src="@drawable/ic_bookmark_border_black_24dp"
-            android:tint="?attr/colorPrimary"
+            android:tint="?colorSecondary"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintTop_toTopOf="parent"
             />
 
         <TextView
@@ -74,7 +76,7 @@
             android:layout_marginEnd="32dp"
             android:singleLine="false"
             android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="?colorOnSurface"
+            android:textColor="@color/session_title"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/room"
@@ -95,19 +97,24 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/survey"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:theme="@style/ThemeOverlay.DroidKaigi.Indigo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:minHeight="24dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:text="@string/session_survey_label"
             android:textAppearance="?attr/textAppearanceCaption"
+            android:textColor="@color/survey_button"
+            android:textSize="10sp"
             app:icon="@drawable/ic_add_comment_24dp"
-            app:iconPadding="4dp"
-            app:iconSize="12dp"
+            app:iconPadding="8dp"
+            app:iconSize="14dp"
+            app:iconTint="@color/survey_button"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/speakers"
-            app:strokeColor="@color/selector_material_button_stroke"
-            app:strokeWidth="2dp"
+            app:strokeColor="@color/survey_button"
+            app:strokeWidth="1dp"
             tools:enabled="false"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>

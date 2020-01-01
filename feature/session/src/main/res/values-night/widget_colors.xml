@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FIXME Not correct colors -->
+    <color name="session_title">@color/white</color>
+    <color name="speaker_icon">@color/white</color>
+    <color name="speaker_name">@color/white</color>
+</resources>

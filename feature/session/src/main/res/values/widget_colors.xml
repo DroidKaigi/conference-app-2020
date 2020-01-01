@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="session_title">?colorPrimary</color>
+    <color name="speaker_icon">?colorPrimary</color>
+    <color name="speaker_name">?colorPrimary</color>
+</resources>
