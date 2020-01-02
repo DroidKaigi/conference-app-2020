@@ -35,7 +35,7 @@ This app uses an AndroidJetpack(AAC) based architecture using AAC(LiveData, View
 
 <img src="https://user-images.githubusercontent.com/1386930/71663735-aafa5480-2d99-11ea-961d-0228a3ddaf30.png" width="400px" />
 
-This app uses uni directional data flow inside ViewModel.
+It is designed to be a unidirectional data flow within the ViewModel.
 
 <img src="https://user-images.githubusercontent.com/1386930/71661503-b6e21880-2d91-11ea-9c9e-e911b6ab1256.png" width="400px" />
 
