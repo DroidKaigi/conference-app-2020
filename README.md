@@ -4,7 +4,7 @@ DroidKaigi 2020 is a conference tailored for developers on 20th and 21th Februar
 You can install the prodution app via Get it on Google Play.  
 // TODO: Add link to Google Play
 
-And also, you can try the binary under development built on master branch through Try it on your device via DeployGate
+And also, you can try the binary under development built on master branch through Try it on your device via DeployGate  
 // TODO: Add link to DeployGate
 
 # Features
@@ -12,7 +12,7 @@ And also, you can try the binary under development built on master branch throug
 
 # Contributing
 
-We always welcome any and all contributions! See CONTRIBUTING.md for more information
+We always welcome any and all contributions! See CONTRIBUTING.md for more information  
 // TODO: Add link to CONTRIBUTING.md
 
 ## Requirements
@@ -28,6 +28,7 @@ We separate the modules for each feature. We use the Dynamic feature modules for
 
 ## Kotlin Multiplatform Project
 
+// TODO: Add MultiPlatform
 
 # Architecture
 This app uses an AndroidJetpack(AAC) based architecture using AAC(LiveData, ViewModel, Room), Kotlin, Kotlin Coroutines Flow, DataBinding, Dagger, Firebase.
@@ -104,9 +105,8 @@ class SessionDetailViewModel @AssistedInject constructor(
     ) { current: UiModel,
         sessionLoadState: LoadState<Session>,
         favoriteState: LoadingState ->
-        val isLoading =
-            sessionLoadState.isLoading || favoriteState.isLoading
-        val sessions = sessionLoadState.value
+        // You can create loading state by multiple LiveData
+        val isLoading = sessionLoadState.isLoading || favoriteState.isLoading
         UiModel(
             isLoading = isLoading,
             error = sessionLoadState
@@ -116,8 +116,73 @@ class SessionDetailViewModel @AssistedInject constructor(
                     .getErrorIfExists()
                     .toAppError()
             ,
-            session = sessions
+            session = sessionLoadState.value
         )
     }
 ```
 
+## Thanks
+Thank you for contributing!
+
+* Contributors
+  * [GitHub : Contributors](https://github.com/DroidKaigi/conference-app-2020/graphs/contributors)
+* Designer  
+  * [Chihokotaro / Chihoko Watanabe](https://twitter.com/chihokotaro)
+
+## Credit
+This project uses some modern Android libraries and source codes.
+
+### Android
+
+* [Android Jetpack](https://developer.android.com/jetpack/) (Google)
+  * Foundation
+    * AppCompat
+    * Android KTX
+    * Mutidex
+    * Test
+  * Architecture
+    * Data Binding
+    * Lifecycles
+    * LiveData
+    * Navigation
+  * UI
+    * Emoji
+    * Fragment
+    * Transition
+    * ConstraintLayout
+    * RecyclerView
+    * ...
+* [Kotlin](https://kotlinlang.org/) (Jetbrains)
+  * Stdlib
+  * Coroutines
+  * Coroutines Flow
+  * Serialization
+* [Firebase](https://firebase.google.com/) (Google)
+  * Authentication
+  * Cloud Firestore
+* [Dagger 2](https://google.github.io/dagger/)
+  * Core (Google)
+  * AndroidSupport (Google)
+  * [AssistedInject](https://github.com/square/AssistedInject) (Square)
+* [Material Components for Android](https://github.com/material-components/material-components-android) (Google)
+* [Ktor](https://ktor.io/) (Jetbrains)
+  * Android Client
+  * Json
+* [OkHttp](http://square.github.io/okhttp/) (Square)
+  * Client
+  * LoggingInterceptor
+* [livedata-ktx](https://github.com/Shopify/livedata-ktx) (Shopify)
+* [Coil](https://github.com/coil-kt/coil) (Coil Contributors)
+* [LeakCanary](https://github.com/square/leakcanary) (Square)
+* [Stetho](http://facebook.github.io/stetho/) (Facebook)
+* [Hyperion-Android](https://github.com/willowtreeapps/Hyperion-Android) (WillowTree)
+* [Groupie](https://github.com/lisawray/groupie) (lisawray)
+* [KLOCK](https://korlibs.soywiz.com/klock/) (soywiz)
+* [MockK](http://mockk.io) (oleksiyp)
+* [Injected ViewModel Provider](https://github.com/evant/injectedvmprovider) (evant)
+* [Google I/O 2018](https://github.com/google/iosched) (Google)
+* [TimetableLayout](https://github.com/MoyuruAizawa/TimetableLayout) (MoyuruAizawa)
+
+### iOS
+
+// TODO: Add iOS Libraries
