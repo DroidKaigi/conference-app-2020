@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched2020.data.repository.internal.workmanager
 
 import android.content.Context
 import androidx.core.os.OperationCanceledException
+import androidx.lifecycle.Observer
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
@@ -38,20 +39,28 @@ internal class FavoriteToggleWork @Inject constructor(
             .await()
         suspendCancellableCoroutine<Unit> { cancellableContinuation ->
             try {
-                val observer: (WorkInfo?) -> Unit = { workInfo ->
-                    if (workInfo?.state == WorkInfo.State.SUCCEEDED) {
-                        cancellableContinuation.resume(Unit)
-                    } else if (workInfo?.state == WorkInfo.State.FAILED) {
-                        cancellableContinuation.resumeWithException(
-                            AppError.ApiException.NetworkException(
-                                OperationCanceledException()
+                val workInfoByIdLiveData = workManager.getWorkInfoByIdLiveData(workRequest.id)
+                val observer = object : Observer<WorkInfo> {
+                    override fun onChanged(workInfo: WorkInfo?) {
+                        val state = workInfo?.state ?: return
+                        if (state == WorkInfo.State.SUCCEEDED) {
+                            cancellableContinuation.resume(Unit)
+                            workInfoByIdLiveData.removeObserver(this)
+                            return
+                        }
+                        if (state.isFinished) {
+                            cancellableContinuation.resumeWithException(
+                                AppError.ApiException.NetworkException(
+                                    OperationCanceledException()
+                                )
                             )
-                        )
+                            workInfoByIdLiveData.removeObserver(this)
+                        }
                     }
                 }
-                val workInfoByIdLiveData = workManager.getWorkInfoByIdLiveData(workRequest.id)
                 workInfoByIdLiveData
                     .observeForever(observer)
+
                 cancellableContinuation.invokeOnCancellation {
                     workInfoByIdLiveData.removeObserver(observer)
                 }
