@@ -41,9 +41,9 @@ This app uses uni directional data flow inside ViewModel.
 
 ## Fragment
 
-The Fragment just observe() ViewModel's `LiveData<UiModel>`.
-
 <img src="https://user-images.githubusercontent.com/1386930/71661532-d4af7d80-2d91-11ea-8254-56c98f2804e5.png" width="400px" />
+
+Just observe() the `LiveData<UiModel>` of the ViewModel.
 
 ```kotlin
 @Inject lateinit var sessionDetailViewModelFactory: SessionDetailViewModel.Factory
@@ -66,10 +66,12 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 ## ViewModel
 
-When `LiveData` become active, LiveData Kotlin Coroutines builder(`liveData{}`) run.  
-And observe Kotlin Flow of Repository.
-
 <img src="https://user-images.githubusercontent.com/1386930/71661554-e729b700-2d91-11ea-8333-70fc98d9f7de.png" width="400px" />
+
+The [LiveData Kotlin Coroutines builder](https://developer.android.com/topic/libraries/architecture/coroutines#livedata) runs when LiveData becomes active.   
+And observe the data of the Flow of the repository.
+
+The LiveData becomes LoadState.Loading before the Flow is executed by Flow.toLoadingState(), and becomes LoadState.Loaded when finished.
 
 ```kotlin
 class SessionsViewModel @Inject constructor(
@@ -87,8 +89,8 @@ class SessionsViewModel @Inject constructor(
     }
 ```
 
-UiModel is composed by LiveData's for UI.  
-The `compose` method is just like `combileLast()` in RxJava.
+Construct UiModel LiveData from some such LiveData.  
+The `compose` method works like RxJava's combineLatest.
 
 <img src="https://user-images.githubusercontent.com/1386930/71661608-222bea80-2d92-11ea-91a4-6445ea87d345.png" width="400px" />
 
@@ -118,6 +120,32 @@ class SessionDetailViewModel @AssistedInject constructor(
             ,
             session = sessionLoadState.value
         )
+    }
+```
+
+Run Coroutines with `viewModelScope` when data changes, such as adding a session to Favorites.  
+Because we do not want to end the process of adding a session to favorites with the back button, we use WorkManager to do the processing.  
+
+<img src="https://user-images.githubusercontent.com/1386930/71664697-4b9e4380-2d9d-11ea-835a-dcb5776512ce.png" width="400px" />
+
+```kotlin
+class SessionDetailViewModel @AssistedInject constructor(
+    @Assisted private val sessionId: SessionId,
+    private val sessionRepository: SessionRepository
+) : ViewModel() {
+..
+    private var favoriteLoadingStateLiveData: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.Loaded)
+...
+    fun favorite(session: Session) {
+        viewModelScope.launch {
+            favoriteLoadingStateLiveData.value = LoadingState.Loading
+            try {
+                sessionRepository.toggleFavoriteWithWorker(session.id)
+                favoriteLoadingStateLiveData.value = LoadingState.Loaded
+            } catch (e: Exception) {
+                favoriteLoadingStateLiveData.value = LoadingState.Error(e)
+            }
+        }
     }
 ```
 
