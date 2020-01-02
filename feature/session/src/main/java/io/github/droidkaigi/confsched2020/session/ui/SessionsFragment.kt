@@ -46,8 +46,7 @@ class SessionsFragment : DaggerFragment() {
             return (behavior as BottomSheetBehavior)
         }
 
-    @Inject
-    lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
+    @Inject lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
     private val sessionsViewModel: SessionsViewModel by assistedActivityViewModels {
         sessionsViewModelProvider.get()
     }

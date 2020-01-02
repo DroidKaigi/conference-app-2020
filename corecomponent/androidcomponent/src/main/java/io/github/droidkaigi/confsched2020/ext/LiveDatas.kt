@@ -1,15 +1,13 @@
 package io.github.droidkaigi.confsched2020.ext
 
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.map
-import androidx.lifecycle.observe
 import com.hadilq.liveevent.LiveEvent
 
-fun <T : Any>LiveData<T>.requireValue() = requireNotNull(value)
+fun <T : Any> LiveData<T>.requireValue() = requireNotNull(value)
 
 inline fun <T : Any, LIVE1 : Any> composeBy(
     initialValue: T,
@@ -102,7 +100,7 @@ inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any, LIVE4 : Any> compose
                 }
             }
         }
-    }
+    }.distinctUntilChanged()
 }
 
 fun <T> LiveData<T>.setOnEach(mutableLiveData: MutableLiveData<T>): LiveData<T> {

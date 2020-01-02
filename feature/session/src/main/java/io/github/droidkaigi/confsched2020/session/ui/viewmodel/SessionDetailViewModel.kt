@@ -1,28 +1,28 @@
 package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import androidx.work.WorkInfo
+import androidx.lifecycle.viewModelScope
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import io.github.droidkaigi.confsched2020.data.repository.FavoriteToggleWorkerManager
 import io.github.droidkaigi.confsched2020.ext.composeBy
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.model.LoadState
+import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class SessionDetailViewModel @AssistedInject constructor(
     @Assisted private val sessionId: SessionId,
-    private val sessionRepository: SessionRepository,
-    private val favoriteToggleWorkerManager: FavoriteToggleWorkerManager
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
     // UiModel definition
     data class UiModel(
@@ -45,8 +45,8 @@ class SessionDetailViewModel @AssistedInject constructor(
             }
     }
 
-    private val favoriteLoadingStateLiveData: LiveData<WorkInfo.State> =
-        favoriteToggleWorkerManager.liveData()
+    private val favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
+        MutableLiveData(LoadingState.Loaded)
 
     // Compose UiModel
     val uiModel: LiveData<UiModel> = composeBy(
@@ -55,9 +55,9 @@ class SessionDetailViewModel @AssistedInject constructor(
         liveData2 = favoriteLoadingStateLiveData
     ) { current: UiModel,
         sessionLoadState: LoadState<Session>,
-        favoriteState: WorkInfo.State ->
+        favoriteState: LoadingState ->
         val isLoading =
-            sessionLoadState.isLoading || !favoriteState.isFinished
+            sessionLoadState.isLoading || favoriteState.isLoading
         val sessions = when (sessionLoadState) {
             is LoadState.Loaded -> {
                 sessionLoadState.value
@@ -71,14 +71,24 @@ class SessionDetailViewModel @AssistedInject constructor(
             error = sessionLoadState
                 .getErrorIfExists()
                 .toAppError()
-                ?: favoriteState.toAppError()
+                ?: favoriteState
+                    .getErrorIfExists()
+                    .toAppError()
             ,
             session = sessions
         )
     }
 
     fun favorite(session: Session) {
-        favoriteToggleWorkerManager.start(session.id)
+        viewModelScope.launch {
+            favoriteLoadingStateLiveData.value = LoadingState.Loading
+            try {
+                sessionRepository.toggleFavoriteWithWorker(session.id)
+                favoriteLoadingStateLiveData.value = LoadingState.Loaded
+            } catch (e: Exception) {
+                favoriteLoadingStateLiveData.value = LoadingState.Error(e)
+            }
+        }
     }
 
     @AssistedInject.Factory

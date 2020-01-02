@@ -9,7 +9,8 @@ import kotlinx.coroutines.flow.Flow
 interface SessionRepository {
     fun sessionContents(): Flow<SessionContents>
     suspend fun refresh()
-    suspend fun toggleFavorite(sessionId: SessionId, timeout: Long = 3000L)
+    suspend fun toggleFavoriteWithWorker(sessionId: SessionId)
+    suspend fun toggleFavorite(sessionId: SessionId)
     suspend fun sessionFeedback(sessionId: String): SessionFeedback
     suspend fun saveSessionFeedback(sessionFeedback: SessionFeedback)
     suspend fun submitSessionFeedback(

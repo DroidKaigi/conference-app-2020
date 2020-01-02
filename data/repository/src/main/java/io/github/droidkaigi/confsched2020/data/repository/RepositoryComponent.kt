@@ -31,7 +31,6 @@ interface RepositoryComponent {
     fun announcementRepository(): AnnouncementRepository
     fun staffRepository(): StaffRepository
     fun contributorRepository(): ContributorRepository
-    fun favoriteToggleWorkerManager(): FavoriteToggleWorkerManager
 
     @Component.Builder
     interface Builder {
