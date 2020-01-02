@@ -33,7 +33,7 @@ We separate the modules for each feature. We use the Dynamic feature modules for
 # Architecture
 This app uses an AndroidJetpack(AAC) based architecture using AAC(LiveData, ViewModel, Room), Kotlin, Kotlin Coroutines Flow, DataBinding, Dagger, Firebase.
 
-<img src="https://user-images.githubusercontent.com/1386930/71318763-9a63f780-24d8-11ea-82c2-f3d9644af2aa.png" width="400px" />
+<img src="https://user-images.githubusercontent.com/1386930/71663735-aafa5480-2d99-11ea-961d-0228a3ddaf30.png" width="400px" />
 
 This app uses uni directional data flow inside ViewModel.
 
