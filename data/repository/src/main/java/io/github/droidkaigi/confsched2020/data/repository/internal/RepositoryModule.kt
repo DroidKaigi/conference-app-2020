@@ -2,8 +2,6 @@ package io.github.droidkaigi.confsched2020.data.repository.internal
 
 import dagger.Binds
 import dagger.Module
-import io.github.droidkaigi.confsched2020.data.repository.FavoriteToggleWorkerManager
-import io.github.droidkaigi.confsched2020.data.repository.internal.workmanager.FavoriteToggleWorkerManagerImpl
 import io.github.droidkaigi.confsched2020.model.repository.AnnouncementRepository
 import io.github.droidkaigi.confsched2020.model.repository.ContributorRepository
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
@@ -22,8 +20,6 @@ internal abstract class RepositoryModule {
     @Binds abstract fun contributorDatabase(impl: DataContributorRepository): ContributorRepository
 
     @Binds abstract fun staffDatabase(impl: DataStaffRepository): StaffRepository
-
-    @Binds abstract fun favoriteToggleWorkerManager(impl: FavoriteToggleWorkerManagerImpl): FavoriteToggleWorkerManager
 
     @Module
     internal object Providers

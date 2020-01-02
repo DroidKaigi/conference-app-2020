@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -81,36 +80,40 @@ class SessionDetailFragment : DaggerFragment() {
             loading = true
         }
 
-        sessionDetailViewModel.uiModel.distinctUntilChanged()
+        sessionDetailViewModel.uiModel
             .observe(viewLifecycleOwner) { uiModel: SessionDetailViewModel.UiModel ->
-                progressTimeLatch.loading = uiModel.isLoading
-                val session = uiModel.session ?: return@observe
-                binding.sessionFavorite.setOnClickListener {
-                    sessionDetailViewModel.favorite(session)
-                }
-                binding.session = session
-                binding.speechSession = (session as? SpeechSession)
-                binding.lang = defaultLang()
-                binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
-                if (session is SpeechSession) {
-                    val langLabel = session.lang.text.getByLang(defaultLang())
-                    val categoryLabel = session.category.name.getByLang(defaultLang())
-                    val newTag = "$categoryLabel:$categoryLabel"
-                    val savedTag = binding.tags.tag
-                    if (savedTag != newTag) {
-                        binding.tags.removeAllViews()
-                        binding.tags.addView(Chip(context).apply {
-                            text = categoryLabel
-                        })
-                        binding.tags.addView(Chip(context).apply {
-                            text = langLabel
-                        })
-                        binding.tags.tag = newTag
-                    }
-                }
-                binding.speakers.bindSpeaker(session)
                 uiModel.error?.let { systemViewModel.onError(it) }
+                progressTimeLatch.loading = uiModel.isLoading
+                uiModel.session
+                    ?.let { session -> setupSessionViews(session) }
             }
+    }
+
+    private fun setupSessionViews(session: Session) {
+        binding.sessionFavorite.setOnClickListener {
+            sessionDetailViewModel.favorite(session)
+        }
+        binding.session = session
+        binding.speechSession = (session as? SpeechSession)
+        binding.lang = defaultLang()
+        binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
+        if (session is SpeechSession) {
+            val langLabel = session.lang.text.getByLang(defaultLang())
+            val categoryLabel = session.category.name.getByLang(defaultLang())
+            val newTag = "$categoryLabel:$categoryLabel"
+            val savedTag = binding.tags.tag
+            if (savedTag != newTag) {
+                binding.tags.removeAllViews()
+                binding.tags.addView(Chip(context).apply {
+                    text = categoryLabel
+                })
+                binding.tags.addView(Chip(context).apply {
+                    text = langLabel
+                })
+                binding.tags.tag = newTag
+            }
+        }
+        binding.speakers.bindSpeaker(session)
     }
 
     private fun ViewGroup.bindSpeaker(session: Session) {

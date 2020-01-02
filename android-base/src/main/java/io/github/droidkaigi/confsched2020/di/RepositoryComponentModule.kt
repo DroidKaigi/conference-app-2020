@@ -11,7 +11,6 @@ import io.github.droidkaigi.confsched2020.data.db.SessionDatabase
 import io.github.droidkaigi.confsched2020.data.db.SponsorDatabase
 import io.github.droidkaigi.confsched2020.data.db.StaffDatabase
 import io.github.droidkaigi.confsched2020.data.firestore.Firestore
-import io.github.droidkaigi.confsched2020.data.repository.FavoriteToggleWorkerManager
 import io.github.droidkaigi.confsched2020.data.repository.RepositoryComponent
 import io.github.droidkaigi.confsched2020.model.repository.AnnouncementRepository
 import io.github.droidkaigi.confsched2020.model.repository.ContributorRepository
@@ -50,12 +49,6 @@ object RepositoryComponentModule {
         repositoryComponent: RepositoryComponent
     ): ContributorRepository {
         return repositoryComponent.contributorRepository()
-    }
-
-    @JvmStatic @Provides @Singleton fun provideFavoriteToggleWorkerManager(
-        repositoryComponent: RepositoryComponent
-    ): FavoriteToggleWorkerManager {
-        return repositoryComponent.favoriteToggleWorkerManager()
     }
 
     @JvmStatic @Provides @Singleton fun provideRepositoryComponent(

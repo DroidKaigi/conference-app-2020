@@ -8,3 +8,12 @@ sealed class LoadState<out T> {
     val isLoading get() = this is Loading
     fun getErrorIfExists() = if (this is Error) e else null
 }
+
+sealed class LoadingState {
+    object Loading : LoadingState()
+    object Loaded : LoadingState()
+    class Error(val e: Throwable) : LoadingState()
+
+    val isLoading get() = this is Loading
+    fun getErrorIfExists() = if (this is Error) e else null
+}

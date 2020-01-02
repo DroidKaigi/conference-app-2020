@@ -5,6 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import io.github.droidkaigi.confsched2020.di.AppComponentHolder
 import io.github.droidkaigi.confsched2020.model.SessionId
+import kotlinx.coroutines.withTimeout
 
 internal class FavoriteToggleWorker(
     private val appContext: Context,
@@ -18,10 +19,13 @@ internal class FavoriteToggleWorker(
         val sessionRepository = appComponentHolder.appComponent.sessionRepository()
         val id = workerParams.inputData.getString(INPUT_SESSION_ID_KEY)
         id ?: return Result.failure()
-        sessionRepository.toggleFavorite(SessionId(id))
+        withTimeout(3000) {
+            sessionRepository.toggleFavorite(SessionId(id))
+        }
         return Result.success()
     }
-    companion object{
+
+    companion object {
         const val INPUT_SESSION_ID_KEY = "INPUT_SESSION_ID_KEY"
     }
 }

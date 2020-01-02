@@ -13,6 +13,7 @@ import kotlinx.coroutines.TimeoutCancellationException
 fun Throwable?.toAppError(): AppError? {
     return when (this) {
         null -> null
+        is AppError -> this
         is ResponseException ->
             return AppError.ApiException.ServerException(this)
         is ChannelReadException ->
@@ -26,13 +27,6 @@ fun Throwable?.toAppError(): AppError? {
         is TimeoutCancellationException -> AppError.ApiException.NetworkException(this)
         else -> AppError.UnknownException(this)
     }
-}
-
-fun WorkInfo.State.toAppError(): AppError? {
-    if (this == WorkInfo.State.FAILED) {
-        return AppError.ApiException.NetworkException(OperationCanceledException())
-    }
-    return null
 }
 
 @StringRes
