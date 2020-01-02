@@ -30,10 +30,12 @@ We separate the modules for each feature. We use the Dynamic feature modules for
 
 
 # Architecture
-This app uses an AndroidJetpack(AAC) based architecture using AAC(LiveData, ViewModel, Room), Kotlin, Kotlin Coroutines Flow, DataBinding, Dagger, Firebase.  
+This app uses an AndroidJetpack(AAC) based architecture using AAC(LiveData, ViewModel, Room), Kotlin, Kotlin Coroutines Flow, DataBinding, Dagger, Firebase.
+
 <img src="https://user-images.githubusercontent.com/1386930/71318763-9a63f780-24d8-11ea-82c2-f3d9644af2aa.png" width="400px" />
 
 This app uses uni directional data flow inside ViewModel.
+
 <img src="https://user-images.githubusercontent.com/1386930/71661503-b6e21880-2d91-11ea-9c9e-e911b6ab1256.png" width="400px" />
 
 ## Fragment
@@ -86,6 +88,7 @@ class SessionsViewModel @Inject constructor(
 
 UiModel is composed by LiveData's for UI.  
 The `compose` method is just like `combileLast()` in RxJava.
+
 <img src="https://user-images.githubusercontent.com/1386930/71661608-222bea80-2d92-11ea-91a4-6445ea87d345.png" width="400px" />
 
 ```kotlin
