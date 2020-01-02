@@ -3,9 +3,9 @@ package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import io.github.droidkaigi.confsched2020.ext.asLiveData
 import io.github.droidkaigi.confsched2020.ext.composeBy
 import io.github.droidkaigi.confsched2020.ext.requireValue
 import io.github.droidkaigi.confsched2020.ext.toAppError
@@ -56,8 +56,7 @@ class SessionsViewModel @Inject constructor(
             // We can show sessions with cache
         }
     }
-    private var favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
-        MutableLiveData(LoadingState.Loaded)
+    private var favoriteLoadingStateLiveData: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.Loaded)
 
     private val filterLiveData: MutableLiveData<Filters> = MutableLiveData(Filters())
 

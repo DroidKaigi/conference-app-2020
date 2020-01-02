@@ -53,9 +53,9 @@ object Dep {
         val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.0-alpha02"
 
         val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
-        val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:2.2.0-alpha03"
-        val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0-alpha03"
-        val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha03"
+        val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:2.2.0-rc03"
+        val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0-rc03"
+        val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc03"
 
         object Room {
             val version = "2.2.3"

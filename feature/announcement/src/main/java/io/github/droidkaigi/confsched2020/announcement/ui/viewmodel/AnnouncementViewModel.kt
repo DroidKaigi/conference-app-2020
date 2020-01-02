@@ -2,9 +2,9 @@ package io.github.droidkaigi.confsched2020.announcement.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.squareup.inject.assisted.AssistedInject
-import io.github.droidkaigi.confsched2020.ext.asLiveData
 import io.github.droidkaigi.confsched2020.model.repository.AnnouncementRepository
 import io.github.droidkaigi.confsched2020.ext.composeBy
 import io.github.droidkaigi.confsched2020.ext.toAppError

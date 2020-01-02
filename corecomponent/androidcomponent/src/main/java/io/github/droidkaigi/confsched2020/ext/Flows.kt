@@ -19,11 +19,3 @@ fun <T> Flow<T>.toLoadingState(): Flow<LoadState<T>> {
             emit(LoadState.Error<T>(e))
         }
 }
-
-
-// waiting https://android-review.googlesource.com/c/platform/frameworks/support/+/1096457
-fun <T> Flow<T>.asLiveData(): LiveData<T> = liveData {
-    collect {
-        emit(it)
-    }
-}
