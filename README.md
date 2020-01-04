@@ -69,9 +69,9 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 <img src="https://user-images.githubusercontent.com/1386930/71661554-e729b700-2d91-11ea-8333-70fc98d9f7de.png" width="400px" />
 
 The [LiveData Kotlin Coroutines builder](https://developer.android.com/topic/libraries/architecture/coroutines#livedata) runs when LiveData becomes active.   
-And observe the data of the Flow of the repository.
+And observe the data of the Coroutiens Flow of the repository.
 
-The LiveData becomes LoadState.Loading before the Flow is executed by Flow.toLoadingState(), and becomes LoadState.Loaded when finished.
+The LiveData becomes LoadState.Loading before the Coroutiens Flow is executed by Flow.toLoadingState(), and becomes LoadState.Loaded when finished.
 
 ```kotlin
 class SessionsViewModel @Inject constructor(
