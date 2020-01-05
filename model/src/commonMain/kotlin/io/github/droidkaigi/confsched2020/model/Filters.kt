@@ -31,20 +31,10 @@ data class Filters(
                 true
             }
         }
-        val audienceCategoryFilterOk = run {
-            if (audienceCategories.isEmpty()) return@run true
-            val audienceCategory = if (session.forBeginners) {
-                AudienceCategory.BEGINNERS
-            } else {
-                AudienceCategory.UNSPECIFIED
-            }
-            audienceCategories.any { it == audienceCategory }
-        }
         return roomFilterOk &&
             categoryFilterOk &&
             langFilterOk &&
-            langSupportFilterOk &&
-            audienceCategoryFilterOk
+            langSupportFilterOk
     }
 
     fun isFiltered(): Boolean {

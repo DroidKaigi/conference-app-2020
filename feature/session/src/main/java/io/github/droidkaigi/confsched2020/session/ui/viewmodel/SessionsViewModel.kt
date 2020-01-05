@@ -24,6 +24,8 @@ import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import timber.log.debug
 import javax.inject.Inject
 
 class SessionsViewModel @Inject constructor(
@@ -52,8 +54,9 @@ class SessionsViewModel @Inject constructor(
         )
         try {
             sessionRepository.refresh()
-        } catch (ignored: Exception) {
+        } catch (e: Exception) {
             // We can show sessions with cache
+            Timber.debug(e) { "Fail sessionRepository.refresh()" }
         }
     }
     private var favoriteLoadingStateLiveData: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.Loaded)

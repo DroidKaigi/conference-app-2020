@@ -6,9 +6,5 @@ data class Speaker(
     val name: String,
     val tagLine: String?,
     val bio: String?,
-    val imageUrl: String?,
-    val twitterUrl: String?,
-    val githubUrl: String?,
-    val blogUrl: String?,
-    val companyUrl: String?
+    val imageUrl: String?
 ) : AndroidParcel

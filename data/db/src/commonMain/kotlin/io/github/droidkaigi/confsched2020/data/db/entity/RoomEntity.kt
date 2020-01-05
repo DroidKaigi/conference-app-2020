@@ -1,6 +1,8 @@
 package io.github.droidkaigi.confsched2020.data.db.entity
 
 interface RoomEntity {
-    var id: Int
-    var name: String
+    val id: Int
+    val name: String
+    val enName: String
+    val sort: Int
 }

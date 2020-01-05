@@ -8,7 +8,6 @@ import io.github.droidkaigi.confsched2020.data.api.response.RoomResponse
 import io.github.droidkaigi.confsched2020.data.api.response.SessionResponse
 import io.github.droidkaigi.confsched2020.data.api.response.SpeakerResponse
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.CategoryEntityImpl
-import io.github.droidkaigi.confsched2020.data.db.internal.entity.LanguageEntityImpl
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.MessageEntityImpl
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.RoomEntityImpl
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.SessionEntityImpl
@@ -43,62 +42,55 @@ internal fun SessionResponse.toSessionEntityImpl(
     categories: List<CategoryResponse>,
     rooms: List<RoomResponse>
 ): SessionEntityImpl {
+    val room = rooms.room(roomId)
     if (!isServiceSession) {
-        val sessionFormat = categoryItems[0].let {
-            categories.category(0, it)
-        }
-        val language = categoryItems[1].let {
-            categories.category(1, it)
-        }
-        val category = categoryItems[2].let {
-            categories.category(2, it)
-        }
-        val intendedAudience = questionAnswers[0].answerValue
+        val category = categories.category(2, sessionCategoryItemId)
         return SessionEntityImpl(
             id = id,
             isServiceSession = isServiceSession,
-            title = title,
-            englishTitle = requireNotNull(englishTitle),
-            desc = description,
-            stime = dateFormat.parse(startsAtWithTZ).utc.unixMillisLong,
-            etime = dateFormat.parse(endsAtWithTZ).utc.unixMillisLong,
-            sessionFormat = requireNotNull(sessionFormat.name),
-            language = LanguageEntityImpl(
-                requireNotNull(language.id),
-                requireNotNull(language.name),
-                requireNotNull(language.translatedName?.ja),
-                requireNotNull(language.translatedName?.en)
-            ),
+            title = requireNotNull(title?.ja),
+            enTitle = requireNotNull(title?.en),
+            desc = description ?: "",
+            stime = dateFormat.parse(requireNotNull(startsAt)).utc.unixMillisLong,
+            etime = dateFormat.parse(requireNotNull(endsAt)).utc.unixMillisLong,
+            language = language ?: "JAPANESE",
             message = message?.let {
                 MessageEntityImpl(requireNotNull(it.ja), requireNotNull(it.en))
             },
             category = CategoryEntityImpl(
                 requireNotNull(category.id),
-                requireNotNull(category.name),
-                requireNotNull(category.translatedName?.ja),
-                requireNotNull(category.translatedName?.en)
+                requireNotNull(category.name?.ja),
+                requireNotNull(category.name?.en)
             ),
-            intendedAudience = intendedAudience,
+            intendedAudience = targetAudience,
             videoUrl = videoUrl,
             slideUrl = slideUrl,
             isInterpretationTarget = interpretationTarget,
-            room = RoomEntityImpl(roomId, rooms.roomName(roomId)),
-            sessionType = sessionType,
-            forBeginners = forBeginners
+            room = RoomEntityImpl(
+                requireNotNull(room.id),
+                requireNotNull(room.name?.ja),
+                requireNotNull(room.name?.en),
+                requireNotNull(room.sort)
+            ),
+            sessionType = sessionType
         )
     } else {
         return SessionEntityImpl(
             id = id,
             isServiceSession = isServiceSession,
-            englishTitle = englishTitle,
-            title = title,
-            desc = description,
-            stime = dateFormat.parse(startsAtWithTZ).utc.unixMillisLong,
-            etime = dateFormat.parse(endsAtWithTZ).utc.unixMillisLong,
-            sessionFormat = null,
-            language = null,
+            enTitle = requireNotNull(title?.en),
+            title = requireNotNull(title?.ja),
+            desc = description ?: "",
+            stime = dateFormat.parse(requireNotNull(startsAt)).utc.unixMillisLong,
+            etime = dateFormat.parse(requireNotNull(endsAt)).utc.unixMillisLong,
+            language = requireNotNull(language),
             category = null,
-            room = RoomEntityImpl(roomId, rooms.roomName(roomId)),
+            room = RoomEntityImpl(
+                requireNotNull(room.id),
+                requireNotNull(room.name?.ja),
+                requireNotNull(room.name?.en),
+                requireNotNull(room.sort)
+            ),
             intendedAudience = null,
             videoUrl = videoUrl,
             slideUrl = slideUrl,
@@ -106,31 +98,19 @@ internal fun SessionResponse.toSessionEntityImpl(
             message = message?.let {
                 MessageEntityImpl(requireNotNull(it.ja), requireNotNull(it.en))
             },
-            sessionType = sessionType,
-            forBeginners = forBeginners
+            sessionType = sessionType
         )
     }
 }
 
 internal fun List<SpeakerResponse>.toSpeakerEntities(): List<SpeakerEntityImpl> =
     map { responseSpeaker ->
-        SpeakerEntityImpl(id = responseSpeaker.id!!,
+        SpeakerEntityImpl(
+            id = responseSpeaker.id!!,
             name = responseSpeaker.fullName!!,
             tagLine = responseSpeaker.tagLine,
             bio = responseSpeaker.bio,
-            imageUrl = responseSpeaker.profilePicture,
-            twitterUrl = responseSpeaker.links
-                ?.firstOrNull { "Twitter" == it?.linkType }
-                ?.url,
-            companyUrl = responseSpeaker.links
-                ?.firstOrNull { "Company_Website" == it?.linkType }
-                ?.url,
-            blogUrl = responseSpeaker.links
-                ?.firstOrNull { "Blog" == it?.linkType }
-                ?.url,
-            githubUrl = responseSpeaker.links
-                ?.firstOrNull { "GitHub" == it?.title || "Github" == it?.title }
-                ?.url
+            imageUrl = responseSpeaker.profilePicture
         )
     }
 
@@ -141,7 +121,7 @@ private fun List<CategoryResponse>.category(
     return this[categoryIndex].items!!.first { it!!.id == categoryId }!!
 }
 
-private fun List<RoomResponse>.roomName(roomId: Int?): String = first { it.id == roomId }.name!!
+private fun List<RoomResponse>.room(roomId: Int?): RoomResponse = first { it.id == roomId }
 
 internal fun SessionFeedback.toSessionFeedbackEntity(): SessionFeedbackEntityImpl =
     SessionFeedbackEntityImpl(

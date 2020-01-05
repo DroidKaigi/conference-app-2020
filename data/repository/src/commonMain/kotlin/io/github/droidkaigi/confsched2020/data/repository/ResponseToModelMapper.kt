@@ -28,7 +28,7 @@ private val dateFormat: DateFormat =
     DateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
 
 fun Response.toModel(): SessionContents {
-    val firstDay = dateFormat.parse(sessions.first().startsAtWithTZ)
+    val firstDay = dateFormat.parse(requireNotNull(sessions.first().startsAt))
 
     val sessions = sessions.map {
         it.toSession(
@@ -44,7 +44,7 @@ fun Response.toModel(): SessionContents {
         speakers = speechSessions.flatMap { it.speakers }.distinct(),
         langs = Lang.values().toList(),
         langSupports = LangSupport.values().toList(),
-        rooms = sessions.map { it.room }.sortedBy { it.name }.distinct(),
+        rooms = sessions.map { it.room }.sortedBy { it.sort }.distinct(),
         category = speechSessions.map { it.category }.distinct(),
         audienceCategories = AudienceCategory.values().toList()
     )
@@ -57,20 +57,12 @@ private fun SessionResponse.toSession(
     categoryResponse: List<CategoryResponse>
 ): Session {
     val response = this
-    val startTime = dateFormat.parse(response.startsAtWithTZ)
-    val endTime = dateFormat.parse(response.endsAtWithTZ)
+    val startTime = dateFormat.parse(requireNotNull(response.startsAt))
+    val endTime = dateFormat.parse(requireNotNull(response.endsAt))
     val room = rooms.first { response.roomId == it.id }
 
     return if (!response.isServiceSession) {
-        val sessionFormat = categoryItems[0].let {
-            categoryResponse.category(0, it)
-        }
-        val language = categoryItems[1].let {
-            categoryResponse.category(1, it)
-        }
-        val category = categoryItems[2].let {
-            categoryResponse.category(2, it)
-        }
+        val category = categoryResponse.category(2, sessionCategoryItemId)
         SpeechSession(
             id = SessionId(response.id),
             // dayNumber is starts with 1.
@@ -78,19 +70,25 @@ private fun SessionResponse.toSession(
             dayNumber = startTime.dayOfYear - firstDay.dayOfYear + 1,
             startTime = startTime.utc,
             endTime = endTime.utc,
-            title = LocaledString(response.title, requireNotNull(response.englishTitle)),
-            desc = response.description,
-            room = Room(response.roomId, requireNotNull(room.name)),
-            format = requireNotNull(sessionFormat.name),
-            lang = Lang.findLang(requireNotNull(language.name)),
+            title = LocaledString(
+                requireNotNull(response.title?.ja),
+                requireNotNull(response.title?.en)
+            ),
+            desc = response.description ?: "",
+            room = Room(
+                requireNotNull(room.id),
+                LocaledString(requireNotNull(room.name?.ja), requireNotNull(room.name?.en)),
+                requireNotNull(room.sort)
+            ),
+            lang = Lang.findLang(requireNotNull(language)),
             category = Category(
                 requireNotNull(category.id),
                 LocaledString(
-                    ja = requireNotNull(category.translatedName?.ja),
-                    en = requireNotNull(category.translatedName?.en)
+                    ja = requireNotNull(category.name?.ja),
+                    en = requireNotNull(category.name?.en)
                 )
             ),
-            intendedAudience = questionAnswers[0].answerValue,
+            intendedAudience = targetAudience,
             videoUrl = videoUrl,
             slideUrl = slideUrl,
             isInterpretationTarget = interpretationTarget,
@@ -104,19 +102,7 @@ private fun SessionResponse.toSession(
                         name = requireNotNull(it.fullName),
                         bio = it.bio,
                         tagLine = it.tagLine,
-                        imageUrl = it.profilePicture,
-                        twitterUrl = it.links
-                            ?.firstOrNull { "Twitter" == it?.linkType }
-                            ?.url,
-                        companyUrl = it.links
-                            ?.firstOrNull { "Company_Website" == it?.linkType }
-                            ?.url,
-                        blogUrl = it.links
-                            ?.firstOrNull { "Blog" == it?.linkType }
-                            ?.url,
-                        githubUrl = it.links
-                            ?.firstOrNull { "GitHub" == it?.title || "Github" == it?.title }
-                            ?.url
+                        imageUrl = it.profilePicture
                     )
                 },
             message = response.message?.let {
@@ -124,8 +110,7 @@ private fun SessionResponse.toSession(
                     requireNotNull(it.ja),
                     requireNotNull(it.en)
                 )
-            },
-            forBeginners = response.forBeginners
+            }
         )
     } else {
         ServiceSession(
@@ -135,9 +120,16 @@ private fun SessionResponse.toSession(
             dayNumber = startTime.dayOfYear - firstDay.dayOfYear + 1,
             startTime = startTime.utc,
             endTime = endTime.utc,
-            title = LocaledString(response.title, requireNotNull(response.englishTitle)),
-            desc = response.description,
-            room = Room(response.roomId, requireNotNull(room.name)),
+            title = LocaledString(
+                requireNotNull(response.title?.ja),
+                requireNotNull(response.title?.en)
+            ),
+            desc = response.description ?: "",
+            room = Room(
+                requireNotNull(room.id),
+                LocaledString(requireNotNull(room.name?.ja), requireNotNull(room.name?.en)),
+                requireNotNull(room.sort)
+            ),
             // TODO
             isFavorited = false,
             sessionType = SessionType.of(response.sessionType)

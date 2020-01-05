@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 internal data class CategoryResponseImpl(
     override val id: Int?,
     override val sort: Int?,
-    override val title: String?,
+    override val title: LocaledResponseImpl?,
     override val items: List<CategoryItemResponseImpl?>?
 ) : CategoryResponse

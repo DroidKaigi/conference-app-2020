@@ -5,7 +5,11 @@ import io.github.droidkaigi.confsched2020.data.db.entity.RoomEntity
 
 internal data class RoomEntityImpl(
     @ColumnInfo(name = "room_id")
-    override var id: Int,
+    override val id: Int,
     @ColumnInfo(name = "room_name")
-    override var name: String
+    override val name: String,
+    @ColumnInfo(name = "room_name_en")
+    override val enName: String,
+    @ColumnInfo(name = "room_sort")
+    override val sort: Int
 ) : RoomEntity

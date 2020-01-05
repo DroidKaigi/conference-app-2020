@@ -15,13 +15,5 @@ internal class SpeakerEntityImpl(
     @ColumnInfo(name = "speaker_bio")
     override var bio: String?,
     @ColumnInfo(name = "speaker_image_url")
-    override var imageUrl: String?,
-    @ColumnInfo(name = "speaker_twitter_url")
-    override var twitterUrl: String?,
-    @ColumnInfo(name = "speaker_company_url")
-    override var companyUrl: String?,
-    @ColumnInfo(name = "speaker_blog_url")
-    override var blogUrl: String?,
-    @ColumnInfo(name = "speaker_github_url")
-    override var githubUrl: String?
+    override var imageUrl: String?
 ) : SpeakerEntity

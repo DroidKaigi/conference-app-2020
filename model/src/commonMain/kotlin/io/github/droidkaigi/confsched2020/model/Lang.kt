@@ -14,7 +14,7 @@ enum class Lang(val text: LocaledString) {
 
     companion object {
         fun findLang(name: String): Lang {
-            return if (name == "日本語") {
+            return if (name == "JAPANESE") {
                 JA
             } else {
                 EN

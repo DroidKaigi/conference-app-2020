@@ -15,9 +15,9 @@ sealed class Session(
     open val room: Room,
     open val isFavorited: Boolean
 ) {
-    val startDayText by lazy { startTime.toOffset(9.hours).format("yyyy.M.d") }
+    val startDayText by lazy { startTime.toOffset(defaultTimeZoneOffset()).format("yyyy.M.d") }
 
-    val startTimeText by lazy { startTime.format("HH:mm") }
+    val startTimeText by lazy { startTime.toOffset(defaultTimeZoneOffset()).format("HH:mm") }
 
     fun timeSummary(lang: Lang, timezoneOffset: TimezoneOffset) = buildString {
         val startTimeTZ = startTime.toOffset(timezoneOffset)
@@ -71,7 +71,6 @@ data class SpeechSession(
     override val title: LocaledString,
     override val desc: String,
     override val room: Room,
-    val format: String,
     val lang: Lang,
     val category: Category,
     val intendedAudience: String?,
@@ -80,7 +79,6 @@ data class SpeechSession(
     val isInterpretationTarget: Boolean,
     override val isFavorited: Boolean,
     val speakers: List<Speaker>,
-    val forBeginners: Boolean,
     val message: LocaledString?
 ) : Session(id, title, desc, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
 

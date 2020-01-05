@@ -125,7 +125,7 @@ class SessionsFragment : DaggerFragment() {
             binding.roomFilters.setupFilter(
                 allFilterSet = uiModel.allFilters.rooms,
                 currentFilterSet = uiModel.filters.rooms,
-                filterName = { it.name }
+                filterName = { it.name.getByLang(defaultLang()) }
             ) { checked, room ->
                 sessionsViewModel.filterChanged(room, checked)
             }

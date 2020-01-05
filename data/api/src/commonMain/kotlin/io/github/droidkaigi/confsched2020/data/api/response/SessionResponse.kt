@@ -3,19 +3,18 @@ package io.github.droidkaigi.confsched2020.data.api.response
 interface SessionResponse {
     val id: String
     val isServiceSession: Boolean
-    val title: String
-    val englishTitle: String?
+    val title: LocaledResponse?
     val speakers: List<String>
-    val description: String
-    val startsAtWithTZ: String
-    val endsAtWithTZ: String
-    val roomId: Int
-    val categoryItems: List<Int>
-    val questionAnswers: List<QuestionAnswerResponse>
+    val description: String?
+    val startsAt: String?
+    val endsAt: String?
+    val language: String?
+    val roomId: Int?
+    val sessionCategoryItemId: Int?
     val message: SessionMessageResponse?
     val isPlenumSession: Boolean
     val sessionType: String?
-    val forBeginners: Boolean
+    val targetAudience: String
     val videoUrl: String?
     val slideUrl: String?
     val interpretationTarget: Boolean

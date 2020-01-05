@@ -36,11 +36,11 @@ fun SessionWithSpeakers.toSession(
             endTime = DateTime.fromUnix(session.etime),
             title = LocaledString(
                 ja = session.title,
-                en = requireNotNull(session.englishTitle)
+                en = requireNotNull(session.enTitle)
             ),
             desc = session.desc,
             room = requireNotNull(session.room).let { room ->
-                Room(room.id, room.name)
+                Room(room.id, LocaledString(room.name, room.enName), room.sort)
             },
             sessionType = SessionType.of(session.sessionType),
             isFavorited = favList!!.contains(session.id)
@@ -60,16 +60,17 @@ fun SessionWithSpeakers.toSession(
                 firstDay.toOffset(jstOffset).dayOfYear + 1,
             startTime = DateTime.fromUnix(session.stime),
             endTime = DateTime.fromUnix(session.etime),
-            title = LocaledString(session.title, requireNotNull(session.englishTitle)),
+            title = LocaledString(session.title, requireNotNull(session.enTitle)),
             desc = session.desc,
-            room = Room(requireNotNull(session.room?.id), requireNotNull(session.room?.name)),
-            format = requireNotNull(session.sessionFormat),
-            lang = Lang.findLang(requireNotNull(session.language?.name)),
+            room = requireNotNull(session.room).let {
+                Room(it.id, LocaledString(it.name, it.enName), it.sort)
+            },
+            lang = Lang.findLang(session.language),
             category = requireNotNull(session.category).let { category ->
                 Category(
                     category.id,
                     LocaledString(
-                        ja = category.jaName,
+                        ja = category.name,
                         en = category.enName
                     )
                 )
@@ -82,8 +83,7 @@ fun SessionWithSpeakers.toSession(
             speakers = speakers,
             message = session.message?.let {
                 LocaledString(it.ja, it.en)
-            },
-            forBeginners = session.forBeginners
+            }
         )
     }
 }
@@ -93,11 +93,7 @@ fun SpeakerEntity.toSpeaker(): Speaker = Speaker(
     name = name,
     tagLine = tagLine,
     bio = bio,
-    imageUrl = imageUrl,
-    twitterUrl = twitterUrl,
-    companyUrl = companyUrl,
-    blogUrl = blogUrl,
-    githubUrl = githubUrl
+    imageUrl = imageUrl
 )
 
 fun SessionFeedbackEntity.toSessionFeedback(): SessionFeedback =

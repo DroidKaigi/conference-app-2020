@@ -9,6 +9,5 @@ interface SpeakerResponse {
     val isTopSpeaker: Boolean?
     val bio: String?
     val fullName: String?
-    val links: List<LinkResponse?>?
     val id: String?
 }
