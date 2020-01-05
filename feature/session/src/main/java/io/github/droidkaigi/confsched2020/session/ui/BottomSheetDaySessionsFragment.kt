@@ -101,8 +101,10 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
             // TODO: support favorite list
             val page = SessionPage.dayOfNumber(args.day) as? SessionPage.Day ?: return@observe
             val sessions = uiModel.dayToSessionsMap[page].orEmpty()
-            binding.filteredSessionCount.text =
-                sessions.filter { it.shouldCountForFilter }.count().toString()
+            binding.filteredSessionCount.text = getString(
+                R.string.applicable_session,
+                sessions.filter { it.shouldCountForFilter }.count()
+            )
             binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()
             groupAdapter.update(sessions.map {
                 sessionItemFactory.create(it, sessionsViewModel)
