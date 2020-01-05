@@ -69,7 +69,10 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
 
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
             val sessions = uiModel.favoritedSessions
-            binding.filteredSessionCount.text = sessions.filter { it.shouldCountForFilter }.count().toString()
+            binding.filteredSessionCount.text = getString(
+                R.string.applicable_session,
+                sessions.filter { it.shouldCountForFilter }.count()
+            )
             binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()
             groupAdapter.update(sessions.map {
                 sessionItemFactory.create(it, sessionsViewModel)
