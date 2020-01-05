@@ -17,19 +17,14 @@ import io.github.droidkaigi.confsched2020.model.SpeakerId
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 
 object Dummies {
-
-    val hall = Room(1, "hall")
+    val hall = Room(1, LocaledString("JA App bar", "EN App bar"), 1)
     val speakers = listOf(
         Speaker(
             id = SpeakerId("speaker_id"),
             name = "speaker",
             tagLine = "tag line",
             bio = null,
-            imageUrl = null,
-            twitterUrl = null,
-            githubUrl = null,
-            blogUrl = null,
-            companyUrl = null
+            imageUrl = null
         )
     )
     val category = Category(
@@ -66,9 +61,7 @@ object Dummies {
         isInterpretationTarget = false,
         isFavorited = false,
         speakers = speakers,
-        forBeginners = false,
         message = null,
-        format = "",
         lang = Lang.JA
     )
     val sessions = listOf<Session>(

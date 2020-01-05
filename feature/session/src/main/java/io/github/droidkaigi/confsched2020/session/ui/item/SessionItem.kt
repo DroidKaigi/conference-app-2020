@@ -16,16 +16,15 @@ import coil.Coil
 import coil.api.load
 import coil.request.RequestDisposable
 import coil.transform.CircleCropTransformation
-import com.soywiz.klock.DateTime
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
 import com.xwray.groupie.databinding.ViewHolder
-import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
+import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.actionSessionToSessionDetail
@@ -66,7 +65,7 @@ class SessionItem @AssistedInject constructor(
         }
         viewBinding.live.isVisible = session.isOnGoing
         viewBinding.title.text = session.title.ja
-        viewBinding.room.text = session.room.name
+        viewBinding.room.text = session.room.name.getByLang(defaultLang())
         viewBinding.survey.isEnabled = session.isFinished
         imageRequestDisposables.clear()
         viewBinding.speakers.bindSpeaker()

@@ -6,8 +6,4 @@ interface SpeakerEntity {
     var tagLine: String?
     var bio: String?
     var imageUrl: String?
-    var twitterUrl: String?
-    var companyUrl: String?
-    var blogUrl: String?
-    var githubUrl: String?
 }

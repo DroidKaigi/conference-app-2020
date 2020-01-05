@@ -13,6 +13,5 @@ internal data class SpeakerResponseImpl(
     override val isTopSpeaker: Boolean?,
     override val bio: String?,
     override val fullName: String?,
-    override val links: List<LinkResponseImpl?>?,
     override val id: String?
 ) : SpeakerResponse

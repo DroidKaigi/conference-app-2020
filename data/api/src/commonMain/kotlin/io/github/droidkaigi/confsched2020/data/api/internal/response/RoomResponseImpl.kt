@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class RoomResponseImpl(
-    override val name: String?,
+    override val name: LocaledResponseImpl?,
     override val id: Int?,
     override val sort: Int?
 ) : RoomResponse

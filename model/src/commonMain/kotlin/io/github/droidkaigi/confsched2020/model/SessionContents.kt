@@ -42,7 +42,7 @@ data class SessionContents(
                 }
             },
             speakers.filter {
-                find(query, it.name, it.tagLine, it.bio, it.githubUrl, it.twitterUrl)
+                find(query, it.name, it.tagLine, it.bio)
             },
             query
         )
