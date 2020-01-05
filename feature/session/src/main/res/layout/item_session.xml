@@ -8,8 +8,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:paddingBottom="8dp"
         tools:theme="@style/Theme.DroidKaigi.Indigo"
         >
 
@@ -18,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="0dp"
+            app:layout_constraintGuide_begin="@dimen/session_time_space"
             />
 
         <androidx.constraintlayout.widget.Guideline
@@ -26,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="0dp"
+            app:layout_constraintGuide_end="8dp"
             />
 
         <TextView
@@ -34,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:alpha="0.38"
+            android:layout_marginTop="8dp"
             android:gravity="center_vertical"
             android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="?colorOnSurface"
@@ -47,14 +50,14 @@
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="2dp"
             android:background="@drawable/shape_session_on_going_background"
             android:padding="2dp"
             android:text="@string/session_on_going"
             android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="?attr/colorOnPrimary"
             app:layout_constraintStart_toEndOf="@id/room"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/room"
+            app:layout_constraintBottom_toBottomOf="@id/room"
             />
 
         <ImageButton
@@ -64,6 +67,7 @@
             android:background="?selectableItemBackgroundBorderless"
             android:src="@drawable/ic_bookmark_border_black_24dp"
             android:tint="?colorSecondary"
+            android:padding="8dp"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toTopOf="parent"
             />
