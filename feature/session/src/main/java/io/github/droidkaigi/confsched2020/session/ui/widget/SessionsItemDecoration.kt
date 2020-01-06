@@ -35,7 +35,7 @@ class SessionsItemDecoration(val adapter: GroupAdapter<*>, val res: Resources) :
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        outRect.left = sessionTimeSpaceInPx
+
     }
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
