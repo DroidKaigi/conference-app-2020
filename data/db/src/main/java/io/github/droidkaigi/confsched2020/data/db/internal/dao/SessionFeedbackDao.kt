@@ -8,10 +8,7 @@ import io.github.droidkaigi.confsched2020.data.db.internal.entity.SessionFeedbac
 
 @Dao
 internal abstract class SessionFeedbackDao {
-    @Query(
-        "SELECT session_feedback.*, session.title as session_title " +
-            "FROM session_feedback INNER JOIN session ON session.id = session_feedback.session_id"
-    )
+    @Query("SELECT * FROM session_feedback")
     abstract suspend fun sessionFeedbacks(): List<SessionFeedbackEntityImpl>
 
     @Query("DELETE FROM session_feedback WHERE session_id = :sessionId")

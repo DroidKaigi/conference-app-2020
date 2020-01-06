@@ -30,7 +30,7 @@ internal abstract class DbModule {
 
     @Module
     internal object Providers {
-        @Singleton @JvmStatic @Provides fun database(
+        @Singleton @JvmStatic @Provides fun cacheDatabase(
             context: Context,
             filename: String?
         ): CacheDatabase {
@@ -38,6 +38,19 @@ internal abstract class DbModule {
                 context,
                 CacheDatabase::class.java,
                 filename ?: "droidkaigi.db"
+            )
+                .fallbackToDestructiveMigration()
+                .build()
+        }
+
+        @Singleton @JvmStatic @Provides fun sessionFeedbackDatabase(
+            context: Context,
+            filename: String?
+        ): SessionFeedbackDatabase {
+            return Room.databaseBuilder(
+                context,
+                SessionFeedbackDatabase::class.java,
+                filename ?: "session_feedback.db"
             )
                 .fallbackToDestructiveMigration()
                 .build()
@@ -73,7 +86,7 @@ internal abstract class DbModule {
             return database.contributorDao()
         }
 
-        @JvmStatic @Provides fun sessionFeedbackDao(database: CacheDatabase): SessionFeedbackDao {
+        @JvmStatic @Provides fun sessionFeedbackDao(database: SessionFeedbackDatabase): SessionFeedbackDao {
             return database.sessionFeedbackDao()
         }
     }
