@@ -40,7 +40,7 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 internal class RoomDatabase @Inject constructor(
-    private val database: CacheDatabase,
+    private val cacheDatabase: CacheDatabase,
     private val sessionDao: SessionDao,
     private val speakerDao: SpeakerDao,
     private val sessionSpeakerJoinDao: SessionSpeakerJoinDao,
@@ -64,8 +64,8 @@ internal class RoomDatabase @Inject constructor(
     override suspend fun save(apiResponse: Response) {
         withContext(coroutineContext) {
             // FIXME: SQLiteDatabaseLockedException
-            database.runInTransaction {
-                database.sqlite().execSQL("PRAGMA defer_foreign_keys = TRUE")
+            cacheDatabase.runInTransaction {
+                cacheDatabase.sqlite().execSQL("PRAGMA defer_foreign_keys = TRUE")
                 sessionSpeakerJoinDao.deleteAll()
                 speakerDao.deleteAll()
                 sessionDao.deleteAll()
@@ -96,7 +96,7 @@ internal class RoomDatabase @Inject constructor(
 
     override suspend fun saveSponsors(apiResponse: SponsorListResponse) {
         withContext(coroutineContext) {
-            database.runInTransaction {
+            cacheDatabase.runInTransaction {
                 val sponsors = apiResponse.toSponsorEntities()
                 sponsorDao.deleteAll()
                 sponsorDao.insert(sponsors)
@@ -109,7 +109,7 @@ internal class RoomDatabase @Inject constructor(
 
     override suspend fun save(apiResponse: List<AnnouncementResponse>) {
         withContext(coroutineContext) {
-            database.runInTransaction {
+            cacheDatabase.runInTransaction {
                 val announcements = apiResponse.toAnnouncementEntities()
                 announcementDao.deleteAll()
                 announcementDao.insert(announcements)
@@ -121,7 +121,7 @@ internal class RoomDatabase @Inject constructor(
 
     override suspend fun save(apiResponse: StaffResponse) {
         withContext(coroutineContext) {
-            database.runInTransaction {
+            cacheDatabase.runInTransaction {
                 val staffs = apiResponse.staffs.toStaffEntities()
                 staffDao.deleteAll()
                 staffDao.insert(staffs)
@@ -134,7 +134,7 @@ internal class RoomDatabase @Inject constructor(
 
     override suspend fun save(apiResponse: ContributorResponse) {
         withContext(coroutineContext) {
-            database.runInTransaction {
+            cacheDatabase.runInTransaction {
                 val contributors = apiResponse.contributors.toContributorEntities()
                 contributorDao.deleteAll()
                 contributorDao.insert(contributors)

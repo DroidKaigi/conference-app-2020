@@ -26,7 +26,6 @@ import io.github.droidkaigi.confsched2020.data.db.internal.entity.StaffEntityImp
         (SpeakerEntityImpl::class),
         (SessionSpeakerJoinEntityImpl::class),
         (SponsorEntityImpl::class),
-        (SessionFeedbackEntityImpl::class),
         (AnnouncementEntityImpl::class),
         (StaffEntityImpl::class),
         (ContributorEntityImpl::class)
@@ -38,7 +37,6 @@ internal abstract class CacheDatabase : RoomDatabase() {
     abstract fun speakerDao(): SpeakerDao
     abstract fun sessionSpeakerJoinDao(): SessionSpeakerJoinDao
     abstract fun sponsorDao(): SponsorDao
-    abstract fun sessionFeedbackDao(): SessionFeedbackDao
     abstract fun announcementDao(): AnnouncementDao
     abstract fun staffDao(): StaffDao
     abstract fun contributorDao(): ContributorDao
