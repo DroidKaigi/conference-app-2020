@@ -66,7 +66,7 @@
                         app:icon="@drawable/ic_close_black_24dp"
                         app:iconSize="20dp"
                         app:layout_constraintBottom_toBottomOf="@id/filter_title"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/guideline_end"
                         app:layout_constraintTop_toTopOf="@id/filter_title"
                         />
 
@@ -87,6 +87,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/filter_room_title"
                         />
@@ -108,6 +110,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/filter_language_title"
                         />
@@ -129,6 +133,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/filter_audience_category_title"
                         />
@@ -150,6 +156,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/filter_category_title"
                         />
@@ -171,6 +179,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/filter_language_support_title"
                         />
