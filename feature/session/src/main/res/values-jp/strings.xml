@@ -4,4 +4,5 @@
     <string name="start_filter">絞り込む</string>
     <string name="intended_audience_title">対象者</string>
     <string name="applicable_session">該当セッション: %1$d</string>
+    <string name="filter_reset">リセット</string>
 </resources>

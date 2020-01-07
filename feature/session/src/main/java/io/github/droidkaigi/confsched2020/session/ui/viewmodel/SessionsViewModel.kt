@@ -160,4 +160,8 @@ class SessionsViewModel @Inject constructor(
             audienceCategories = if (checked) filters.audienceCategories + audienceCategory else filters.audienceCategories - audienceCategory
         )
     }
+
+    fun resetFilter() {
+        filterLiveData.value = Filters()
+    }
 }
