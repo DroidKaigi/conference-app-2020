@@ -12,7 +12,7 @@
         android:layout_marginBottom="8dp"
         android:background="?attr/selectableItemBackground"
         android:paddingBottom="8dp"
-        tools:theme="@style/Theme.DroidKaigi.Indigo"
+        tools:theme="@style/Theme.DroidKaigi"
         >
 
         <androidx.constraintlayout.widget.Guideline

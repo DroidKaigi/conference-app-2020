@@ -35,16 +35,6 @@
 
     <style name="Theme.DroidKaigi.DayNight" parent="Theme.DroidKaigi" />
 
-    <style name="Theme.DroidKaigi.Indigo" parent="Theme.DroidKaigi">
-        <!-- Colors -->
-        <item name="colorPrimary">@color/indigo_900</item>
-        <item name="colorPrimaryVariant">@color/indigo_900</item>
-        <item name="colorSecondary">@color/light_blue_300</item>
-        <item name="colorSecondaryVariant">@color/light_blue_300</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorOnSecondary">@color/black</item>
-    </style>
-
     <style name="Theme.DroidKaigi.Cyan" parent="Theme.DroidKaigi">
         <!-- Colors -->
         <item name="colorPrimary">@color/cyan_300</item>
