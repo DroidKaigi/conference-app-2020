@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.DroidKaigi.Indigo">
+        android:theme="@style/Theme.DroidKaigi.DayNight">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
