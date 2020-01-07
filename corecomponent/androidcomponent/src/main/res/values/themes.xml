@@ -34,12 +34,4 @@
     </style>
 
     <style name="Theme.DroidKaigi.DayNight" parent="Theme.DroidKaigi" />
-
-    <style name="ThemeOverlay.DroidKaigi.Indigo" parent="@style/ThemeOverlay.MaterialComponents.Light">
-        <!-- Colors -->
-        <item name="colorPrimary">@color/indigo_900</item>
-        <item name="colorPrimaryVariant">@color/indigo_900</item>
-        <item name="colorSecondary">@color/cyan_300</item>
-        <item name="colorSecondaryVariant">@color/cyan_300</item>
-    </style>
 </resources>
