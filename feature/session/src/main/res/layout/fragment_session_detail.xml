@@ -6,6 +6,7 @@
     >
 
     <data>
+
         <variable
             name="session"
             type="io.github.droidkaigi.confsched2020.model.Session"
@@ -25,7 +26,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/Theme.DroidKaigi.Cyan"
+        tools:theme="@style/Theme.DroidKaigi.Indigo"
         >
 
         <androidx.core.widget.NestedScrollView
@@ -38,7 +39,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:layout_marginBottom="18dp"
-                android:background="?colorSurface"
                 >
 
                 <ProgressBar
@@ -72,7 +72,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{session.title.getByLang(lang)}"
-                    android:textAppearance="@style/TextAppearance.DroidKaigi.Headline5"
+                    android:textAppearance="?textAppearanceHeadline5"
+                    android:textColor="@color/session_title"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toTopOf="parent"
@@ -87,6 +88,7 @@
                     android:src="@drawable/ic_access_time_black_24dp"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/title"
+                    app:tint="?android:attr/textColorPrimary"
                     />
 
                 <TextView
@@ -94,7 +96,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
+                    android:textAppearance="?textAppearanceCaption"
+                    android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintBottom_toBottomOf="@id/time_icon"
                     app:layout_constraintStart_toEndOf="@id/time_icon"
                     app:layout_constraintTop_toTopOf="@id/time_icon"
@@ -108,8 +111,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@{session.shortSummary()}"
-                    android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
-                    android:textColor="@color/black_alpha_38"
+                    android:textAppearance="?textAppearanceCaption"
+                    android:textColor="?android:attr/textColorSecondary"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/time_icon"
                     tools:text="20min / Hall"
@@ -131,16 +134,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minHeight="36dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="16dp"
                     android:text="@string/session_survey_label"
-                    android:textAppearance="?attr/textAppearanceCaption"
-                    android:theme="@style/ThemeOverlay.DroidKaigi.Indigo"
+                    android:textAppearance="?attr/textAppearanceButton"
+                    android:textColor="@color/survey_button"
                     app:icon="@drawable/ic_add_comment_24dp"
-                    app:iconPadding="4dp"
-                    app:iconSize="12dp"
+                    app:iconPadding="8dp"
+                    app:iconSize="20dp"
+                    app:iconTint="@color/survey_button"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/tags"
                     app:strokeColor="@color/survey_button"
-                    app:strokeWidth="2dp"
+                    app:strokeWidth="1dp"
                     tools:enabled="false"
                     />
 
@@ -161,7 +170,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="22dp"
                     android:text="@{session.desc}"
-                    android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
+                    android:textAppearance="?textAppearanceBody1"
+                    android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/divider_survey_and_text"
@@ -186,7 +196,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
                     android:text="@string/intended_audience_title"
-                    android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
+                    android:textAppearance="?textAppearanceSubtitle2"
+                    android:textColor="@color/session_detail_label"
                     app:isVisible="@{session.hasIntendedAudience}"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/divider_text_and_target"
@@ -199,6 +210,7 @@
                     android:layout_marginTop="28dp"
                     android:text="@{speechSession.intendedAudience}"
                     android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
+                    android:textColor="?android:attr/textColorPrimary"
                     app:isVisible="@{session.hasIntendedAudience}"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -224,7 +236,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
                     android:text="@string/speaker_label"
-                    android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
+                    android:textAppearance="?textAppearanceSubtitle2"
+                    android:textColor="@color/session_detail_label"
                     app:isVisible="@{session.hasSpeaker}"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/divider_target_and_speaker"
@@ -253,10 +266,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:theme="@style/ThemeOverlay.DroidKaigi.Indigo"
-            app:menu="@menu/menu_session_detail_bottomappbar"
             app:fabAlignmentMode="end"
             app:hideOnScroll="true"
+            app:menu="@menu/menu_session_detail_bottomappbar"
             />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -264,9 +276,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@{session.isFavorited? @drawable/ic_bookmark_black_24dp : @drawable/ic_bookmark_border_black_24dp}"
-            app:backgroundTint="?colorPrimary"
+            app:backgroundTint="?colorSecondary"
             app:layout_anchor="@id/bottom_app_bar"
-            app:tint="?colorOnPrimary"
+            app:tint="?colorOnSecondary"
             tools:src="@drawable/ic_bookmark_black_24dp"
             />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
