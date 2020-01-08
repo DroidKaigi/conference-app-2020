@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@{ContextsKt.getThemeColorDrawable(context, isIndigoBackground ? R.attr.colorPrimary : R.attr.colorSurface)}"
-        app:statusBarBackground="@{ContextsKt.getThemeColorDrawable(context, isIndigoBackground ? R.attr.colorPrimary : R.attr.colorSurface)}"
+        app:statusBarBackground="@{ContextsKt.getThemeColorDrawable(context, isIndigoBackground ? R.attr.colorPrimarySurface : R.attr.colorSurface)}"
         tools:context=".MainActivity"
         >
 
@@ -35,16 +35,16 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
-                android:elevation="0dp"
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="0dp"
                 android:layout_height="?actionBarSize"
-                android:background="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorPrimary : R.attr.colorSurface)}"
+                android:background="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorPrimarySurface : R.attr.colorSurface)}"
+                android:elevation="4dp"
                 app:contentInsetStartWithNavigation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:titleTextColor="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorOnPrimary : R.attr.colorOnSurface)}"
+                app:titleTextColor="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorOnPrimarySurface : R.attr.colorOnSurface)}"
                 />
 
             <fragment
