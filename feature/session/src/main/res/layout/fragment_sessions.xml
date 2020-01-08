@@ -8,7 +8,7 @@
     <io.github.droidkaigi.confsched2020.ui.widget.CoordinatorLayoutInViewPagerHost
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:theme="@style/Theme.DroidKaigi.Indigo"
+        tools:theme="@style/Theme.DroidKaigi"
         >
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout

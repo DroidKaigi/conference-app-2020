@@ -25,7 +25,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/Theme.DroidKaigi.Cyan"
+        tools:theme="@style/Theme.DroidKaigi"
         >
 
         <androidx.core.widget.NestedScrollView

@@ -26,7 +26,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:theme="@style/Theme.DroidKaigi.Indigo"
+        tools:theme="@style/Theme.DroidKaigi"
         >
 
         <androidx.core.widget.NestedScrollView
@@ -262,7 +262,7 @@
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_app_bar"
-            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+            style="@style/Widget.MaterialComponents.BottomAppBar.PrimarySurface"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

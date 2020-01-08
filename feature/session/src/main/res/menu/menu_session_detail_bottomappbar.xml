@@ -7,7 +7,7 @@
         android:id="@+id/session_share"
         android:icon="@drawable/ic_share_outline_black_24dp"
         android:title="@string/session_share"
-        app:iconTint="?attr/colorOnPrimary"
+        app:iconTint="?attr/colorOnPrimarySurface"
         app:showAsAction="ifRoom"
         />
 </menu>
