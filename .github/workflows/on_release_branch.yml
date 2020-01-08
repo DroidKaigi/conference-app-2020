@@ -38,18 +38,21 @@ jobs:
         echo -n 'STAGING / '
         echo "${GITHUB_SHA:0:6}"
     - name: Upload an apk to DeployGate
-      uses: jmatsu/dg-upload-app-action@0.1
-      with:
+      shell: bash
+      run: |
+        curl -X POST \
+          -H 'Authorization: token ${{ env.api_token }}' \
+          -F 'file=@${{ steps.find-apk.outputs.path }}' \
+          -F 'message=${{ steps.summary.outputs.message }}' \
+          -F "release_note=This build is a debug-flavor build and not for production. ${{ steps.summary.outputs.message }}" \
+          -F 'distribution_id=${{ env.distribution_id }}' \
+          'https://deploygate.com/api/users/${{ env.app_owner_name }}/apps'
+      env:
         app_owner_name: ${{ secrets.DEPLOYGATE_APP_OWNER_NAME }}
         api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
-        app_file_path: ${{ steps.find-apk.outputs.path }}
-        public: true
-        message: ${{ steps.summary.outputs.message }}
-        release_note: "This build is a debug-flavor build and not for production. ${{ steps.summary.outputs.message }}"
-        distribution_find_by: id
-        distribution_id: ${{ env.distribution_id }}
-      env:
         distribution_id: '5a2b137dfa246bb75efbf06d8f08dd7e2a6ced69'
+
+
 
   build-release-variant:
     runs-on: macOS-10.14
@@ -82,15 +85,17 @@ jobs:
         echo -n 'STAGING / '
         echo "${GITHUB_SHA:0:6}"
     - name: Upload an apk to DeployGate
-      uses: jmatsu/dg-upload-app-action@0.1
-      with:
+      shell: bash
+      run: |
+        curl -X POST \
+          -H 'Authorization: token ${{ env.api_token }}' \
+          -F 'file=@${{ steps.find-apk.outputs.path }}' \
+          -F 'message=${{ steps.summary.outputs.message }}' \
+          -F "release_note=This build is a release-flavor build but not for production. ${{ steps.summary.outputs.message }}" \
+          -F 'distribution_id=${{ env.distribution_id }}' \
+          'https://deploygate.com/api/users/${{ env.app_owner_name }}/apps'
+      env:
         app_owner_name: ${{ secrets.DEPLOYGATE_APP_OWNER_NAME }}
         api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
-        app_file_path: ${{ steps.find-apk.outputs.path }}
-        public: true
-        message: ${{ steps.summary.outputs.message }}
-        release_note: "This build is a release-flavor build but not for production. ${{ steps.summary.outputs.message }}"
-        distribution_find_by: id
-        distribution_id: ${{ env.distribution_id }}
-      env:
         distribution_id: 'b0f7ed82961c079a1f627d9fcba0927838c40320'
+

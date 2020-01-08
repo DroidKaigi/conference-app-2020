@@ -39,15 +39,16 @@ jobs:
         echo -n 'PRODUCTION / '
         echo "${GITHUB_SHA:0:6}"
     - name: Upload an apk to DeployGate
-      uses: jmatsu/dg-upload-app-action@0.1
-      with:
+      shell: bash
+      run: |
+        curl -X POST \
+          -H 'Authorization: token ${{ env.api_token }}' \
+          -F 'file=@${{ steps.find-apk.outputs.path }}' \
+          -F 'message=${{ steps.summary.outputs.message }}' \
+          -F "release_note=One of production candidates. ${{ steps.summary.outputs.message }}" \
+          -F 'distribution_id=${{ env.distribution_id }}' \
+          'https://deploygate.com/api/users/${{ env.app_owner_name }}/apps'
+      env:
         app_owner_name: ${{ secrets.DEPLOYGATE_APP_OWNER_NAME }}
         api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
-        app_file_path: ${{ steps.find-apk.outputs.path }}
-        public: true
-        message: ${{ steps.summary.outputs.message }}
-        release_note: "One of production candidates. ${{ steps.summary.outputs.message }}"
-        distribution_find_by: id
-        distribution_id: ${{ env.distribution_id }}
-      env:
         distribution_id: 'dd0266c42e405ec12b698138f4e62a01c74fa0a2'

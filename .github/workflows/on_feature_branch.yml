@@ -16,13 +16,6 @@ jobs:
         java-version: '8'
     - uses: actions/cache@v1
       with:
-        path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-
-          ${{ runner.os }}-gradle-
-    - uses: actions/cache@v1
-      with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
         restore-keys: |
@@ -50,13 +43,16 @@ jobs:
         fi
         echo "${GITHUB_SHA:0:6}"
     - name: Upload an apk to DeployGate
-      uses: jmatsu/dg-upload-app-action@0.1
-      with:
+      shell: bash
+      run: |
+        curl -X POST \
+          -H 'Authorization: token ${{ env.api_token }}' \
+          -F 'file=@${{ steps.find-apk.outputs.path }}' \
+          -F 'message=${{ steps.summary.outputs.message }}' \
+          -F "release_note=This build is a debug-flavor build and for internal testing. ${{ steps.summary.outputs.message }}" \
+          -F 'distribution_name=${{ env.GITHUB_REF }}' \
+          'https://deploygate.com/api/users/${{ env.app_owner_name }}/apps'
+      env:
         app_owner_name: ${{ secrets.DEPLOYGATE_APP_OWNER_NAME }}
         api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
-        app_file_path: ${{ steps.find-apk.outputs.path }}
-        public: true
-        message: ${{ steps.summary.outputs.message }}
-        release_note: "This build is a debug-flavor build and for internal testing. ${{ steps.summary.outputs.message }}"
-        distribution_find_by: name
-        distribution_id: ${{ env.GITHUB_REF }}
+
