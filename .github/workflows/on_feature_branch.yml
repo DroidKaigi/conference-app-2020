@@ -16,11 +16,27 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v1
       with:
-        java-version: '8.0.192'
+        java-version: '8'
+    - uses: actions/cache@v1
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-
+          ${{ runner.os }}-gradle-
+    - uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
+        restore-keys: |
+          ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-
+          ${{ runner.os }}-m2-
     - run: ./gradlew android-base:assembleDebug
       shell: bash
+    - run: echo "::set-output name=path::$(find android-base -name '*.apk' | head -1)"
+      id: find-apk
     - name: Upload an apk
       uses: actions/upload-artifact@v1
       with:
         name: apk
-        path: android-base/build/outputs/apk/debug/app-debug.apk
+        path: ${{ steps.find-apk.outputs.path }}
