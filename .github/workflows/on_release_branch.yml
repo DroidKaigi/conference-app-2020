@@ -1,4 +1,4 @@
-name: Run jobs on feature branches when pushed
+name: Run jobs on release branches when pushed
 
 on: 
   push:
@@ -35,7 +35,7 @@ jobs:
       shell: bash
       run: |
         echo -n "::set-output name=message::"
-        echo -n 'RELEASE / '
+        echo -n 'STAGING / '
         echo "${GITHUB_SHA:0:6}"
     - name: Upload an apk to DeployGate
       uses: jmatsu/dg-upload-app-action@0.1
@@ -48,7 +48,7 @@ jobs:
         distribution_find_by: id
         distribution_id: ${{ env.distribution_id }}
       env:
-        distribution_id: ''
+        distribution_id: '5a2b137dfa246bb75efbf06d8f08dd7e2a6ced69'
 
   build-release-variant:
     runs-on: macOS-10.14
@@ -78,7 +78,7 @@ jobs:
       shell: bash
       run: |
         echo -n "::set-output name=message::"
-        echo -n 'RELEASE / '
+        echo -n 'STAGING / '
         echo "${GITHUB_SHA:0:6}"
     - name: Upload an apk to DeployGate
       uses: jmatsu/dg-upload-app-action@0.1
@@ -91,4 +91,4 @@ jobs:
         distribution_find_by: id
         distribution_id: ${{ env.distribution_id }}
       env:
-        distribution_id: ''
+        distribution_id: 'b0f7ed82961c079a1f627d9fcba0927838c40320'
