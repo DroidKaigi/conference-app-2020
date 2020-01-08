@@ -27,6 +27,8 @@ jobs:
     - uses: malinskiy/action-android/install-sdk@release/0.0.5
       if: steps.cache-android-sdk.outputs.cache-hit != 'true'
     - run: |
+        export PATH="$HOME/android-sdk/platform-tools:$HOME/android-sdk/tools:$HOME/android-sdk/tools/bin:$PATH"
+        which sdkmanager
         yes | sdkmanager --update --channel=3
         sdkmanager "tools" "platform-tools"
         sdkmanager "platforms;android-${{ env.ANDROID_API_VERSION }}"
