@@ -75,6 +75,8 @@ class AboutFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
+
+        // TODO: Add AboutUI into RecyclerView
     }
 }
 
