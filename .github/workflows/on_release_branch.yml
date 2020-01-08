@@ -1,0 +1,94 @@
+name: Run jobs on feature branches when pushed
+
+on: 
+  push:
+    branches:
+      - master
+      - release/*
+
+jobs:
+  build-debug-variant:
+    runs-on: macOS-10.14
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '8'
+    - uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
+        restore-keys: |
+          ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-
+          ${{ runner.os }}-m2-
+    - run: ./gradlew android-base:assembleRelease
+      shell: bash
+    - run: echo "::set-output name=path::$(find android-base -name '*.apk' | head -1)"
+      id: find-apk
+    - name: Upload an apk
+      uses: actions/upload-artifact@v1
+      with:
+        name: apk
+        path: ${{ steps.find-apk.outputs.path }}
+    - name: Summarize this build
+      id: summary
+      shell: bash
+      run: |
+        echo -n "::set-output name=message::"
+        echo -n 'RELEASE / '
+        echo "${GITHUB_SHA:0:6}"
+    - name: Upload an apk to DeployGate
+      uses: jmatsu/dg-upload-app-action@0.1
+      with:
+        app_owner_name: ${{ secrets.DEPLOYGATE_APP_OWNER_NAME }}
+        api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
+        app_file_path: ${{ steps.find-apk.outputs.path }}
+        public: true
+        message: ${{ steps.summary.outputs.message }}
+        distribution_find_by: id
+        distribution_id: ${{ env.distribution_id }}
+      env:
+        distribution_id: ''
+
+  build-release-variant:
+    runs-on: macOS-10.14
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '8'
+    - uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
+        restore-keys: |
+          ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-
+          ${{ runner.os }}-m2-
+    - run: ./gradlew android-base:assembleRelease
+      shell: bash
+    - run: echo "::set-output name=path::$(find android-base -name '*.apk' | head -1)"
+      id: find-apk
+    - name: Upload an apk
+      uses: actions/upload-artifact@v1
+      with:
+        name: apk
+        path: ${{ steps.find-apk.outputs.path }}
+    - name: Summarize this build
+      id: summary
+      shell: bash
+      run: |
+        echo -n "::set-output name=message::"
+        echo -n 'RELEASE / '
+        echo "${GITHUB_SHA:0:6}"
+    - name: Upload an apk to DeployGate
+      uses: jmatsu/dg-upload-app-action@0.1
+      with:
+        app_owner_name: ${{ secrets.DEPLOYGATE_APP_OWNER_NAME }}
+        api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
+        app_file_path: ${{ steps.find-apk.outputs.path }}
+        public: true
+        message: ${{ steps.summary.outputs.message }}
+        distribution_find_by: id
+        distribution_id: ${{ env.distribution_id }}
+      env:
+        distribution_id: ''
