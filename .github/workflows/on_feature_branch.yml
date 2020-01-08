@@ -17,21 +17,10 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: '8.0.192'
-    - name: Cache android sdk
-      id: cache-android-sdk
-      uses: actions/cache@v1
-      with:
-        # https://github.com/Malinskiy/action-android/blob/7c04e9fafbad31673d2ebb4af804fabcc3516efa/install-sdk/src/sdk.ts#L77
-        path: ~/android-sdk
-        key: ${{ runner.os }}-android-sdk-${{ env.ANDROID_API_VERSION }}-${{ env.BUILD_TOOLS_VERSION }}
-    - uses: malinskiy/action-android/install-sdk@release/0.0.5
-      if: steps.cache-android-sdk.outputs.cache-hit != 'true'
-    - run: |
-        export PATH="$HOME/android-sdk/platform-tools:$HOME/android-sdk/tools:$HOME/android-sdk/tools/bin:$PATH"
-        which sdkmanager
-        yes | sdkmanager --update --channel=3
-        sdkmanager "tools" "platform-tools"
-        sdkmanager "platforms;android-${{ env.ANDROID_API_VERSION }}"
-        sdkmanager "build-tools;${{ env.BUILD_TOOLS_VERSION }}"
-      if: steps.cache-android-sdk.outputs.cache-hit != 'true'
     - run: ./gradlew android-base:assembleDebug
+      shell: bash
+    - name: Upload an apk
+      uses: actions/upload-artifact@v1
+      with:
+        name: apk
+        path: android-base/build/outputs/apk/debug/app-debug.apk
