@@ -45,6 +45,7 @@ jobs:
         app_file_path: ${{ steps.find-apk.outputs.path }}
         public: true
         message: ${{ steps.summary.outputs.message }}
+        release_note: "This build is a debug-flavor build and not for production. ${{ steps.summary.outputs.message }}"
         distribution_find_by: id
         distribution_id: ${{ env.distribution_id }}
       env:
@@ -88,6 +89,7 @@ jobs:
         app_file_path: ${{ steps.find-apk.outputs.path }}
         public: true
         message: ${{ steps.summary.outputs.message }}
+        release_note: "This build is a release-flavor build but not for production. ${{ steps.summary.outputs.message }}"
         distribution_find_by: id
         distribution_id: ${{ env.distribution_id }}
       env:

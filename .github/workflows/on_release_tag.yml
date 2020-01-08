@@ -46,6 +46,7 @@ jobs:
         app_file_path: ${{ steps.find-apk.outputs.path }}
         public: true
         message: ${{ steps.summary.outputs.message }}
+        release_note: "One of production candidates. ${{ steps.summary.outputs.message }}"
         distribution_find_by: id
         distribution_id: ${{ env.distribution_id }}
       env:
