@@ -113,6 +113,9 @@ class SessionsFragment : DaggerFragment() {
                 )
             }
         })
+        binding.filterReset.setOnClickListener {
+            sessionsViewModel.resetFilter()
+        }
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             when (uiModel.expandFilterState) {
