@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.DroidKaigi.DayNight" parent="Theme.DroidKaigi">
+    <style name="Theme.DroidKaigi.Dark" parent="Theme.DroidKaigi">
         <item name="colorPrimary">@color/indigo_900</item>
         <item name="colorPrimaryVariant">@color/indigo_900</item>
         <item name="colorSecondary">@color/light_blue_300</item>
@@ -15,5 +15,7 @@
         <item name="colorOnBackground">@color/white</item>
         <item name="colorOnSurface">@color/white</item>
     </style>
+
+    <style name="Theme.DroidKaigi.DayNight" parent="Theme.DroidKaigi.Dark" />
 
 </resources>
