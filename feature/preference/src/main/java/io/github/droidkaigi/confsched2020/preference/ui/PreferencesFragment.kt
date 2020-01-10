@@ -1,7 +1,9 @@
 package io.github.droidkaigi.confsched2020.preference.ui
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
@@ -17,11 +19,10 @@ import io.github.droidkaigi.confsched2020.App
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.preference.R
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 
 class PreferencesFragment : PreferenceFragmentCompat() {
 
-    var darkThemeSwitchChangeListener =
+    private val darkThemeSwitchChangeListener =
         Preference.OnPreferenceChangeListener { _, newValue ->
             AppCompatDelegate.setDefaultNightMode(
                 if ((newValue as Boolean)) {
@@ -30,18 +31,19 @@ class PreferencesFragment : PreferenceFragmentCompat() {
                     MODE_NIGHT_NO
                 }
             )
+            (activity as? AppCompatActivity)?.delegate?.applyDayNight()
             return@OnPreferenceChangeListener true
         }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.setting, rootKey)
 
-        val darkThemeSwitch =
-            preferenceManager.findPreference(SWITCH_DARK_THEME_KEY) as? SwitchPreferenceCompat
-        darkThemeSwitch?.onPreferenceChangeListener = darkThemeSwitchChangeListener
+        preferenceManager?.findPreference<SwitchPreferenceCompat>(SWITCH_DARK_THEME_KEY)?.also {
+            val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+            it.isChecked = currentNightMode == Configuration.UI_MODE_NIGHT_YES
+            it.onPreferenceChangeListener = darkThemeSwitchChangeListener
+        }
     }
-
-    private lateinit var progressTimeLatch: ProgressTimeLatch
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
