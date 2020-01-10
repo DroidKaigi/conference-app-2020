@@ -69,6 +69,10 @@
             android:id="@+id/action_session_to_speaker"
             app:destination="@id/speaker"
             />
+        <action
+            android:id="@+id/action_session_to_survey"
+            app:destination="@id/session_survey"
+            />
     </fragment>
     <fragment
         android:id="@+id/speaker"
@@ -105,4 +109,14 @@
         android:name="io.github.droidkaigi.confsched2020.about.ui.AboutFragment"
         android:label="@string/about_label"
         />
+    <fragment
+        android:id="@+id/session_survey"
+        android:name="io.github.droidkaigi.confsched2020.session_survey.ui.SessionSurveyFragment"
+        android:label="@string/session_survey_label"
+        >
+        <argument
+            android:name="sessionId"
+            app:argType="io.github.droidkaigi.confsched2020.model.SessionId"
+            />
+    </fragment>
 </navigation>

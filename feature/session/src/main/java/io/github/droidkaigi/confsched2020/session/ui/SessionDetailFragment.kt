@@ -32,6 +32,7 @@ import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.actionSessionToSurvey
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
@@ -92,6 +93,9 @@ class SessionDetailFragment : DaggerFragment() {
     private fun setupSessionViews(session: Session) {
         binding.sessionFavorite.setOnClickListener {
             sessionDetailViewModel.favorite(session)
+        }
+        binding.survey.setOnClickListener {
+            findNavController().navigate(actionSessionToSurvey(session.id))
         }
         binding.session = session
         binding.speechSession = (session as? SpeechSession)
