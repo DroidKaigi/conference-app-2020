@@ -53,6 +53,7 @@ dependencies {
     implementation project(':feature:system')
     implementation project(':feature:sponsor')
     implementation project(':feature:announcement')
+    implementation project(':feature:about')
 
     implementation project(':data:repository')
     implementation project(':data:db')
