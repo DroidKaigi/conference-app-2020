@@ -2,5 +2,14 @@
 <resources>
     <style name="Widget.DroidKaigi.BottomSheet" parent="Widget.MaterialComponents.BottomSheet">
         <item name="shapeAppearance">@style/ShapeAppearanceOverlay.DroidKaigi.BottomSheet</item>
+        <!--
+            FrontLayer elevation is 1dp
+            https://material.io/components/backdrop/#anatomy
+            -->
+        <item name="android:elevation">1dp</item>
+    </style>
+
+    <style name="Widget.DroidKaigi.Backdrop.BackLayer" parent="">
+        <item name="android:background">?colorPrimary</item>
     </style>
 </resources>

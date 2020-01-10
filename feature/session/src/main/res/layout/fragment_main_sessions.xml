@@ -13,7 +13,7 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/sessions_tab_layout"
-            style="@style/Widget.MaterialComponents.TabLayout.Colored"
+            style="@style/Widget.MaterialComponents.TabLayout.PrimarySurface"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:paddingBottom="16dp"

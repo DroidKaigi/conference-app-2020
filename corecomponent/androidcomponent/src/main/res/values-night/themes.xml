@@ -2,8 +2,8 @@
 <resources>
 
     <style name="Theme.DroidKaigi.Dark" parent="Theme.DroidKaigi">
-        <item name="colorPrimary">@color/indigo_900</item>
-        <item name="colorPrimaryVariant">@color/indigo_900</item>
+        <item name="colorPrimary">@color/indigo_200</item>
+        <item name="colorPrimaryVariant">@color/indigo_200</item>
         <item name="colorSecondary">@color/light_blue_300</item>
         <item name="colorSecondaryVariant">@color/light_blue_300</item>
         <item name="android:colorBackground">@color/black_121212</item>
