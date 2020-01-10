@@ -16,6 +16,10 @@
             android:id="@+id/action_session_to_speaker"
             app:destination="@id/speaker"
             />
+        <action
+            android:id="@+id/action_session_to_search_sessions"
+            app:destination="@id/search_sessions"
+            />
     </fragment>
     <fragment
         android:id="@+id/sessions"

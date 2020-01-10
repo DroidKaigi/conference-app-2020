@@ -83,6 +83,7 @@ class SessionsFragment : DaggerFragment() {
             container,
             false
         )
+        setHasOptionsMenu(true)
         return binding.root
     }
 
