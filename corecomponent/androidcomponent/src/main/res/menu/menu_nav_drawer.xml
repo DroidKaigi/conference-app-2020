@@ -16,6 +16,7 @@
         android:checkableBehavior="single"
         >
         <item
+            android:id="@id/about"
             android:icon="@drawable/ic_android_black_24dp"
             android:title="@string/about_label"
             />
