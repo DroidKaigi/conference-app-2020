@@ -43,7 +43,8 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: apk
-      - run: echo "::set-output name=path::$(find android-base -name '*.apk' | head -1)"
+          path: download-artifacts
+      - run: echo "::set-output name=path::$(find download-artifacts -name '*.apk' | head -1)"
         id: find-apk
       - name: Summarize this build
         id: summary
