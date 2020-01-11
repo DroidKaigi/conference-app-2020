@@ -24,7 +24,6 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
@@ -34,12 +33,15 @@ import io.github.droidkaigi.confsched2020.about.ui.di.AboutAssistedInjectModule
 import io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment
 import io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment.AnnouncementFragmentModule
 import io.github.droidkaigi.confsched2020.announcement.ui.di.AnnouncementAssistedInjectModule
-import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.databinding.ActivityMainBinding
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.ext.stringRes
+import io.github.droidkaigi.confsched2020.floormap.ui.FloorMapFragment
+import io.github.droidkaigi.confsched2020.floormap.ui.FloorMapFragment.FloorMapFragmentModule
+import io.github.droidkaigi.confsched2020.floormap.ui.di.FloorMapInjectModule
+import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragment
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentModule
 import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragment
@@ -242,6 +244,11 @@ abstract class MainActivityModule {
     )
     abstract fun contributeAboutFragment(): AboutFragment
 
+    @PageScope
+    @ContributesAndroidInjector(
+        modules = [FloorMapFragmentModule::class, FloorMapInjectModule::class]
+    )
+    abstract fun contributeFloorMapFragment(): FloorMapFragment
     @PageScope
     @ContributesAndroidInjector(
         modules = [SessionSurveyFragmentModule::class, SessionSurveyAssistedInjectModule::class]

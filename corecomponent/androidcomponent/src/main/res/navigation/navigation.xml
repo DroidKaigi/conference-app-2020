@@ -114,6 +114,11 @@
         android:label="@string/about_label"
         />
     <fragment
+        android:id="@+id/floormap"
+        android:name="io.github.droidkaigi.confsched2020.floormap.ui.FloorMapFragment"
+        android:label="@string/map_label"
+        />
+    <fragment
         android:id="@+id/session_survey"
         android:name="io.github.droidkaigi.confsched2020.session_survey.ui.SessionSurveyFragment"
         android:label="@string/session_survey_label"
