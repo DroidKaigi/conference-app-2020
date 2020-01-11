@@ -2,11 +2,7 @@
 
 require 'json'
 
-reponse = JSON.parse(File.read(ENV.fetch('DEPLOYGATE_API_RESPONSE_PATH')))
-
-return markdown("DeployGate returned an error. Please check the CI logs.") unless response['error'] == 'false'
-
-distribution_url = response.dig('results', 'distribution', 'url')
+distribution_url = ENV['DEPLOYGATE_DISTRIBUTION_URL']
 
 return markdown("No distribution was found") if distribution_url.nil?
 

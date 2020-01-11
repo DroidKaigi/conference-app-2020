@@ -79,7 +79,7 @@ jobs:
       - run: bundle exec --gemfile=.ci/Gemfile danger --dangerfile=".ci/danger/post_deploygate.Dangerfile" --danger_id='post_deploygate' --remove-previous-comments
         env:
           DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEPLOYGATE_API_RESPONSE_PATH: ${{ steps.dg.outputs.response_json_path }}
+          DEPLOYGATE_DISTRIBUTION_URL: ${{ steps.dg.outputs.distribution_url }}
       - run: curl -sfSL -o /dev/null ${{ steps.dg.outputs.download_url }}
 
   test: # this should succeed anytime. danger job will fail properly.
