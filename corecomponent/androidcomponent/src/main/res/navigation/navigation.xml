@@ -105,4 +105,9 @@
         android:name="io.github.droidkaigi.confsched2020.about.ui.AboutFragment"
         android:label="@string/about_label"
         />
+    <fragment
+        android:id="@+id/setting"
+        android:name="io.github.droidkaigi.confsched2020.preference.ui.PreferencesFragment"
+        android:label="@string/setting_label"
+        />
 </navigation>
