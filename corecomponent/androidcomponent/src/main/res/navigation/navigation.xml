@@ -119,4 +119,9 @@
             app:argType="io.github.droidkaigi.confsched2020.model.SessionId"
             />
     </fragment>
+    <fragment
+        android:id="@+id/setting"
+        android:name="io.github.droidkaigi.confsched2020.preference.ui.PreferencesFragment"
+        android:label="@string/setting_label"
+        />
 </navigation>

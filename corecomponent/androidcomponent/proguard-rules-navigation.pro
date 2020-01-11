@@ -5,6 +5,7 @@
 -keepnames class io.github.droidkaigi.confsched2020.model.SessionId
 -keepnames class io.github.droidkaigi.confsched2020.model.SessionId
 -keepnames class io.github.droidkaigi.confsched2020.model.SpeakerId
+-keepnames class io.github.droidkaigi.confsched2020.preference.ui.PreferencesFragment
 -keepnames class io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragment
 -keepnames class io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragment
 -keepnames class io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment
