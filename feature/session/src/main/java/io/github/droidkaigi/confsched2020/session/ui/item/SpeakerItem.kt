@@ -32,7 +32,7 @@ class SpeakerItem @AssistedInject constructor(
     override fun getLayout(): Int = R.layout.item_speaker
 
     override fun bind(viewBinding: ItemSpeakerBinding, position: Int) {
-        viewBinding.name.setOnClickListener {
+        viewBinding.root.setOnClickListener {
             viewBinding.root.findNavController()
                 .navigate(actionSessionToSpeaker(speaker.id))
         }
