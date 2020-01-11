@@ -79,7 +79,7 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
-        binding.sessionRecycler.addItemDecoration(SessionsItemDecoration(groupAdapter, resources))
+        binding.sessionRecycler.addItemDecoration(SessionsItemDecoration(groupAdapter, requireContext()))
         binding.startFilter.setOnClickListener { _ ->
             sessionTabViewModel.toggleExpand()
         }
