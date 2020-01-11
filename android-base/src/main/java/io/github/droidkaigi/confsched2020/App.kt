@@ -1,5 +1,7 @@
 package io.github.droidkaigi.confsched2020
 
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.BuildCompat
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
@@ -24,6 +26,7 @@ open class App : DaggerApplication(), AppComponentHolder {
         super.onCreate()
         setupTimber()
         setupFirestore()
+        setupNightMode()
     }
 
     private fun setupTimber() {
@@ -38,5 +41,14 @@ open class App : DaggerApplication(), AppComponentHolder {
             .setPersistenceEnabled(true)
             .build()
         firestore.setFirestoreSettings(settings)
+    }
+
+    private fun setupNightMode() {
+        val nightMode = if (BuildCompat.isAtLeastQ()) {
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        } else {
+            AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+        }
+        AppCompatDelegate.setDefaultNightMode(nightMode)
     }
 }

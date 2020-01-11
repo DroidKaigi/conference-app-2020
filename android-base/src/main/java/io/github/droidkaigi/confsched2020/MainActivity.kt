@@ -51,6 +51,9 @@ import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentModule
 import io.github.droidkaigi.confsched2020.session.ui.SpeakerFragment
 import io.github.droidkaigi.confsched2020.session.ui.SpeakerFragmentModule
 import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
+import io.github.droidkaigi.confsched2020.session_survey.ui.SessionSurveyFragment
+import io.github.droidkaigi.confsched2020.session_survey.ui.SessionSurveyFragmentModule
+import io.github.droidkaigi.confsched2020.session_survey.ui.di.SessionSurveyAssistedInjectModule
 import io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragment
 import io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragmentModule
 import io.github.droidkaigi.confsched2020.sponsor.ui.di.SponsorsAssistedInjectModule
@@ -246,6 +249,11 @@ abstract class MainActivityModule {
         modules = [FloorMapFragmentModule::class, FloorMapInjectModule::class]
     )
     abstract fun contributeFloorMapFragment(): FloorMapFragment
+    @PageScope
+    @ContributesAndroidInjector(
+        modules = [SessionSurveyFragmentModule::class, SessionSurveyAssistedInjectModule::class]
+    )
+    abstract fun contributeSessionSurveyFragment(): SessionSurveyFragment
 
     @Module
     companion object
