@@ -54,6 +54,7 @@ dependencies {
     implementation project(':feature:sponsor')
     implementation project(':feature:announcement')
     implementation project(':feature:about')
+    implementation project(':feature:floormap')
 
     implementation project(':data:repository')
     implementation project(':data:db')

@@ -105,4 +105,9 @@
         android:name="io.github.droidkaigi.confsched2020.about.ui.AboutFragment"
         android:label="@string/about_label"
         />
+    <fragment
+        android:id="@+id/floormap"
+        android:name="io.github.droidkaigi.confsched2020.floormap.ui.FloorMapFragment"
+        android:label="@string/map_label"
+        />
 </navigation>

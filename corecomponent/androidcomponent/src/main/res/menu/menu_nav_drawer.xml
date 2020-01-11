@@ -26,6 +26,7 @@
             android:title="@string/announce_label"
             />
         <item
+            android:id="@id/floormap"
             android:icon="@drawable/ic_place_black_24dp"
             android:title="@string/map_label"
             />
