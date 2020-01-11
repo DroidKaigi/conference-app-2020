@@ -36,6 +36,9 @@ jobs:
       - uses: actions/checkout@v2
       - run: echo "::set-output name=version::$(cat .ruby-version)"
         id: ruby
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ steps.ruby.outputs.version }}
       - name: Download an apk file
         uses: actions/download-artifact@v1
         with:
@@ -55,6 +58,7 @@ jobs:
           fi
           echo "${GITHUB_SHA:0:6}"
       - uses: jmatsu/dg-upload-app-action@0.1
+        id: dg
         with:
           app_owner_name: ${{ secrets.DEPLOYGATE_APP_OWNER_NAME }}
           api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
@@ -63,6 +67,20 @@ jobs:
           release_note: This build is a debug-flavor build and for internal testing. ${{ steps.summary.outputs.message }}
           distribution_find_by: name
           distribution_id: ${{ github.event.number }}
+          ignore_api_failure: true
+      - name: Download test results
+        uses: actions/download-artifact@v1
+        with:
+          name: test-results
+          path: ${{ env.JUNIT_TEST_RESULT_DIR }}
+      - uses: actions/cache@v1
+        with:
+          path: ~/vendor/bundle
+          key: ${{ runner.os }}-bundle-${{ hashFiles('.ci/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bundle-
+      - run: bundle check || bundle install --path=vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
+      - run: bundle exec --gemfile=.ci/Gemfile danger --dangerfile=".ci/danger/post_deploygate.Dangerfile" --danger_id='post_deploygate' --remove-previous-comments
 
   test: # this should succeed anytime. danger job will fail properly.
     env:
@@ -131,6 +149,8 @@ jobs:
             ${{ runner.os }}-bundle-
       - run: bundle check || bundle install --path=vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
       - run: bundle exec --gemfile=.ci/Gemfile danger --dangerfile=".ci/danger/static_analysis.Dangerfile" --danger_id='static_analysis' --remove-previous-comments
+        env:
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # TODO Download the latest apk from ...?
       # - name: Download an apk file
       #   uses: actions/download-artifact@v1
