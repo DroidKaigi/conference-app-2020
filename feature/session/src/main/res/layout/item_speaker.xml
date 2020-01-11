@@ -2,23 +2,50 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        tools:theme="@style/Theme.DroidKaigi"
         >
 
-        <TextView
-            android:id="@+id/title"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="8dp"
-            android:gravity="start|center_vertical"
-            android:textAlignment="viewStart"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/session_time_space"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="8dp"
+            />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:drawableStart="@drawable/ic_person_outline_black_32dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical|start"
+            android:singleLine="false"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="@color/speaker_name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toTopOf="parent"
+            tools:text="speaker name"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
