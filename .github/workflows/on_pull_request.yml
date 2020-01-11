@@ -80,7 +80,8 @@ jobs:
         env:
           DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEPLOYGATE_DISTRIBUTION_URL: ${{ steps.dg.outputs.distribution_url }}
-      - run: curl -sfSL -o /dev/null ${{ steps.dg.outputs.download_url }}
+      - run: curl -sfSL -o /dev/null "${{ steps.dg.outputs.download_url }}"
+        name: Download a binary once
 
   test: # this should succeed anytime. danger job will fail properly.
     env:
