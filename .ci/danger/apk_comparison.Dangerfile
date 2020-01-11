@@ -1,4 +1,4 @@
-require 'pry' unless ENV['CI'] == 'true'
+# require 'pry'
 
 apkstats.tap do |plugin|
     new_apk_filepath = ENV.fetch('NEW_APK_FILEPATH')

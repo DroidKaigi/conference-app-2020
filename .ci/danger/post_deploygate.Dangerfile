@@ -1,3 +1,5 @@
+# require 'pry'
+
 require 'json'
 
 reponse = JSON.parse(File.read(ENV.fetch('DEPLOYGATE_API_RESPONSE_PATH')))

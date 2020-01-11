@@ -1,4 +1,4 @@
-require 'pry' unless ENV['CI'] == 'true'
+# require 'pry'
 
 # Create inline comments to report warning or more serious issues which happen only on modified files
 android_lint.tap do |plugin|
