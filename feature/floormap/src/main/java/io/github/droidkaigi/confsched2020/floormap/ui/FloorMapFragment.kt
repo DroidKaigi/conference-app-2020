@@ -14,6 +14,7 @@ import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.floormap.R
 import io.github.droidkaigi.confsched2020.floormap.databinding.FragmentFloormapBinding
 
+// TODO: Apply the floor map UI
 class FloorMapFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentFloormapBinding
