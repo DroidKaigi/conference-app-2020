@@ -1,13 +1,11 @@
-name: Run jobs on release branches when pushed
+name: Run jobs on every PR when opened or new commits are pushed
 
 on: 
-  push:
-    branches:
-      - master
-      - release/*
+  pull_request:
+    types: [opened, synchronized]
 
 jobs:
-  build-debug:
+  build:
     runs-on: macOS-10.14
     steps:
     - uses: actions/checkout@v2
@@ -31,7 +29,7 @@ jobs:
         name: apk
         path: ${{ steps.find-apk.outputs.path }}
 
-  deploy-debug:
+  deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -62,11 +60,11 @@ jobs:
           api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
           app_file_path: ${{ steps.find-apk.outputs.path }}
           message: ${{ steps.summary.outputs.message }}
-          release_note: This build is a debug-flavor build and not for production. ${{ steps.summary.outputs.message }}
-          distribution_find_by: id
-          distribution_id: 5a2b137dfa246bb75efbf06d8f08dd7e2a6ced69
+          release_note: This build is a debug-flavor build and for internal testing. ${{ steps.summary.outputs.message }}
+          distribution_find_by: name
+          distribution_id: ${{ github.event.number }}
 
-  test:
+  test: # this should succeed anytime. danger job will fail properly.
     env:
       JUNIT_TEST_RESULT_DIR: test-results/junit
       JUNIT_TEST_REPORT_DIR: test-reports/
@@ -83,22 +81,19 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-
           ${{ runner.os }}-m2-
-    - run: ./gradlew lintDebug testDebug --continue
+    - run: ./gradlew lintDebug testDebug --continue || true
       shell: bash
     - name: Collect test results
-      if: always()
       shell: bash
       run: |
         mkdir -p ${{ env.JUNIT_TEST_RESULT_DIR }}
         find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ${{ env.JUNIT_TEST_RESULT_DIR }}/ \;
     - name: Store test results to GitHub
       uses: actions/upload-artifact@v1
-      if: always()
       with:
         name: test-results
         path: ${{ env.JUNIT_TEST_RESULT_DIR }}
     - name: Collect test reports
-      if: always()
       shell: bash
       run: |
         mkdir -p ${{ env.JUNIT_TEST_REPORT_DIR }}
@@ -107,7 +102,39 @@ jobs:
         done < <(find . -type d -regex ".*/build/reports")
     - name: Store test reports to GitHub
       uses: actions/upload-artifact@v1
-      if: always()
       with:
         name: test-reports
         path: ${{ env.JUNIT_TEST_REPORT_DIR }}
+
+  danger:
+    env:
+      JUNIT_TEST_RESULT_DIR: test-results/junit
+    needs: [build, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo "::set-output name=version::$(cat .ruby-version)"
+        id: ruby
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ steps.ruby.outputs.version }}
+      - name: Download test results
+        uses: actions/download-artifact@v1
+        with:
+          name: test-results
+          path: ${{ env.JUNIT_TEST_RESULT_DIR }}
+      - uses: actions/cache@v1
+        with:
+          path: ~/vendor/bundle
+          key: ${{ runner.os }}-bundle-${{ hashFiles('.ci/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bundle-
+      - run: bundle check || bundle install --path=vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
+      - run: bundle exec --gemfile=.ci/Gemfile danger --dangerfile=".ci/danger/static_analysis.Dangerfile" --danger_id='static_analysis' --remove-previous-comments
+      # TODO Download the latest apk from ...?
+      # - name: Download an apk file
+      #   uses: actions/download-artifact@v1
+      #   with:
+      #     name: apk
+      # - run: echo "::set-env name=NEW_APK_FILEPATH::$(find android-base -name '*.apk' | head -1)"
+      # - run: bundle exec danger --dangerfile=".ci/danger/apk_comparison.Dangerfile" --danger_id='apk_comparison' --remove-previous-comments
