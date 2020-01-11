@@ -82,6 +82,8 @@ jobs:
             ${{ runner.os }}-bundle-
       - run: bundle check || bundle install --path=vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
       - run: bundle exec --gemfile=.ci/Gemfile danger --dangerfile=".ci/danger/post_deploygate.Dangerfile" --danger_id='post_deploygate' --remove-previous-comments
+        env:
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   test: # this should succeed anytime. danger job will fail properly.
     env:
@@ -159,3 +161,5 @@ jobs:
       #     name: apk
       # - run: echo "::set-env name=NEW_APK_FILEPATH::$(find android-base -name '*.apk' | head -1)"
       # - run: bundle exec danger --dangerfile=".ci/danger/apk_comparison.Dangerfile" --danger_id='apk_comparison' --remove-previous-comments
+      #   env:
+      #     DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
