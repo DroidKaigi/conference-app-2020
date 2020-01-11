@@ -2,7 +2,7 @@ name: Run jobs on every PR when opened or new commits are pushed
 
 on: 
   pull_request:
-    types: [opened, synchronized]
+    types: [opened, ready_for_review, synchronize]
 
 jobs:
   build:
