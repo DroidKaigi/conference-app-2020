@@ -69,11 +69,6 @@ jobs:
           distribution_find_by: name
           distribution_id: ${{ github.event.number }}
           ignore_api_failure: true
-      - name: Download test results
-        uses: actions/download-artifact@v1
-        with:
-          name: test-results
-          path: ${{ env.JUNIT_TEST_RESULT_DIR }}
       - uses: actions/cache@v1
         with:
           path: ~/vendor/bundle
@@ -84,6 +79,8 @@ jobs:
       - run: bundle exec --gemfile=.ci/Gemfile danger --dangerfile=".ci/danger/post_deploygate.Dangerfile" --danger_id='post_deploygate' --remove-previous-comments
         env:
           DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEPLOYGATE_API_RESPONSE_PATH: ${{ steps.dg.outputs.response_json_path }}
+      - run: curl -sfSL -o /dev/null ${{ steps.dg.outputs.download_url }}
 
   test: # this should succeed anytime. danger job will fail properly.
     env:
