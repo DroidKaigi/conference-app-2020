@@ -11,44 +11,4 @@ jobs:
   build-release-variant:
     runs-on: macOS-10.14
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-java@v1
-      with:
-        java-version: '8'
-    - uses: actions/cache@v1
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
-        restore-keys: |
-          ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-
-          ${{ runner.os }}-m2-
-    - run: ./gradlew android-base:assembleRelease
-      shell: bash
-    - run: echo "::set-output name=path::$(find android-base -name '*.apk' | head -1)"
-      id: find-apk
-    - name: Upload an apk
-      uses: actions/upload-artifact@v1
-      with:
-        name: apk
-        path: ${{ steps.find-apk.outputs.path }}
-    - name: Summarize this build
-      id: summary
-      shell: bash
-      run: |
-        echo -n "::set-output name=message::"
-        echo -n 'PRODUCTION / '
-        echo "${GITHUB_SHA:0:6}"
-    - name: Upload an apk to DeployGate
-      shell: bash
-      run: |
-        curl -X POST \
-          -H 'Authorization: token ${{ env.api_token }}' \
-          -F 'file=@${{ steps.find-apk.outputs.path }}' \
-          -F 'message=${{ steps.summary.outputs.message }}' \
-          -F "release_note=One of production candidates. ${{ steps.summary.outputs.message }}" \
-          -F 'distribution_id=${{ env.distribution_id }}' \
-          'https://deploygate.com/api/users/${{ env.app_owner_name }}/apps'
-      env:
-        app_owner_name: ${{ secrets.DEPLOYGATE_APP_OWNER_NAME }}
-        api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
-        distribution_id: 'dd0266c42e405ec12b698138f4e62a01c74fa0a2'
+    - run: echo 'todo'
