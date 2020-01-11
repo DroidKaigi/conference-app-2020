@@ -58,7 +58,7 @@ jobs:
             echo -n "a member kicked "
           fi
           echo "${GITHUB_SHA:0:6}"
-      - uses: jmatsu/dg-upload-app-action@0.1
+      - uses: jmatsu/dg-upload-app-action@master
         id: dg
         with:
           app_owner_name: ${{ secrets.DEPLOYGATE_APP_OWNER_NAME }}
