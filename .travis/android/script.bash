@@ -26,7 +26,7 @@ setup_release_keystore() {
 setup_google_services_json
 setup_release_keystore
 
-./gradlew android-base:assembleRelease -X android-base:lintVitalRelease
+./gradlew android-base:assembleRelease -x android-base:lintVitalRelease
 
 readonly apk_path="$(find android-base -name '*.apk' | head -1)"
 
@@ -56,7 +56,7 @@ else
   exit 0
 fi
 
-./gradlew android-base:bundleRelease -X android-base:lintVitalRelease
+./gradlew android-base:bundleRelease -x android-base:lintVitalRelease
 
 .travis/android/update_github_release.bash
 transart -f .travis/android/to_github.transart.yml transfer
