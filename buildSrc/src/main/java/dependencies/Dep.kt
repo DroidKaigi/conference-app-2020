@@ -100,7 +100,7 @@ object Dep {
             "org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$coroutinesVersion"
         val coroutinesPlayServices =
             "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutinesVersion"
-        val serializationVersion = "0.13.0"
+        val serializationVersion = "0.14.0"
         val serializationCommon =
             "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion"
         val serializationAndroid =
@@ -206,7 +206,7 @@ object Dep {
     }
 
     object Klock {
-        val version = "1.5.0"
+        val version = "1.8.6"
         val common = "com.soywiz.korlibs.klock:klock:$version"
     }
 
