@@ -79,7 +79,12 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
-        binding.sessionRecycler.addItemDecoration(SessionsItemDecoration(groupAdapter, requireContext()))
+        binding.sessionRecycler.addItemDecoration(
+            SessionsItemDecoration(
+                groupAdapter,
+                requireContext()
+            )
+        )
         binding.startFilter.setOnClickListener { _ ->
             sessionTabViewModel.toggleExpand()
         }
@@ -101,9 +106,12 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
             // TODO: support favorite list
             val page = SessionPage.dayOfNumber(args.day) as? SessionPage.Day ?: return@observe
             val sessions = uiModel.dayToSessionsMap[page].orEmpty()
+            val count = sessions.filter { it.shouldCountForFilter }.count()
+            // For Android Lint
+            @Suppress("USELESS_CAST")
             binding.filteredSessionCount.text = getString(
                 R.string.applicable_session,
-                sessions.filter { it.shouldCountForFilter }.count()
+                count as Int
             )
             binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()
             groupAdapter.update(sessions.map {
