@@ -36,11 +36,11 @@ This app uses an AndroidJetpack(AAC) based architecture using AAC(LiveData, View
 
 It is designed to be a unidirectional data flow within the ViewModel.
 
-<img src="https://user-images.githubusercontent.com/1386930/71661503-b6e21880-2d91-11ea-9c9e-e911b6ab1256.png" width="400px" />
+<img src="https://user-images.githubusercontent.com/6636072/72217306-d0dce180-356f-11ea-953e-44480e07472c.png" width="400px" />
 
 ## Fragment
 
-<img src="https://user-images.githubusercontent.com/1386930/71661532-d4af7d80-2d91-11ea-8254-56c98f2804e5.png" width="400px" />
+<img src="https://user-images.githubusercontent.com/6636072/72217307-d0dce180-356f-11ea-97a5-9f534743211b.png" width="400px" />
 
 Just observe() the `LiveData<UiModel>` of the ViewModel.
 
@@ -65,7 +65,7 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 ## ViewModel
 
-<img src="https://user-images.githubusercontent.com/1386930/71661554-e729b700-2d91-11ea-8333-70fc98d9f7de.png" width="400px" />
+<img src="https://user-images.githubusercontent.com/6636072/72217308-d0dce180-356f-11ea-9d6f-204770892122.png" width="400px" />
 
 The [LiveData Kotlin Coroutines builder](https://developer.android.com/topic/libraries/architecture/coroutines#livedata) runs when LiveData becomes active.   
 And observe the data of the Coroutiens Flow of the repository.
@@ -91,7 +91,7 @@ class SessionsViewModel @Inject constructor(
 Construct UiModel LiveData from some such LiveData.  
 The `combine` method works like RxJava's combineLatest.
 
-<img src="https://user-images.githubusercontent.com/1386930/71661608-222bea80-2d92-11ea-91a4-6445ea87d345.png" width="400px" />
+<img src="https://user-images.githubusercontent.com/6636072/72217310-d1757800-356f-11ea-8d56-a72f4b26316f.png" width="400px" />
 
 ```kotlin
 class SessionDetailViewModel @AssistedInject constructor(
@@ -125,7 +125,7 @@ class SessionDetailViewModel @AssistedInject constructor(
 Run Coroutines with `viewModelScope` when data changes, such as adding a session to Favorites.  
 Because we do not want to end the process of adding a session to favorites with the back button, we use WorkManager to do the processing.  
 
-<img src="https://user-images.githubusercontent.com/1386930/71664697-4b9e4380-2d9d-11ea-835a-dcb5776512ce.png" width="400px" />
+<img src="https://user-images.githubusercontent.com/6636072/72217311-d1757800-356f-11ea-85d2-a1355c8f23f9.png" width="400px" />
 
 ```kotlin
 class SessionDetailViewModel @AssistedInject constructor(
