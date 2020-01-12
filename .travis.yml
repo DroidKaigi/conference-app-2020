@@ -1,0 +1,50 @@
+branches:
+  only:
+  - "/travis/.*/"
+  - master
+  - release
+  - "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
+git:
+  quiet: true
+matrix:
+  include:
+  - language: android
+    sudo: required
+    jdk: oraclejdk8
+    before_cache:
+    - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+    - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+    cache:
+      directories:
+      - "$HOME/.gradle/caches"
+      - "$HOME/m2/repository"
+      - "$HOME/.android"
+      - ".gradle"
+    env:
+    - RELEASE_BUILD=true
+    - PATH="$HOME/.bin:$PATH"
+    android:
+      components:
+      - platform-tools
+      - android-28
+      - build-tools-28.0.3
+      - extra-google-m2repository
+      - extra-android-m2repository
+      - tools
+      licenses:
+      - android-sdk-preview-license-.+
+      - android-sdk-license-.+
+      - google-gdk-license-.+
+    before_install:
+    - >
+      openssl aes-256-cbc -K $encrypted_b21da5e06ef6_key -iv $encrypted_b21da5e06ef6_iv
+      -in .encrypted/to_be_encrypted.zip.enc -out to_be_encrypted.zip -d
+    - unzip to_be_encrypted.zip
+    - .travis/android/before_install.bash
+    script:
+    - .travis/android/script.bash
+env:
+  global:
+    - secure: Nm8gTebaFIM4VhA33mhLkbMcwxDRyU3mYRkk0schv2DPPlIEZmUcZFyIwzTlzsWNQVwJCmgI5ER30XMMQFBa95MXgMoNHfMxaimfLuUcGipcwFtV5NYDfhkExE5aLI2KrVIVj6a4FmF54qalMQdZZoAP6a6F3BoE8lNF22pouewQ2LQfVq248o3hPY+4g18V3hU+eXViJPegRu2JUHPDCBC1kY6/Fw/teksNihPzAi7TOdNVneimR+OV4NPgQC7xJcta9/it+SBjgPcPjQgqJcY5Y9lnJKq51SsU7hDD/Yy3lC50icxwlKJUbJ3Y4Hxzylhwh7B8lTeG34CxIb5XAwMHA+gmZWYqJw8weqInfcYlFBVpZAkqJYS+d0sKpsGRf0vXIUffsb+fT8LLHpQYToGy46s9StkPlDqN+rpvu2ulmObmo2sSWnbI3BhsHGItSR8OuQGRkqqJYKtSVU5KeKoUwje5peHbEs69tZeQXV1rht4P8IdKukTALn7aa+kcKK4kw8AAuY/juGLl6NHHAolJv8KvuE2FFdIj7WiGcM01/1cSbufcmJdnVQ011o26lkSZ//RcmPylLTOJDDRA/8vLezRdsQ3hn04mNz8mZR+8pRf++MJIad9iERubjHnkw0Fik8s7Ce+0ZNzZgV3DaLCfW3V5AOjd0PcF2JNWR50=
+    - secure: "UJCMSzN1NwLzk5DV92xCoGV3Zke1sh7O/a1JIDPLVuYgyrxqjdZEO6x4u/WfsH8O8RaRDlLKd3MSxPpZOIErcNKBTk7IElEjH4ghZjm245CsCQcMa0CPZdc/VD4XRTVPIEHpQZc8WykIh+77zx8f4XGghkSr9tsz7Dx0j4bhCSN0v6ClXjibbrWOJ68mEH311uMW+SQbe7I+MX4P6S6y92MWi1D9G2O0pLTmCsaFTjlgybKLAxMuXsECBVkCGmOmax3Q9ITTZZTx0CJdrKT0jOyg0A2GwjLf8nMpMJANWZ6Pwx5ReH8SnkFpEJYGFgPhGBTBUnCO52dj1vVkIlIZgcIhhYNh5hDJ7OdAIAupzcIejbuhg1x44RVn8JT5lu0O4KL+exLAKm1Oc4MXjLPS48039wXTD4AMQys/wIkAHQmC//N8u1Xr6WacxzW+Zsr4NcVUV/ucpzQtM90yGWoiRk90LuNE0ply8Xsk2KoYaAPfU2NzKh3Nd33tqYDo527tRDb82G+XGIekTQfY8c26oDWLqDaFYdSHFIjPSrCRqrYBYMdTlh973vL8V80s0XFlwgyuycbGcZXHHvy2WpRKsKhonLi8RX7VOLGQXMS1t8RQ5W0wy8uCCJvzHhtX4onPytkKPjSL1l8E8jTAEJ3Keov1fOe3argCVSLJxxw+beI="
+
