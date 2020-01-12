@@ -5,7 +5,8 @@ You can install the prodution app via Get it on Google Play.
 // TODO: Add link to Google Play
 
 And also, you can try the binary under development built on master branch through Try it on your device via DeployGate  
-// TODO: Add link to DeployGate
+
+[<img src="https://dply.me/qo28h3/button/large" alt="Try it on your device via DeployGate">](https://dply.me/qo28h3#install)
 
 # Features
 
