@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import io.github.droidkaigi.confsched2020.ext.composeBy
+import io.github.droidkaigi.confsched2020.ext.combine
 import io.github.droidkaigi.confsched2020.ext.requireValue
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
@@ -63,8 +63,8 @@ class SessionsViewModel @Inject constructor(
 
     private val filterLiveData: MutableLiveData<Filters> = MutableLiveData(Filters())
 
-    // Compose UiModel
-    val uiModel: LiveData<UiModel> = composeBy(
+    // Produce UiModel
+    val uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
         liveData1 = sessionsLoadStateLiveData,
         liveData2 = favoriteLoadingStateLiveData,
