@@ -26,9 +26,9 @@ setup_release_keystore() {
 setup_google_services_json
 setup_release_keystore
 
- ./gradlew assembleRelease
+./gradlew android-base:assembleRelease -X android-base:lintVitalRelease
 
- readonly apk_path="$(find android-base -name '*.apk' | head -1)"
+readonly apk_path="$(find android-base -name '*.apk' | head -1)"
 
 dpg app upload --android \
   --app-owner droidkaigi \
@@ -56,7 +56,7 @@ else
   exit 0
 fi
 
-./gradlew bundleRelease
+./gradlew android-base:bundleRelease -X android-base:lintVitalRelease
 
 .travis/android/update_github_release.bash
 transart -f .travis/android/to_github.transart.yml transfer
