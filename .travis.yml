@@ -38,7 +38,7 @@ matrix:
     before_install:
     - >
       openssl aes-256-cbc -K $encrypted_b21da5e06ef6_key -iv $encrypted_b21da5e06ef6_iv
-      -in .enrcypted/to_be_encrypted.zip.enc -out to_be_encrypted.zip -d
+      -in .encrypted/to_be_encrypted.zip.enc -out to_be_encrypted.zip -d
     - unzip to_be_encrypted.zip
     - .travis/android/before_install.bash
     script:
