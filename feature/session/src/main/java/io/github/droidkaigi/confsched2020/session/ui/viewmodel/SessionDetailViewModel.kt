@@ -7,7 +7,7 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import io.github.droidkaigi.confsched2020.ext.composeBy
+import io.github.droidkaigi.confsched2020.ext.combine
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
@@ -48,8 +48,8 @@ class SessionDetailViewModel @AssistedInject constructor(
     private val favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
         MutableLiveData(LoadingState.Loaded)
 
-    // Compose UiModel
-    val uiModel: LiveData<UiModel> = composeBy(
+    // Produce UiModel
+    val uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
         liveData1 = sessionLoadStateLiveData,
         liveData2 = favoriteLoadingStateLiveData

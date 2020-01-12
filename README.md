@@ -90,7 +90,7 @@ class SessionsViewModel @Inject constructor(
 ```
 
 Construct UiModel LiveData from some such LiveData.  
-The `compose` method works like RxJava's combineLatest.
+The `combine` method works like RxJava's combineLatest.
 
 <img src="https://user-images.githubusercontent.com/1386930/71661608-222bea80-2d92-11ea-91a4-6445ea87d345.png" width="400px" />
 
@@ -100,7 +100,7 @@ class SessionDetailViewModel @AssistedInject constructor(
     private val sessionRepository: SessionRepository
 ) : ViewModel() {
 ...
-    val uiModel: LiveData<UiModel> = composeBy(
+    val uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
         liveData1 = sessionLoadStateLiveData,
         liveData2 = favoriteLoadingStateLiveData

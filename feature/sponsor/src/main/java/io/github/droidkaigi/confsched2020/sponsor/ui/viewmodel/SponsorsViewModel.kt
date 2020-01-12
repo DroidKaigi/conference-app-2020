@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
-import io.github.droidkaigi.confsched2020.ext.composeBy
+import io.github.droidkaigi.confsched2020.ext.combine
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
@@ -40,7 +40,7 @@ class SponsorsViewModel @Inject constructor(
         }
     }
 
-    val uiModel = composeBy(
+    val uiModel = combine(
         initialValue = UiModel.EMPTY,
         liveData1 = sponsorsLoadStateLiveData
     ) { _, loadState ->

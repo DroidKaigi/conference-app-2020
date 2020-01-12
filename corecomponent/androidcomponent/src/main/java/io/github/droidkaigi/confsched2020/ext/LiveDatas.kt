@@ -9,7 +9,7 @@ import com.hadilq.liveevent.LiveEvent
 
 fun <T : Any> LiveData<T>.requireValue() = requireNotNull(value)
 
-inline fun <T : Any, LIVE1 : Any> composeBy(
+inline fun <T : Any, LIVE1 : Any> combine(
     initialValue: T,
     liveData1: LiveData<LIVE1>,
     crossinline block: (T, LIVE1) -> T
@@ -28,7 +28,7 @@ inline fun <T : Any, LIVE1 : Any> composeBy(
     }.distinctUntilChanged()
 }
 
-inline fun <T : Any, LIVE1 : Any, LIVE2 : Any> composeBy(
+inline fun <T : Any, LIVE1 : Any, LIVE2 : Any> combine(
     initialValue: T,
     liveData1: LiveData<LIVE1>,
     liveData2: LiveData<LIVE2>,
@@ -49,7 +49,7 @@ inline fun <T : Any, LIVE1 : Any, LIVE2 : Any> composeBy(
     }.distinctUntilChanged()
 }
 
-inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any> composeBy(
+inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any> combine(
     initialValue: T,
     liveData1: LiveData<LIVE1>,
     liveData2: LiveData<LIVE2>,
@@ -72,7 +72,7 @@ inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any> composeBy(
     }.distinctUntilChanged()
 }
 
-inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any, LIVE4 : Any> composeBy(
+inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any, LIVE4 : Any> combine(
     initialValue: T,
     liveData1: LiveData<LIVE1>,
     liveData2: LiveData<LIVE2>,

@@ -6,7 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.squareup.inject.assisted.AssistedInject
 import io.github.droidkaigi.confsched2020.model.repository.AnnouncementRepository
-import io.github.droidkaigi.confsched2020.ext.composeBy
+import io.github.droidkaigi.confsched2020.ext.combine
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.Announcement
@@ -41,7 +41,7 @@ class AnnouncementViewModel @AssistedInject constructor(
         }
     }
 
-    val uiModel = composeBy(
+    val uiModel = combine(
         initialValue = UiModel.EMPTY,
         liveData1 = announcementLoadStateLiveData
     ) { _, loadState ->
