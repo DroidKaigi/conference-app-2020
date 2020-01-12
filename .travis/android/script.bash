@@ -28,9 +28,11 @@ setup_release_keystore
 
  ./gradlew assembleRelease
 
+ readonly apk_path="$(find android-base -name '*.apk' | head -1)"
+
 dpg app upload --android \
   --app-owner droidkaigi \
-  --app "$UNIVERSAL_APK_PATH" \
+  --app "$apk_path" \
   --token "$DEPLOYGATE_API_TOKEN" \
   --message "Release build of $(git rev-parse --short HEAD) at $(date)" \
   --distribution-name "Production Build" > .dpg_response
