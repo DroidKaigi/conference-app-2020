@@ -12,8 +12,7 @@ And also, you can try the binary under development built on master branch throug
 
 # Contributing
 
-We always welcome any and all contributions! See CONTRIBUTING.md for more information  
-// TODO: Add link to CONTRIBUTING.md
+We always welcome any and all contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for more information  
 
 ## Requirements
 
