@@ -2,6 +2,7 @@
 -keepnames class io.github.droidkaigi.confsched2019.session.ui.BottomSheetFavoriteSessionsFragment
 -keepnames class io.github.droidkaigi.confsched2020.about.ui.AboutFragment
 -keepnames class io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment
+-keepnames class io.github.droidkaigi.confsched2020.contributor.ui.ContributorsFragment
 -keepnames class io.github.droidkaigi.confsched2020.floormap.ui.FloorMapFragment
 -keepnames class io.github.droidkaigi.confsched2020.model.SessionId
 -keepnames class io.github.droidkaigi.confsched2020.model.SessionId

@@ -20,7 +20,7 @@
     <!-- Search -->
     <string name="search_label" translatable="false">Search</string>
     <!-- Contributor -->
-    <string name="contributor" translatable="false">Contributor</string>
+    <string name="contributor_label" translatable="false">Contributor</string>
     <!-- Setting -->
     <string name="setting_label" translatable="false">Setting</string>
     <!-- Staff Search -->
