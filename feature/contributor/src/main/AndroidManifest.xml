@@ -1,0 +1,13 @@
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="io.github.droidkaigi.confsched2020.contributor"
+    >
+
+    <dist:module
+        dist:onDemand="false"
+        dist:title="@string/contributor_label"
+        >
+        <dist:fusing dist:include="true"/>
+    </dist:module>
+</manifest>

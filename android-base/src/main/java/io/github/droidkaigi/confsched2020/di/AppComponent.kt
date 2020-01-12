@@ -7,6 +7,7 @@ import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import io.github.droidkaigi.confsched2020.App
 import io.github.droidkaigi.confsched2020.MainActivityModule
+import io.github.droidkaigi.confsched2020.model.repository.ContributorRepository
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.model.repository.StaffRepository
 import javax.inject.Singleton
@@ -36,6 +37,7 @@ interface AppComponent : AndroidInjector<App>, AppComponentInterface {
 
     override fun sessionRepository(): SessionRepository
     fun staffRepository(): StaffRepository
+    fun contributorRepository(): ContributorRepository
 }
 
 fun Application.createAppComponent() = DaggerAppComponent.builder()
