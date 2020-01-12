@@ -1,4 +1,7 @@
 # DroidKaigi 2020 official Android app
+
+[![Build Status](https://travis-ci.com/DroidKaigi/conference-app-2020.svg?token=Syjf5JfarZTDJHiqdSRV&branch=master)](https://travis-ci.com/DroidKaigi/conference-app-2020)
+
 DroidKaigi 2020 is a conference tailored for developers on 20th and 21th February 2020.  
 
 You can install the prodution app via Get it on Google Play.  
