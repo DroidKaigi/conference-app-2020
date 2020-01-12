@@ -24,6 +24,16 @@ android {
             keyAlias "androiddebugkey"
             keyPassword "android"
         }
+        if (file("release.keystore").exists()) {
+            release {
+                storeFile file("release.keystore")
+                storePassword System.getenv("RELEASE_KEYSTORE_STORE_PASSWORD")
+                keyAlias System.getenv("RELEASE_KEYSTORE_KEY_ALIAS")
+                keyPassword System.getenv("RELEASE_KEYSTORE_KEY_PASSWORD")
+            }
+        } else {
+            release.initWith(debug)
+        }
     }
     buildTypes {
         debug {

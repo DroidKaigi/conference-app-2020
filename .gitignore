@@ -243,3 +243,11 @@ Temporary Items
 vendor/bundle
 **/vendor/bundle
 .bundle/
+
+*.keystore
+!android-base/debug.keystore
+
+.envrc
+to_be_encrypted/
+google-services.json
+!**/debug/google-services.json
