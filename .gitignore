@@ -249,5 +249,6 @@ vendor/bundle
 
 .envrc
 to_be_encrypted/
+to_be_encrypted.zip
 google-services.json
 !**/debug/google-services.json
