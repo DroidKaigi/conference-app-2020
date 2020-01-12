@@ -32,7 +32,7 @@ jobs:
         path: ${{ steps.find-apk.outputs.path }}
 
   deploy-debug:
-    needs: build
+    needs: build-debug
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
