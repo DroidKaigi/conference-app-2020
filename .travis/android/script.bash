@@ -11,16 +11,16 @@ die() {
 }
 
 move() {
-  mkdir -p "$(dirname "$2")"
-  mv "$1" "$2"
+  mkdir -p "$2"
+  mv "$1" "$2/"
 }
 
 setup_google_services_json() {
-  move "$decrypted_files_directory/google-services.json" android-base/src/release/
+  move "$decrypted_files_directory/google-services.json" android-base/src/release
 }
 
 setup_release_keystore() {
-  move "$decrypted_files_directory/release.keystore" android-base/
+  move "$decrypted_files_directory/release.keystore" android-base
 }
 
 setup_google_services_json
