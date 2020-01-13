@@ -95,10 +95,11 @@ class SessionsViewModel @Inject constructor(
     }
 ```
 
-Construct UiModel LiveData from some such LiveData.  
-The `combine` method works like RxJava's combineLatest.
-
 <img src="https://user-images.githubusercontent.com/6636072/72217310-d1757800-356f-11ea-8d56-a72f4b26316f.png" width="400px" />
+
+Construct UiModel LiveData from some such LiveData.  
+The `combine` method works like RxJava's combineLatest.  
+You can make the loading state of the screen from multiple LiveData states like `sessionLoadState.isLoading || favoriteState.isLoading`.
 
 ```kotlin
 class SessionDetailViewModel @AssistedInject constructor(
