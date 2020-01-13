@@ -39,7 +39,7 @@
                 android:layout_width="0dp"
                 android:layout_height="?actionBarSize"
                 android:background="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorPrimarySurface : R.attr.colorSurface)}"
-                android:elevation="4dp"
+                android:elevation="0dp"
                 app:contentInsetStartWithNavigation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
