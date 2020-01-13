@@ -13,6 +13,9 @@ And also, you can try the binary under development built on master branch throug
 
 # Features
 
+| top | drawer | |
+|---|---|---|
+| <img src="https://user-images.githubusercontent.com/1386930/72241090-3d67e700-3629-11ea-9c72-68e133174318.png" width="250px" /> | <img src="https://user-images.githubusercontent.com/1386930/72241478-4b6a3780-362a-11ea-8ce2-a0d6c6198075.png" width="250px" /> | |
 
 # Contributing
 
