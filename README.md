@@ -1,6 +1,6 @@
-# DroidKaigi 2020 official Android app
+# ![DroidKaigi Logo]("corecomponent/androidcomponent/src/main/res/drawable-xxhdpi/ic_logo.png")DroidKaigi 2020 official Android app [![Build Status](https://travis-ci.com/DroidKaigi/conference-app-2020.svg?token=Syjf5JfarZTDJHiqdSRV&branch=master)](https://travis-ci.com/DroidKaigi/conference-app-2020)
 
-[![Build Status](https://travis-ci.com/DroidKaigi/conference-app-2020.svg?token=Syjf5JfarZTDJHiqdSRV&branch=master)](https://travis-ci.com/DroidKaigi/conference-app-2020)
+We are currently working on the event. We are looking for contributors!
 
 DroidKaigi 2020 is a conference tailored for developers on 20th and 21th February 2020.  
 
