@@ -146,6 +146,14 @@ class MainActivity : DaggerAppCompatActivity() {
         binding.navView.menu.findItem(destination.id)?.isChecked = true
 
         val config = PageConfiguration.getConfiguration(destination.id)
+        if (!config.hasTitle){
+            supportActionBar?.title = ""
+        }
+        if (config.isShowLogoImage) {
+            supportActionBar?.setLogo(R.drawable.ic_logo)
+        } else {
+            supportActionBar?.setLogo(null)
+        }
         statusBarColors.isIndigoBackground = config.isIndigoBackground
         binding.isIndigoBackground = config.isIndigoBackground
         val iconTint = getThemeColor(
@@ -249,6 +257,7 @@ abstract class MainActivityModule {
         modules = [FloorMapFragmentModule::class, FloorMapInjectModule::class]
     )
     abstract fun contributeFloorMapFragment(): FloorMapFragment
+
     @PageScope
     @ContributesAndroidInjector(
         modules = [SessionSurveyFragmentModule::class, SessionSurveyAssistedInjectModule::class]
