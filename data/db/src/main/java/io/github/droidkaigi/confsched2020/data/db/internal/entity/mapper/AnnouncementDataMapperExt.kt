@@ -19,7 +19,7 @@ internal fun AnnouncementResponse.toAnnouncementEntityImpl(): AnnouncementEntity
         id = id,
         content = content,
         publishedAt = dateFormat.parse(publishedAt).utc.unixMillisLong,
-        lang = lang,
+        lang = language,
         title = title,
         type = type.toLowerCase(Locale.US)
     )

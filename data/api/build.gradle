@@ -109,7 +109,7 @@ kotlin {
 
 android {
     defaultConfig {
-        buildConfigField "String", "API_ENDPOINT", "\"https://api.droidkaigi.jp/2020\""
+        buildConfigField "String", "API_ENDPOINT", "\"https://deploy-preview-49--droidkaigi-api-dev.netlify.com/2020\""
     }
     buildTypes {
         release {
