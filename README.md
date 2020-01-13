@@ -21,6 +21,8 @@ And also, you can try the binary under development built on master branch throug
 
 We always welcome any and all contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for more information  
 
+For Japanese speakers, please see [CONTRIBUTING.ja.md](CONTRIBUTING.ja.md) 
+
 ## Requirements
 
 Android Studio 3.6 and higher. You can download it from this page.
