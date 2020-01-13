@@ -158,6 +158,16 @@ class SessionDetailViewModel @AssistedInject constructor(
     }
 ```
 
+## Design
+
+* DroidKaigi 2020 Design Kit  
+https://www.figma.com/file/RPPQQRys8IubNShKan8c2Z/DroidKaigi-2020-Design-Kit?node-id=0%3A2347  
+* App  
+https://www.figma.com/file/4r9becvhDy3GfXaXex8E8d/App  
+
+<img src="https://user-images.githubusercontent.com/1386930/72268208-c0f2f980-3664-11ea-97a7-61b0fb0f35bc.png" width="400px" />
+
+
 ## Thanks
 Thank you for contributing!
 
