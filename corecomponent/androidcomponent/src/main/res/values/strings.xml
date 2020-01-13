@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">uicomponent</string>
-
     <!-- Session -->
     <string name="session_label">Session</string>
     <!-- Speaker -->
