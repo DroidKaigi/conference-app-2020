@@ -10,22 +10,6 @@ die() {
   exit 1
 }
 
-move() {
-  mkdir -p "$2"
-  mv "$1" "$2/"
-}
-
-setup_google_services_json() {
-  move "$decrypted_files_directory/google-services.json" android-base/src/release
-}
-
-setup_release_keystore() {
-  move "$decrypted_files_directory/release.keystore" android-base
-}
-
-setup_google_services_json
-setup_release_keystore
-
 ./gradlew android-base:assembleRelease -x android-base:lintVitalRelease
 
 readonly apk_path="$(find android-base -name '*.apk' | head -1)"
