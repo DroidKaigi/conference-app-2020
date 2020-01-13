@@ -1,4 +1,4 @@
-# ![DroidKaigi Logo]("corecomponent/androidcomponent/src/main/res/drawable-xxhdpi/ic_logo.png")DroidKaigi 2020 official Android app [![Build Status](https://travis-ci.com/DroidKaigi/conference-app-2020.svg?token=Syjf5JfarZTDJHiqdSRV&branch=master)](https://travis-ci.com/DroidKaigi/conference-app-2020)
+# ![DroidKaigi Logo](corecomponent/androidcomponent/src/main/res/drawable-xxhdpi/ic_logo.png)DroidKaigi 2020 official Android app [![Build Status](https://travis-ci.com/DroidKaigi/conference-app-2020.svg?token=Syjf5JfarZTDJHiqdSRV&branch=master)](https://travis-ci.com/DroidKaigi/conference-app-2020)
 
 We are currently working on the event. We are looking for contributors!
 
