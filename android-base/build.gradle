@@ -24,15 +24,24 @@ android {
             keyAlias "androiddebugkey"
             keyPassword "android"
         }
-        if (file("release.keystore").exists()) {
+        release.initWith(debug)
+
+        def releaseKeystore = file("release.keystore")
+
+        if (isReleaseBuild) {
+            assert releaseKeystore.exists()
+            assert System.getenv("RELEASE_KEYSTORE_STORE_PASSWORD")
+            assert System.getenv("RELEASE_KEYSTORE_KEY_ALIAS")
+            assert System.getenv("RELEASE_KEYSTORE_KEY_PASSWORD")
+        }
+
+        if (releaseKeystore.exists()) {
             release {
-                storeFile file("release.keystore")
+                storeFile releaseKeystore
                 storePassword System.getenv("RELEASE_KEYSTORE_STORE_PASSWORD")
                 keyAlias System.getenv("RELEASE_KEYSTORE_KEY_ALIAS")
                 keyPassword System.getenv("RELEASE_KEYSTORE_KEY_PASSWORD")
             }
-        } else {
-            release.initWith(debug)
         }
     }
     buildTypes {
@@ -41,6 +50,7 @@ android {
         }
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
