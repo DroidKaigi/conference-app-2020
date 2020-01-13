@@ -12,6 +12,8 @@ import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.Announcement
 import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.model.LoadState
+import timber.log.Timber
+import timber.log.debug
 
 class AnnouncementViewModel @AssistedInject constructor(
     private val announcementRepository: AnnouncementRepository
@@ -36,8 +38,9 @@ class AnnouncementViewModel @AssistedInject constructor(
         )
         try {
             announcementRepository.refresh()
-        } catch (ignored: Exception) {
-            // NOP
+        } catch (e: Exception) {
+            // We can show announcements with cache
+            Timber.debug(e) { "Fail announcementRepository.refresh()" }
         }
     }
 

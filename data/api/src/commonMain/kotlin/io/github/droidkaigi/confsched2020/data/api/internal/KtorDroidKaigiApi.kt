@@ -69,7 +69,7 @@ internal open class KtorDroidKaigiApi constructor(
 
     override suspend fun getAnnouncements(lang: LangParameter): AnnouncementListResponse {
         val rawResponse = httpClient.get<String> {
-            url("$apiEndpoint/announcements?language=${lang.name}")
+            url("$apiEndpoint/announcements/${lang.value}")
             accept(ContentType.Application.Json)
         }
 

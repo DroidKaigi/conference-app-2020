@@ -10,5 +10,5 @@ internal data class AnnouncementResponseImpl(
     override val content: String,
     override val type: String,
     override val publishedAt: String,
-    override val lang: String
+    override val language: String
 ) : AnnouncementResponse
