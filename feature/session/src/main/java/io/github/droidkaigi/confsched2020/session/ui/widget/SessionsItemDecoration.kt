@@ -33,7 +33,7 @@ class SessionsItemDecoration(
         res.getDimensionPixelSize(R.dimen.session_time_space)
     }
     private val sessionTimeTextMarginTopInPx by lazy {
-        res.getDimensionPixelSize(R.dimen.session_time_text_margin_top).toFloat()
+        res.getDimensionPixelSize(R.dimen.session_time_text_margin_top)
     }
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
@@ -67,7 +67,7 @@ class SessionsItemDecoration(
         } else null
 
         var positionY =
-            view.top.coerceAtLeast(0) + sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
+            view.top.coerceAtLeast(sessionTimeTextMarginTopInPx.toInt()) + sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
         if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
             positionY = positionY.coerceAtMost(view.bottom.toFloat())
         }
