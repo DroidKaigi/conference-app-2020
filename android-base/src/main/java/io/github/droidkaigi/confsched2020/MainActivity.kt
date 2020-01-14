@@ -20,7 +20,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.Binds
 import dagger.Module
@@ -133,9 +132,9 @@ class MainActivity : DaggerAppCompatActivity() {
         }
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-        binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
+        binding.navView.setNavigationItemSelectedListener { item ->
             handleNavigation(item.itemId)
-        })
+        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             onDestinationChange(destination)

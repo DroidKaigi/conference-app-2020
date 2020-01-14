@@ -4,7 +4,6 @@ import androidx.core.content.ContextCompat
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.dumpapp.DumperPlugin
-import com.facebook.stetho.inspector.database.DatabaseFilesProvider
 import com.facebook.stetho.inspector.protocol.ChromeDevtoolsDomain
 import io.fabric.sdk.android.Fabric
 import java.io.File
@@ -21,12 +20,12 @@ class DebugApp : App() {
                 override fun getInspectorModules(): Iterable<ChromeDevtoolsDomain>? {
                     return Stetho
                         .DefaultInspectorModulesBuilder(applicationContext)
-                        .databaseFiles(DatabaseFilesProvider {
+                        .databaseFiles {
                             val dataDir = ContextCompat.getDataDir(applicationContext)
                             // Add WorkManager database
                             File(dataDir, "no_backup").listFiles().toList() +
-                                File(dataDir, "databases").listFiles().toList()
-                        })
+                                    File(dataDir, "databases").listFiles().toList()
+                        }
                         .finish()
                 }
             })
