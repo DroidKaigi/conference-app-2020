@@ -17,7 +17,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
-import io.github.droidkaigi.confsched2019.session.ui.BottomSheetDaySessionsFragmentArgs
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.model.ExpandFilterState
