@@ -458,7 +458,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "io.github.droidkaigi.confsched2019.DroidKaigi-2020";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.droidkaigi.confsched2020.DroidKaigi-2020";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -476,7 +476,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "io.github.droidkaigi.confsched2019.DroidKaigi-2020";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.droidkaigi.confsched2020.DroidKaigi-2020";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -496,7 +496,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "io.github.droidkaigi.confsched2019.DroidKaigi-2020Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.droidkaigi.confsched2020.DroidKaigi-2020Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -517,7 +517,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "io.github.droidkaigi.confsched2019.DroidKaigi-2020Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.droidkaigi.confsched2020.DroidKaigi-2020Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -536,7 +536,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "io.github.droidkaigi.confsched2019.DroidKaigi-2020UITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.droidkaigi.confsched2020.DroidKaigi-2020UITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -555,7 +555,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "io.github.droidkaigi.confsched2019.DroidKaigi-2020UITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.droidkaigi.confsched2020.DroidKaigi-2020UITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

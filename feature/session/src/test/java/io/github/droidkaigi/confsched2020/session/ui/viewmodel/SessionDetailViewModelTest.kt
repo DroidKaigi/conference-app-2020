@@ -1,11 +1,11 @@
 package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 
 import com.jraska.livedata.test
-import io.github.droidkaigi.confsched2019.widget.component.MockkRule
-import io.github.droidkaigi.confsched2019.widget.component.ViewModelTestRule
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
+import io.github.droidkaigi.confsched2020.widget.component.MockkRule
+import io.github.droidkaigi.confsched2020.widget.component.ViewModelTestRule
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
 import io.mockk.coEvery

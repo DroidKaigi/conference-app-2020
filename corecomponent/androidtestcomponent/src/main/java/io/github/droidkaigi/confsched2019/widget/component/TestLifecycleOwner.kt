@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2019.widget.component
+package io.github.droidkaigi.confsched2020.widget.component
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
