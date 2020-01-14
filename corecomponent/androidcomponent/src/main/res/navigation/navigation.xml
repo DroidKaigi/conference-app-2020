@@ -11,14 +11,23 @@
         <action
             android:id="@+id/action_session_to_session_detail"
             app:destination="@id/session_detail"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out"
             />
         <action
             android:id="@+id/action_session_to_speaker"
             app:destination="@id/speaker"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out"
             />
         <action
             android:id="@+id/action_session_to_search_sessions"
             app:destination="@id/search_sessions"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out"
             />
     </fragment>
     <fragment
@@ -39,10 +48,18 @@
         <action
             android:id="@+id/action_session_to_session_detail"
             app:destination="@id/session_detail"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             />
         <action
             android:id="@+id/action_session_to_speaker"
             app:destination="@id/speaker"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             />
     </fragment>
     <fragment
@@ -72,10 +89,18 @@
         <action
             android:id="@+id/action_session_to_speaker"
             app:destination="@id/speaker"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             />
         <action
             android:id="@+id/action_session_to_survey"
             app:destination="@id/session_survey"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             />
     </fragment>
     <fragment
@@ -91,6 +116,10 @@
         <action
             android:id="@+id/action_speaker_to_session_detail"
             app:destination="@id/session_detail"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             />
     </fragment>
     <fragment

@@ -145,7 +145,7 @@ class MainActivity : DaggerAppCompatActivity() {
         binding.navView.menu.findItem(destination.id)?.isChecked = true
 
         val config = PageConfiguration.getConfiguration(destination.id)
-        if (!config.hasTitle){
+        if (!config.hasTitle) {
             supportActionBar?.title = ""
         }
         if (config.isShowLogoImage) {
@@ -195,6 +195,10 @@ class MainActivity : DaggerAppCompatActivity() {
             val builder = NavOptions.Builder()
                 .setLaunchSingleTop(true)
                 .setPopUpTo(R.id.main, false)
+                .setEnterAnim(R.anim.fade_in)
+                .setExitAnim(R.anim.fade_out)
+                .setPopEnterAnim(R.anim.fade_in)
+                .setPopExitAnim(R.anim.fade_out)
             val options = builder.build()
             navController.navigate(itemId, null, options)
             true
