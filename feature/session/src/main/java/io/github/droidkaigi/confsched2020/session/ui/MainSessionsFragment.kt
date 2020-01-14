@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.LifecycleOwner
@@ -18,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.wada811.databinding.dataBinding
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -37,7 +37,7 @@ import javax.inject.Provider
 
 class MainSessionsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentMainSessionsBinding
+    private val binding: FragmentMainSessionsBinding by dataBinding(R.layout.fragment_main_sessions)
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -60,12 +60,6 @@ class MainSessionsFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_main_sessions,
-            container,
-            false
-        )
         setHasOptionsMenu(true)
         return binding.root
     }

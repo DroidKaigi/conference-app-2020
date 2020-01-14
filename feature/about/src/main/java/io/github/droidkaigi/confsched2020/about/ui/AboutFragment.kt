@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import com.wada811.databinding.dataBinding
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -40,7 +40,7 @@ class AboutFragment : DaggerFragment() {
         systemViewModelProvider.get()
     }
 
-    private lateinit var binding: FragmentAboutBinding
+    private val binding: FragmentAboutBinding by dataBinding(R.layout.fragment_about)
 
     private lateinit var progressTimeLatch: ProgressTimeLatch
 
@@ -49,12 +49,6 @@ class AboutFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_about,
-            container,
-            false
-        )
         return binding.root
     }
 

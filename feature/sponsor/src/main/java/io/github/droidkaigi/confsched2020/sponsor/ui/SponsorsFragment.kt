@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
+import com.wada811.databinding.dataBinding
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.Section
@@ -36,7 +36,7 @@ import javax.inject.Provider
 
 class SponsorsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentSponsorsBinding
+    private val binding: FragmentSponsorsBinding by dataBinding(R.layout.fragment_sponsors)
 
     @Inject lateinit var sponsorsModelFactory: Provider<SponsorsViewModel>
     private val sponsorsViewModel by assistedViewModels {
@@ -60,12 +60,6 @@ class SponsorsFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_sponsors,
-            container,
-            false
-        )
         return binding.root
     }
 

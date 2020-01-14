@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.ChipGroup
+import com.wada811.databinding.dataBinding
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -36,7 +36,7 @@ import javax.inject.Provider
 
 class SessionsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentSessionsBinding
+    private val binding: FragmentSessionsBinding by dataBinding(R.layout.fragment_sessions)
 
     private val sessionSheetBehavior: BottomSheetBehavior<*>
         get() {
@@ -76,12 +76,6 @@ class SessionsFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_sessions,
-            container,
-            false
-        )
         setHasOptionsMenu(true)
         return binding.root
     }

@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import com.wada811.databinding.dataBinding
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Component
@@ -31,7 +31,7 @@ import javax.inject.Provider
 
 class StaffsFragment : Fragment() {
 
-    private lateinit var binding: FragmentStaffsBinding
+    private val binding: FragmentStaffsBinding by dataBinding(R.layout.fragment_staffs)
 
     @Inject lateinit var staffsFactory: Provider<StaffsViewModel>
     private val staffsViewModel by assistedViewModels {
@@ -47,12 +47,6 @@ class StaffsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_staffs,
-            container,
-            false
-        )
         return binding.root
     }
 

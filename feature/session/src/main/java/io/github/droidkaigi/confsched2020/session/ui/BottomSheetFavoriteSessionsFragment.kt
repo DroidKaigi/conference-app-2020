@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import com.wada811.databinding.dataBinding
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -27,7 +27,7 @@ import javax.inject.Provider
 
 class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentBottomSheetSessionsBinding
+    private val binding: FragmentBottomSheetSessionsBinding by dataBinding(R.layout.fragment_bottom_sheet_sessions)
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -50,12 +50,6 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_bottom_sheet_sessions,
-            container,
-            false
-        )
         return binding.root
     }
 

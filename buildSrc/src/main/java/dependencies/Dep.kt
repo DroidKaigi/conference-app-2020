@@ -222,4 +222,9 @@ object Dep {
     object Insetter {
         val insetter = "dev.chrisbanes:insetter-ktx:0.2.0"
     }
+
+    object DataBindingKtx {
+        val version = "3.0.1"
+        val dataBindingKtx = "com.github.wada811:DataBinding-ktx:$version"
+    }
 }

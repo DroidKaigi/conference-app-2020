@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import com.wada811.databinding.dataBinding
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Component
@@ -28,7 +28,7 @@ import javax.inject.Provider
 
 class ContributorsFragment : Fragment() {
 
-    private lateinit var binding: FragmentContributorsBinding
+    private val binding: FragmentContributorsBinding by dataBinding(R.layout.fragment_contributors)
 
     @Inject lateinit var contributorsFactory: Provider<ContributorsViewModel>
     private val contributorsViewModel by assistedViewModels {
@@ -42,12 +42,6 @@ class ContributorsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_contributors,
-            container,
-            false
-        )
         return binding.root
     }
 

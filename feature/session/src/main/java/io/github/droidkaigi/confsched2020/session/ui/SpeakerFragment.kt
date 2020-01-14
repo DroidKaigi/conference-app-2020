@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.distinctUntilChanged
@@ -16,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.api.load
 import coil.transform.CircleCropTransformation
+import com.wada811.databinding.dataBinding
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
@@ -33,7 +33,7 @@ import javax.inject.Inject
 
 class SpeakerFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentSpeakerBinding
+    private val binding: FragmentSpeakerBinding by dataBinding(R.layout.fragment_speaker)
 
     @Inject lateinit var speakerViewModelFactory: SpeakerViewModel.Factory
     private val speakerViewModel by assistedViewModels {
@@ -48,12 +48,6 @@ class SpeakerFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_speaker,
-            container,
-            false
-        )
         return binding.root
     }
 

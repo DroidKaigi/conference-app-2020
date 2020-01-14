@@ -8,11 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
+import com.wada811.databinding.dataBinding
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.ViewHolder
@@ -50,7 +50,7 @@ class AnnouncementFragment : DaggerFragment() {
     @Inject
     lateinit var announcementItemFactory: AnnouncementItem.Factory
 
-    private lateinit var binding: FragmentAnnouncementBinding
+    private val binding: FragmentAnnouncementBinding by dataBinding(R.layout.fragment_announcement)
 
     private lateinit var progressTimeLatch: ProgressTimeLatch
 
@@ -58,12 +58,6 @@ class AnnouncementFragment : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_announcement,
-            container,
-            false
-        )
         return binding.root
     }
 

@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import com.wada811.databinding.dataBinding
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
@@ -17,18 +17,13 @@ import io.github.droidkaigi.confsched2020.floormap.databinding.FragmentFloormapB
 // TODO: Apply the floor map UI
 class FloorMapFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentFloormapBinding
+    private val binding: FragmentFloormapBinding by dataBinding(R.layout.fragment_floormap)
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_floormap,
-            container,
-            false
-        )
         return binding.root
     }
 

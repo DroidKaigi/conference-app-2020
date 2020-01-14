@@ -7,10 +7,10 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import com.wada811.databinding.dataBinding
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -32,7 +32,7 @@ import javax.inject.Provider
 
 class SearchSessionsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentSearchSessionsBinding
+    private val binding: FragmentSearchSessionsBinding by dataBinding(R.layout.fragment_search_sessions)
 
     @Inject lateinit var searchSessionsModelFactory: SearchSessionsViewModel.Factory
     private val searchSessionsViewModel by assistedViewModels {
@@ -68,12 +68,6 @@ class SearchSessionsFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_search_sessions,
-            container,
-            false
-        )
         return binding.root
     }
 

@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.navArgs
+import com.wada811.databinding.dataBinding
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -42,7 +42,7 @@ class SessionSurveyFragment : DaggerFragment() {
     }
 
     private val navArgs: SessionSurveyFragmentArgs by navArgs()
-    private lateinit var binding: FragmentSessionSurveyBinding
+    private val binding: FragmentSessionSurveyBinding by dataBinding(R.layout.fragment_session_survey)
 
     private lateinit var progressTimeLatch: ProgressTimeLatch
 
@@ -51,12 +51,6 @@ class SessionSurveyFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_session_survey,
-            container,
-            false
-        )
         return binding.root
     }
 

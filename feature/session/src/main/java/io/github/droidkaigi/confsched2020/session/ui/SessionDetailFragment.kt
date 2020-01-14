@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -18,6 +17,7 @@ import coil.Coil
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.google.android.material.chip.Chip
+import com.wada811.databinding.dataBinding
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
@@ -43,7 +43,7 @@ import javax.inject.Provider
 
 class SessionDetailFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentSessionDetailBinding
+    private val binding: FragmentSessionDetailBinding by dataBinding(R.layout.fragment_session_detail)
 
     @Inject lateinit var systemViewModelFactory: Provider<SystemViewModel>
     private val systemViewModel by assistedActivityViewModels {
@@ -64,12 +64,6 @@ class SessionDetailFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_session_detail,
-            container,
-            false
-        )
         return binding.root
     }
 
