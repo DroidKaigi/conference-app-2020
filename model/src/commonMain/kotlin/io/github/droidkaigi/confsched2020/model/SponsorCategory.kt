@@ -6,8 +6,8 @@ data class SponsorCategory(
 ) {
 
     enum class Category(val id: String, val title: String) {
-        PLATINUM("PLATINUM", "platinum\nsponsors"),
-        GOLD("GOLD", "gold\nsponsors"),
+        PLATINUM("PLATINUM", "platinum sponsors"),
+        GOLD("GOLD", "gold sponsors"),
         SUPPORTER("SUPPORTER", "sponsors"),
         COMMITTEE_SUPPORT("COMMITTEE_SUPPORT", "technical support\nfor network");
 

@@ -2,7 +2,7 @@
 
 We are currently working on the event. We are looking for contributors!
 
-DroidKaigi 2020 is a conference tailored for developers on 20th and 21th February 2020.  
+DroidKaigi 2020 is a conference tailored for developers on 20th and 21st February 2020.  
 
 You can install the prodution app via Get it on Google Play.  
 // TODO: Add link to Google Play
@@ -15,7 +15,7 @@ And also, you can try the binary under development built on master branch throug
 
 | top | drawer | |
 |---|---|---|
-| <img src="https://user-images.githubusercontent.com/1386930/72241090-3d67e700-3629-11ea-9c72-68e133174318.png" width="250px" /> | <img src="https://user-images.githubusercontent.com/1386930/72241478-4b6a3780-362a-11ea-8ce2-a0d6c6198075.png" width="250px" /> | |
+| <img src="arts/top.png" width="250px" /> | <img src="arts/drawer.png" width="250px" /> | |
 
 # Contributing
 
@@ -25,14 +25,14 @@ For Japanese speakers, please see [CONTRIBUTING.ja.md](CONTRIBUTING.ja.md)
 
 ## Requirements
 
-Android Studio 3.6 and higher. You can download it from this page.
+Android Studio 3.6 and higher. You can download it from [this page](https://developer.android.com/studio/preview).
 
 # Development Environment
 
 ## Multi module project
 We separate the modules for each feature. We use the Dynamic feature modules for additional features.
 
-<img src="https://user-images.githubusercontent.com/1386930/71317852-528aa380-24cb-11ea-886f-8dabf225567a.png" width="400px" />
+<img src="arts/multimodule.png" width="400px" />
 
 ## Kotlin Multiplatform Project
 
@@ -41,15 +41,15 @@ We separate the modules for each feature. We use the Dynamic feature modules for
 # Architecture
 This app uses an AndroidJetpack(AAC) based architecture using AAC(LiveData, ViewModel, Room), Kotlin, Kotlin Coroutines Flow, DataBinding, Dagger, Firebase.
 
-<img src="https://user-images.githubusercontent.com/1386930/71663735-aafa5480-2d99-11ea-961d-0228a3ddaf30.png" width="400px" />
+<img src="arts/arch1.png" width="400px" />
 
 It is designed to be a unidirectional data flow within the ViewModel.
 
-<img src="https://user-images.githubusercontent.com/6636072/72217306-d0dce180-356f-11ea-953e-44480e07472c.png" width="400px" />
+<img src="arts/arch2.png" width="400px" />
 
 ## Fragment
 
-<img src="https://user-images.githubusercontent.com/6636072/72217307-d0dce180-356f-11ea-97a5-9f534743211b.png" width="400px" />
+<img src="arts/fragment.png" width="400px" />
 
 Just observe() the `LiveData<UiModel>` of the ViewModel.
 
@@ -74,7 +74,7 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 ## ViewModel
 
-<img src="https://user-images.githubusercontent.com/6636072/72217308-d0dce180-356f-11ea-9d6f-204770892122.png" width="400px" />
+<img src="arts/viewmodel1.png" width="400px" />
 
 The [LiveData Kotlin Coroutines builder](https://developer.android.com/topic/libraries/architecture/coroutines#livedata) runs when LiveData becomes active.   
 And observe the data of the Coroutiens Flow of the repository.
@@ -97,7 +97,7 @@ class SessionsViewModel @Inject constructor(
     }
 ```
 
-<img src="https://user-images.githubusercontent.com/6636072/72217310-d1757800-356f-11ea-8d56-a72f4b26316f.png" width="400px" />
+<img src="arts/viewmodel2.png" width="400px" />
 
 Construct UiModel LiveData from some such LiveData.  
 The `combine` method works like RxJava's combineLatest.  
@@ -135,7 +135,7 @@ class SessionDetailViewModel @AssistedInject constructor(
 Run Coroutines with `viewModelScope` when data changes, such as adding a session to Favorites.  
 Because we do not want to end the process of adding a session to favorites with the back button, we use WorkManager to do the processing.  
 
-<img src="https://user-images.githubusercontent.com/6636072/72217311-d1757800-356f-11ea-85d2-a1355c8f23f9.png" width="400px" />
+<img src="arts/viewmodel3.png" width="400px" />
 
 ```kotlin
 class SessionDetailViewModel @AssistedInject constructor(
@@ -165,7 +165,7 @@ https://www.figma.com/file/RPPQQRys8IubNShKan8c2Z/DroidKaigi-2020-Design-Kit?nod
 * App  
 https://www.figma.com/file/4r9becvhDy3GfXaXex8E8d/App  
 
-<img src="https://user-images.githubusercontent.com/1386930/72268208-c0f2f980-3664-11ea-97a7-61b0fb0f35bc.png" width="400px" />
+<img src="arts/design.png" width="400px" />
 
 
 ## Thanks
@@ -199,7 +199,7 @@ This project uses some modern Android libraries and source codes.
     * ConstraintLayout
     * RecyclerView
     * ...
-* [Kotlin](https://kotlinlang.org/) (Jetbrains)
+* [Kotlin](https://kotlinlang.org/) (JetBrains)
   * Stdlib
   * Coroutines
   * Coroutines Flow
@@ -212,13 +212,12 @@ This project uses some modern Android libraries and source codes.
   * AndroidSupport (Google)
   * [AssistedInject](https://github.com/square/AssistedInject) (Square)
 * [Material Components for Android](https://github.com/material-components/material-components-android) (Google)
-* [Ktor](https://ktor.io/) (Jetbrains)
+* [Ktor](https://ktor.io/) (JetBrains)
   * Android Client
   * Json
 * [OkHttp](http://square.github.io/okhttp/) (Square)
   * Client
   * LoggingInterceptor
-* [livedata-ktx](https://github.com/Shopify/livedata-ktx) (Shopify)
 * [Coil](https://github.com/coil-kt/coil) (Coil Contributors)
 * [LeakCanary](https://github.com/square/leakcanary) (Square)
 * [Stetho](http://facebook.github.io/stetho/) (Facebook)

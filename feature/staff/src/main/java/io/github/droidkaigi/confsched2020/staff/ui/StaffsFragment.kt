@@ -60,10 +60,8 @@ class StaffsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val appComponent = (requireContext().applicationContext as App).appComponent
-        val component = DaggerStaffComponent.builder()
-            .appComponent(appComponent)
-            .staffModule(StaffModule(this))
-            .build()
+        val component = DaggerStaffComponent.factory()
+            .create(appComponent, StaffModule(this))
         component.inject(this)
 
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
@@ -108,11 +106,9 @@ class StaffModule(private val fragment: StaffsFragment) {
     dependencies = [AppComponent::class]
 )
 interface StaffComponent {
-    @Component.Builder
-    interface Builder {
-        fun build(): StaffComponent
-        fun appComponent(appComponent: AppComponent): Builder
-        fun staffModule(staffModule: StaffModule): Builder
+    @Component.Factory
+    interface Factory {
+        fun create(appComponent: AppComponent, staffModule: StaffModule): StaffComponent
     }
 
     fun inject(fragment: StaffsFragment)

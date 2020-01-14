@@ -12,6 +12,7 @@
         android:layout_height="32dp"
         android:drawableStart="@drawable/ic_person_outline_black_32dp"
         android:drawablePadding="8dp"
+        android:paddingEnd="16dp"
         android:gravity="center_vertical"
         android:textAppearance="?attr/textAppearanceCaption"
         android:textColor="@color/speaker_name"

@@ -17,56 +17,40 @@ object DbComponentModule {
     @JvmStatic @Provides @Singleton fun provideItemStore(
         application: Application
     ): SessionDatabase {
-        return DbComponent.builder()
-            .context(application)
-            .coroutineContext(Dispatchers.IO)
-            .filename("droidkaigi.db")
-            .build()
+        return DbComponent.factory()
+            .create(application, Dispatchers.IO, "droidkaigi.db")
             .sessionDatabase()
     }
 
     @JvmStatic @Provides @Singleton fun provideSponsorStore(
         application: Application
     ): SponsorDatabase {
-        return DbComponent.builder()
-            .context(application)
-            .coroutineContext(Dispatchers.IO)
-            .filename("droidkaigi.db")
-            .build()
+        return DbComponent.factory()
+            .create(application, Dispatchers.IO, "droidkaigi.db")
             .sponsorDatabase()
     }
 
     @JvmStatic @Provides @Singleton fun provideAnnouncementStore(
         application: Application
     ): AnnouncementDatabase {
-        return DbComponent.builder()
-            .context(application)
-            .coroutineContext(Dispatchers.IO)
-            .filename("droidkaigi.db")
-            .build()
+        return DbComponent.factory()
+            .create(application, Dispatchers.IO, "droidkaigi.db")
             .announcementDatabase()
     }
 
     @JvmStatic @Provides @Singleton fun provideStaffStore(
         application: Application
     ): StaffDatabase {
-        return DbComponent.builder()
-            .context(application)
-            .coroutineContext(Dispatchers.IO)
-            .filename("droidkaigi.db")
-            .build()
+        return DbComponent.factory()
+            .create(application, Dispatchers.IO, "droidkaigi.db")
             .staffDatabase()
     }
 
     @JvmStatic @Provides @Singleton fun provideContributorStore(
         application: Application
     ): ContributorDatabase {
-        return DbComponent
-            .builder()
-            .context(application)
-            .coroutineContext(Dispatchers.IO)
-            .filename("droidkaigi.db")
-            .build()
+        return DbComponent.factory()
+            .create(application, Dispatchers.IO, "droidkaigi.db")
             .contributorDatabase()
     }
 }

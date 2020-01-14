@@ -11,7 +11,7 @@ object Dep {
             "androidx.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.version}"
         val jetifier = "com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta05"
         val licensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.9.5"
-        val crashlytics = "io.fabric.tools:gradle:1.26.1"
+        val crashlytics = "io.fabric.tools:gradle:1.28.0"
         val iconRibbonPlugin = "com.akaita.android:easylauncher:1.3.1"
         val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.22.0"
     }
@@ -164,14 +164,11 @@ object Dep {
         val okio = "com.squareup.okio:okio:1.14.0"
     }
 
-    val shopifyLiveDataKtx = "com.shopify:livedata-ktx:3.0.0"
     val liveEvent = "com.github.hadilq.liveevent:liveevent:1.0.1"
 
     object LeakCanary {
-        val version = "1.6.3"
+        val version = "2.1"
         val leakCanary = "com.squareup.leakcanary:leakcanary-android:$version"
-        val leakCanaryNoOp = "com.squareup.leakcanary:leakcanary-android-no-op:$version"
-        val leakCanaryFragment = "com.squareup.leakcanary:leakcanary-support-fragment:$version"
     }
 
     object Stetho {

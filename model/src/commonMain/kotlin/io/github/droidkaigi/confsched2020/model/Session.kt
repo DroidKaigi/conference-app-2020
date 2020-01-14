@@ -3,7 +3,6 @@ package io.github.droidkaigi.confsched2020.model
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan
 import com.soywiz.klock.TimezoneOffset
-import com.soywiz.klock.hours
 
 sealed class Session(
     open val id: SessionId,
@@ -43,10 +42,10 @@ sealed class Session(
     fun summary(lang: Lang, timezoneOffset: TimezoneOffset) = buildString {
         append(timeSummary(lang, timezoneOffset))
         append(" / ")
-        append(shortSummary())
+        append(shortSummary(lang))
     }
 
-    abstract fun shortSummary(): String
+    abstract fun shortSummary(lang: Lang): String
 
     val isFinished: Boolean
         get() = DateTime.nowUnixLong() > endTime.unixMillisLong
@@ -82,11 +81,11 @@ data class SpeechSession(
     val message: LocaledString?
 ) : Session(id, title, desc, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
 
-    override fun shortSummary() = buildString {
+    override fun shortSummary(lang: Lang) = buildString {
         append(timeInMinutes)
         append("min")
         append(" / ")
-        append(room.name)
+        append(room.name.getByLang(lang))
     }
 
     val hasVideo: Boolean = videoUrl.isNullOrEmpty().not()
@@ -106,12 +105,12 @@ data class ServiceSession(
     override val isFavorited: Boolean
 ) : Session(id, title, desc, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
 
-    override fun shortSummary() = buildString {
+    override fun shortSummary(lang: Lang) = buildString {
         append(timeInMinutes)
         append("min")
         if (sessionType.shouldShowRoom) {
             append(" / ")
-            append(room.name)
+            append(room.name.getByLang(lang))
         }
     }
 }

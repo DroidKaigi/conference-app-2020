@@ -25,6 +25,7 @@ import io.github.droidkaigi.confsched2020.model.SponsorCategory
 import io.github.droidkaigi.confsched2020.sponsor.R
 import io.github.droidkaigi.confsched2020.sponsor.databinding.FragmentSponsorsBinding
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.CategoryHeaderItem
+import io.github.droidkaigi.confsched2020.sponsor.ui.item.DividerItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.LargeSponsorItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.SponsorItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.viewmodel.SponsorsViewModel
@@ -92,7 +93,6 @@ class SponsorsFragment : DaggerFragment() {
             groupAdapter.update(
                 uiModel.sponsorCategories.map {
                     it.toSection()
-                    // TODO: Add FooterItem() if needed.
                 }
             )
             uiModel.error?.let {
@@ -108,6 +108,7 @@ class SponsorsFragment : DaggerFragment() {
                 sponsor.toItem(category)
             }
         )
+        setFooter(DividerItem())
         setHideWhenEmpty(true)
     }
 

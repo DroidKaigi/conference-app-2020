@@ -26,11 +26,9 @@ import javax.inject.Singleton
     ]
 )
 interface AppComponent : AndroidInjector<App>, AppComponentInterface {
-    @Component.Builder
-    interface Builder {
-        @BindsInstance fun application(application: Application): Builder
-
-        fun build(): AppComponent
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance application: Application): AppComponent
     }
 
     override fun inject(app: App)
@@ -40,6 +38,4 @@ interface AppComponent : AndroidInjector<App>, AppComponentInterface {
     fun contributorRepository(): ContributorRepository
 }
 
-fun Application.createAppComponent() = DaggerAppComponent.builder()
-    .application(this)
-    .build()
+fun Application.createAppComponent() = DaggerAppComponent.factory().create(this)

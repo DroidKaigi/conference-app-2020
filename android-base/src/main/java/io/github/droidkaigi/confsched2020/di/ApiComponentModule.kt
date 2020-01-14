@@ -14,9 +14,8 @@ object ApiComponentModule {
     @Provides
     @Singleton
     fun provideDroidKaigiApi(application: Application): DroidKaigiApi {
-        return ApiComponent.builder()
-            .context(application)
-            .build()
+        return ApiComponent.factory()
+            .create(application)
             .DroidKaigiApi()
     }
 
@@ -24,9 +23,8 @@ object ApiComponentModule {
     @Provides
     @Singleton
     fun provideGoogleFormApi(application: Application): GoogleFormApi {
-        return ApiComponent.builder()
-            .context(application)
-            .build()
+        return ApiComponent.factory()
+            .create(application)
             .GoogleFormApi()
     }
 }

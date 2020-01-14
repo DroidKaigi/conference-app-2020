@@ -6,7 +6,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import io.github.droidkaigi.confsched2020.data.db.internal.dao.AnnouncementDao
 import io.github.droidkaigi.confsched2020.data.db.internal.dao.ContributorDao
 import io.github.droidkaigi.confsched2020.data.db.internal.dao.SessionDao
-import io.github.droidkaigi.confsched2020.data.db.internal.dao.SessionFeedbackDao
 import io.github.droidkaigi.confsched2020.data.db.internal.dao.SessionSpeakerJoinDao
 import io.github.droidkaigi.confsched2020.data.db.internal.dao.SpeakerDao
 import io.github.droidkaigi.confsched2020.data.db.internal.dao.SponsorDao
@@ -14,7 +13,6 @@ import io.github.droidkaigi.confsched2020.data.db.internal.dao.StaffDao
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.AnnouncementEntityImpl
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.ContributorEntityImpl
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.SessionEntityImpl
-import io.github.droidkaigi.confsched2020.data.db.internal.entity.SessionFeedbackEntityImpl
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.SessionSpeakerJoinEntityImpl
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.SpeakerEntityImpl
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.SponsorEntityImpl

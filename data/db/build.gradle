@@ -6,6 +6,18 @@ apply plugin: 'kotlin-kapt'
 
 apply from: rootProject.file('gradle/android.gradle')
 
+android {
+    defaultConfig {
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.incremental": "true"
+                ]
+            }
+        }
+    }
+}
+
 kotlin {
     targets {
         fromPreset(presets.android, 'android')
@@ -59,7 +71,7 @@ kotlin {
     }
 }
 
-dependencies{
+dependencies {
     implementation project(":data:api")
     kapt Dep.AndroidX.Room.compiler
     kapt Dep.Dagger.compiler

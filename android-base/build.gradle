@@ -6,6 +6,7 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion Versions.androidCompileSdkVersion
@@ -93,6 +94,7 @@ dependencies {
     implementation Dep.AndroidX.constraint
     implementation Dep.AndroidX.activityKtx
     implementation Dep.Firebase.firestoreKtx
+    implementation Dep.Firebase.crashlytics
 
     implementation Dep.Dagger.core
     implementation Dep.Dagger.androidSupport
@@ -111,6 +113,7 @@ dependencies {
         debugImplementation it
     }
     debugImplementation Dep.Stetho.stetho
+    debugImplementation Dep.LeakCanary.leakCanary
 }
 
 apply plugin: 'com.google.gms.google-services'

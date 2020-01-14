@@ -20,18 +20,16 @@ interface DbComponent {
     fun staffDatabase(): StaffDatabase
     fun contributorDatabase(): ContributorDatabase
 
-    @Component.Builder
-    interface Builder {
-        @BindsInstance fun context(context: Context): Builder
-
-        @BindsInstance fun coroutineContext(coroutineContext: CoroutineContext): Builder
-
-        @BindsInstance fun filename(filename: String?): Builder
-
-        fun build(): DbComponent
+    @Component.Factory
+    interface Factory {
+        fun create(
+            @BindsInstance context: Context,
+            @BindsInstance coroutineContext: CoroutineContext,
+            @BindsInstance filename: String?
+        ): DbComponent
     }
 
     companion object {
-        fun builder(): Builder = DaggerDbComponent.builder()
+        fun factory(): Factory = DaggerDbComponent.factory()
     }
 }
