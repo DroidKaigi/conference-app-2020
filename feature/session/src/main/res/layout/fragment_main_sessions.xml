@@ -8,6 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?colorPrimarySurface"
         tools:context="io.github.droidkaigi.confsched2020.session.ui.SessionPagesFragment"
         >
 
@@ -16,14 +17,15 @@
             style="@style/Widget.MaterialComponents.TabLayout.PrimarySurface"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:elevation="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:tabStripEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tabGravity="fill"
             app:tabIndicatorGravity="bottom"
-            />
+            app:tabUnboundedRipple="false" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/sessions_viewpager"
