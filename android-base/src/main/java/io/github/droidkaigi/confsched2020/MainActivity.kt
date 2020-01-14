@@ -92,10 +92,10 @@ class MainActivity : DaggerAppCompatActivity() {
         setupNavigation()
         setupStatusBarColors()
 
-        binding.drawerLayout.doOnApplyWindowInsets { view, insets, initialState ->
+        binding.drawerLayout.doOnApplyWindowInsets { _, insets, _ ->
             binding.drawerLayout.setChildInsetsWorkAround(insets)
         }
-        binding.toolbar.doOnApplyWindowInsets { view, insets, initialState ->
+        binding.toolbar.doOnApplyWindowInsets { _, insets, initialState ->
             binding.toolbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 topMargin = insets.systemWindowInsetTop + initialState.margins.top
             }
