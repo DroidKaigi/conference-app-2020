@@ -1,7 +1,6 @@
-package io.github.droidkaigi.confsched2019.widget.component
+package io.github.droidkaigi.confsched2020.widget.component
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import io.mockk.MockK
 import org.junit.rules.RuleChain
 import org.junit.rules.TestRule
 import org.junit.runner.Description
