@@ -3,7 +3,6 @@ package io.github.droidkaigi.confsched2020.model
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan
 import com.soywiz.klock.TimezoneOffset
-import com.soywiz.klock.hours
 
 sealed class Session(
     open val id: SessionId,
