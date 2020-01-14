@@ -111,6 +111,7 @@ dependencies {
         debugImplementation it
     }
     debugImplementation Dep.Stetho.stetho
+    debugImplementation Dep.LeakCanary.leakCanary
 }
 
 apply plugin: 'com.google.gms.google-services'
