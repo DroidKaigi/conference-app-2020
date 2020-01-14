@@ -11,9 +11,8 @@ import javax.inject.Singleton
 object DeviceComponentModule {
     @JvmStatic @Provides @Singleton
     fun provideWifiManager(application: Application): WifiManager {
-        return DeviceComponent.builder()
-            .context(application)
-            .build()
+        return DeviceComponent.factory()
+            .create(application)
             .WifiManager()
     }
 }

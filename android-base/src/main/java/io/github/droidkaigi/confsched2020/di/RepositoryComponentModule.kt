@@ -55,23 +55,24 @@ object RepositoryComponentModule {
         context: Context,
         droidKaigiApi: DroidKaigiApi,
         googleFormApi: GoogleFormApi,
-        database: SessionDatabase,
+        sessionDatabase: SessionDatabase,
         sponsorDatabase: SponsorDatabase,
         announcementDatabase: AnnouncementDatabase,
         staffDatabase: StaffDatabase,
         contributorDatabase: ContributorDatabase,
         firestore: Firestore
     ): RepositoryComponent {
-        return RepositoryComponent.builder()
-            .context(context)
-            .droidKaigiApi(droidKaigiApi)
-            .googleFormApi(googleFormApi)
-            .database(database)
-            .sponsorDatabase(sponsorDatabase)
-            .firestore(firestore)
-            .announcementDatabase(announcementDatabase)
-            .staffDatabase(staffDatabase)
-            .contributorDatabase(contributorDatabase)
-            .build()
+        return RepositoryComponent.factory()
+            .create(
+                context,
+                droidKaigiApi,
+                googleFormApi,
+                sessionDatabase,
+                sponsorDatabase,
+                announcementDatabase,
+                staffDatabase,
+                contributorDatabase,
+                firestore
+            )
     }
 }

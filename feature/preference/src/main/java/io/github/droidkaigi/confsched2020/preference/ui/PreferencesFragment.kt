@@ -49,10 +49,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         super.onViewCreated(view, savedInstanceState)
 
         val appComponent = (requireContext().applicationContext as App).appComponent
-        val component = DaggerPreferenceComponent.builder()
-            .appComponent(appComponent)
-            .preferenceModule(PreferenceModule(this))
-            .build()
+        val component = DaggerPreferenceComponent.factory()
+            .create(appComponent, PreferenceModule(this))
         component.inject(this)
     }
 
@@ -77,11 +75,12 @@ class PreferenceModule(private val fragment: PreferencesFragment) {
     dependencies = [AppComponent::class]
 )
 interface PreferenceComponent {
-    @Component.Builder
-    interface Builder {
-        fun build(): PreferenceComponent
-        fun appComponent(appComponent: AppComponent): Builder
-        fun preferenceModule(preferenceModule: PreferenceModule): Builder
+    @Component.Factory
+    interface Factory {
+        fun create(
+            appComponent: AppComponent,
+            preferenceModule: PreferenceModule
+        ): PreferenceComponent
     }
 
     fun inject(fragment: PreferencesFragment)
