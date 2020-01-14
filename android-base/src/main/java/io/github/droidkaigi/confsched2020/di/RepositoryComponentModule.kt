@@ -64,15 +64,15 @@ object RepositoryComponentModule {
     ): RepositoryComponent {
         return RepositoryComponent.factory()
             .create(
-                context,
-                droidKaigiApi,
-                googleFormApi,
-                sessionDatabase,
-                sponsorDatabase,
-                announcementDatabase,
-                staffDatabase,
-                contributorDatabase,
-                firestore
+                context = context,
+                droidKaigiApi = droidKaigiApi,
+                googleFormApi = googleFormApi,
+                sessionDatabase = sessionDatabase,
+                sponsorDatabase = sponsorDatabase,
+                announcementDatabase = announcementDatabase,
+                staffDatabase = staffDatabase,
+                contributorDatabase = contributorDatabase,
+                firestore = firestore
             )
     }
 }
