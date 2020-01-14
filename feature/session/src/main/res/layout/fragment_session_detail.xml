@@ -110,7 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@{session.shortSummary()}"
+                    android:text="@{session.shortSummary(lang)}"
                     android:textAppearance="?textAppearanceCaption"
                     android:textColor="?android:attr/textColorSecondary"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
