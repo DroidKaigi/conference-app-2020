@@ -25,7 +25,7 @@ For Japanese speakers, please see [CONTRIBUTING.ja.md](CONTRIBUTING.ja.md)
 
 ## Requirements
 
-Android Studio 3.6 and higher. You can download it from this page.
+Android Studio 3.6 and higher. You can download it from [this page](https://developer.android.com/studio/preview).
 
 # Development Environment
 
