@@ -199,7 +199,7 @@ This project uses some modern Android libraries and source codes.
     * ConstraintLayout
     * RecyclerView
     * ...
-* [Kotlin](https://kotlinlang.org/) (Jetbrains)
+* [Kotlin](https://kotlinlang.org/) (JetBrains)
   * Stdlib
   * Coroutines
   * Coroutines Flow
@@ -212,7 +212,7 @@ This project uses some modern Android libraries and source codes.
   * AndroidSupport (Google)
   * [AssistedInject](https://github.com/square/AssistedInject) (Square)
 * [Material Components for Android](https://github.com/material-components/material-components-android) (Google)
-* [Ktor](https://ktor.io/) (Jetbrains)
+* [Ktor](https://ktor.io/) (JetBrains)
   * Android Client
   * Json
 * [OkHttp](http://square.github.io/okhttp/) (Square)
