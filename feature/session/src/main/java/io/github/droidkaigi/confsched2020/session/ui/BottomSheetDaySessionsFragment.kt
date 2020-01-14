@@ -84,7 +84,7 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
                 requireContext()
             )
         )
-        binding.startFilter.setOnClickListener { _ ->
+        binding.startFilter.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
         binding.sessionRecycler.doOnApplyWindowInsets { view, insets, initialState ->

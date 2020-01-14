@@ -20,7 +20,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.Binds
 import dagger.Module
@@ -93,10 +92,10 @@ class MainActivity : DaggerAppCompatActivity() {
         setupNavigation()
         setupStatusBarColors()
 
-        binding.drawerLayout.doOnApplyWindowInsets { view, insets, initialState ->
+        binding.drawerLayout.doOnApplyWindowInsets { _, insets, _ ->
             binding.drawerLayout.setChildInsetsWorkAround(insets)
         }
-        binding.toolbar.doOnApplyWindowInsets { view, insets, initialState ->
+        binding.toolbar.doOnApplyWindowInsets { _, insets, initialState ->
             binding.toolbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 topMargin = insets.systemWindowInsetTop + initialState.margins.top
             }
@@ -133,9 +132,9 @@ class MainActivity : DaggerAppCompatActivity() {
         }
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-        binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
+        binding.navView.setNavigationItemSelectedListener { item ->
             handleNavigation(item.itemId)
-        })
+        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             onDestinationChange(destination)

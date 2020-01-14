@@ -63,7 +63,7 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
-        binding.startFilter.setOnClickListener { _ ->
+        binding.startFilter.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
 

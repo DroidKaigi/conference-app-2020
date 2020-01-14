@@ -89,7 +89,7 @@ class SessionsFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val initialPeekHeight = sessionSheetBehavior.peekHeight
-        binding.sessionsSheet.doOnApplyWindowInsets { view, insets, initialState ->
+        binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight = insets.systemWindowInsetBottom + initialPeekHeight
         }
         sessionSheetBehavior.addBottomSheetCallback(object :
