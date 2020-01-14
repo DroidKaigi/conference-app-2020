@@ -23,7 +23,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tabGravity="fill"
-            app:tabIndicatorGravity="bottom" />
+            app:tabIndicatorGravity="bottom"
+            app:tabUnboundedRipple="false" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/sessions_viewpager"
