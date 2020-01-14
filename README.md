@@ -2,7 +2,7 @@
 
 We are currently working on the event. We are looking for contributors!
 
-DroidKaigi 2020 is a conference tailored for developers on 20th and 21th February 2020.  
+DroidKaigi 2020 is a conference tailored for developers on 20th and 21st February 2020.  
 
 You can install the prodution app via Get it on Google Play.  
 // TODO: Add link to Google Play
