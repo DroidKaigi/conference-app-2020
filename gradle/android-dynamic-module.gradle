@@ -30,20 +30,3 @@ kotlin.sourceSets.all {
         progressiveMode = true
     }
 }
-
-task androidDependenciesExtra(dependsOn: 'androidDependencies') {
-    def extraConfigurationNames = [
-            "annotationProcessor",
-            "kapt",
-            "_internal_aapt2_binary",
-            "lintClassPath"
-    ]
-
-    description 'Download extra dependencies for the CI Gradle Cache'
-    doLast {
-        // androidDependencies do not touch some configurations
-        configurations.findAll {
-            extraConfigurationNames.contains(it.name) && it.canBeResolved
-        }.files
-    }
-}

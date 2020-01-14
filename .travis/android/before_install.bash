@@ -33,4 +33,4 @@ setup_google_services_json
 setup_release_keystore
 
 prepare_custom_bins
-./gradlew dependencies
+./gradlew androidDependenciesExtra dependencies
