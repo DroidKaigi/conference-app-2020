@@ -168,10 +168,8 @@ object Dep {
     val liveEvent = "com.github.hadilq.liveevent:liveevent:1.0.1"
 
     object LeakCanary {
-        val version = "1.6.3"
+        val version = "2.1"
         val leakCanary = "com.squareup.leakcanary:leakcanary-android:$version"
-        val leakCanaryNoOp = "com.squareup.leakcanary:leakcanary-android-no-op:$version"
-        val leakCanaryFragment = "com.squareup.leakcanary:leakcanary-support-fragment:$version"
     }
 
     object Stetho {
