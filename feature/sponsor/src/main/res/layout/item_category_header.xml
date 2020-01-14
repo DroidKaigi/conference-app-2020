@@ -16,8 +16,10 @@
             android:layout_marginStart="18dp"
             android:layout_marginTop="8dp"
             android:gravity="start|center_vertical"
+            android:textAllCaps="true"
             android:textAlignment="viewStart"
-            android:textStyle="italic|bold"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            android:textColor="?colorOnSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             />

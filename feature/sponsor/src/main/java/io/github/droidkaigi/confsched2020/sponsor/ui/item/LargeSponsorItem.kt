@@ -9,19 +9,19 @@ import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Sponsor
 import io.github.droidkaigi.confsched2020.sponsor.R
-import io.github.droidkaigi.confsched2020.sponsor.databinding.ItemSponsorBinding
+import io.github.droidkaigi.confsched2020.sponsor.databinding.ItemSponsorLargeBinding
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 
-class SponsorItem @AssistedInject constructor(
+class LargeSponsorItem @AssistedInject constructor(
     @Assisted private val sponsor: Sponsor,
     @Assisted private val spanSize: Int,
     @Assisted private val systemViewModel: SystemViewModel,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
-) : BindableItem<ItemSponsorBinding>(sponsor.id.toLong()),
+) : BindableItem<ItemSponsorLargeBinding>(sponsor.id.toLong()),
     EqualableContentsProvider {
-    override fun getLayout(): Int = R.layout.item_sponsor
+    override fun getLayout(): Int = R.layout.item_sponsor_large
 
-    override fun bind(viewBinding: ItemSponsorBinding, position: Int) {
+    override fun bind(viewBinding: ItemSponsorLargeBinding, position: Int) {
         viewBinding.card.setOnClickListener {
             systemViewModel.openUrl(sponsor.company.url)
         }
@@ -54,6 +54,6 @@ class SponsorItem @AssistedInject constructor(
             sponsor: Sponsor,
             spanSize: Int,
             systemViewModel: SystemViewModel
-        ): SponsorItem
+        ): LargeSponsorItem
     }
 }
