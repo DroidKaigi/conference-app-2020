@@ -26,15 +26,14 @@ junit.tap do |plugin|
 end
 
 # Create inline comments to report checkstyle issues which happen only on modified files
-# TODO ktlint
-# checkstyle_reports.tap do |plugin|
-#   plugin.inline_comment=true
+checkstyle_reports.tap do |plugin|
+  plugin.inline_comment=true
 
-#   # Report lint warnings
-#   Dir.glob("**/checkstyle.xml").each do |xml|
-#     plugin.report(xml, modified_files_only: true)
-#   end
-# end
+  # Report lint warnings
+  Dir.glob("**/checkstyle.xml").each do |xml|
+    plugin.report(xml, modified_files_only: true)
+  end
+end
 
 # If everything is okay, say LGTM to the author
 if status_report.slice(:errors, :warnings).values.flatten.empty?

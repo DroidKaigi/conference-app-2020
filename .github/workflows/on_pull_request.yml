@@ -19,7 +19,9 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-
           ${{ runner.os }}-m2-
-    - run: ./gradlew android-base:assembleDebug
+    - run: ./gradlew androidDependenciesExtra dependencies
+      shell: bash
+    - run: ./gradlew android-base:assembleDebug --offline
       shell: bash
     - run: echo "::set-output name=path::$(find android-base -name '*.apk' | head -1)"
       id: find-apk
@@ -100,7 +102,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-
           ${{ runner.os }}-m2-
-    - run: ./gradlew lintDebug testDebug --continue
+    - run: ./gradlew lintDebug testDebug ktlint --continue
       shell: bash
     - name: Collect test results
       shell: bash
