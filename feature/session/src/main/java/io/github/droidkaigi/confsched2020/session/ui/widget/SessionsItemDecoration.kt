@@ -67,7 +67,7 @@ class SessionsItemDecoration(
         } else null
 
         var positionY =
-            view.top.coerceAtLeast(0) + sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
+            view.top.coerceAtLeast(sessionTimeTextMarginTopInPx.toInt()) + sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
         if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
             positionY = positionY.coerceAtMost(view.bottom.toFloat())
         }
