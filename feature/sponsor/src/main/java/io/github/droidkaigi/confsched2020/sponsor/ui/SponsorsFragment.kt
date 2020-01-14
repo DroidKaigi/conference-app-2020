@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.GridLayoutManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.Section
@@ -24,6 +25,7 @@ import io.github.droidkaigi.confsched2020.model.SponsorCategory
 import io.github.droidkaigi.confsched2020.sponsor.R
 import io.github.droidkaigi.confsched2020.sponsor.databinding.FragmentSponsorsBinding
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.CategoryHeaderItem
+import io.github.droidkaigi.confsched2020.sponsor.ui.item.LargeSponsorItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.SponsorItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.viewmodel.SponsorsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
@@ -43,6 +45,8 @@ class SponsorsFragment : DaggerFragment() {
     private val systemViewModel: SystemViewModel by assistedActivityViewModels {
         systemViewModelProvider.get()
     }
+
+    @Inject lateinit var largeSponsorItemFactory: LargeSponsorItem.Factory
 
     @Inject lateinit var sponsorItemFactory: SponsorItem.Factory
 
@@ -68,6 +72,14 @@ class SponsorsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        groupAdapter.spanCount = 2
+
+        binding.sponsorRecycler.layoutManager = GridLayoutManager(
+            requireContext(),
+            groupAdapter.spanCount
+        ).apply {
+            spanSizeLookup = groupAdapter.spanSizeLookup
+        }
         binding.sponsorRecycler.adapter = groupAdapter
 
         progressTimeLatch = ProgressTimeLatch { showProgress ->
@@ -100,14 +112,17 @@ class SponsorsFragment : DaggerFragment() {
     }
 
     private fun Sponsor.toItem(category: SponsorCategory.Category): Item<*> {
+        val spanSize = when (category) {
+            SponsorCategory.Category.PLATINUM -> 2
+            else -> 1
+        }
         return when (category) {
             SponsorCategory.Category.PLATINUM,
             SponsorCategory.Category.GOLD -> {
-                // TODO: Should change Large-width Design?
-                sponsorItemFactory.create(this, systemViewModel)
+                largeSponsorItemFactory.create(this, spanSize, systemViewModel)
             }
             else -> {
-                sponsorItemFactory.create(this, systemViewModel)
+                sponsorItemFactory.create(this, spanSize, systemViewModel)
             }
         }
     }

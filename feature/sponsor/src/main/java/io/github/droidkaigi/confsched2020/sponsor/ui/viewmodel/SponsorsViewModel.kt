@@ -36,7 +36,7 @@ class SponsorsViewModel @Inject constructor(
         try {
             sponsorRepository.refresh()
         } catch (ignored: Exception) {
-            // We can show sessions with cache
+            // We can show sponsors with cache
         }
     }
 
