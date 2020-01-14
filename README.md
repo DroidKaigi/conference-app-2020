@@ -185,7 +185,7 @@ This project uses some modern Android libraries and source codes.
   * Foundation
     * AppCompat
     * Android KTX
-    * Mutidex
+    * Multidex
     * Test
   * Architecture
     * Data Binding
