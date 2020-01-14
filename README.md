@@ -218,7 +218,6 @@ This project uses some modern Android libraries and source codes.
 * [OkHttp](http://square.github.io/okhttp/) (Square)
   * Client
   * LoggingInterceptor
-* [livedata-ktx](https://github.com/Shopify/livedata-ktx) (Shopify)
 * [Coil](https://github.com/coil-kt/coil) (Coil Contributors)
 * [LeakCanary](https://github.com/square/leakcanary) (Square)
 * [Stetho](http://facebook.github.io/stetho/) (Facebook)
