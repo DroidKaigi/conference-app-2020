@@ -5,4 +5,4 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
--dontwarn io.github.droidkaigi.confsched2019.model.*$Creator
+-dontwarn io.github.droidkaigi.confsched2020.model.*$Creator

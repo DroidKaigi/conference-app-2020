@@ -111,6 +111,6 @@ class SessionAlarm @Inject constructor(private val app: Application) {
         const val EXTRA_TITLE = "EXTRA_TITLE"
         const val EXTRA_TEXT = "EXTRA_TEXT"
         const val BROADCAST_RECEIVER_CLASS_NAME =
-            "io.github.droidkaigi.confsched2019.broadcastreceiver.NotificationBroadcastReceiver"
+            "io.github.droidkaigi.confsched2020.broadcastreceiver.NotificationBroadcastReceiver"
     }
 }
