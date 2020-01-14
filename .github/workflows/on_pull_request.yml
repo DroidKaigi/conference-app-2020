@@ -102,7 +102,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-
           ${{ runner.os }}-m2-
-    - run: './gradlew lintDebug testDebug ktlint --continue :: true'
+    - run: './gradlew lintDebug testDebug ktlint --continue || true'
       shell: bash
     - name: Collect test results
       shell: bash
