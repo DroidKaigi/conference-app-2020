@@ -11,7 +11,7 @@ object Dep {
             "androidx.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.version}"
         val jetifier = "com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta05"
         val licensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.9.5"
-        val crashlytics = "io.fabric.tools:gradle:1.26.1"
+        val crashlytics = "io.fabric.tools:gradle:1.28.0"
         val iconRibbonPlugin = "com.akaita.android:easylauncher:1.3.1"
         val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.22.0"
     }
