@@ -32,22 +32,22 @@ interface RepositoryComponent {
     fun staffRepository(): StaffRepository
     fun contributorRepository(): ContributorRepository
 
-    @Component.Builder
-    interface Builder {
-        @BindsInstance fun context(context: Context): Builder
-        @BindsInstance fun droidKaigiApi(api: DroidKaigiApi): Builder
-        @BindsInstance fun googleFormApi(api: GoogleFormApi): Builder
-        @BindsInstance fun database(database: SessionDatabase): Builder
-        @BindsInstance fun sponsorDatabase(database: SponsorDatabase): Builder
-        @BindsInstance fun announcementDatabase(database: AnnouncementDatabase): Builder
-        @BindsInstance fun staffDatabase(database: StaffDatabase): Builder
-        @BindsInstance fun contributorDatabase(database: ContributorDatabase): Builder
-        @BindsInstance fun firestore(firestore: Firestore): Builder
-
-        fun build(): RepositoryComponent
+    @Component.Factory
+    interface Factory {
+        fun create(
+            @BindsInstance context: Context,
+            @BindsInstance droidKaigiApi: DroidKaigiApi,
+            @BindsInstance googleFormApi: GoogleFormApi,
+            @BindsInstance sessionDatabase: SessionDatabase,
+            @BindsInstance sponsorDatabase: SponsorDatabase,
+            @BindsInstance announcementDatabase: AnnouncementDatabase,
+            @BindsInstance staffDatabase: StaffDatabase,
+            @BindsInstance contributorDatabase: ContributorDatabase,
+            @BindsInstance firestore: Firestore
+        ): RepositoryComponent
     }
 
     companion object {
-        fun builder(): Builder = DaggerRepositoryComponent.builder()
+        fun factory(): Factory = DaggerRepositoryComponent.factory()
     }
 }
