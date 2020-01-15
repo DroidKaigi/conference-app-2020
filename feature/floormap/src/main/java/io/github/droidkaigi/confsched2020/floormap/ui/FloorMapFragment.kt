@@ -41,7 +41,7 @@ class FloorMapFragment : DaggerFragment() {
             @PageScope
             @JvmStatic
             @Provides
-            fun providesLifeCycleLiveData(
+            fun providesLifecycleOwnerLiveData(
                 floorMapFragment: FloorMapFragment
             ): LiveData<LifecycleOwner> {
                 return floorMapFragment.viewLifecycleOwnerLiveData
