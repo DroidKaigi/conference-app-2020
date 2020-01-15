@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
@@ -38,6 +40,7 @@ import javax.inject.Provider
 class SessionsFragment : DaggerFragment() {
 
     private var binding: FragmentSessionsBinding by autoCleared()
+    private lateinit var overrideBackPressedCallback: OnBackPressedCallback
 
     private val sessionSheetBehavior: BottomSheetBehavior<*>
         get() {
@@ -70,6 +73,10 @@ class SessionsFragment : DaggerFragment() {
         if (savedInstanceState == null) {
             setupSessionsFragment()
         }
+        overrideBackPressedCallback =
+            requireActivity().onBackPressedDispatcher.addCallback(this, false) {
+                sessionTabViewModel.setExpand(ExpandFilterState.EXPANDED)
+            }
     }
 
     override fun onCreateView(
@@ -120,10 +127,14 @@ class SessionsFragment : DaggerFragment() {
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             when (uiModel.expandFilterState) {
-                ExpandFilterState.EXPANDED -> sessionSheetBehavior.state =
-                    BottomSheetBehavior.STATE_EXPANDED
-                ExpandFilterState.COLLAPSED -> sessionSheetBehavior.state =
-                    BottomSheetBehavior.STATE_COLLAPSED
+                ExpandFilterState.EXPANDED -> {
+                    sessionSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    overrideBackPressedCallback.isEnabled = false
+                }
+                ExpandFilterState.COLLAPSED -> {
+                    sessionSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    overrideBackPressedCallback.isEnabled = true
+                }
                 ExpandFilterState.CHANGING -> Unit
             }
         }
@@ -164,6 +175,18 @@ class SessionsFragment : DaggerFragment() {
                 sessionsViewModel.filterChanged(level, checked)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // override back button iff front layer collapsed (filter is shown)
+        overrideBackPressedCallback.isEnabled =
+            sessionSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED
+    }
+
+    override fun onPause() {
+        super.onPause()
+        overrideBackPressedCallback.isEnabled = false
     }
 
     private inline fun <reified T> ChipGroup.setupFilter(
