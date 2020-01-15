@@ -72,9 +72,9 @@ class SessionsItemDecoration(
             positionY = positionY.coerceAtMost(view.bottom.toFloat())
         }
         return StartTimeText(
-            sessionItem.startSessionTime(),
-            (sessionTimeSpaceInPx / 2).toFloat(),
-            positionY
+            value = sessionItem.startSessionTime(),
+            positionX = (sessionTimeSpaceInPx / 2).toFloat(),
+            positionY = positionY
         )
     }
 
