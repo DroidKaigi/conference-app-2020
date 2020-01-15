@@ -19,6 +19,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-
           ${{ runner.os }}-m2-
+    - uses: actions/cache@v1
+      with:
+        path: ~/.gradle
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-
+          ${{ runner.os }}-gradle-
     - run: ./gradlew androidDependenciesExtra dependencies
       shell: bash
     - run: ./gradlew android-base:assembleDebug --offline
