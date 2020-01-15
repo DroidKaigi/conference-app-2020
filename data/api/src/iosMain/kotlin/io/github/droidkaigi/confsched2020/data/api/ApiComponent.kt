@@ -18,7 +18,7 @@ internal fun generateHttpClient(): HttpClient {
         NSBundle.mainBundle.objectForInfoDictionaryKey("CFBundleShortVersionString") as String
     return HttpClient(Ios) {
         install(UserAgent) {
-            agent = "official-app-2019/$version gzip"
+            agent = "official-app-2020/$version gzip"
         }
         install(JsonFeature) {
             serializer = KotlinxSerializer(Json.nonstrict)
