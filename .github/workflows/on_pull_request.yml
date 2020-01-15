@@ -73,7 +73,7 @@ jobs:
 #          ignore_api_failure: true
       - uses: actions/cache@v1
         with:
-          path: ~/vendor/bundle
+          path: .ci/vendor/bundle
           key: ${{ runner.os }}-bundle-${{ hashFiles('.ci/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-bundle-
@@ -146,7 +146,7 @@ jobs:
           path: ${{ env.JUNIT_TEST_RESULT_DIR }}
       - uses: actions/cache@v1
         with:
-          path: ~/vendor/bundle
+          path: .ci/vendor/bundle
           key: ${{ runner.os }}-bundle-${{ hashFiles('.ci/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-bundle-
