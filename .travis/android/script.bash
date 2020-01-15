@@ -15,8 +15,10 @@ die() {
 readonly aab_path="$(find android-base -name '*.aab' | head -1)"
 java -jar bundletool-all.jar build-apks \
   --mode=universal\
-  --ks=$RELEASE_KEYSTORE_STORE_PASSWORD\
+  --ks=android-base/release.keystore\
+  --ks-pass=$RELEASE_KEYSTORE_STORE_PASSWORD\
   --ks-key-alias=$RELEASE_KEYSTORE_KEY_ALIAS\
+  --key-pass=$RELEASE_KEYSTORE_KEY_PASSWORD\
   --bundle=$aab_path\
   --output=android-base/build/universal.apk
 unzip android-base/build/universal.apks -d android-base/build/
