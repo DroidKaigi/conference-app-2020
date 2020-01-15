@@ -139,7 +139,7 @@ abstract class SearchSessionsFragmentModule {
     @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifeCycleLiveData(
+        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
             searchSessionsFragment: SearchSessionsFragment
         ): LiveData<LifecycleOwner> {
             return searchSessionsFragment.viewLifecycleOwnerLiveData

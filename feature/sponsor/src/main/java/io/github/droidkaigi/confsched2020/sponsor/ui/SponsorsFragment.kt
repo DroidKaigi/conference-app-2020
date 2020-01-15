@@ -134,7 +134,7 @@ abstract class SponsorsFragmentModule {
     @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifeCycleLiveData(
+        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
             sponsorsFragment: SponsorsFragment
         ): LiveData<LifecycleOwner> {
             return sponsorsFragment.viewLifecycleOwnerLiveData
