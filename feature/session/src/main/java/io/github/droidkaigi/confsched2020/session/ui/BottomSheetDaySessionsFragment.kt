@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
@@ -91,6 +92,8 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
             view.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
         }
 
+        binding.buttonCurrentSession.setOnClickListener { sessionsViewModel.scrollToCurrentSession() }
+
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
             binding.sessionRecycler.isVisible = when (uiModel.expandFilterState) {
@@ -119,6 +122,12 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
             uiModel.error?.let {
                 systemViewModel.onError(it)
             }
+
+            binding.buttonCurrentSession.visibility = if(uiModel.showCurrentSessionButton) View.VISIBLE else View.GONE
+        }
+
+        sessionsViewModel.scrolledSessionPositionLiveData.observe(viewLifecycleOwner) { scrollToPosition ->
+            (binding.sessionRecycler.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(scrollToPosition, 0)
         }
     }
 

@@ -38,10 +38,11 @@ class SessionsViewModel @Inject constructor(
         val dayToSessionsMap: Map<SessionPage.Day, List<Session>>,
         val favoritedSessions: List<Session>,
         val filters: Filters,
-        val allFilters: Filters
+        val allFilters: Filters,
+        val showCurrentSessionButton: Boolean
     ) {
         companion object {
-            val EMPTY = UiModel(true, null, mapOf(), listOf(), Filters(), Filters())
+            val EMPTY = UiModel(true, null, mapOf(), listOf(), Filters(), Filters(), false)
         }
     }
 
@@ -62,6 +63,12 @@ class SessionsViewModel @Inject constructor(
     private var favoriteLoadingStateLiveData: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.Loaded)
 
     private val filterLiveData: MutableLiveData<Filters> = MutableLiveData(Filters())
+
+    private var currentSessionPosition: Int = -1
+
+    private var showCurrentSessionButton: Boolean = true
+
+    val scrolledSessionPositionLiveData = MutableLiveData<Int>()
 
     // Produce UiModel
     val uiModel: LiveData<UiModel> = combine(
@@ -86,6 +93,11 @@ class SessionsViewModel @Inject constructor(
         val filteredSessions = sessionContents
             .sessions
             .filter { filters.isPass(it) }
+
+        filteredSessions.mapIndexed { index, session -> if(index == 6) session.isOnGoing = true }
+
+        this.currentSessionPosition = filteredSessions.indexOfFirst { it.isOnGoing }
+
         UiModel(
             isLoading = isLoading,
             error = sessionsLoadState
@@ -109,7 +121,8 @@ class SessionsViewModel @Inject constructor(
                 categories = sessionContents.category.toSet(),
                 langs = sessionContents.langs.toSet(),
                 langSupports = sessionContents.langSupports.toSet()
-            )
+            ),
+            showCurrentSessionButton = showCurrentSessionButton
         )
     }
 
@@ -131,6 +144,11 @@ class SessionsViewModel @Inject constructor(
         filterLiveData.value = filters.copy(
             rooms = if (checked) filters.rooms + room else filters.rooms - room
         )
+    }
+
+    fun scrollToCurrentSession() {
+        if(currentSessionPosition != -1)
+            scrolledSessionPositionLiveData.value = currentSessionPosition
     }
 
     fun filterChanged(category: Category, checked: Boolean) {

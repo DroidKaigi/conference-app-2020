@@ -9,7 +9,7 @@ sealed class Session(
     open val title: LocaledString,
     open val desc: String,
     open val dayNumber: Int,
-    open val startTime: DateTime,
+    open var startTime: DateTime,
     open val endTime: DateTime,
     open val room: Room,
     open val isFavorited: Boolean
@@ -50,8 +50,8 @@ sealed class Session(
     val isFinished: Boolean
         get() = DateTime.nowUnixLong() > endTime.unixMillisLong
 
-    val isOnGoing: Boolean
-        get() = DateTime.nowUnixLong() in startTime.unixMillisLong..endTime.unixMillisLong
+    var isOnGoing: Boolean = false
+//        get() = DateTime.nowUnixLong() in startTime.unixMillisLong..endTime.unixMillisLong
 
     val timeInMinutes: Int
         get() = TimeSpan(endTime.unixMillis - startTime.unixMillis).minutes.toInt()
@@ -65,7 +65,7 @@ sealed class Session(
 data class SpeechSession(
     override val id: SessionId,
     override val dayNumber: Int,
-    override val startTime: DateTime,
+    override var startTime: DateTime,
     override val endTime: DateTime,
     override val title: LocaledString,
     override val desc: String,
@@ -96,7 +96,7 @@ data class SpeechSession(
 data class ServiceSession(
     override val id: SessionId,
     override val dayNumber: Int,
-    override val startTime: DateTime,
+    override var startTime: DateTime,
     override val endTime: DateTime,
     override val title: LocaledString,
     override val desc: String,
