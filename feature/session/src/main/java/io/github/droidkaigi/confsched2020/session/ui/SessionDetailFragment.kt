@@ -27,7 +27,11 @@ import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
-import io.github.droidkaigi.confsched2020.model.*
+import io.github.droidkaigi.confsched2020.model.Session
+import io.github.droidkaigi.confsched2020.model.Speaker
+import io.github.droidkaigi.confsched2020.model.SpeechSession
+import io.github.droidkaigi.confsched2020.model.defaultLang
+import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.actionSessionToSpeaker
