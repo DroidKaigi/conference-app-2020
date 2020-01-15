@@ -77,7 +77,7 @@ jobs:
           key: ${{ runner.os }}-bundle-${{ hashFiles('.ci/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-bundle-
-      - run: bundle check || bundle install --path=vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
+      - run: bundle check || bundle install --path=~/vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
 #      - run: bundle exec --gemfile=.ci/Gemfile danger --dangerfile=".ci/danger/post_deploygate.Dangerfile" --danger_id='post_deploygate' --remove-previous-comments
 #        env:
 #          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -150,7 +150,7 @@ jobs:
           key: ${{ runner.os }}-bundle-${{ hashFiles('.ci/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-bundle-
-      - run: bundle check || bundle install --path=vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
+      - run: bundle check || bundle install --path=~/vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
 #      - run: bundle exec --gemfile=.ci/Gemfile danger --dangerfile=".ci/danger/static_analysis.Dangerfile" --danger_id='static_analysis' --remove-previous-comments
 #        env:
 #          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}

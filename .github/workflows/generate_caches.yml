@@ -1,9 +1,10 @@
 name: Genarate caches
 
-on:
-  push:
-    branches:
-      - master # specify default branch and main base branch
+on: pull_request
+
+#  push:
+#    branches:
+#      - master # specify default branch and main base branch
 
 jobs:
   ganerate-m2-cache:
@@ -24,7 +25,6 @@ jobs:
         shell: bash
 
   ganerate-bundle-cache:
-    needs: ganerate-m2-cache
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -39,4 +39,4 @@ jobs:
           key: ${{ runner.os }}-bundle-${{ hashFiles('.ci/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-bundle-
-      - run: bundle check || bundle install --path=vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
+      - run: bundle check || bundle install --path=~/vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
