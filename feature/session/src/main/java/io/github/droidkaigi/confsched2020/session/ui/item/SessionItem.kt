@@ -77,34 +77,27 @@ class SessionItem @AssistedInject constructor(
         )).forEach { index ->
             val existSpeakerView = getChildAt(index) as? ViewGroup
             val speaker: Speaker? = (session as? SpeechSession)?.speakers?.getOrNull(index)
-            if (existSpeakerView == null && speaker == null) {
-                return@forEach
-            }
-            if (existSpeakerView != null && speaker == null) {
+            if (speaker == null) {
                 // Cache for performance
-                existSpeakerView.isVisible = false
+                existSpeakerView?.isVisible = false
                 return@forEach
             }
-            if (existSpeakerView == null && speaker != null) {
-                val speakerView = layoutInflater.get(context).inflate(
+            val speakerView = if (existSpeakerView == null) {
+                // NOTE: attachToRoot: true changes return value. https://stackoverflow.com/q/41491744/1474113
+                val view = layoutInflater.get(context).inflate(
                     R.layout.layout_speaker, this, false
                 ) as ViewGroup
-                speakerView.setOnClickListener {
-                    it.findNavController().navigate(actionSessionToSpeaker(speaker.id))
-                }
-                val textView: TextView = speakerView.findViewById(R.id.speaker)
-                bindSpeakerData(speaker, textView)
-
-                addView(speakerView)
-                return@forEach
-            }
-            if (existSpeakerView != null && speaker != null) {
+                addView(view)
+                view
+            } else {
                 existSpeakerView.isVisible = true
-
-                val textView: TextView = existSpeakerView.findViewById(R.id.speaker)
-                textView.text = speaker.name
-                bindSpeakerData(speaker, textView)
+                existSpeakerView
             }
+            speakerView.setOnClickListener {
+                it.findNavController().navigate(actionSessionToSpeaker(speaker.id))
+            }
+            val textView: TextView = speakerView.findViewById(R.id.speaker)
+            bindSpeakerData(speaker, textView)
         }
     }
 
