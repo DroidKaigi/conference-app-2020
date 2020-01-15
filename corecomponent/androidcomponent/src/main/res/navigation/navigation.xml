@@ -140,8 +140,11 @@
     <fragment
         android:id="@+id/announcement"
         android:name="io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment"
-        android:label="@string/announce_label"
-        />
+        android:label="@string/announce_label">
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="https://droidkaigi.jp/2019/announcement" />
+    </fragment>
     <fragment
         android:id="@+id/about"
         android:name="io.github.droidkaigi.confsched2020.about.ui.AboutFragment"
