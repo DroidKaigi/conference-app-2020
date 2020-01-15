@@ -38,7 +38,6 @@ class SessionsItemDecoration(
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
-        var lastStartTimeText: StartTimeText? = null
         parent.forEach { view ->
             val position = parent.getChildAdapterPosition(view)
             if (position == RecyclerView.NO_POSITION) return
@@ -46,10 +45,10 @@ class SessionsItemDecoration(
             val sessionItem = adapter.getItem(position) as SessionItem
             val startTimeText = calcTimeText(position, view)
 
-            lastStartTimeText?.let {
-                if (sessionItem.startSessionTime() == it.value) return@forEach
+            if ((position > 0)) {
+                val lastSession = adapter.getItem(position - 1) as SessionItem
+                if (sessionItem.startSessionTime() == lastSession.startSessionTime()) return@forEach
             }
-            lastStartTimeText = startTimeText
 
             c.drawText(
                 startTimeText.value,
