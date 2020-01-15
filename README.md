@@ -185,7 +185,7 @@ This project uses some modern Android libraries and source codes.
   * Foundation
     * AppCompat
     * Android KTX
-    * Mutidex
+    * Multidex
     * Test
   * Architecture
     * Data Binding
@@ -199,7 +199,7 @@ This project uses some modern Android libraries and source codes.
     * ConstraintLayout
     * RecyclerView
     * ...
-* [Kotlin](https://kotlinlang.org/) (Jetbrains)
+* [Kotlin](https://kotlinlang.org/) (JetBrains)
   * Stdlib
   * Coroutines
   * Coroutines Flow
@@ -212,13 +212,12 @@ This project uses some modern Android libraries and source codes.
   * AndroidSupport (Google)
   * [AssistedInject](https://github.com/square/AssistedInject) (Square)
 * [Material Components for Android](https://github.com/material-components/material-components-android) (Google)
-* [Ktor](https://ktor.io/) (Jetbrains)
+* [Ktor](https://ktor.io/) (JetBrains)
   * Android Client
   * Json
 * [OkHttp](http://square.github.io/okhttp/) (Square)
   * Client
   * LoggingInterceptor
-* [livedata-ktx](https://github.com/Shopify/livedata-ktx) (Shopify)
 * [Coil](https://github.com/coil-kt/coil) (Coil Contributors)
 * [LeakCanary](https://github.com/square/leakcanary) (Square)
 * [Stetho](http://facebook.github.io/stetho/) (Facebook)

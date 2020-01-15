@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2020.ui.widget;
+package io.github.droidkaigi.confsched2020.ui.widget
 
 import android.content.Context
 import android.util.AttributeSet

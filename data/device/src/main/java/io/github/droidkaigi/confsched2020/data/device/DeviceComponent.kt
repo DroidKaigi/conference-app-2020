@@ -15,14 +15,12 @@ import javax.inject.Singleton
 interface DeviceComponent {
     fun WifiManager(): WifiManager
 
-    @Component.Builder
-    interface Builder {
-        @BindsInstance fun context(context: Context): Builder
-
-        fun build(): DeviceComponent
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance context: Context): DeviceComponent
     }
 
     companion object {
-        fun builder(): Builder = DaggerDeviceComponent.builder()
+        fun factory(): Factory = DaggerDeviceComponent.factory()
     }
 }

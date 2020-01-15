@@ -37,7 +37,6 @@ open class App : DaggerApplication(), AppComponentHolder {
         FirebaseApp.initializeApp(this)
         val firestore = FirebaseFirestore.getInstance()
         val settings = FirebaseFirestoreSettings.Builder()
-            .setTimestampsInSnapshotsEnabled(true)
             .setPersistenceEnabled(true)
             .build()
         firestore.setFirestoreSettings(settings)

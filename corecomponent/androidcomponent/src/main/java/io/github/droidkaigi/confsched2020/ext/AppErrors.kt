@@ -1,8 +1,6 @@
 package io.github.droidkaigi.confsched2020.ext
 
 import androidx.annotation.StringRes
-import androidx.core.os.OperationCanceledException
-import androidx.work.WorkInfo
 import com.google.firebase.firestore.FirebaseFirestoreException
 import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.widget.component.R

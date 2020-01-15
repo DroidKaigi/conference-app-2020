@@ -84,7 +84,10 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
                 requireContext()
             )
         )
-        binding.startFilter.setOnClickListener { _ ->
+        binding.startFilter.setOnClickListener {
+            sessionTabViewModel.toggleExpand()
+        }
+        binding.expandLess.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
         binding.sessionRecycler.doOnApplyWindowInsets { view, insets, initialState ->
@@ -95,6 +98,18 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
             TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
             binding.sessionRecycler.isVisible = when (uiModel.expandFilterState) {
                 ExpandFilterState.EXPANDED, ExpandFilterState.CHANGING ->
+                    true
+                else ->
+                    false
+            }
+            binding.startFilter.visibility = when (uiModel.expandFilterState) {
+                ExpandFilterState.EXPANDED, ExpandFilterState.CHANGING ->
+                    View.VISIBLE
+                else ->
+                    View.INVISIBLE
+            }
+            binding.expandLess.isVisible = when (uiModel.expandFilterState) {
+                ExpandFilterState.COLLAPSED ->
                     true
                 else ->
                     false

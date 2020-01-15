@@ -84,12 +84,13 @@
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/room_filters"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        app:chipSpacingVertical="@dimen/session_filter_chip_vertical_margin"
                         app:layout_constraintEnd_toEndOf="@id/guideline_end"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/guideline_start"
                         app:layout_constraintTop_toBottomOf="@id/filter_room_title"
                         />
 
@@ -107,12 +108,13 @@
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/language_filters"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        app:chipSpacingVertical="@dimen/session_filter_chip_vertical_margin"
                         app:layout_constraintEnd_toEndOf="@id/guideline_end"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/guideline_start"
                         app:layout_constraintTop_toBottomOf="@id/filter_language_title"
                         />
 
@@ -130,12 +132,13 @@
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/audience_category_filters"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        app:chipSpacingVertical="@dimen/session_filter_chip_vertical_margin"
                         app:layout_constraintEnd_toEndOf="@id/guideline_end"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/guideline_start"
                         app:layout_constraintTop_toBottomOf="@id/filter_audience_category_title"
                         />
 
@@ -153,12 +156,13 @@
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/category_filters"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        app:chipSpacingVertical="@dimen/session_filter_chip_vertical_margin"
                         app:layout_constraintEnd_toEndOf="@id/guideline_end"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/guideline_start"
                         app:layout_constraintTop_toBottomOf="@id/filter_category_title"
                         />
 
@@ -176,12 +180,13 @@
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/language_support_filters"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        app:chipSpacingVertical="@dimen/session_filter_chip_vertical_margin"
                         app:layout_constraintEnd_toEndOf="@id/guideline_end"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/guideline_start"
                         app:layout_constraintTop_toBottomOf="@id/filter_language_support_title"
                         />
 

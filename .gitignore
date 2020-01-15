@@ -207,6 +207,9 @@ fabric.properties
 !.idea/codeStyles/
 .idea/codeStyles/**
 !.idea/codeStyles/Project.xml
+!.idea/dictionaries/
+.idea/dictionaries/**
+!.idea/dictionaries/Project.xml
 # Created by https://www.gitignore.io/api/macos
 # Edit at https://www.gitignore.io/?templates=macos
 

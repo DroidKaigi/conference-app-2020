@@ -189,7 +189,7 @@ abstract class SessionDetailFragmentModule {
     @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifeCycleLiveData(
+        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
             sessionDetailFragment: SessionDetailFragment
         ): LiveData<LifecycleOwner> {
             return sessionDetailFragment.viewLifecycleOwnerLiveData

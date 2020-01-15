@@ -89,7 +89,7 @@ abstract class AboutFragmentModule {
         @PageScope
         @JvmStatic
         @Provides
-        fun providesLifeCycleLiveData(
+        fun providesLifecycleOwnerLiveData(
             aboutFragment: AboutFragment
         ): LiveData<LifecycleOwner> {
             return aboutFragment.viewLifecycleOwnerLiveData

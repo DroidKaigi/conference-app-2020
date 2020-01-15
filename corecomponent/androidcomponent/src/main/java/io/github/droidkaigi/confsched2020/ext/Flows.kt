@@ -1,11 +1,8 @@
 package io.github.droidkaigi.confsched2020.ext
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
 import io.github.droidkaigi.confsched2020.model.LoadState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 

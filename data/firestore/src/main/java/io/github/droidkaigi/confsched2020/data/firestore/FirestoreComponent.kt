@@ -15,15 +15,12 @@ import kotlin.coroutines.CoroutineContext
 interface FirestoreComponent {
     fun firestore(): Firestore
 
-    @Component.Builder
-    interface Builder {
-
-        @BindsInstance fun coroutineContext(coroutineContext: CoroutineContext): Builder
-
-        fun build(): FirestoreComponent
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance coroutineContext: CoroutineContext): FirestoreComponent
     }
 
     companion object {
-        fun builder(): Builder = DaggerFirestoreComponent.builder()
+        fun factory(): Factory = DaggerFirestoreComponent.factory()
     }
 }

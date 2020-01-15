@@ -15,13 +15,13 @@ import dagger.Component
 import dagger.Module
 import dagger.Provides
 import io.github.droidkaigi.confsched2020.App
-import io.github.droidkaigi.confsched2020.di.AppComponent
-import io.github.droidkaigi.confsched2020.di.PageScope
-import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.contributor.R
 import io.github.droidkaigi.confsched2020.contributor.databinding.FragmentContributorsBinding
 import io.github.droidkaigi.confsched2020.contributor.ui.di.ContributorAssistedInjectModule
 import io.github.droidkaigi.confsched2020.contributor.ui.viewmodel.ContributorsViewModel
+import io.github.droidkaigi.confsched2020.di.AppComponent
+import io.github.droidkaigi.confsched2020.di.PageScope
+import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
@@ -55,10 +55,8 @@ class ContributorsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val appComponent = (requireContext().applicationContext as App).appComponent
-        val component = DaggerContributorComponent.builder()
-            .appComponent(appComponent)
-            .contributorModule(ContributorModule(this))
-            .build()
+        val component = DaggerContributorComponent.factory()
+            .create(appComponent, ContributorModule(this))
         component.inject(this)
 
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
@@ -93,11 +91,12 @@ class ContributorModule(private val fragment: ContributorsFragment) {
     dependencies = [AppComponent::class]
 )
 interface ContributorComponent {
-    @Component.Builder
-    interface Builder {
-        fun build(): ContributorComponent
-        fun appComponent(appComponent: AppComponent): Builder
-        fun contributorModule(contributorModule: ContributorModule): Builder
+    @Component.Factory
+    interface Factory {
+        fun create(
+            appComponent: AppComponent,
+            contributorModule: ContributorModule
+        ): ContributorComponent
     }
 
     fun inject(fragment: ContributorsFragment)
