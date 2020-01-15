@@ -3,11 +3,13 @@ package io.github.droidkaigi.confsched2020
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
@@ -92,8 +94,21 @@ class MainActivity : DaggerAppCompatActivity() {
         setupNavigation()
         setupStatusBarColors()
 
-        binding.drawerLayout.doOnApplyWindowInsets { _, insets, _ ->
+        binding.drawerLayout.doOnApplyWindowInsets { _, insets, initialState ->
             binding.drawerLayout.setChildInsetsWorkAround(insets)
+            binding.contentContainer.updatePadding(
+                left = insets.systemWindowInsetLeft + initialState.margins.left,
+                right = insets.systemWindowInsetRight + initialState.margins.right
+            )
+            binding.navView.apply {
+                // On seascape mode only, nav bar is overlapped with DrawerLayout.
+                // So set left padding and reset width.
+                val leftSpace = insets.systemWindowInsetLeft + initialState.margins.left
+                updatePadding(left = leftSpace)
+                updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    width = resources.getDimensionPixelSize(R.dimen.nav_drawer_width) + leftSpace
+                }
+            }
         }
         binding.toolbar.doOnApplyWindowInsets { _, insets, initialState ->
             binding.toolbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
