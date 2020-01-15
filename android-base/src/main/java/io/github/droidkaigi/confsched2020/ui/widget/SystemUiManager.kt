@@ -58,11 +58,8 @@ class SystemUiManager(
             0
         } else {
             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        } or if (isLandscape()) {
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        } else {
-            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         } or
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
             View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
 
@@ -100,15 +97,6 @@ class SystemUiManager(
             Configuration.UI_MODE_NIGHT_YES -> true
             Configuration.UI_MODE_NIGHT_NO -> false
             Configuration.UI_MODE_NIGHT_UNDEFINED -> false
-            else -> false
-        }
-    }
-
-    private fun isLandscape(): Boolean {
-        return when (context.resources.configuration.orientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> true
-            Configuration.ORIENTATION_PORTRAIT -> false
-            Configuration.ORIENTATION_UNDEFINED -> false
             else -> false
         }
     }
