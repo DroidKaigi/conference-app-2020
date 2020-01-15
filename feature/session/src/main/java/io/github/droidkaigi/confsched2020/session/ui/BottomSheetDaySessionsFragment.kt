@@ -123,7 +123,7 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
                 systemViewModel.onError(it)
             }
 
-            binding.buttonCurrentSession.visibility = if(uiModel.showCurrentSessionButton) View.VISIBLE else View.GONE
+            binding.buttonCurrentSession.isVisible = uiModel.showCurrentSessionButton
         }
 
         sessionsViewModel.scrolledSessionPositionLiveData.observe(viewLifecycleOwner) { scrollToPosition ->

@@ -120,7 +120,12 @@ class SessionsViewModel @Inject constructor(
                 langs = sessionContents.langs.toSet(),
                 langSupports = sessionContents.langSupports.toSet()
             ),
-            showCurrentSessionButton = showCurrentSessionButton
+
+            /*
+                show current session button only if
+                there is an ongoing session in the list
+             */
+            showCurrentSessionButton = (currentSessionPosition != -1)
         )
     }
 
