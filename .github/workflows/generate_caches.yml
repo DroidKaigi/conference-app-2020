@@ -1,0 +1,42 @@
+name: Genarate caches
+
+on:
+  push:
+    branches:
+      - master # specify default branch and main base branch
+
+jobs:
+  ganerate-m2-cache:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '8'
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-
+            ${{ runner.os }}-m2-
+      - run: ./gradlew androidDependenciesExtra dependencies
+        shell: bash
+
+  ganerate-bundle-cache:
+    needs: ganerate-m2-cache
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo "::set-output name=version::$(cat .ruby-version)"
+        id: ruby
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ steps.ruby.outputs.version }}
+      - uses: actions/cache@v1
+        with:
+          path: ~/vendor/bundle
+          key: ${{ runner.os }}-bundle-${{ hashFiles('.ci/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bundle-
+      - run: bundle check || bundle install --path=vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
