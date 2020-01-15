@@ -50,8 +50,8 @@ sealed class Session(
     val isFinished: Boolean
         get() = DateTime.nowUnixLong() > endTime.unixMillisLong
 
-    var isOnGoing: Boolean = false
-//        get() = DateTime.nowUnixLong() in startTime.unixMillisLong..endTime.unixMillisLong
+    val isOnGoing: Boolean
+        get() = DateTime.nowUnixLong() in startTime.unixMillisLong..endTime.unixMillisLong
 
     val timeInMinutes: Int
         get() = TimeSpan(endTime.unixMillis - startTime.unixMillis).minutes.toInt()

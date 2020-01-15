@@ -94,8 +94,6 @@ class SessionsViewModel @Inject constructor(
             .sessions
             .filter { filters.isPass(it) }
 
-        filteredSessions.mapIndexed { index, session -> if(index == 6) session.isOnGoing = true }
-
         this.currentSessionPosition = filteredSessions.indexOfFirst { it.isOnGoing }
 
         UiModel(
