@@ -1,0 +1,22 @@
+name: DroidKaigi 2020
+settings:
+    PRODUCT_BUNDLE_IDENTIFIER: io.github.droidkaigi.confsched2020.DroidKaigi-2020
+targets:
+    DroidKaigi 2020:
+        type: application
+        platform: iOS
+        deploymentTarget: "13.2"
+        sources: DroidKaigi 2020
+        dependencies:
+            - framework: ../data/api/build/bin/iosX64/releaseFramework/api.framework
+    DroidKaigi 2020Tests:
+        type: bundle.unit-test
+        platform: iOS
+        deploymentTarget: "13.2"
+        sources: DroidKaigi 2020Tests
+    DroidKaigi 2020UITests:
+        type: bundle.ui-testing
+        platform: iOS
+        deploymentTarget: "13.2"
+        sources: DroidKaigi 2020UITests
+
