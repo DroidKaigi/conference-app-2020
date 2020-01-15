@@ -7,6 +7,8 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -81,6 +83,13 @@ class SearchSessionsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.searchSessionRecycler.adapter = groupAdapter
+
+        binding.searchSessionRecycler.setOnApplyWindowInsetsListener { _, insets->
+            binding.searchSessionRecycler.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                bottomMargin = insets.systemWindowInsetBottom
+            }
+            insets
+        }
 
         searchSessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SearchSessionsViewModel.UiModel ->
             groupAdapter.clear()
