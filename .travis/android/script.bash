@@ -20,7 +20,7 @@ java -jar bundletool-all.jar build-apks \
   --ks-key-alias=$RELEASE_KEYSTORE_KEY_ALIAS\
   --key-pass=pass:$RELEASE_KEYSTORE_KEY_PASSWORD\
   --bundle=$aab_path\
-  --output=android-base/build/universal.apk
+  --output=android-base/build/universal.apks
 unzip android-base/build/universal.apks -d android-base/build/
 
 readonly apk_path="$(find android-base -name '*.apk' | head -1)"
