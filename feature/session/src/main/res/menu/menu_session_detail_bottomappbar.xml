@@ -10,4 +10,12 @@
         app:iconTint="?attr/colorOnPrimarySurface"
         app:showAsAction="ifRoom"
         />
+
+    <item
+        android:id="@+id/floormap"
+        android:icon="@drawable/ic_place_black_24dp"
+        android:title="@string/map_label"
+        app:iconTint="?attr/colorOnPrimarySurface"
+        app:showAsAction="ifRoom"
+        />
 </menu>
