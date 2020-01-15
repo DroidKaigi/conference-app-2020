@@ -86,14 +86,14 @@ class SearchSessionsFragment : DaggerFragment() {
             groupAdapter.clear()
 
             if (uiModel.searchResult.speakers.isNotEmpty()) {
-                groupAdapter.add(sectionHeaderItemFactory.create("Speaker"))
+                groupAdapter.add(sectionHeaderItemFactory.create(resources.getString(R.string.speaker)))
                 groupAdapter.addAll(uiModel.searchResult.speakers.map {
                     speakerItemFactory.create(it)
                 })
             }
             
             if (uiModel.searchResult.sessions.isNotEmpty()) {
-                groupAdapter.add(sectionHeaderItemFactory.create("Session"))
+                groupAdapter.add(sectionHeaderItemFactory.create(resources.getString(R.string.session)))
                 groupAdapter.addAll(uiModel.searchResult.sessions.map {
                     sessionItemFactory.create(it, sessionsViewModel)
                 })
@@ -106,7 +106,7 @@ class SearchSessionsFragment : DaggerFragment() {
         inflater.inflate(R.menu.menu_search_sessions, menu)
         val searchView = menu.findItem(R.id.search_view).actionView as SearchView
         searchView.isIconified = false
-        searchView.queryHint = "検索する"
+        searchView.queryHint = resources.getString(R.string.query_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(s: String): Boolean {
                 return false

@@ -12,4 +12,7 @@
     <string name="filter_audience_category" translatable="false">Level</string>
     <string name="filter_category" translatable="false">Category</string>
     <string name="filter_language_support" translatable="false">Language Support</string>
+    <string name="speaker">Speaker</string>
+    <string name="session">Session</string>
+    <string name="query_hint">Search</string>
 </resources>
