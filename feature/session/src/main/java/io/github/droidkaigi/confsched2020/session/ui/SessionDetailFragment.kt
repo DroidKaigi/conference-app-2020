@@ -102,8 +102,6 @@ class SessionDetailFragment : DaggerFragment() {
             // ignore if current destination is selected
             if (navController.currentDestination?.id == itemId) return false
             val builder = NavOptions.Builder()
-                .setLaunchSingleTop(true)
-                .setPopUpTo(R.id.main, false)
                 .setEnterAnim(R.anim.fade_in)
                 .setExitAnim(R.anim.fade_out)
                 .setPopEnterAnim(R.anim.fade_in)
