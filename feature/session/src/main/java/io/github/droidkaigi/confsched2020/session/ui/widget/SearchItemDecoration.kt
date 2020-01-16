@@ -8,13 +8,14 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.getColorOrThrow
 import androidx.core.content.res.getDimensionOrThrow
 import androidx.core.content.res.getResourceIdOrThrow
+import androidx.core.view.forEach
 import androidx.recyclerview.widget.RecyclerView
 import io.github.droidkaigi.confsched2020.session.R
 
 class SearchItemDecoration(
     context: Context,
     private val getGroupId: (position: Int) -> Long,
-    private val getInitial: (Int) -> String
+    private val getInitial: (position: Int) -> String
 ) : RecyclerView.ItemDecoration() {
 
     private val textPaint: TextPaint
@@ -55,14 +56,12 @@ class SearchItemDecoration(
         super.onDraw(c, parent, state)
 
         val totalItemCount = state.itemCount
-        val childCount = parent.childCount
         val lineHeight = textPaint.textSize + fontMetrics.descent
         var previousGroupId: Long
         var groupId: Long = EMPTY_ID
 
-        (0 until childCount).forEach {
-            val view = parent.getChildAt(it)
-            val position = parent.getChildAdapterPosition(view)
+        parent.forEach { childView ->
+            val position = parent.getChildAdapterPosition(childView)
             if (position < 0) return@forEach
             // Acquires the first character of the immediately preceding character and the Id of the character to be checked this time
             previousGroupId = groupId
@@ -78,8 +77,8 @@ class SearchItemDecoration(
 
             // drawing
             val positionX = labelPadding - textPaint.measureText(initial) / 2
-            val viewTop = view.top + labelPadding
-            val viewBottom = view.bottom + view.paddingBottom
+            val viewTop = childView.top + labelPadding
+            val viewBottom = childView.bottom + childView.paddingBottom
             var textY = viewTop.coerceAtLeast(labelPadding) + lineHeight / 2
             if (position + 1 < totalItemCount) {
                 val nextGroupId = getGroupId(position + 1)
