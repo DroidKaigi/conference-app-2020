@@ -6,7 +6,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -16,6 +19,7 @@ import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
@@ -82,6 +86,10 @@ class SearchSessionsFragment : DaggerFragment() {
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.searchSessionRecycler.adapter = groupAdapter
 
+        binding.searchSessionRecycler.doOnApplyWindowInsets { view, insets, initialState ->
+            view.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+        }
+
         searchSessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SearchSessionsViewModel.UiModel ->
             groupAdapter.clear()
 
@@ -105,6 +113,12 @@ class SearchSessionsFragment : DaggerFragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_search_sessions, menu)
         val searchView = menu.findItem(R.id.search_view).actionView as SearchView
+        (searchView.findViewById(androidx.appcompat.R.id.search_button) as ImageView).setColorFilter(
+            ContextCompat.getColor(requireContext(), R.color.search_icon)
+        )
+        (searchView.findViewById(androidx.appcompat.R.id.search_close_btn) as ImageView).setColorFilter(
+            ContextCompat.getColor(requireContext(), R.color.search_close_icon)
+        )
         searchView.isIconified = false
         searchView.queryHint = resources.getString(R.string.query_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -131,7 +145,7 @@ abstract class SearchSessionsFragmentModule {
     @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifeCycleLiveData(
+        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
             searchSessionsFragment: SearchSessionsFragment
         ): LiveData<LifecycleOwner> {
             return searchSessionsFragment.viewLifecycleOwnerLiveData
