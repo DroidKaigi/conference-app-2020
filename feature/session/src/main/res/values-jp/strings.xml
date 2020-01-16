@@ -5,4 +5,5 @@
     <string name="intended_audience_title">対象者</string>
     <string name="applicable_session">該当セッション: %1$d</string>
     <string name="filter_reset">リセット</string>
+    <string name="ellipsis_label">続きを読む</string>
 </resources>
