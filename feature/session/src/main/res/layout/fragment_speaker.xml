@@ -149,12 +149,13 @@
 
                 <TextView
                     android:id="@+id/speaker_session_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@{speechSession.title.getByLang(lang)}"
                     android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
                     app:isVisible="@{speechSession.hasSpeaker}"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/speaker_session_title"
                     tools:text="DroidKaigi App Architecture"
