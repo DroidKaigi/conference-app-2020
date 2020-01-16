@@ -71,6 +71,27 @@ class SessionItem @AssistedInject constructor(
         viewBinding.speakers.bindSpeaker()
     }
 
+    override fun bind(
+        viewBinding: ItemSessionBinding,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) {
+            bind(viewBinding, position)
+        } else {
+            payloads.forEach { payload ->
+                if (payload is FavoritePayload) {
+                    viewBinding.favorite.setImageResource(
+                        if (payload.isFavorited)
+                            R.drawable.ic_bookmark_black_24dp
+                        else
+                            R.drawable.ic_bookmark_border_black_24dp
+                    )
+                }
+            }
+        }
+    }
+
     private fun ViewGroup.bindSpeaker() {
         (0 until max(
             size, (session as? SpeechSession)?.speakers.orEmpty().size
@@ -158,12 +179,23 @@ class SessionItem @AssistedInject constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-        return isSameContents(other)
+        val other = other as? SessionItem ?: return false
+        return when {
+            isSameContents(other) -> true
+            session.id == other.session.id
+                    && session.isFavorited != other.session.isFavorited -> {
+                other.notifyChanged(FavoritePayload(session.isFavorited))
+                true
+            }
+            else -> false
+        }
     }
 
     override fun hashCode(): Int {
         return contentsHash()
     }
+
+    private data class FavoritePayload(val isFavorited: Boolean)
 
     @AssistedInject.Factory
     interface Factory {
