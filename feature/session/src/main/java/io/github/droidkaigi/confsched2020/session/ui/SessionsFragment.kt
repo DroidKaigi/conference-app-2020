@@ -31,12 +31,13 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewMod
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.ui.widget.FilterChip
 import io.github.droidkaigi.confsched2020.ui.widget.onCheckedChanged
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class SessionsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentSessionsBinding
+    private var binding: FragmentSessionsBinding by autoCleared()
 
     private val sessionSheetBehavior: BottomSheetBehavior<*>
         get() {
