@@ -29,7 +29,7 @@ class SystemUiManager(
     private val drawerIsOpened: Boolean
         get() = drawerSlideOffset >= DRAWER_OFFSET_OPEN_THRESHOLD
 
-    var isIndigoBackground: Boolean = false
+    var isIndigoBackground: Boolean? = null
         set(value) {
             if (field != value) {
                 field = value
@@ -54,7 +54,7 @@ class SystemUiManager(
         // | No                | Black/Invisible | Black/Invisible |
 
         // Icon color: change based on theme with View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        _systemUiVisibility.value = if (isIndigoBackground || isNightMode()) {
+        _systemUiVisibility.value = if (isIndigoBackground == true || isNightMode()) {
             0
         } else {
             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -64,7 +64,8 @@ class SystemUiManager(
             View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
 
         // Status bar color
-        _statusBarColor.value = if ((isIndigoBackground || isNightMode()) && drawerIsOpened) {
+        _statusBarColor.value =
+            if ((isIndigoBackground == true || isNightMode()) && drawerIsOpened) {
             COLOR_STATUS_BAR_VISIBLE
         } else {
             COLOR_STATUS_BAR_INVISIBLE
@@ -83,7 +84,8 @@ class SystemUiManager(
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
         // Status bar color
-        _statusBarColor.value = if (!(isIndigoBackground || isNightMode()) || drawerIsOpened) {
+        _statusBarColor.value =
+            if (!(isIndigoBackground == true || isNightMode()) || drawerIsOpened) {
             COLOR_STATUS_BAR_VISIBLE
         } else {
             COLOR_STATUS_BAR_INVISIBLE

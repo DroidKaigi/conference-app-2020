@@ -120,7 +120,7 @@ class AnnouncementFragment : DaggerFragment() {
             @PageScope
             @JvmStatic
             @Provides
-            fun providesLifeCycleLiveData(
+            fun providesLifecycleOwnerLiveData(
                 announcementFragment: AnnouncementFragment
             ): LiveData<LifecycleOwner> {
                 return announcementFragment.viewLifecycleOwnerLiveData
