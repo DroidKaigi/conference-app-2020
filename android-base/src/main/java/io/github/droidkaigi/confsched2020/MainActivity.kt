@@ -97,13 +97,13 @@ class MainActivity : DaggerAppCompatActivity() {
         binding.drawerLayout.doOnApplyWindowInsets { _, insets, initialState ->
             binding.drawerLayout.setChildInsetsWorkAround(insets)
             binding.contentContainer.updatePadding(
-                left = insets.systemWindowInsetLeft + initialState.margins.left,
-                right = insets.systemWindowInsetRight + initialState.margins.right
+                left = insets.systemWindowInsetLeft + initialState.paddings.left,
+                right = insets.systemWindowInsetRight + initialState.paddings.right
             )
             binding.navView.apply {
                 // On seascape mode only, nav bar is overlapped with DrawerLayout.
                 // So set left padding and reset width.
-                val leftSpace = insets.systemWindowInsetLeft + initialState.margins.left
+                val leftSpace = insets.systemWindowInsetLeft + initialState.paddings.left
                 updatePadding(left = leftSpace)
                 updateLayoutParams<ViewGroup.MarginLayoutParams> {
                     width = resources.getDimensionPixelSize(R.dimen.nav_drawer_width) + leftSpace
