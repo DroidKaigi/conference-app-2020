@@ -92,7 +92,27 @@ class SessionDetailFragment : DaggerFragment() {
             }
 
         binding.bottomAppBar.setOnMenuItemClickListener {
-            handleNavigation(it.itemId)
+            when (it.itemId) {
+                R.id.session_share -> {
+                    // do something
+                }
+                R.id.floormap -> {
+                    handleNavigation(it.itemId)
+                }
+                R.id.session_calendar -> {
+                    val session = binding.session ?: return@setOnMenuItemClickListener false
+                    systemViewModel.openCalendar(
+                        session.title.getByLang(defaultLang()),
+                        session.room.name.getByLang(defaultLang()),
+                        session.startTime.unixMillisLong,
+                        session.endTime.unixMillisLong
+                    )
+                }
+                else -> {
+                    handleNavigation(it.itemId)
+                }
+            }
+            return@setOnMenuItemClickListener true
         }
     }
 
