@@ -98,6 +98,7 @@ class SessionDetailFragment : DaggerFragment() {
             findNavController().navigate(actionSessionToSurvey(session.id))
         }
         binding.session = session
+        setupSessionDescription(session.desc)
         binding.speechSession = (session as? SpeechSession)
         binding.lang = defaultLang()
         binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
@@ -118,6 +119,13 @@ class SessionDetailFragment : DaggerFragment() {
             }
         }
         binding.speakers.bindSpeaker(session)
+    }
+
+    private fun setupSessionDescription(fullDescription: String) {
+        val textView = binding.sessionDescription
+        textView.doOnPreDraw {
+            textView.text = fullDescription
+        }
     }
 
     private fun ViewGroup.bindSpeaker(session: Session) {
