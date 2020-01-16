@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.IdRes
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
@@ -32,8 +34,8 @@ import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
-import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.actionSessionToSurvey
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.actionSessionToSpeaker
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.actionSessionToSurvey
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
@@ -88,6 +90,28 @@ class SessionDetailFragment : DaggerFragment() {
                 uiModel.session
                     ?.let { session -> setupSessionViews(session) }
             }
+
+        binding.bottomAppBar.setOnMenuItemClickListener {
+            handleNavigation(it.itemId)
+        }
+    }
+
+    private fun handleNavigation(@IdRes itemId: Int): Boolean {
+        val navController = findNavController()
+        return try {
+            // ignore if current destination is selected
+            if (navController.currentDestination?.id == itemId) return false
+            val builder = NavOptions.Builder()
+                .setEnterAnim(R.anim.fade_in)
+                .setExitAnim(R.anim.fade_out)
+                .setPopEnterAnim(R.anim.fade_in)
+                .setPopExitAnim(R.anim.fade_out)
+            val options = builder.build()
+            navController.navigate(itemId, null, options)
+            true
+        } catch (e: IllegalArgumentException) {
+            false
+        }
     }
 
     private fun setupSessionViews(session: Session) {
@@ -110,9 +134,11 @@ class SessionDetailFragment : DaggerFragment() {
                 binding.tags.removeAllViews()
                 binding.tags.addView(Chip(context).apply {
                     text = categoryLabel
+                    isClickable = false
                 })
                 binding.tags.addView(Chip(context).apply {
                     text = langLabel
+                    isClickable = false
                 })
                 binding.tags.tag = newTag
             }
@@ -189,7 +215,7 @@ abstract class SessionDetailFragmentModule {
     @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifeCycleLiveData(
+        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
             sessionDetailFragment: SessionDetailFragment
         ): LiveData<LifecycleOwner> {
             return sessionDetailFragment.viewLifecycleOwnerLiveData

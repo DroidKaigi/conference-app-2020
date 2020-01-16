@@ -10,7 +10,18 @@ die() {
   exit 1
 }
 
-./gradlew android-base:assembleRelease -x android-base:lintVitalRelease
+./gradlew android-base:bundleRelease -x android-base:lintVitalRelease
+
+readonly aab_path="$(find android-base -name '*.aab' | head -1)"
+java -jar bundletool-all.jar build-apks \
+  --mode=universal\
+  --ks=android-base/release.keystore\
+  --ks-pass=pass:$RELEASE_KEYSTORE_STORE_PASSWORD\
+  --ks-key-alias=$RELEASE_KEYSTORE_KEY_ALIAS\
+  --key-pass=pass:$RELEASE_KEYSTORE_KEY_PASSWORD\
+  --bundle=$aab_path\
+  --output=android-base/build/universal.apks
+unzip android-base/build/universal.apks -d android-base/build/
 
 readonly apk_path="$(find android-base -name '*.apk' | head -1)"
 

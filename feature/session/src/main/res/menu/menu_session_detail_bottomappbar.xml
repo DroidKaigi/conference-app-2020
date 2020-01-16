@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/session_share"
         android:icon="@drawable/ic_share_outline_black_24dp"
         android:title="@string/session_share"
         app:iconTint="?attr/colorOnPrimarySurface"
-        app:showAsAction="ifRoom"
-        />
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/floormap"
+        android:icon="@drawable/ic_place_black_24dp"
+        android:title="@string/map_label"
+        app:iconTint="?attr/colorOnPrimarySurface"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/session_calendar"
         android:icon="@drawable/ic_insert_invitation_black_24dp"
         android:title="@string/session_register"
         app:iconTint="?attr/colorOnPrimarySurface"
-        app:showAsAction="ifRoom"
-        />
-
+        app:showAsAction="ifRoom" />
 </menu>

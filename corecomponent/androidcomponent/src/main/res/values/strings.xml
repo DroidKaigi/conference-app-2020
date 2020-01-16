@@ -36,8 +36,7 @@
     <string name="theme_label" translatable="false">Theme</string>
     <string name="dark_theme_label" translatable="false">DarkTheme</string>
 
-    <!-- FIXME: Use more user friendly error message  -->
-    <string name="error_network" translatable="false">Error network</string>
-    <string name="error_server" translatable="false">Error server</string>
-    <string name="error_unknown" translatable="false">Error unknown</string>
+    <string name="error_network" translatable="false">A network error has occurred.Please try again.</string>
+    <string name="error_server" translatable="false">A server error has occurred.Please try again.</string>
+    <string name="error_unknown" translatable="false">An unknown error has occurred.Please try again.</string>
 </resources>
