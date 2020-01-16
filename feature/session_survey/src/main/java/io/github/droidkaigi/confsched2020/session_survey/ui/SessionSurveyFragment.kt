@@ -77,7 +77,7 @@ abstract class SessionSurveyFragmentModule {
         @PageScope
         @JvmStatic
         @Provides
-        fun providesLifeCycleLiveData(
+        fun providesLifecycleOwnerLiveData(
             sessionSurveyFragment: SessionSurveyFragment
         ): LiveData<LifecycleOwner> {
             return sessionSurveyFragment.viewLifecycleOwnerLiveData
