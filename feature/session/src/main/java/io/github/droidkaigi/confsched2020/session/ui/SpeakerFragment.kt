@@ -82,7 +82,7 @@ class SpeakerFragment : DaggerFragment() {
             .observe(viewLifecycleOwner) { uiModel: SpeakerViewModel.UiModel ->
                 progressTimeLatch.loading = uiModel.isLoading
                 val speaker = uiModel.speaker ?: return@observe
-                val session = uiModel.session ?: return@observe
+                val session = uiModel.sessions.firstOrNull() ?: return@observe // TODO support multiple sessions
                 binding.speaker = speaker
                 binding.speechSession = session
                 binding.lang = defaultLang()
