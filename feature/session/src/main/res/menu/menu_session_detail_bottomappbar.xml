@@ -10,4 +10,13 @@
         app:iconTint="?attr/colorOnPrimarySurface"
         app:showAsAction="ifRoom"
         />
+
+    <item
+        android:id="@+id/session_calendar"
+        android:icon="@drawable/ic_insert_invitation_black_24dp"
+        android:title="@string/session_register"
+        app:iconTint="?attr/colorOnPrimarySurface"
+        app:showAsAction="ifRoom"
+        />
+
 </menu>
