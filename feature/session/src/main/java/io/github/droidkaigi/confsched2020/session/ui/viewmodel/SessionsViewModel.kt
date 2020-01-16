@@ -64,6 +64,7 @@ class SessionsViewModel @Inject constructor(
 
     private val filterLiveData: MutableLiveData<Filters> = MutableLiveData(Filters())
 
+    // map of the given Day and the current ongoing sessions index in the list of that day
     val currentSessionMap = MutableLiveData<Map<SessionPage.Day, Int>>()
 
     // Produce UiModel
@@ -90,10 +91,17 @@ class SessionsViewModel @Inject constructor(
             .sessions
             .filter { filters.isPass(it) }
 
+        // map of given Day and list of sessions associated with that day
         val groupedSessions = filteredSessions.groupBy { it.dayNumber }
 
+        /*
+            Since the very first loading of sessions will set current value
+            as UiModel.EMPTY, that is how we identify the first load. Subsequent
+            calls will never set current to UiModel.EMPTY
+         */
         val isFirstCall = (current == UiModel.EMPTY)
 
+        // if first time load, we set value to currentSessionMap
         if(isFirstCall) {
             this.currentSessionMap.value = mapOf(
                 Pair(SessionPage.Day1, groupedSessions[SessionPage.Day1.day]?.indexOfFirst { it.isOnGoing } ?: -1),

@@ -26,7 +26,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="16dp"
             />
-
         <TextView
             android:id="@+id/filtered_session_count"
             android:layout_width="wrap_content"
@@ -38,7 +37,6 @@
             app:layout_constraintBottom_toBottomOf="@id/start_filter"
             tools:text="Applicable session: 12"
             />
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/start_filter"
             android:layout_width="wrap_content"
