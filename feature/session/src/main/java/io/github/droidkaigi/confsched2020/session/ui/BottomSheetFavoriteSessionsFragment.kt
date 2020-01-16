@@ -74,6 +74,12 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
+            binding.sessionRecycler.isVisible = when (uiModel.expandFilterState) {
+                ExpandFilterState.EXPANDED, ExpandFilterState.CHANGING ->
+                    true
+                else ->
+                    false
+            }
             binding.startFilter.visibility = when (uiModel.expandFilterState) {
                 ExpandFilterState.EXPANDED, ExpandFilterState.CHANGING ->
                     View.VISIBLE
