@@ -3,7 +3,6 @@ package io.github.droidkaigi.confsched2020
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -114,8 +113,10 @@ class MainActivity : DaggerAppCompatActivity() {
                 // So set left padding and reset width.
                 val leftSpace = insets.systemWindowInsetLeft + initialState.paddings.left
                 updatePadding(left = leftSpace)
-                updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                    width = resources.getDimensionPixelSize(R.dimen.nav_drawer_width) + leftSpace
+                updateLayoutParams {
+                    if (getWidth() > 0) {
+                        width = measuredWidth + leftSpace
+                    }
                 }
             }
         }
