@@ -9,6 +9,7 @@ include ':android-base',
         ':feature:about',
         ':feature:floormap',
         ':feature:session_survey',
+        ':feature:notification',
         ':corecomponent:androidcomponent',
         ':corecomponent:androidtestcomponent',
         ':model',
@@ -21,4 +22,4 @@ include ':android-base',
 
 enableFeaturePreview('GRADLE_METADATA')
 
-rootProject.name='conference-app-2020'
+rootProject.name = 'conference-app-2020'
