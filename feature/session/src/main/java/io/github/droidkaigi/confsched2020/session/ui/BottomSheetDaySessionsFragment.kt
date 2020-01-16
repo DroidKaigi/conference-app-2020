@@ -120,13 +120,11 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
             uiModel.error?.let {
                 systemViewModel.onError(it)
             }
-        }
 
-        sessionsViewModel.currentSessionMap.observe(viewLifecycleOwner) { currentSessionMap ->
-            val page = SessionPage.dayOfNumber(args.day) as? SessionPage.Day ?: return@observe
-            val currentScrollPosition = currentSessionMap[page] ?: -1
+            val currentScrollPosition = uiModel.currentSessionMap[page] ?: -1
             (binding.sessionRecycler.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(currentScrollPosition, 0)
         }
+
     }
 
     companion object {

@@ -39,10 +39,11 @@ class SessionsViewModel @Inject constructor(
         val dayToSessionsMap: Map<SessionPage.Day, List<Session>>,
         val favoritedSessions: List<Session>,
         val filters: Filters,
-        val allFilters: Filters
+        val allFilters: Filters,
+        val currentSessionMap: Map<SessionPage.Day, Int>
     ) {
         companion object {
-            val EMPTY = UiModel(true, null, mapOf(), listOf(), Filters(), Filters())
+            val EMPTY = UiModel(true, null, mapOf(), listOf(), Filters(), Filters(), mapOf())
         }
     }
 
@@ -60,12 +61,10 @@ class SessionsViewModel @Inject constructor(
             Timber.debug(e) { "Fail sessionRepository.refresh()" }
         }
     }
-    private var favoriteLoadingStateLiveData: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.Loaded)
+    private var favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
+        MutableLiveData(LoadingState.Loaded)
 
     private val filterLiveData: MutableLiveData<Filters> = MutableLiveData(Filters())
-
-    // map of the given Day and the current ongoing sessions index in the list of that day
-    val currentSessionMap = MutableLiveData<Map<SessionPage.Day, Int>>()
 
     // Produce UiModel
     val uiModel: LiveData<UiModel> = combine(
@@ -94,20 +93,11 @@ class SessionsViewModel @Inject constructor(
         // map of given Day and list of sessions associated with that day
         val groupedSessions = filteredSessions.groupBy { it.dayNumber }
 
-        /*
-            Since the very first loading of sessions will set current value
-            as UiModel.EMPTY, that is how we identify the first load. Subsequent
-            calls will never set current to UiModel.EMPTY
-         */
-        val isFirstCall = (current == UiModel.EMPTY)
-
-        // if first time load, we set value to currentSessionMap
-        if(isFirstCall) {
-            this.currentSessionMap.value = mapOf(
-                Pair(SessionPage.Day1, groupedSessions[SessionPage.Day1.day]?.indexOfFirst { it.isOnGoing } ?: -1),
-                Pair(SessionPage.Day2, groupedSessions[SessionPage.Day2.day]?.indexOfFirst { it.isOnGoing } ?: -1)
-            )
-        }
+        // if data is loaded i.e., isLoading = false, we set value to currentSessionMap
+        val currentSessionMap = mapOf(
+                Pair(SessionPage.Day1, if(!isLoading) groupedSessions[SessionPage.Day1.day].getCurrentOnGoingSessionIndex() else -1),
+                Pair(SessionPage.Day2, if(!isLoading) groupedSessions[SessionPage.Day2.day].getCurrentOnGoingSessionIndex() else -1)
+        )
 
         UiModel(
             isLoading = isLoading,
@@ -131,7 +121,8 @@ class SessionsViewModel @Inject constructor(
                 categories = sessionContents.category.toSet(),
                 langs = sessionContents.langs.toSet(),
                 langSupports = sessionContents.langSupports.toSet()
-            )
+            ),
+            currentSessionMap = currentSessionMap
         )
     }
 
@@ -185,5 +176,14 @@ class SessionsViewModel @Inject constructor(
 
     fun resetFilter() {
         filterLiveData.value = Filters()
+    }
+
+    /*
+        returns the index of the first element which has isOnGoing = true
+        in the list. All the sessions in that time period will anyways be shown below
+        that session.
+     */
+    private fun List<Session>?.getCurrentOnGoingSessionIndex(): Int {
+        return this?.indexOfFirst { it.isOnGoing } ?: 4
     }
 }
