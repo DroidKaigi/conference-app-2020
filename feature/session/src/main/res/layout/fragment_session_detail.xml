@@ -165,7 +165,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/text"
+                    android:id="@+id/session_description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="22dp"
@@ -188,7 +188,7 @@
                     app:isVisible="@{session.hasIntendedAudience}"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/text"
+                    app:layout_constraintTop_toBottomOf="@id/session_description"
                     />
 
                 <TextView
