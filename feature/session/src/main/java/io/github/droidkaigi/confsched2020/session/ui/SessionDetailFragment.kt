@@ -2,10 +2,20 @@ package io.github.droidkaigi.confsched2020.session.ui
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.SpannableStringBuilder
+import android.text.TextPaint
+import android.text.TextUtils
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.doOnPreDraw
+import androidx.core.content.ContextCompat
+import androidx.core.text.buildSpannedString
+import androidx.core.text.color
+import androidx.core.text.inSpans
 import androidx.annotation.IdRes
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -15,6 +25,7 @@ import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.transition.TransitionManager
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
@@ -44,6 +55,8 @@ import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
+private const val ELLIPSIS_LINE_COUNT = 6
+
 class SessionDetailFragment : DaggerFragment() {
 
     private var binding: FragmentSessionDetailBinding by autoCleared()
@@ -61,6 +74,7 @@ class SessionDetailFragment : DaggerFragment() {
     @Inject lateinit var sessionItemFactory: SessionItem.Factory
 
     private var progressTimeLatch: ProgressTimeLatch by autoCleared()
+    private var showEllipsis = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -123,6 +137,7 @@ class SessionDetailFragment : DaggerFragment() {
             findNavController().navigate(actionSessionToSurvey(session.id))
         }
         binding.session = session
+        setupSessionDescription(session.desc)
         binding.speechSession = (session as? SpeechSession)
         binding.lang = defaultLang()
         binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
@@ -145,6 +160,55 @@ class SessionDetailFragment : DaggerFragment() {
             }
         }
         binding.speakers.bindSpeaker(session)
+    }
+
+    private fun setupSessionDescription(fullDescription: String) {
+        val textView = binding.sessionDescription
+        textView.doOnPreDraw {
+            textView.text = fullDescription
+            //Return here if not more than the specified number of rows
+            if (!(textView.lineCount > ELLIPSIS_LINE_COUNT && showEllipsis)) return@doOnPreDraw
+            val lastLineStartPosition = textView.layout.getLineStart(ELLIPSIS_LINE_COUNT - 1)
+            val ellipsis = getString(R.string.ellipsis_label)
+            val lastLineText = TextUtils.ellipsize(
+                fullDescription.substring(lastLineStartPosition),
+                textView.paint,
+                textView.width - textView.paint.measureText(ellipsis),
+                TextUtils.TruncateAt.END
+            )
+            val ellipsisColor = ContextCompat.getColor(requireContext(), R.color.design_default_color_secondary)
+            val onClickListener = {
+                TransitionManager.beginDelayedTransition(binding.sessionLayout)
+                textView.text = fullDescription
+                showEllipsis = !showEllipsis
+            }
+            val detailText = fullDescription.substring(0, lastLineStartPosition) + lastLineText
+            val text = buildSpannedString {
+                clickableSpan(onClickListener, {
+                    append(detailText)
+                    color(ellipsisColor) {
+                        append(ellipsis)
+                    }
+                })
+            }
+            textView.setText(text, TextView.BufferType.SPANNABLE)
+            textView.movementMethod = LinkMovementMethod.getInstance()
+        }
+    }
+
+    private fun SpannableStringBuilder.clickableSpan(
+        clickListener: () -> Unit,
+        builderAction: SpannableStringBuilder.() -> Unit
+    ) {
+        inSpans(object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                clickListener()
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                // nothing
+            }
+        }, builderAction)
     }
 
     private fun ViewGroup.bindSpeaker(session: Session) {
