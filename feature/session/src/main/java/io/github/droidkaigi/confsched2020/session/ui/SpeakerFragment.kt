@@ -29,11 +29,12 @@ import io.github.droidkaigi.confsched2020.session.databinding.FragmentSpeakerBin
 import io.github.droidkaigi.confsched2020.session.ui.SpeakerFragmentDirections.actionSpeakerToSessionDetail
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SpeakerViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 
 class SpeakerFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentSpeakerBinding
+    private var binding: FragmentSpeakerBinding by autoCleared()
 
     @Inject lateinit var speakerViewModelFactory: SpeakerViewModel.Factory
     private val speakerViewModel by assistedViewModels {
@@ -41,7 +42,7 @@ class SpeakerFragment : DaggerFragment() {
     }
 
     private val navArgs: SpeakerFragmentArgs by navArgs()
-    private lateinit var progressTimeLatch: ProgressTimeLatch
+    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,
