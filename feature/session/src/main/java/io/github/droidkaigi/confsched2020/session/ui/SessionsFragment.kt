@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -91,6 +92,10 @@ class SessionsFragment : DaggerFragment() {
         val initialPeekHeight = sessionSheetBehavior.peekHeight
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight = insets.systemWindowInsetBottom + initialPeekHeight
+        }
+        binding.fragmentSessionsScrollView.doOnApplyWindowInsets { scrollView, insets, _ ->
+            // Set a bottom padding due to the system UI is enabled.
+            scrollView.updatePadding(bottom = insets.systemWindowInsetBottom + initialPeekHeight)
         }
         sessionSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
