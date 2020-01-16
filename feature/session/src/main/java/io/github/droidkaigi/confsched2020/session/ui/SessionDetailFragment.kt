@@ -40,12 +40,13 @@ import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class SessionDetailFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentSessionDetailBinding
+    private var binding: FragmentSessionDetailBinding by autoCleared()
 
     @Inject lateinit var systemViewModelFactory: Provider<SystemViewModel>
     private val systemViewModel by assistedActivityViewModels {
@@ -59,7 +60,7 @@ class SessionDetailFragment : DaggerFragment() {
     private val navArgs: SessionDetailFragmentArgs by navArgs()
     @Inject lateinit var sessionItemFactory: SessionItem.Factory
 
-    private lateinit var progressTimeLatch: ProgressTimeLatch
+    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,

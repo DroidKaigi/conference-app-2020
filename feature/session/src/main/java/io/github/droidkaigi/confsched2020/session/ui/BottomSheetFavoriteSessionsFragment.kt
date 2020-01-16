@@ -22,12 +22,13 @@ import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomShee
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentBottomSheetSessionsBinding
+    private var binding: FragmentBottomSheetSessionsBinding by autoCleared()
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>

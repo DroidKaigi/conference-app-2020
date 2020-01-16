@@ -34,12 +34,13 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.session.ui.widget.SearchItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import java.util.Locale
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class SearchSessionsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentSearchSessionsBinding
+    private var binding: FragmentSearchSessionsBinding by autoCleared()
 
     @Inject lateinit var searchSessionsModelFactory: SearchSessionsViewModel.Factory
     private val searchSessionsViewModel by assistedViewModels {

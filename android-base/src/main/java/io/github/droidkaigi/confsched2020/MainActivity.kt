@@ -122,7 +122,7 @@ class MainActivity : DaggerAppCompatActivity() {
         }
 
         systemViewModel.errorLiveData.observe(this) { appError ->
-            Timber.warn(appError) { "AppError occured" }
+            Timber.warn(appError) { "AppError occurred" }
             Snackbar
                 .make(
                     findViewById(R.id.root_nav_host_fragment),
