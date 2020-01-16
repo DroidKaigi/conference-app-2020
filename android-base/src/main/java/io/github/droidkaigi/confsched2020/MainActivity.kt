@@ -94,12 +94,21 @@ class MainActivity : DaggerAppCompatActivity() {
         setupNavigation()
         setupStatusBarColors()
 
-        binding.drawerLayout.doOnApplyWindowInsets { _, insets, initialState ->
+        binding.drawerLayout.doOnApplyWindowInsets { _, insets, _ ->
             binding.drawerLayout.setChildInsetsWorkAround(insets)
+        }
+        binding.contentContainer.doOnApplyWindowInsets { _, insets, initialState ->
             binding.contentContainer.updatePadding(
                 left = insets.systemWindowInsetLeft + initialState.paddings.left,
                 right = insets.systemWindowInsetRight + initialState.paddings.right
             )
+        }
+        binding.toolbar.doOnApplyWindowInsets { _, insets, initialState ->
+            binding.toolbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topMargin = insets.systemWindowInsetTop + initialState.margins.top
+            }
+        }
+        binding.navView.doOnApplyWindowInsets { _, insets, initialState ->
             binding.navView.apply {
                 // On seascape mode only, nav bar is overlapped with DrawerLayout.
                 // So set left padding and reset width.
@@ -108,11 +117,6 @@ class MainActivity : DaggerAppCompatActivity() {
                 updateLayoutParams<ViewGroup.MarginLayoutParams> {
                     width = resources.getDimensionPixelSize(R.dimen.nav_drawer_width) + leftSpace
                 }
-            }
-        }
-        binding.toolbar.doOnApplyWindowInsets { _, insets, initialState ->
-            binding.toolbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                topMargin = insets.systemWindowInsetTop + initialState.margins.top
             }
         }
 
