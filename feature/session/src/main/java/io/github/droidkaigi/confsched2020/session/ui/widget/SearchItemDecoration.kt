@@ -13,7 +13,7 @@ import io.github.droidkaigi.confsched2020.session.R
 
 class SearchItemDecoration(
     context: Context,
-    private val getGroupId: (Int) -> Long,
+    private val getGroupId: (position: Int) -> Long,
     private val getInitial: (Int) -> String
 ) : RecyclerView.ItemDecoration() {
 
