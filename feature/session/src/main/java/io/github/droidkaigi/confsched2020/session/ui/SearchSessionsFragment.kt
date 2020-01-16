@@ -23,6 +23,7 @@ import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSearchSessionsBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SectionHeaderItem
@@ -30,7 +31,9 @@ import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SearchSessionsViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
+import io.github.droidkaigi.confsched2020.session.ui.widget.SearchItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
+import java.util.Locale
 import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
@@ -86,7 +89,25 @@ class SearchSessionsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.searchSessionRecycler.adapter = groupAdapter
-
+        context?.let {
+            binding.searchSessionRecycler.addItemDecoration(SearchItemDecoration(
+                it,
+                getGroupId = { position ->
+                    when (val item = groupAdapter.getItem(position)) {
+                        is SpeakerItem -> item.speaker.name[0].toUpperCase().toLong()
+                        is SessionItem -> item.title().getByLang(defaultLang())[0].toUpperCase().toLong()
+                        else -> SearchItemDecoration.EMPTY_ID
+                    }
+                },
+                getInitial = { position ->
+                    when (val item = groupAdapter.getItem(position)) {
+                        is SpeakerItem -> item.speaker.name[0].toUpperCase().toString()
+                        is SessionItem -> item.title().getByLang(defaultLang())[0].toUpperCase().toString()
+                        else -> SearchItemDecoration.DEFAULT_INITIAL
+                    }
+                }
+            ))
+        }
         binding.searchSessionRecycler.doOnApplyWindowInsets { view, insets, initialState ->
             view.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
         }
@@ -98,13 +119,17 @@ class SearchSessionsFragment : DaggerFragment() {
                 groupAdapter.add(sectionHeaderItemFactory.create(resources.getString(R.string.speaker)))
                 groupAdapter.addAll(uiModel.searchResult.speakers.map {
                     speakerItemFactory.create(it)
+                }.sortedBy {
+                    it.speaker.name.toUpperCase(Locale.getDefault())
                 })
             }
-            
+
             if (uiModel.searchResult.sessions.isNotEmpty()) {
                 groupAdapter.add(sectionHeaderItemFactory.create(resources.getString(R.string.session)))
                 groupAdapter.addAll(uiModel.searchResult.sessions.map {
                     sessionItemFactory.create(it, sessionsViewModel)
+                }.sortedBy {
+                    it.title().getByLang(defaultLang())
                 })
             }
         }

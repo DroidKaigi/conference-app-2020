@@ -23,6 +23,13 @@
         <attr name="dotPadding" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="SearchHeader">
+        <attr name="android:fontFamily" />
+        <attr name="fontFamily" />
+        <attr name="android:textColor" />
+        <attr name="android:textSize" />
+    </declare-styleable>
+
     <!-- workaround for https://issuetracker.google.com/issues/136103084#comment23 -->
     <attr name="flow_horizontalSeparator"/>
     <attr name="flow_verticalSeparator"/>
