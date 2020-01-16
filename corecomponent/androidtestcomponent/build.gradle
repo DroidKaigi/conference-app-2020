@@ -14,7 +14,6 @@ dependencies {
     implementation Dep.Kotlin.coroutines
 
     api Dep.Test.archCore
-    api Dep.Test.testCore
     api Dep.Test.liveDataTestingKtx
     api Dep.Test.coroutinesTest
 
