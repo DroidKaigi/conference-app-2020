@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
@@ -38,11 +39,10 @@ class SessionsViewModel @Inject constructor(
         val dayToSessionsMap: Map<SessionPage.Day, List<Session>>,
         val favoritedSessions: List<Session>,
         val filters: Filters,
-        val allFilters: Filters,
-        val showCurrentSessionButton: Boolean
+        val allFilters: Filters
     ) {
         companion object {
-            val EMPTY = UiModel(true, null, mapOf(), listOf(), Filters(), Filters(), false)
+            val EMPTY = UiModel(true, null, mapOf(), listOf(), Filters(), Filters())
         }
     }
 
@@ -64,11 +64,7 @@ class SessionsViewModel @Inject constructor(
 
     private val filterLiveData: MutableLiveData<Filters> = MutableLiveData(Filters())
 
-    private var currentSessionPosition: Int = -1
-
-    private var showCurrentSessionButton: Boolean = true
-
-    val scrolledSessionPositionLiveData = MutableLiveData<Int>()
+    val currentSessionMap = MutableLiveData<Map<SessionPage.Day, Int>>()
 
     // Produce UiModel
     val uiModel: LiveData<UiModel> = combine(
@@ -94,7 +90,16 @@ class SessionsViewModel @Inject constructor(
             .sessions
             .filter { filters.isPass(it) }
 
-        this.currentSessionPosition = filteredSessions.indexOfFirst { it.isOnGoing }
+        val groupedSessions = filteredSessions.groupBy { it.dayNumber }
+
+        val isFirstCall = (current == UiModel.EMPTY)
+
+        if(isFirstCall) {
+            this.currentSessionMap.value = mapOf(
+                Pair(SessionPage.Day1, groupedSessions[SessionPage.Day1.day]?.indexOfFirst { it.isOnGoing } ?: -1),
+                Pair(SessionPage.Day2, groupedSessions[SessionPage.Day2.day]?.indexOfFirst { it.isOnGoing } ?: -1)
+            )
+        }
 
         UiModel(
             isLoading = isLoading,
@@ -103,8 +108,7 @@ class SessionsViewModel @Inject constructor(
                 .toAppError() ?: favoriteState
                 .getErrorIfExists()
                 .toAppError(),
-            dayToSessionsMap = filteredSessions
-                .groupBy { it.dayNumber }
+            dayToSessionsMap = groupedSessions
                 .mapKeys {
                     SessionPage.dayOfNumber(
                         it.key
@@ -119,13 +123,7 @@ class SessionsViewModel @Inject constructor(
                 categories = sessionContents.category.toSet(),
                 langs = sessionContents.langs.toSet(),
                 langSupports = sessionContents.langSupports.toSet()
-            ),
-
-            /*
-                show current session button only if
-                there is an ongoing session in the list
-             */
-            showCurrentSessionButton = (currentSessionPosition != -1)
+            )
         )
     }
 
@@ -147,11 +145,6 @@ class SessionsViewModel @Inject constructor(
         filterLiveData.value = filters.copy(
             rooms = if (checked) filters.rooms + room else filters.rooms - room
         )
-    }
-
-    fun scrollToCurrentSession() {
-        if(currentSessionPosition != -1)
-            scrolledSessionPositionLiveData.value = currentSessionPosition
     }
 
     fun filterChanged(category: Category, checked: Boolean) {

@@ -92,8 +92,6 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
             view.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
         }
 
-        binding.buttonCurrentSession.setOnClickListener { sessionsViewModel.scrollToCurrentSession() }
-
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
             binding.sessionRecycler.isVisible = when (uiModel.expandFilterState) {
@@ -122,12 +120,12 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
             uiModel.error?.let {
                 systemViewModel.onError(it)
             }
-
-            binding.buttonCurrentSession.isVisible = uiModel.showCurrentSessionButton
         }
 
-        sessionsViewModel.scrolledSessionPositionLiveData.observe(viewLifecycleOwner) { scrollToPosition ->
-            (binding.sessionRecycler.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(scrollToPosition, 0)
+        sessionsViewModel.currentSessionMap.observe(viewLifecycleOwner) { currentSessionMap ->
+            val page = SessionPage.dayOfNumber(args.day) as? SessionPage.Day ?: return@observe
+            val currentScrollPosition = currentSessionMap[page] ?: -1
+            (binding.sessionRecycler.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(currentScrollPosition, 0)
         }
     }
 

@@ -40,21 +40,6 @@
             />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_current_session"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_session_on_going_background"
-            android:textAppearance="?attr/textAppearanceCaption"
-            android:textColor="?attr/colorOnPrimary"
-            app:layout_constraintStart_toEndOf="@id/filtered_session_count"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="Current Session"
-            android:visibility="gone"
-            tools:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@id/start_filter"
-            />
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/start_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
