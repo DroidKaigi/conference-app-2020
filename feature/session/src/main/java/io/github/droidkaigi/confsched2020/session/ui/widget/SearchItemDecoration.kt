@@ -11,7 +11,7 @@ import androidx.core.content.res.getResourceIdOrThrow
 import androidx.recyclerview.widget.RecyclerView
 import io.github.droidkaigi.confsched2020.session.R
 
-class SessionNameItemDecoration(
+class SearchItemDecoration(
     context: Context,
     private val getGroupId: (Int) -> Long,
     private val getInitial: (Int) -> String
@@ -78,21 +78,21 @@ class SessionNameItemDecoration(
 
             // drawing
             val positionX = labelPadding - textPaint.measureText(initial) / 2
+            val viewTop = view.top + labelPadding
             val viewBottom = view.bottom + view.paddingBottom
-            var positionY = view.top.coerceAtLeast(view.paddingTop) + labelPadding.toFloat()
+            var textY = viewTop.coerceAtLeast(labelPadding) + lineHeight / 2
             if (position + 1 < totalItemCount) {
                 val nextGroupId = getGroupId(position + 1)
-                if (nextGroupId != groupId && viewBottom < positionY + lineHeight) {
-                    positionY = positionY.coerceAtMost(viewBottom.toFloat())
+                if (nextGroupId != groupId && viewBottom < textY + lineHeight) {
+                    textY = viewBottom - lineHeight
                 }
             }
-            c.drawText(initial, positionX, positionY, textPaint)
+            c.drawText(initial, positionX, textY, textPaint)
         }
     }
 
     companion object {
         const val EMPTY_ID: Long = -1
         const val DEFAULT_INITIAL = "*"
-        const val DEFAULT_TITLE = "******"
     }
 }

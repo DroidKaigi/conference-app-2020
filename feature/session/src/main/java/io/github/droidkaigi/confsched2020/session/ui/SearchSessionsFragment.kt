@@ -31,7 +31,7 @@ import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SearchSessionsViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
-import io.github.droidkaigi.confsched2020.session.ui.widget.SessionNameItemDecoration
+import io.github.droidkaigi.confsched2020.session.ui.widget.SearchItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import java.util.Locale
 import javax.inject.Inject
@@ -89,20 +89,20 @@ class SearchSessionsFragment : DaggerFragment() {
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.searchSessionRecycler.adapter = groupAdapter
         context?.let {
-            binding.searchSessionRecycler.addItemDecoration(SessionNameItemDecoration(
+            binding.searchSessionRecycler.addItemDecoration(SearchItemDecoration(
                 it,
                 getGroupId = { position ->
                     when (val item = groupAdapter.getItem(position)) {
                         is SpeakerItem -> item.speaker.name[0].toUpperCase().toLong()
                         is SessionItem -> item.title().getByLang(defaultLang())[0].toUpperCase().toLong()
-                        else -> SessionNameItemDecoration.EMPTY_ID
+                        else -> SearchItemDecoration.EMPTY_ID
                     }
                 },
                 getInitial = { position ->
                     when (val item = groupAdapter.getItem(position)) {
                         is SpeakerItem -> item.speaker.name[0].toUpperCase().toString()
                         is SessionItem -> item.title().getByLang(defaultLang())[0].toUpperCase().toString()
-                        else -> SessionNameItemDecoration.DEFAULT_INITIAL
+                        else -> SearchItemDecoration.DEFAULT_INITIAL
                     }
                 }
             ))
