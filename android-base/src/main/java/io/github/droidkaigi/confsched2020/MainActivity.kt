@@ -8,6 +8,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
@@ -95,9 +96,28 @@ class MainActivity : DaggerAppCompatActivity() {
         binding.drawerLayout.doOnApplyWindowInsets { _, insets, _ ->
             binding.drawerLayout.setChildInsetsWorkAround(insets)
         }
+        binding.contentContainer.doOnApplyWindowInsets { _, insets, initialState ->
+            binding.contentContainer.updatePadding(
+                left = insets.systemWindowInsetLeft + initialState.paddings.left,
+                right = insets.systemWindowInsetRight + initialState.paddings.right
+            )
+        }
         binding.toolbar.doOnApplyWindowInsets { _, insets, initialState ->
             binding.toolbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 topMargin = insets.systemWindowInsetTop + initialState.margins.top
+            }
+        }
+        binding.navView.doOnApplyWindowInsets { _, insets, initialState ->
+            binding.navView.apply {
+                // On seascape mode only, nav bar is overlapped with DrawerLayout.
+                // So set left padding and reset width.
+                val leftSpace = insets.systemWindowInsetLeft + initialState.paddings.left
+                updatePadding(left = leftSpace)
+                updateLayoutParams {
+                    if (getWidth() > 0) {
+                        width = measuredWidth + leftSpace
+                    }
+                }
             }
         }
 
