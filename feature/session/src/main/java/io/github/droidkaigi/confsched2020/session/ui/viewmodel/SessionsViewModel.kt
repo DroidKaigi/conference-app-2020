@@ -36,12 +36,13 @@ class SessionsViewModel @Inject constructor(
         val isLoading: Boolean,
         val error: AppError?,
         val dayToSessionsMap: Map<SessionPage.Day, List<Session>>,
+        val shouldScrollSessionPosition: Pair<SessionPage.Day, Int>?,
         val favoritedSessions: List<Session>,
         val filters: Filters,
         val allFilters: Filters
     ) {
         companion object {
-            val EMPTY = UiModel(true, null, mapOf(), listOf(), Filters(), Filters())
+            val EMPTY = UiModel(true, null, mapOf(), null, listOf(), Filters(), Filters())
         }
     }
 
@@ -59,33 +60,48 @@ class SessionsViewModel @Inject constructor(
             Timber.debug(e) { "Fail sessionRepository.refresh()" }
         }
     }
-    private var favoriteLoadingStateLiveData: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.Loaded)
+    private var favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
+        MutableLiveData(LoadingState.Loaded)
 
     private val filterLiveData: MutableLiveData<Filters> = MutableLiveData(Filters())
+
+    private val shouldScrollCurrentSessionLiveData = MutableLiveData(true)
 
     // Produce UiModel
     val uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
         liveData1 = sessionsLoadStateLiveData,
         liveData2 = favoriteLoadingStateLiveData,
-        liveData3 = filterLiveData
+        liveData3 = filterLiveData,
+        liveData4 = shouldScrollCurrentSessionLiveData
     ) { current: UiModel,
         sessionsLoadState: LoadState<SessionContents>,
         favoriteState: LoadingState,
-        filters: Filters
+        filters: Filters,
+        shouldScroll: Boolean
         ->
         val isLoading = sessionsLoadState.isLoading || favoriteState.isLoading
-        val sessionContents = when (sessionsLoadState) {
-            is LoadState.Loaded -> {
-                sessionsLoadState.value
-            }
-            else -> {
-                SessionContents.EMPTY
-            }
-        }
+        val sessionContents = sessionsLoadState.getValueOrNull() ?: SessionContents.EMPTY
+
         val filteredSessions = sessionContents
             .sessions
             .filter { filters.isPass(it) }
+        val dayToSessionMap = filteredSessions
+            .groupBy { it.dayNumber }
+        val shouldScrollSessionPosition = if (shouldScroll) {
+            dayToSessionMap.asSequence()
+                .mapNotNull { (day, sessions) ->
+                    val index = sessions.indexOfLast { it.isFinished }
+                    if (index == -1) {
+                        null
+                    } else {
+                        SessionPage.dayOfNumber(day) to index
+                    }
+                }
+                .firstOrNull()
+        } else {
+            null
+        }
         UiModel(
             isLoading = isLoading,
             error = sessionsLoadState
@@ -93,13 +109,13 @@ class SessionsViewModel @Inject constructor(
                 .toAppError() ?: favoriteState
                 .getErrorIfExists()
                 .toAppError(),
-            dayToSessionsMap = filteredSessions
-                .groupBy { it.dayNumber }
+            dayToSessionsMap = dayToSessionMap
                 .mapKeys {
                     SessionPage.dayOfNumber(
                         it.key
                     )
                 },
+            shouldScrollSessionPosition = shouldScrollSessionPosition,
             favoritedSessions = filteredSessions
                 .filter { it.isFavorited },
             filters = filters,
@@ -163,5 +179,9 @@ class SessionsViewModel @Inject constructor(
 
     fun resetFilter() {
         filterLiveData.value = Filters()
+    }
+
+    fun onScrolled() {
+        shouldScrollCurrentSessionLiveData.value = false
     }
 }
