@@ -134,9 +134,11 @@ class SessionDetailFragment : DaggerFragment() {
                 binding.tags.removeAllViews()
                 binding.tags.addView(Chip(context).apply {
                     text = categoryLabel
+                    isClickable = false
                 })
                 binding.tags.addView(Chip(context).apply {
                     text = langLabel
+                    isClickable = false
                 })
                 binding.tags.tag = newTag
             }
