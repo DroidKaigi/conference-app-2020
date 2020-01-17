@@ -131,7 +131,20 @@
         android:id="@+id/sponsors"
         android:name="io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragment"
         android:label="@string/sponsor_label"
-        />
+        >
+
+        <action
+            android:id="@+id/action_sponsors_to_chrome"
+            app:destination="@id/chrome"
+            >
+
+            <argument
+                android:name="url"
+                app:argType="string"
+                app:nullable="false"
+                />
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/contributor"
         android:name="io.github.droidkaigi.confsched2020.contributor.ui.ContributorsFragment"
@@ -169,5 +182,10 @@
         android:id="@+id/setting"
         android:name="io.github.droidkaigi.confsched2020.preference.ui.PreferencesFragment"
         android:label="@string/setting_label"
+        />
+    <chrome
+        android:id="@+id/chrome"
+        android:name="io.github.droidkaigi.confsched2020.ui.ChromeCustomTabsNavigator"
+        android:label="chrome"
         />
 </navigation>
