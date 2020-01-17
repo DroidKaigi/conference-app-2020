@@ -5,7 +5,7 @@ import io.github.droidkaigi.confsched2020.model.repository.ContributorRepository
 import javax.inject.Inject
 
 class ContributorsViewModel @Inject constructor(
-    val contributorRepository: ContributorRepository
+    private val contributorRepository: ContributorRepository
 ) : ViewModel() {
     // TODO Implement
 }

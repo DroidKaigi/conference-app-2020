@@ -14,7 +14,7 @@ import io.github.droidkaigi.confsched2020.system.R
 import javax.inject.Inject
 
 class SystemViewModel @Inject constructor(
-    val activity: FragmentActivity
+    private val activity: FragmentActivity
 ) : ViewModel() {
     private val mutableErrorLiveData = MutableLiveData<AppError?>()
     val errorLiveData: LiveData<AppError> get() = mutableErrorLiveData.toNonNullSingleEvent()
