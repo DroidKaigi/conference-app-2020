@@ -14,10 +14,10 @@ final class FilterViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
-    let appBar = MDCAppBar()
-    let tabBar = MDCTabBar()
+    private let appBar = MDCAppBar()
+    private let tabBar = MDCTabBar()
 
-    var containerView: UIView = {
+    private var containerView: UIView = {
         let view = ShapedShadowedView(frame: .zero)
         let shapeGenerator = MDCRectangleShapeGenerator()
         shapeGenerator.topLeftCorner =
@@ -28,8 +28,8 @@ final class FilterViewController: UIViewController {
         return view
     }()
 
-    var embeddedView: UIView?
-    var embeddedViewController: UIViewController?
+    private var embeddedView: UIView?
+    private var embeddedViewController: UIViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
