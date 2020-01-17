@@ -131,8 +131,13 @@ final class FilterViewController: UIViewController {
                     recognizer.setTranslation(.zero, in: containerView)
                 case .changed:
                     let moved = recognizer.translation(in: containerView)
-                    let movePercentage = abs(moved.y / containerView.frame.height)
-                    animator.fractionComplete = movePercentage
+                    let movePercentage = moved.y / containerView.frame.height
+
+                    if (!animator.isReversed && movePercentage < 0)
+                        || (animator.isReversed && movePercentage > 0) {
+                        break
+                    }
+                    animator.fractionComplete = abs(movePercentage)
                 case .ended:
                     let thresholdPercentage: CGFloat = 0.1
                     if animator.fractionComplete < thresholdPercentage {
