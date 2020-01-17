@@ -76,7 +76,7 @@ class SessionItem @AssistedInject constructor(
         if (payloads.isEmpty()) {
             bind(viewBinding, position)
         } else {
-            payloads.forEach { payload ->
+            payloads.distinct().forEach { payload ->
                 when (payload) {
                     is ItemPayload.FavoritePayload -> {
                         bindFavorite(payload.isFavorited, viewBinding.favorite)
