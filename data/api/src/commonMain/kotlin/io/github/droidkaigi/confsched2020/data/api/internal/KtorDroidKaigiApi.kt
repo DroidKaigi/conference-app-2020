@@ -29,9 +29,9 @@ import kotlinx.serialization.list
 import kotlin.coroutines.CoroutineContext
 
 internal open class KtorDroidKaigiApi constructor(
-    val httpClient: HttpClient,
-    val apiEndpoint: String,
-    val coroutineDispatcherForCallback: CoroutineContext?
+    private val httpClient: HttpClient,
+    private val apiEndpoint: String,
+    private val coroutineDispatcherForCallback: CoroutineContext?
 ) : DroidKaigiApi {
     private val json = Json(JsonConfiguration.Stable.copy(strictMode = false))
     override suspend fun getSessions(): Response {
@@ -87,7 +87,7 @@ internal open class KtorDroidKaigiApi constructor(
 
     override suspend fun getStaffs(): StaffResponse {
         val rawResponse = httpClient.get<String> {
-            url("$apiEndpoint/staffs")
+            url("$apiEndpoint/committee_members")
             accept(ContentType.Application.Json)
         }
 

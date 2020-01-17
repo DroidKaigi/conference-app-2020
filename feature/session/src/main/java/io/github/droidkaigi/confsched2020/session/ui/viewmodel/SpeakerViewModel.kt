@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.map
 
 class SpeakerViewModel @AssistedInject constructor(
     @Assisted private val speakerId: SpeakerId,
-    val sessionRepository: SessionRepository
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
     // UiModel definition
     data class UiModel(

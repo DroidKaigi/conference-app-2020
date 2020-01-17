@@ -79,7 +79,7 @@ class MainActivity : DaggerAppCompatActivity() {
     }
     @Inject
     lateinit var sessionRepository: SessionRepository
-    val navController: NavController by lazy {
+    private val navController: NavController by lazy {
         Navigation.findNavController(this, R.id.root_nav_host_fragment)
     }
 

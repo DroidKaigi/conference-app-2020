@@ -50,7 +50,7 @@
 
             <fragment
                 android:id="@+id/root_nav_host_fragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:name="io.github.droidkaigi.confsched2020.ui.CustomNavHostFragment"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:defaultNavHost="true"

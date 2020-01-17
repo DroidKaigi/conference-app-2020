@@ -18,6 +18,7 @@
             >
 
             <ScrollView
+                android:id="@+id/fragment_sessions_scroll_view"
                 style="@style/Widget.DroidKaigi.Backdrop.BackLayer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
