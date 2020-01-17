@@ -186,13 +186,17 @@ class SessionItem @AssistedInject constructor(
         if (other !is SessionItem) return false
         return when {
             isSameContents(other) -> true
-            session.id == other.session.id
-                    && session.isFavorited != other.session.isFavorited -> {
+            isChangeFavorited(other) -> {
                 other.notifyChanged(FavoritePayload(session.isFavorited))
                 true
             }
             else -> false
         }
+    }
+
+    private fun isChangeFavorited(oldItem: SessionItem): Boolean {
+        return session.id == oldItem.session.id &&
+                session.isFavorited != oldItem.session.isFavorited
     }
 
     override fun hashCode(): Int {
