@@ -43,9 +43,9 @@ class SessionItem @AssistedInject constructor(
 ) : BindableItem<ItemSessionBinding>(session.id.hashCode().toLong()),
     EqualableContentsProvider {
 
-    val imageRequestDisposables = mutableListOf<RequestDisposable>()
+    private val imageRequestDisposables = mutableListOf<RequestDisposable>()
 
-    val layoutInflater by lazyWithParam<Context, LayoutInflater> { context ->
+    private val layoutInflater by lazyWithParam<Context, LayoutInflater> { context ->
         LayoutInflater.from(context)
     }
 
@@ -168,7 +168,7 @@ class SessionItem @AssistedInject constructor(
         imageRequestDisposables.forEach { it.dispose() }
     }
 
-    fun TextView.setLeftDrawable(drawable: Drawable) {
+    private fun TextView.setLeftDrawable(drawable: Drawable) {
         val res = context.resources
         val widthDp = 32
         val heightDp = 32
