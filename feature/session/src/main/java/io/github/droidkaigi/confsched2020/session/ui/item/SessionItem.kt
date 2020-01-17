@@ -183,7 +183,7 @@ class SessionItem @AssistedInject constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-        val other = other as? SessionItem ?: return false
+        if (other !is SessionItem) return false
         return when {
             isSameContents(other) -> true
             session.id == other.session.id
