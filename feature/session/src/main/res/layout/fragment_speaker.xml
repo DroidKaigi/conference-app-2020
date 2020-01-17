@@ -155,6 +155,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:background="?attr/selectableItemBackground"
                     android:text="@{speechSession.title.getByLang(lang)}"
                     android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
                     android:lineSpacingExtra="8sp"
