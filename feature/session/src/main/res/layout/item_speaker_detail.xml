@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="speaker"
+            type="io.github.droidkaigi.confsched2020.model.Speaker"
+            />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="?colorSurface"
+        >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="24dp"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="24dp"
+            />
+
+        <ImageView
+            android:id="@+id/speaker_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars"
+            />
+
+        <TextView
+            android:id="@+id/speaker_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="@{speaker.name}"
+            android:textAppearance="@style/TextAppearance.DroidKaigi.Headline5"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/speaker_image"
+            tools:text="SpeakerName"
+            />
+
+        <TextView
+            android:id="@+id/speaker_tag_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="8sp"
+            android:text="@{speaker.tagLine}"
+            android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/speaker_name"
+            tools:text="DroidKaigi"
+            />
+
+        <View
+            android:id="@+id/divider_speaker_tag_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/speaker_tag_line"
+            />
+
+        <TextView
+            android:id="@+id/speaker_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:autoLink="web"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:text="@{speaker.bio}"
+            android:lineSpacingExtra="8sp"
+            android:paddingBottom="4dp"
+            android:textAlignment="viewStart"
+            android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/divider_speaker_tag_line"
+            tools:text="Material is the metaphor A material metaphor is the unifying theory of a rationalized space and a system of motion. The material is grounded in tactile reality, inspired by the study of paper and ink, yet technologically advanced and open to imagination and magic."
+            />
+
+        <View
+            android:id="@+id/divider_speaker_description_and_speaker_session"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/speaker_description"
+            />
+
+        <TextView
+            android:id="@+id/speaker_session_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/session_label"
+            android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/divider_speaker_description_and_speaker_session"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
