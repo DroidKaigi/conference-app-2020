@@ -121,10 +121,10 @@ class SponsorsFragment : DaggerFragment() {
         return when (category) {
             SponsorCategory.Category.PLATINUM,
             SponsorCategory.Category.GOLD -> {
-                largeSponsorItemFactory.create(this, spanSize, systemViewModel)
+                largeSponsorItemFactory.create(this, spanSize)
             }
             else -> {
-                sponsorItemFactory.create(this, spanSize, systemViewModel)
+                sponsorItemFactory.create(this, spanSize)
             }
         }
     }
