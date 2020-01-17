@@ -25,6 +25,7 @@ import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.requireValue
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSearchSessionsBinding
@@ -157,7 +158,10 @@ class SearchSessionsFragment : DaggerFragment() {
             ContextCompat.getColor(requireContext(), R.color.search_close_icon)
         )
         searchView.isIconified = false
-        searchView.setQuery(searchSessionsViewModel.uiModel.value!!.searchResult.query, false)
+        val searchResult = searchSessionsViewModel.uiModel.requireValue().searchResult
+        if (!searchResult.isEmpty()) {
+            searchView.setQuery(searchResult.query, false)
+        }
         searchView.queryHint = resources.getString(R.string.query_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(s: String): Boolean {
