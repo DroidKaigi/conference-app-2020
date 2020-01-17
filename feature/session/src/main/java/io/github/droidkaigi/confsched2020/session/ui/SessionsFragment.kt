@@ -13,6 +13,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -20,6 +23,7 @@ import dagger.android.support.DaggerFragment
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
+import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.ExpandFilterState
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.model.defaultLang
@@ -88,6 +92,9 @@ class SessionsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Bottom sheet's topLeft corner always rounded.
+        // but initBottomSheetShapeAppearance func don't work this position...
+//        initBottomSheetShapeAppearance()
         val initialPeekHeight = sessionSheetBehavior.peekHeight
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight = insets.systemWindowInsetBottom + initialPeekHeight
@@ -98,6 +105,10 @@ class SessionsFragment : DaggerFragment() {
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED || newState == BottomSheetBehavior.STATE_SETTLING) {
+                    initBottomSheetShapeAppearance()
+                }
+
                 sessionTabViewModel.setExpand(
                     when (newState) {
                         BottomSheetBehavior.STATE_COLLAPSED -> {
@@ -228,6 +239,23 @@ class SessionsFragment : DaggerFragment() {
             .replace(R.id.sessions_sheet, fragment, tab.title)
             .disallowAddToBackStack()
             .commit()
+    }
+
+    private fun initBottomSheetShapeAppearance() {
+        val shapeAppearanceModel =
+            ShapeAppearanceModel.Builder()
+                .setTopLeftCorner(
+                    CornerFamily.ROUNDED,
+                    resources.getDimension(R.dimen.bottom_sheet_corner_radius)
+                ) // same property Widget.DroidKaigi.BottomSheet shapeAppearance
+                .build()
+        val materialShapeDrawable = MaterialShapeDrawable(shapeAppearanceModel).apply {
+            setTint(
+                requireContext().getThemeColor(R.attr.colorSurface) // colorSurface override
+            ) // FrameLayout don't have materialShapeDrawable. BackgroundTint will be ignored.
+        }
+        binding.sessionsSheet.background =
+            materialShapeDrawable // This setting will ignore Widget.DroidKaigi.BottomSheet
     }
 
     companion object {
