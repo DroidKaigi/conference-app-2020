@@ -228,6 +228,8 @@ This project uses some modern Android libraries and source codes.
 * [Injected ViewModel Provider](https://github.com/evant/injectedvmprovider) (evant)
 * [Google I/O 2018](https://github.com/google/iosched) (Google)
 * [TimetableLayout](https://github.com/MoyuruAizawa/TimetableLayout) (MoyuruAizawa)
+* [Android Architecture Components samples](https://github.com/android/architecture-components-samples) (Google)
+  * [AutoClearedValue](https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/util/AutoClearedValue.kt)
 
 ### iOS
 
