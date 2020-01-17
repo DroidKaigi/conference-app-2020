@@ -149,7 +149,16 @@
         android:id="@+id/about"
         android:name="io.github.droidkaigi.confsched2020.about.ui.AboutFragment"
         android:label="@string/about_label"
-        />
+        >
+        <action
+            android:id="@+id/action_about_to_staffs"
+            app:destination="@id/staffs"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
+    </fragment>
     <fragment
         android:id="@+id/floormap"
         android:name="io.github.droidkaigi.confsched2020.floormap.ui.FloorMapFragment"
