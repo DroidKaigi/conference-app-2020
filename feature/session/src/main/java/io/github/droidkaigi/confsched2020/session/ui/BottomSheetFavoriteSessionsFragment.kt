@@ -22,7 +22,7 @@ import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.model.ExpandFilterState
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.session.R
-import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetSessionsBinding
+import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetFavoriteSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
@@ -32,7 +32,7 @@ import javax.inject.Provider
 
 class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
 
-    private var binding: FragmentBottomSheetSessionsBinding by autoCleared()
+    private var binding: FragmentBottomSheetFavoriteSessionBinding by autoCleared()
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -57,11 +57,11 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_bottom_sheet_sessions,
+            R.layout.fragment_bottom_sheet_favorite_session,
             container,
             false
         )
-        return binding.root
+        return binding.apply { isEmptySessions = false }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -113,6 +113,7 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
             groupAdapter.update(sessions.map {
                 sessionItemFactory.create(it, sessionsViewModel)
             })
+            binding.isEmptySessions = count <= 0
         }
     }
 
