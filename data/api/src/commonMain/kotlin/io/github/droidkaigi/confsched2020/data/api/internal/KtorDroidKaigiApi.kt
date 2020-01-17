@@ -87,7 +87,7 @@ internal open class KtorDroidKaigiApi constructor(
 
     override suspend fun getStaffs(): StaffResponse {
         val rawResponse = httpClient.get<String> {
-            url("$apiEndpoint/staffs")
+            url("$apiEndpoint/committee_members")
             accept(ContentType.Application.Json)
         }
 
