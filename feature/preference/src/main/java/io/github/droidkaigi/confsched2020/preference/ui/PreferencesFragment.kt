@@ -34,12 +34,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         preferenceModelFactory.get()
     }
 
-    private val darkThemeSwitchChangeListener =
-        Preference.OnPreferenceChangeListener { _, newValue ->
-            preferenceViewModel.setNightMode(newValue as Boolean)
-            return@OnPreferenceChangeListener true
-        }
-
     private var isNightMode = false
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -49,7 +43,10 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             isNightMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
             it.isChecked = isNightMode
-            it.onPreferenceChangeListener = darkThemeSwitchChangeListener
+            it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                preferenceViewModel.setNightMode(newValue as Boolean)
+                return@OnPreferenceChangeListener true
+            }
         }
     }
 

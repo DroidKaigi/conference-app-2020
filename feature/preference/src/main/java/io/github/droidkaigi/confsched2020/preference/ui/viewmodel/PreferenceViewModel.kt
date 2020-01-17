@@ -3,7 +3,6 @@ package io.github.droidkaigi.confsched2020.preference.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.squareup.inject.assisted.AssistedInject
 import io.github.droidkaigi.confsched2020.ext.combine
 import javax.inject.Inject
 
