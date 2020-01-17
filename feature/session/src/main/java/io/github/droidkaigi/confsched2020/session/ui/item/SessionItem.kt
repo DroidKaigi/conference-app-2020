@@ -19,6 +19,7 @@ import coil.request.RequestDisposable
 import coil.transform.CircleCropTransformation
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import com.xwray.groupie.databinding.ViewHolder
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
@@ -183,25 +184,24 @@ class SessionItem @AssistedInject constructor(
 
     fun title(): LocaledString = session.title
 
+    override fun getChangePayload(newItem: Item<*>?): Any? {
+        return when {
+            newItem !is SessionItem -> null
+            isChangeFavorited(newItem) -> ItemPayload.FavoritePayload(newItem.session.isFavorited)
+            else -> null
+        }
+    }
+
     override fun providerEqualableContents(): Array<*> {
         return arrayOf(session)
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other !is SessionItem) return false
-        return when {
-            isSameContents(other) -> true
-            isChangeFavorited(other) -> {
-                other.notifyChanged(ItemPayload.FavoritePayload(session.isFavorited))
-                true
-            }
-            else -> false
-        }
+        return isSameContents(other)
     }
 
-    private fun isChangeFavorited(oldItem: SessionItem): Boolean {
-        return session.id == oldItem.session.id &&
-                session.isFavorited != oldItem.session.isFavorited
+    private fun isChangeFavorited(newItem: SessionItem): Boolean {
+        return session.isFavorited != newItem.session.isFavorited
     }
 
     override fun hashCode(): Int {
