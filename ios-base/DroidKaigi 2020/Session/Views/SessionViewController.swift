@@ -7,21 +7,26 @@
 //
 
 import UIKit
-import api
 import MaterialComponents
 
 final class SessionViewController: UIViewController {
 
-    var appBarViewController = MDCAppBarViewController()
+    @IBOutlet weak var filteredSessionCountLabel: UILabel! {
+        didSet {
+            filteredSessionCountLabel.font = ApplicationScheme.shared.typographyScheme.caption
+        }
+    }
+    @IBOutlet weak var filterButton: MDCButton! {
+        didSet {
+            filterButton.applyTextTheme(withScheme: ApplicationScheme.shared.buttonScheme)
+            let filterListImage = UIImage(named: "ic_filter_list")
+            let templateFilterListImage = filterListImage?.withRenderingMode(.alwaysTemplate)
+            filterButton.setImage(templateFilterListImage, for: .normal)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.frame = UIScreen.main.bounds
-        self.view.backgroundColor = .white
-
-        let label = UILabel(frame: .init(x: 40, y: 40, width: 100, height: 50))
-        label.text = "hoge"
-        view.addSubview(label)
     }
 }
 
