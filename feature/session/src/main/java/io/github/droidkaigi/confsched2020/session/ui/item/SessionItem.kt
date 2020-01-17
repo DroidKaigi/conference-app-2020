@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -53,12 +54,7 @@ class SessionItem @AssistedInject constructor(
             sessionsViewModel
                 .favorite(session)
         }
-        viewBinding.favorite.setImageResource(
-            if (session.isFavorited)
-                R.drawable.ic_bookmark_black_24dp
-            else
-                R.drawable.ic_bookmark_border_black_24dp
-        )
+        bindFavoriteImage(session.isFavorited, viewBinding.favorite)
         viewBinding.root.setOnClickListener {
             viewBinding.root.findNavController()
                 .navigate(actionSessionToSessionDetail(session.id))
@@ -81,15 +77,23 @@ class SessionItem @AssistedInject constructor(
         } else {
             payloads.forEach { payload ->
                 if (payload is FavoritePayload) {
-                    viewBinding.favorite.setImageResource(
-                        if (payload.isFavorited)
-                            R.drawable.ic_bookmark_black_24dp
-                        else
-                            R.drawable.ic_bookmark_border_black_24dp
-                    )
+                    bindFavoriteImage(payload.isFavorited, viewBinding.favorite)
                 }
             }
         }
+    }
+
+    private fun bindFavoriteImage(
+        isFavorited: Boolean,
+        imageButton: ImageButton
+    ) {
+        imageButton.setImageResource(
+            if (isFavorited) {
+                R.drawable.ic_bookmark_black_24dp
+            } else {
+                R.drawable.ic_bookmark_border_black_24dp
+            }
+        )
     }
 
     private fun ViewGroup.bindSpeaker() {
