@@ -18,12 +18,12 @@ fun View.showHide(show: Boolean) {
 
 @BindingAdapter("isVisibleWithAnimation")
 fun View.showGoneWithAnimation(show: Boolean) {
-    val shortAnimationDuration = resources.getInteger(android.R.integer.config_longAnimTime)
+    val animationDuration = resources.getInteger(android.R.integer.config_longAnimTime)
     val endOpacity = if (show) 100f else 0f
     val endVisible = if (show) View.VISIBLE else View.GONE
     animate()
         .alpha(endOpacity)
-        .setDuration(shortAnimationDuration.toLong())
+        .setDuration(animationDuration.toLong())
         .setListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 visibility = endVisible
@@ -33,12 +33,12 @@ fun View.showGoneWithAnimation(show: Boolean) {
 
 @BindingAdapter("isHideWithAnimation")
 fun View.showHideWithAnimation(show: Boolean) {
-    val shortAnimationDuration = resources.getInteger(android.R.integer.config_longAnimTime)
+    val animationDuration = resources.getInteger(android.R.integer.config_longAnimTime)
     val endOpacity = if (show) 100f else 0f
     val endVisible = if (show) View.VISIBLE else View.INVISIBLE
     animate()
         .alpha(endOpacity)
-        .setDuration(shortAnimationDuration.toLong())
+        .setDuration(animationDuration.toLong())
         .setListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 visibility = endVisible
