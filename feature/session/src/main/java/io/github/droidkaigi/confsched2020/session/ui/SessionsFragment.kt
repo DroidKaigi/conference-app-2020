@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -35,12 +38,14 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewMod
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.ui.widget.FilterChip
 import io.github.droidkaigi.confsched2020.ui.widget.onCheckedChanged
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class SessionsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentSessionsBinding
+    private var binding: FragmentSessionsBinding by autoCleared()
+    private lateinit var overrideBackPressedCallback: OnBackPressedCallback
 
     private val sessionSheetBehavior: BottomSheetBehavior<*>
         get() {
@@ -73,6 +78,10 @@ class SessionsFragment : DaggerFragment() {
         if (savedInstanceState == null) {
             setupSessionsFragment()
         }
+        overrideBackPressedCallback =
+            requireActivity().onBackPressedDispatcher.addCallback(this, false) {
+                sessionTabViewModel.setExpand(ExpandFilterState.EXPANDED)
+            }
     }
 
     override fun onCreateView(
@@ -98,6 +107,10 @@ class SessionsFragment : DaggerFragment() {
         val initialPeekHeight = sessionSheetBehavior.peekHeight
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight = insets.systemWindowInsetBottom + initialPeekHeight
+        }
+        binding.fragmentSessionsScrollView.doOnApplyWindowInsets { scrollView, insets, initialState ->
+            // Set a bottom padding due to the system UI is enabled.
+            scrollView.updatePadding(bottom = insets.systemWindowInsetBottom + initialPeekHeight + initialState.paddings.bottom)
         }
         sessionSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
@@ -130,10 +143,14 @@ class SessionsFragment : DaggerFragment() {
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             when (uiModel.expandFilterState) {
-                ExpandFilterState.EXPANDED -> sessionSheetBehavior.state =
-                    BottomSheetBehavior.STATE_EXPANDED
-                ExpandFilterState.COLLAPSED -> sessionSheetBehavior.state =
-                    BottomSheetBehavior.STATE_COLLAPSED
+                ExpandFilterState.EXPANDED -> {
+                    sessionSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    overrideBackPressedCallback.isEnabled = false
+                }
+                ExpandFilterState.COLLAPSED -> {
+                    sessionSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    overrideBackPressedCallback.isEnabled = true
+                }
                 ExpandFilterState.CHANGING -> Unit
             }
         }
@@ -174,6 +191,18 @@ class SessionsFragment : DaggerFragment() {
                 sessionsViewModel.filterChanged(level, checked)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // override back button iff front layer collapsed (filter is shown)
+        overrideBackPressedCallback.isEnabled =
+            sessionSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED
+    }
+
+    override fun onPause() {
+        super.onPause()
+        overrideBackPressedCallback.isEnabled = false
     }
 
     private inline fun <reified T> ChipGroup.setupFilter(

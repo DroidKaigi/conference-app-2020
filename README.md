@@ -4,7 +4,7 @@ We are currently working on the event. We are looking for contributors!
 
 DroidKaigi 2020 is a conference tailored for developers on 20th and 21st February 2020.  
 
-You can install the prodution app via Get it on Google Play.  
+You can install the production app via Get it on Google Play.
 // TODO: Add link to Google Play
 
 And also, you can try the binary under development built on master branch through Try it on your device via DeployGate  

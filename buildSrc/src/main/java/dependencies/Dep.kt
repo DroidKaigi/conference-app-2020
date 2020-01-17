@@ -6,12 +6,12 @@ object Dep {
         val android = "com.android.tools.build:gradle:3.6.0-rc01"
         val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}"
-        val playServices = "com.google.gms:google-services:4.3.0"
+        val playServices = "com.google.gms:google-services:4.3.3"
         val safeArgs =
             "androidx.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.version}"
         val jetifier = "com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta05"
         val licensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.9.5"
-        val crashlytics = "io.fabric.tools:gradle:1.28.0"
+        val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.0.0-beta01"
         val iconRibbonPlugin = "com.akaita.android:easylauncher:1.3.1"
         val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.22.0"
     }
@@ -117,7 +117,8 @@ object Dep {
         val core = "com.google.firebase:firebase-core:16.0.4"
         val firestoreKtx = "com.google.firebase:firebase-firestore-ktx:20.2.0"
         val auth = "com.google.firebase:firebase-auth:18.1.0"
-        val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.9.8"
+        val crashlytics = "com.google.firebase:firebase-crashlytics:17.0.0-beta01"
+        val analytics = "com.google.firebase:firebase-analytics:17.2.2"
         val messaging = "com.google.firebase:firebase-messaging:17.3.3"
     }
 

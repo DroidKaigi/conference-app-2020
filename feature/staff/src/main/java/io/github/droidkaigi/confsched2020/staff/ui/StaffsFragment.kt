@@ -26,12 +26,13 @@ import io.github.droidkaigi.confsched2020.staff.ui.di.StaffAssistedInjectModule
 import io.github.droidkaigi.confsched2020.staff.ui.item.StaffItem
 import io.github.droidkaigi.confsched2020.staff.ui.viewmodel.StaffsViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class StaffsFragment : Fragment() {
 
-    private lateinit var binding: FragmentStaffsBinding
+    private var binding: FragmentStaffsBinding by autoCleared()
 
     @Inject lateinit var staffsFactory: Provider<StaffsViewModel>
     private val staffsViewModel by assistedViewModels {
@@ -40,7 +41,7 @@ class StaffsFragment : Fragment() {
 
     @Inject lateinit var staffItemFactory: StaffItem.Factory
 
-    private lateinit var progressTimeLatch: ProgressTimeLatch
+    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -14,7 +14,7 @@ import io.github.droidkaigi.confsched2020.model.SearchResult
 import io.github.droidkaigi.confsched2020.model.SessionContents
 
 class SearchSessionsViewModel @AssistedInject constructor(
-    val sessionRepository: SessionRepository
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
     data class UiModel(val searchResult: SearchResult) {
         companion object {

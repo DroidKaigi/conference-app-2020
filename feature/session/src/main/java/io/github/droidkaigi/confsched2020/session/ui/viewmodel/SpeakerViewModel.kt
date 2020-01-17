@@ -19,17 +19,17 @@ import kotlinx.coroutines.flow.map
 
 class SpeakerViewModel @AssistedInject constructor(
     @Assisted private val speakerId: SpeakerId,
-    val sessionRepository: SessionRepository
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
     // UiModel definition
     data class UiModel(
         val isLoading: Boolean,
         val error: AppError?,
         val speaker: Speaker?,
-        val session: SpeechSession?
+        val sessions: List<SpeechSession>
     ) {
         companion object {
-            val EMPTY = UiModel(false, null, null, null)
+            val EMPTY = UiModel(false, null, null, listOf())
         }
     }
 
@@ -43,14 +43,14 @@ class SpeakerViewModel @AssistedInject constructor(
             }
     }
 
-    private val speakerSessionLoadingStateLiveData: LiveData<LoadState<SpeechSession>> = liveData {
+    private val speakerSessionLoadingStateLiveData: LiveData<LoadState<List<SpeechSession>>> = liveData {
         sessionRepository.sessionContents()
             .map { it.sessions
                 .filterIsInstance<SpeechSession>()
-                .first { session -> session.speakers.firstOrNull { speaker -> speakerId == speaker.id } != null }
+                .filter { session -> session.speakers.firstOrNull { speaker -> speakerId == speaker.id } != null }
             }
             .toLoadingState()
-            .collect { loadState: LoadState<SpeechSession> ->
+            .collect { loadState: LoadState<List<SpeechSession>> ->
                 emit(loadState)
             }
     }
@@ -62,7 +62,7 @@ class SpeakerViewModel @AssistedInject constructor(
         liveData2 = speakerSessionLoadingStateLiveData
     ) { current: UiModel,
         speakerLoadState: LoadState<Speaker>,
-        speakerSessionLoadState: LoadState<SpeechSession> ->
+        speakerSessionLoadState: LoadState<List<SpeechSession>> ->
         val isLoading = speakerLoadState.isLoading || speakerSessionLoadState.isLoading
         val speaker = when (speakerLoadState) {
             is LoadState.Loaded -> {
@@ -72,12 +72,12 @@ class SpeakerViewModel @AssistedInject constructor(
                 current.speaker
             }
         }
-        val speakerSession = when (speakerSessionLoadState) {
+        val speakerSessions = when (speakerSessionLoadState) {
             is LoadState.Loaded -> {
                 speakerSessionLoadState.value
             }
             else -> {
-                current.session
+                current.sessions
             }
         }
         UiModel(
@@ -85,7 +85,7 @@ class SpeakerViewModel @AssistedInject constructor(
             error = (speakerLoadState.getErrorIfExists()
                 ?: speakerSessionLoadState.getErrorIfExists()).toAppError(),
             speaker = speaker,
-            session = speakerSession
+            sessions = speakerSessions
         )
     }
 

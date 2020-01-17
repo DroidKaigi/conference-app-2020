@@ -29,6 +29,7 @@
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
@@ -49,7 +50,7 @@
 
             <fragment
                 android:id="@+id/root_nav_host_fragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:name="io.github.droidkaigi.confsched2020.ui.CustomNavHostFragment"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:defaultNavHost="true"
@@ -68,6 +69,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             app:headerLayout="@layout/nav_drawer_header"
+            app:insetForeground="@android:color/transparent"
             app:itemBackground="@android:color/transparent"
             app:itemIconTint="@color/nav_drawer_item_selector"
             app:itemTextColor="@color/nav_drawer_item_selector"

@@ -23,19 +23,20 @@ import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class ContributorsFragment : Fragment() {
 
-    private lateinit var binding: FragmentContributorsBinding
+    private var binding: FragmentContributorsBinding by autoCleared()
 
     @Inject lateinit var contributorsFactory: Provider<ContributorsViewModel>
     private val contributorsViewModel by assistedViewModels {
         contributorsFactory.get()
     }
 
-    private lateinit var progressTimeLatch: ProgressTimeLatch
+    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,

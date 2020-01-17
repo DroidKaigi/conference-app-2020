@@ -16,6 +16,7 @@ dependencies {
     implementation project(":model")
     implementation Dep.AndroidX.constraint
     implementation Dep.AndroidX.design
+    implementation Dep.AndroidX.browser
     implementation Dep.Kotlin.stdlibJvm
 
     api Dep.Insetter.insetter

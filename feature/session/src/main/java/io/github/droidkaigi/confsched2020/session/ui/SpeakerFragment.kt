@@ -1,7 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,37 +10,37 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
-import coil.api.load
-import coil.transform.CircleCropTransformation
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.ext.getThemeColor
-import io.github.droidkaigi.confsched2020.model.defaultLang
-import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSpeakerBinding
-import io.github.droidkaigi.confsched2020.session.ui.SpeakerFragmentDirections.actionSpeakerToSessionDetail
+import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerDetailItem
+import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerSessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SpeakerViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 
 class SpeakerFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentSpeakerBinding
+    private var binding: FragmentSpeakerBinding by autoCleared()
 
     @Inject lateinit var speakerViewModelFactory: SpeakerViewModel.Factory
     private val speakerViewModel by assistedViewModels {
         speakerViewModelFactory.create(navArgs.speakerId)
     }
 
+    @Inject lateinit var speakerDetailItemFactory: SpeakerDetailItem.Factory
+    @Inject lateinit var speakerSessionItemFactory: SpeakerSessionItem.Factory
+
     private val navArgs: SpeakerFragmentArgs by navArgs()
-    private lateinit var progressTimeLatch: ProgressTimeLatch
+    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,38 +64,19 @@ class SpeakerFragment : DaggerFragment() {
             loading = true
         }
 
-        binding.speakerDescription.movementMethod = LinkMovementMethod.getInstance()
-
-        val placeHolder = VectorDrawableCompat.create(
-            requireContext().resources,
-            R.drawable.ic_person_outline_black_32dp,
-            null
-        )?.apply {
-            setTint(
-                requireContext().getThemeColor(R.attr.colorOnBackground)
-            )
-        }
+        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        binding.speakerRecycler.adapter = groupAdapter
 
         speakerViewModel.uiModel.distinctUntilChanged()
             .observe(viewLifecycleOwner) { uiModel: SpeakerViewModel.UiModel ->
                 progressTimeLatch.loading = uiModel.isLoading
                 val speaker = uiModel.speaker ?: return@observe
-                val session = uiModel.session ?: return@observe
-                binding.speaker = speaker
-                binding.speechSession = session
-                binding.lang = defaultLang()
-                binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
+                val sessions = uiModel.sessions.takeIf { it.isNotEmpty() } ?: return@observe
 
-                binding.speakerImage.load(speaker.imageUrl) {
-                    crossfade(true)
-                    placeholder(placeHolder)
-                    transformations(CircleCropTransformation())
-                    lifecycle(viewLifecycleOwner)
-                }
-
-                binding.speakerSessionName.setOnClickListener {
-                    findNavController().navigate(actionSpeakerToSessionDetail(session.id))
-                }
+                groupAdapter.update(
+                    listOf(speakerDetailItemFactory.create(speaker)) +
+                        sessions.map { speakerSessionItemFactory.create(it) }
+                )
             }
     }
 }

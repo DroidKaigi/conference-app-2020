@@ -31,12 +31,13 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.item.SponsorItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.viewmodel.SponsorsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class SponsorsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentSponsorsBinding
+    private var binding: FragmentSponsorsBinding by autoCleared()
 
     @Inject lateinit var sponsorsModelFactory: Provider<SponsorsViewModel>
     private val sponsorsViewModel by assistedViewModels {
@@ -53,7 +54,7 @@ class SponsorsFragment : DaggerFragment() {
 
     @Inject lateinit var categoryHeaderItemFactory: CategoryHeaderItem.Factory
 
-    private lateinit var progressTimeLatch: ProgressTimeLatch
+    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -120,10 +121,10 @@ class SponsorsFragment : DaggerFragment() {
         return when (category) {
             SponsorCategory.Category.PLATINUM,
             SponsorCategory.Category.GOLD -> {
-                largeSponsorItemFactory.create(this, spanSize, systemViewModel)
+                largeSponsorItemFactory.create(this, spanSize)
             }
             else -> {
-                sponsorItemFactory.create(this, spanSize, systemViewModel)
+                sponsorItemFactory.create(this, spanSize)
             }
         }
     }

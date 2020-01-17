@@ -9,6 +9,8 @@ import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.internal.ViewUtils.doOnApplyWindowInsets
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -23,6 +25,7 @@ import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -40,9 +43,9 @@ class AboutFragment : DaggerFragment() {
         systemViewModelProvider.get()
     }
 
-    private lateinit var binding: FragmentAboutBinding
+    private var binding: FragmentAboutBinding by autoCleared()
 
-    private lateinit var progressTimeLatch: ProgressTimeLatch
+    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,7 +78,9 @@ class AboutFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
-
+        binding.staffs.setOnClickListener {
+            findNavController().navigate(AboutFragmentDirections.actionAboutToStaffs())
+        }
         // TODO: Add AboutUI into RecyclerView
     }
 }
