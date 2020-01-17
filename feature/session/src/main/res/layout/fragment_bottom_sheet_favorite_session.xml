@@ -49,7 +49,7 @@
             android:text="@string/start_filter"
             android:textAppearance="@style/TextAppearance.DroidKaigi.Body2"
             app:icon="@drawable/ic_filter_list_black_24dp"
-            app:isVisible="@{!isEmptySessions}"
+            app:isHide="@{!isEmptySessions}"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -88,7 +88,7 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingTop="8dp"
-            app:isVisible="@{!isEmptySessions}"
+            app:isVisibleWithAnimation="@{!isEmptySessions}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -100,7 +100,7 @@
             android:id="@+id/empty_session"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:isVisible="@{isEmptySessions}"
+            app:isVisibleWithAnimation="@{isEmptySessions}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
