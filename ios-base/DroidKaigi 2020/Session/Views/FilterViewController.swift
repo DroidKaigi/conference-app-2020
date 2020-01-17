@@ -72,6 +72,7 @@ final class FilterViewController: UIViewController {
         ]
         tabBar.alignment = .justified
         tabBar.itemAppearance = .titles
+        tabBar.tintColor = .white
 
         tabBar.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
         tabBar.sizeToFit()
