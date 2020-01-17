@@ -103,7 +103,7 @@ class SessionsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         // Bottom sheet's topLeft corner always rounded.
         // but initBottomSheetShapeAppearance func don't work this position...
-//        initBottomSheetShapeAppearance()
+        initBottomSheetShapeAppearance()
         val initialPeekHeight = sessionSheetBehavior.peekHeight
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight = insets.systemWindowInsetBottom + initialPeekHeight
@@ -280,11 +280,11 @@ class SessionsFragment : DaggerFragment() {
                 .build()
         val materialShapeDrawable = MaterialShapeDrawable(shapeAppearanceModel).apply {
             setTint(
-                requireContext().getThemeColor(R.attr.colorSurface) // colorSurface override
+                requireContext().getThemeColor(R.attr.colorSurface) // backgroundTint set again
             ) // FrameLayout don't have materialShapeDrawable. BackgroundTint will be ignored.
         }
         binding.sessionsSheet.background =
-            materialShapeDrawable // This setting will ignore Widget.DroidKaigi.BottomSheet
+            materialShapeDrawable // This setting will ignore Widget.DroidKaigi.BottomSheet backgroundTint
     }
 
     companion object {
