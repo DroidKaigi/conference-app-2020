@@ -165,6 +165,7 @@ jobs:
       #     DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # TODO This is a temporary one to check the test. You can delete it.
+  # Emurator's test is not stable now. Sometimes fail..
   instrumentation-test:
     runs-on: macOS-latest
     if: contains(github.event.pull_request.title, '[run instrumentation test]') == true
