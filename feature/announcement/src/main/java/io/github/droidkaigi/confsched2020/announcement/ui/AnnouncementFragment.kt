@@ -27,6 +27,7 @@ import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -47,9 +48,9 @@ class AnnouncementFragment : DaggerFragment() {
     @Inject
     lateinit var announcementItemFactory: AnnouncementItem.Factory
 
-    private lateinit var binding: FragmentAnnouncementBinding
+    private var binding: FragmentAnnouncementBinding by autoCleared()
 
-    private lateinit var progressTimeLatch: ProgressTimeLatch
+    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
