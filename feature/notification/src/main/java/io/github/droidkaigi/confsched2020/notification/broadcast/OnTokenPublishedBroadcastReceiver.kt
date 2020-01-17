@@ -1,9 +1,9 @@
-package io.github.droidkaigi.confsched2019.notification.broadcast
+package io.github.droidkaigi.confsched2020.notification.broadcast
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import io.github.droidkaigi.confsched2019.notification.service.FCMService
+import io.github.droidkaigi.confsched2020.notification.service.FCMService
 
 abstract class OnTokenPublishedBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {

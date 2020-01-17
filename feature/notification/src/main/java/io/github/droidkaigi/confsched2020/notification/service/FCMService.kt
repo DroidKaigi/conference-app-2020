@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2019.notification.service
+package io.github.droidkaigi.confsched2020.notification.service
 
 import android.app.PendingIntent
 import android.content.Intent
@@ -7,11 +7,10 @@ import androidx.core.os.bundleOf
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import io.github.droidkaigi.confsched2019.ext.queryIntentAllActivities
-import io.github.droidkaigi.confsched2019.notification.NotificationChannelInfo
-import io.github.droidkaigi.confsched2019.notification.NotificationUtil
-import io.github.droidkaigi.confsched2019.notification.createDefaultNotificationChannel
-import io.github.droidkaigi.confsched2019.timber.error
+import io.github.droidkaigi.confsched2020.notification.NotificationChannelInfo
+import io.github.droidkaigi.confsched2020.notification.NotificationUtil
+import io.github.droidkaigi.confsched2020.notification.createDefaultNotificationChannel
+import io.github.droidkaigi.confsched2020.timber.error
 import timber.log.Timber
 
 class FCMService : FirebaseMessagingService() {
@@ -76,11 +75,11 @@ class FCMService : FirebaseMessagingService() {
         if (notification.link != null) {
             val intent = Intent(Intent.ACTION_VIEW).setData(notification.link)
 
-            if (packageManager.queryIntentAllActivities(intent).isNotEmpty()) {
+            if (packageManager.queryIntentActivities(intent,0).isNotEmpty()) {
                 return PendingIntent.getActivity(this, 0, intent, 0, options)
             }
-        }
 
+        }
         return null
     }
 
