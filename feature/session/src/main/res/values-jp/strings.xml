@@ -9,4 +9,5 @@
     <string name="speaker">スピーカー</string>
     <string name="session">セッション</string>
     <string name="query_hint">検索する</string>
+    <string name="empty_favorite_session">お気に入りのセッションを登録すると\nあなた専用のプランを作ることが\nできます。</string>
 </resources>
