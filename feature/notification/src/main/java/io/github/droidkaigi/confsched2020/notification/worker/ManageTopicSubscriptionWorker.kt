@@ -1,9 +1,10 @@
-package io.github.droidkaigi.confsched2019.notification.worker
+package io.github.droidkaigi.confsched2020.notification.worker
 
 import android.content.Context
 import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
+import androidx.work.ListenableWorker
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -11,8 +12,8 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
-import io.github.droidkaigi.confsched2019.notification.Topic
-import io.github.droidkaigi.confsched2019.timber.error
+import io.github.droidkaigi.confsched2020.notification.Topic
+import io.github.droidkaigi.confsched2020.timber.error
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
@@ -22,10 +23,10 @@ class ManageTopicSubscriptionWorker(
     context: Context,
     parameters: WorkerParameters
 ) : Worker(context, parameters) {
-    override fun doWork(): androidx.work.Result {
+    override fun doWork(): ListenableWorker.Result {
         try {
             if (!inputData.isValid) {
-                return androidx.work.Result.failure()
+                return ListenableWorker.Result.failure()
             }
 
             val topicsToBeSubscribed =
@@ -54,10 +55,10 @@ class ManageTopicSubscriptionWorker(
         } catch (th: Throwable) {
             Timber.error(th)
 
-            return androidx.work.Result.retry()
+            return ListenableWorker.Result.retry()
         }
 
-        return androidx.work.Result.success()
+        return ListenableWorker.Result.success()
     }
 
     private val Data.isValid: Boolean
@@ -71,10 +72,11 @@ class ManageTopicSubscriptionWorker(
         private const val KEY_TOPIC_NAMES_TO_BE_UNSUBSCRIBED = "KEY_TOPIC_NAMES_TO_BE_UNSUBSCRIBED"
 
         fun start(
+            context: Context,
             subscribes: List<Topic> = emptyList(),
             unsubscribes: List<Topic> = emptyList()
         ) {
-            WorkManager.getInstance()
+            WorkManager.getInstance(context)
                 .beginUniqueWork(
                     NAME, ExistingWorkPolicy.APPEND,
                     OneTimeWorkRequestBuilder<ManageTopicSubscriptionWorker>()

@@ -15,7 +15,7 @@ import io.github.droidkaigi.confsched2020.notification.R
 
 fun Context.notificationBuilder(
     channelInfo: NotificationChannelInfo,
-    @ColorRes iconColorRes: Int = R.color.colorBrand
+    @ColorRes iconColorRes: Int = R.color.color_brand
 ): NotificationCompat.Builder {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         createDefaultNotificationChannel(
@@ -51,7 +51,7 @@ object NotificationUtil {
         pendingIntent: PendingIntent?,
         channelInfo: NotificationChannelInfo = NotificationChannelInfo.DEFAULT,
         @DrawableRes iconRes: Int = R.drawable.ic_notification,
-        @ColorRes colorRes: Int = R.color.colorBrand,
+        @ColorRes colorRes: Int = R.color.color_brand,
         builder: NotificationCompat.Builder.() -> Unit = {}
     ) {
         val notificationBuilder = context.notificationBuilder(channelInfo, colorRes).apply {
