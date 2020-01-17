@@ -100,8 +100,8 @@ class SessionDetailFragment : DaggerFragment() {
                     handleNavigation(menuItem.itemId)
                 }
                 R.id.session_calendar -> {
-                    val session = binding.session ?: return@setOnMenuItemClickListener false
                     systemViewModel.openCalendar(
+                    val session = binding.session ?: return@setOnMenuItemClickListener true
                         session.title.getByLang(defaultLang()),
                         session.room.name.getByLang(defaultLang()),
                         session.startTime.unixMillisLong,
