@@ -6,15 +6,18 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import MaterialComponents
 
 final class FilterViewController: UIViewController {
+
+    private let disposeBag = DisposeBag()
 
     let appBar = MDCAppBar()
     let tabBar = MDCTabBar()
 
     var containerView: UIView = {
-        //TODO: Change the following line from UIView to ShapedShadowedView and apply the shape.
         let view = ShapedShadowedView(frame: .zero)
         let shapeGenerator = MDCRectangleShapeGenerator()
         shapeGenerator.topLeftCorner =
@@ -86,6 +89,38 @@ final class FilterViewController: UIViewController {
 
         let viewController = SessionViewController()
         self.insert(viewController)
+
+        let animator = UIViewPropertyAnimator(duration: 0.8, curve: .easeInOut) { [weak self] in
+            guard let self = self else { return }
+            self.containerView.frame.origin.y += self.containerView.frame.height - 100
+        }
+        animator.pausesOnCompletion = true
+
+        let panGesture = UIPanGestureRecognizer()
+        panGesture.rx.event.asDriver()
+            .drive(onNext: { [weak self] recognizer in
+                guard let containerView = self?.containerView else { return }
+
+                switch recognizer.state {
+                case .began:
+                    animator.isReversed = false
+                    animator.isReversed = animator.fractionComplete > 0.5
+                    recognizer.setTranslation(.zero, in: containerView)
+                case .changed:
+                    let moved = recognizer.translation(in: containerView)
+                    let movePercentage = abs(moved.y / containerView.frame.height)
+                    animator.fractionComplete = movePercentage
+                case .ended:
+                    let thresholdPercentage: CGFloat = 0.1
+                    if animator.fractionComplete < thresholdPercentage {
+                        animator.isReversed.toggle()
+                    }
+                    animator.startAnimation()
+                default:
+                    break
+                }
+            }).disposed(by: disposeBag)
+        containerView.addGestureRecognizer(panGesture)
     }
 
     override func viewDidLayoutSubviews() {
