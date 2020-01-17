@@ -76,8 +76,10 @@ class SessionItem @AssistedInject constructor(
             bind(viewBinding, position)
         } else {
             payloads.forEach { payload ->
-                if (payload is FavoritePayload) {
-                    bindFavoriteImage(payload.isFavorited, viewBinding.favorite)
+                when (payload) {
+                    is ItemPayload.FavoritePayload -> {
+                        bindFavoriteImage(payload.isFavorited, viewBinding.favorite)
+                    }
                 }
             }
         }
@@ -187,7 +189,7 @@ class SessionItem @AssistedInject constructor(
         return when {
             isSameContents(other) -> true
             isChangeFavorited(other) -> {
-                other.notifyChanged(FavoritePayload(session.isFavorited))
+                other.notifyChanged(ItemPayload.FavoritePayload(session.isFavorited))
                 true
             }
             else -> false
@@ -203,7 +205,9 @@ class SessionItem @AssistedInject constructor(
         return contentsHash()
     }
 
-    private data class FavoritePayload(val isFavorited: Boolean)
+    private sealed class ItemPayload {
+        data class FavoritePayload(val isFavorited: Boolean) : ItemPayload()
+    }
 
     @AssistedInject.Factory
     interface Factory {
