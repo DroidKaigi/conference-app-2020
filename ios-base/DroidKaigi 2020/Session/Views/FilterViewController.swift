@@ -31,19 +31,39 @@ final class FilterViewController: UIViewController {
     var embeddedView: UIView?
     var embeddedViewController: UIViewController?
 
-    var isFocusedEmbeddedController: Bool = false {
-        didSet {
-            UIView.animate(withDuration: 0.2) {
-                self.containerView.frame = self.frameForEmbeddedController()
-            }
-        }
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view.backgroundColor = ApplicationScheme.shared.colorScheme.surfaceColor
+        setUpAppBar()
+        setUpTabBar()
+        setUpContainerView()
+    }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        let embeddedFrame = self.frameForEmbeddedController()
+        self.containerView.frame = embeddedFrame
+        self.embeddedView?.frame = self.containerView.bounds
+    }
+
+    private func frameForEmbeddedController() -> CGRect {
+        var embeddedFrame = self.view.bounds
+        var insetHeader = UIEdgeInsets()
+        let bottomMargin: CGFloat = 24
+        insetHeader.top = self.appBar.headerViewController.view.frame.maxY
+            + tabBar.bounds.maxY + bottomMargin
+        embeddedFrame = embeddedFrame.inset(by: insetHeader)
+
+        if (embeddedView == nil) {
+            embeddedFrame.origin.y = self.view.bounds.maxY
+        }
+
+        return embeddedFrame
+    }
+
+    private func setUpAppBar() {
         let menuImage = UIImage(named: "ic_menu")
         let templateMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
         let menuItem = UIBarButtonItem(image: templateMenuImage,
@@ -62,12 +82,13 @@ final class FilterViewController: UIViewController {
         self.navigationItem.leftBarButtonItems = [menuItem, logoItem]
         self.navigationItem.rightBarButtonItems = [searchItem]
 
-        // AppBar Init
         self.addChild(appBar.headerViewController)
         appBar.addSubviewsToParent()
         MDCAppBarColorThemer.applySemanticColorScheme(ApplicationScheme.shared.colorScheme, to: appBar)
         appBar.navigationBar.translatesAutoresizingMaskIntoConstraints = false
+    }
 
+    private func setUpTabBar() {
         tabBar.items = [
             UITabBarItem(title: "DAY1", image: nil, tag: 0),
             UITabBarItem(title: "DAY2", image: nil, tag: 0),
@@ -84,7 +105,9 @@ final class FilterViewController: UIViewController {
         tabBar.topAnchor.constraint(equalTo: appBar.headerViewController.view.bottomAnchor).isActive = true
         tabBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tabBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+    }
 
+    private func setUpContainerView() {
         self.view.addSubview(containerView)
 
         let viewController = SessionViewController()
@@ -122,33 +145,6 @@ final class FilterViewController: UIViewController {
             }).disposed(by: disposeBag)
         containerView.addGestureRecognizer(panGesture)
     }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        let embeddedFrame = self.frameForEmbeddedController()
-        self.containerView.frame = embeddedFrame
-        self.embeddedView?.frame = self.containerView.bounds
-    }
-
-    func frameForEmbeddedController() -> CGRect {
-        var embeddedFrame = self.view.bounds
-        var insetHeader = UIEdgeInsets()
-        let bottomMargin: CGFloat = 24
-        insetHeader.top = self.appBar.headerViewController.view.frame.maxY
-            + tabBar.bounds.maxY + bottomMargin
-        embeddedFrame = embeddedFrame.inset(by: insetHeader)
-
-        if !isFocusedEmbeddedController {
-            embeddedFrame.origin.y = self.view.bounds.size.height - self.appBar.navigationBar.frame.height
-        }
-
-        if (embeddedView == nil) {
-            embeddedFrame.origin.y = self.view.bounds.maxY
-        }
-
-        return embeddedFrame
-    }
 }
 
 extension FilterViewController {
@@ -161,8 +157,6 @@ extension FilterViewController {
 
             view.removeFromSuperview()
             self.embeddedView = nil
-
-            isFocusedEmbeddedController = false
         }
         controller.willMove(toParent: self)
         self.addChild(controller)
@@ -171,7 +165,5 @@ extension FilterViewController {
         self.containerView.addSubview(controller.view)
         self.embeddedView = controller.view
         self.embeddedView?.backgroundColor = .white
-
-        isFocusedEmbeddedController = true
     }
 }
