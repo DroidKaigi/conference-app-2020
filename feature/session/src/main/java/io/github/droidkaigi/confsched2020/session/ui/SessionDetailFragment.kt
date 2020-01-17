@@ -91,13 +91,13 @@ class SessionDetailFragment : DaggerFragment() {
                     ?.let { session -> setupSessionViews(session) }
             }
 
-        binding.bottomAppBar.setOnMenuItemClickListener {
-            when (it.itemId) {
+        binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
                 R.id.session_share -> {
                     // do something
                 }
                 R.id.floormap -> {
-                    handleNavigation(it.itemId)
+                    handleNavigation(menuItem.itemId)
                 }
                 R.id.session_calendar -> {
                     val session = binding.session ?: return@setOnMenuItemClickListener false
@@ -109,7 +109,7 @@ class SessionDetailFragment : DaggerFragment() {
                     )
                 }
                 else -> {
-                    handleNavigation(it.itemId)
+                    handleNavigation(menuItem.itemId)
                 }
             }
             return@setOnMenuItemClickListener true
