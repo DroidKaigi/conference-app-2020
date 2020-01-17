@@ -262,7 +262,7 @@ class SessionDetailFragment : DaggerFragment() {
         }
     }
 
-    fun TextView.setLeftDrawable(drawable: Drawable) {
+    private fun TextView.setLeftDrawable(drawable: Drawable) {
         val res = context.resources
         val widthDp = 32
         val heightDp = 32

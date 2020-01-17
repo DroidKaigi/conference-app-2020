@@ -168,7 +168,7 @@ class SessionItem @AssistedInject constructor(
         imageRequestDisposables.forEach { it.dispose() }
     }
 
-    fun TextView.setLeftDrawable(drawable: Drawable) {
+    private fun TextView.setLeftDrawable(drawable: Drawable) {
         val res = context.resources
         val widthDp = 32
         val heightDp = 32
