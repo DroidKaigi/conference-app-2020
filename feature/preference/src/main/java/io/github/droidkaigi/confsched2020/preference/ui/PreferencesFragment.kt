@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.observe
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
@@ -18,29 +19,36 @@ import dagger.Provides
 import io.github.droidkaigi.confsched2020.App
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
+import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.preference.R
+import io.github.droidkaigi.confsched2020.preference.ui.di.PreferenceAssistedInjectModule
+import io.github.droidkaigi.confsched2020.preference.ui.viewmodel.PreferenceViewModel
+import javax.inject.Inject
+import javax.inject.Provider
 
 class PreferencesFragment : PreferenceFragmentCompat() {
 
+    @Inject
+    lateinit var preferenceModelFactory: Provider<PreferenceViewModel>
+    private val preferenceViewModel by assistedViewModels {
+        preferenceModelFactory.get()
+    }
+
     private val darkThemeSwitchChangeListener =
         Preference.OnPreferenceChangeListener { _, newValue ->
-            AppCompatDelegate.setDefaultNightMode(
-                if (newValue as Boolean) {
-                    MODE_NIGHT_YES
-                } else {
-                    MODE_NIGHT_NO
-                }
-            )
-            (activity as? AppCompatActivity)?.delegate?.applyDayNight()
+            preferenceViewModel.setNightMode(newValue as Boolean)
             return@OnPreferenceChangeListener true
         }
+
+    private var isNightMode = false
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.setting, rootKey)
 
         preferenceManager?.findPreference<SwitchPreferenceCompat>(SWITCH_DARK_THEME_KEY)?.also {
             val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            it.isChecked = currentNightMode == Configuration.UI_MODE_NIGHT_YES
+            isNightMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
+            it.isChecked = isNightMode
             it.onPreferenceChangeListener = darkThemeSwitchChangeListener
         }
     }
@@ -52,6 +60,18 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         val component = DaggerPreferenceComponent.factory()
             .create(appComponent, PreferenceModule(this))
         component.inject(this)
+
+        preferenceViewModel.setNightMode(isNightMode)
+        preferenceViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
+            AppCompatDelegate.setDefaultNightMode(
+                if (uiModel.isNightMode) {
+                    MODE_NIGHT_YES
+                } else {
+                    MODE_NIGHT_NO
+                }
+            )
+            (activity as? AppCompatActivity)?.delegate?.applyDayNight()
+        }
     }
 
     companion object {
@@ -70,7 +90,8 @@ class PreferenceModule(private val fragment: PreferencesFragment) {
 @PageScope
 @Component(
     modules = [
-        PreferenceModule::class
+        PreferenceModule::class,
+        PreferenceAssistedInjectModule::class
     ],
     dependencies = [AppComponent::class]
 )
