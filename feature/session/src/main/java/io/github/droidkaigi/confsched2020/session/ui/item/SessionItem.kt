@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -18,6 +19,7 @@ import coil.request.RequestDisposable
 import coil.transform.CircleCropTransformation
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import com.xwray.groupie.databinding.ViewHolder
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
@@ -30,7 +32,6 @@ import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.actionSessionToSessionDetail
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.actionSessionToSpeaker
-import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.util.lazyWithParam
 import kotlin.math.max
@@ -55,12 +56,7 @@ class SessionItem @AssistedInject constructor(
             sessionsViewModel
                 .favorite(session)
         }
-        viewBinding.favorite.setImageResource(
-            if (session.isFavorited)
-                R.drawable.ic_bookmark_black_24dp
-            else
-                R.drawable.ic_bookmark_border_black_24dp
-        )
+        bindFavorite(session.isFavorited, viewBinding.favorite)
         viewBinding.root.setOnClickListener {
             viewBinding.root.findNavController()
                 .navigate(actionSessionToSessionDetail(session.id))
@@ -71,6 +67,37 @@ class SessionItem @AssistedInject constructor(
         viewBinding.survey.isEnabled = session.isFinished
         imageRequestDisposables.clear()
         viewBinding.speakers.bindSpeaker()
+    }
+
+    override fun bind(
+        viewBinding: ItemSessionBinding,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) {
+            bind(viewBinding, position)
+        } else {
+            payloads.distinct().forEach { payload ->
+                when (payload) {
+                    is ItemPayload.FavoritePayload -> {
+                        bindFavorite(payload.isFavorited, viewBinding.favorite)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun bindFavorite(
+        isFavorited: Boolean,
+        imageButton: ImageButton
+    ) {
+        imageButton.setImageResource(
+            if (isFavorited) {
+                R.drawable.ic_bookmark_black_24dp
+            } else {
+                R.drawable.ic_bookmark_border_black_24dp
+            }
+        )
     }
 
     private fun ViewGroup.bindSpeaker() {
@@ -157,6 +184,14 @@ class SessionItem @AssistedInject constructor(
 
     fun title(): LocaledString = session.title
 
+    override fun getChangePayload(newItem: Item<*>?): Any? {
+        return when {
+            newItem !is SessionItem -> null
+            isChangeFavorited(newItem) -> ItemPayload.FavoritePayload(newItem.session.isFavorited)
+            else -> null
+        }
+    }
+
     override fun providerEqualableContents(): Array<*> {
         return arrayOf(session)
     }
@@ -165,8 +200,16 @@ class SessionItem @AssistedInject constructor(
         return isSameContents(other)
     }
 
+    private fun isChangeFavorited(newItem: SessionItem): Boolean {
+        return session.isFavorited != newItem.session.isFavorited
+    }
+
     override fun hashCode(): Int {
         return contentsHash()
+    }
+
+    private sealed class ItemPayload {
+        data class FavoritePayload(val isFavorited: Boolean) : ItemPayload()
     }
 
     @AssistedInject.Factory
