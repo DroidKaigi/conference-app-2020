@@ -10,7 +10,8 @@ import MaterialComponents
 
 final class FilterViewController: UIViewController {
 
-    var appBar = MDCAppBar()
+    let appBar = MDCAppBar()
+    let tabBar = MDCTabBar()
 
     var containerView: UIView = {
         //TODO: Change the following line from UIView to ShapedShadowedView and apply the shape.
@@ -64,7 +65,6 @@ final class FilterViewController: UIViewController {
         MDCAppBarColorThemer.applySemanticColorScheme(ApplicationScheme.shared.colorScheme, to: appBar)
         appBar.navigationBar.translatesAutoresizingMaskIntoConstraints = false
 
-        let tabBar = MDCTabBar()
         tabBar.items = [
             UITabBarItem(title: "DAY1", image: nil, tag: 0),
             UITabBarItem(title: "DAY2", image: nil, tag: 0),
@@ -81,6 +81,8 @@ final class FilterViewController: UIViewController {
         tabBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tabBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
 
+        self.view.addSubview(containerView)
+
         let viewController = SessionViewController()
         self.insert(viewController)
     }
@@ -96,7 +98,9 @@ final class FilterViewController: UIViewController {
     func frameForEmbeddedController() -> CGRect {
         var embeddedFrame = self.view.bounds
         var insetHeader = UIEdgeInsets()
+        let bottomMargin: CGFloat = 24
         insetHeader.top = self.appBar.headerViewController.view.frame.maxY
+            + tabBar.bounds.maxY + bottomMargin
         embeddedFrame = embeddedFrame.inset(by: insetHeader)
 
         if !isFocusedEmbeddedController {
