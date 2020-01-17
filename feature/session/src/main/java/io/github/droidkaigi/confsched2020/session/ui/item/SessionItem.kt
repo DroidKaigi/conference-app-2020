@@ -43,9 +43,9 @@ class SessionItem @AssistedInject constructor(
 ) : BindableItem<ItemSessionBinding>(session.id.hashCode().toLong()),
     EqualableContentsProvider {
 
-    val imageRequestDisposables = mutableListOf<RequestDisposable>()
+    private val imageRequestDisposables = mutableListOf<RequestDisposable>()
 
-    val layoutInflater by lazyWithParam<Context, LayoutInflater> { context ->
+    private val layoutInflater by lazyWithParam<Context, LayoutInflater> { context ->
         LayoutInflater.from(context)
     }
 
