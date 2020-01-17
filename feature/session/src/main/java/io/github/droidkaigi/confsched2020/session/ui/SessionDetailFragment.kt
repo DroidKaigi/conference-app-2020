@@ -100,8 +100,8 @@ class SessionDetailFragment : DaggerFragment() {
                     handleNavigation(menuItem.itemId)
                 }
                 R.id.session_calendar -> {
-                    systemViewModel.openCalendar(
                     val session = binding.session ?: return@setOnMenuItemClickListener true
+                    systemViewModel.sendEventToGoogleCalendar(
                         session.title.getByLang(defaultLang()),
                         session.room.name.getByLang(defaultLang()),
                         session.startTime.unixMillisLong,

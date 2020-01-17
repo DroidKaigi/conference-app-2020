@@ -38,7 +38,7 @@ class SystemViewModel @Inject constructor(
     }
 
 
-    fun openCalendar(
+    fun sendEventToGoogleCalendar(
         title: String,
         location: String,
         startUnixMillis: Long,
