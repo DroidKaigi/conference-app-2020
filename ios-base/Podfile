@@ -4,6 +4,7 @@ platform :ios, '13.2'
 target 'DroidKaigi 2020' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
+  pod 'MaterialComponents'
 
   # Pods for DroidKaigi 2020
 
