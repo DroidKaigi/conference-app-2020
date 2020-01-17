@@ -93,9 +93,9 @@ class SessionsFragment : DaggerFragment() {
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight = insets.systemWindowInsetBottom + initialPeekHeight
         }
-        binding.fragmentSessionsScrollView.doOnApplyWindowInsets { scrollView, insets, _ ->
+        binding.fragmentSessionsScrollView.doOnApplyWindowInsets { scrollView, insets, initialState ->
             // Set a bottom padding due to the system UI is enabled.
-            scrollView.updatePadding(bottom = insets.systemWindowInsetBottom + initialPeekHeight)
+            scrollView.updatePadding(bottom = insets.systemWindowInsetBottom + initialPeekHeight + initialState.paddings.bottom)
         }
         sessionSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
