@@ -157,6 +157,7 @@ class SearchSessionsFragment : DaggerFragment() {
             ContextCompat.getColor(requireContext(), R.color.search_close_icon)
         )
         searchView.isIconified = false
+        searchView.setQuery(searchSessionsViewModel.uiModel.value!!.searchResult.query, false)
         searchView.queryHint = resources.getString(R.string.query_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(s: String): Boolean {
