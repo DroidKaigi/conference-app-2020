@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -16,18 +17,20 @@ import dagger.Provides
 import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
+import io.github.droidkaigi.confsched2020.model.ExpandFilterState
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetSessionsBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentBottomSheetSessionsBinding
+    private var binding: FragmentBottomSheetSessionsBinding by autoCleared()
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -65,6 +68,31 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
         binding.sessionRecycler.adapter = groupAdapter
         binding.startFilter.setOnClickListener {
             sessionTabViewModel.toggleExpand()
+        }
+        binding.expandLess.setOnClickListener {
+            sessionTabViewModel.toggleExpand()
+        }
+
+        sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
+            TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
+            binding.sessionRecycler.isVisible = when (uiModel.expandFilterState) {
+                ExpandFilterState.EXPANDED, ExpandFilterState.CHANGING ->
+                    true
+                else ->
+                    false
+            }
+            binding.startFilter.visibility = when (uiModel.expandFilterState) {
+                ExpandFilterState.EXPANDED, ExpandFilterState.CHANGING ->
+                    View.VISIBLE
+                else ->
+                    View.INVISIBLE
+            }
+            binding.expandLess.isVisible = when (uiModel.expandFilterState) {
+                ExpandFilterState.COLLAPSED ->
+                    true
+                else ->
+                    false
+            }
         }
 
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->

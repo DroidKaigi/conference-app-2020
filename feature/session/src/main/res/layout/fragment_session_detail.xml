@@ -35,6 +35,7 @@
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/session_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
@@ -74,6 +75,7 @@
                     android:text="@{session.title.getByLang(lang)}"
                     android:textAppearance="?textAppearanceHeadline5"
                     android:textColor="@color/session_title"
+                    android:lineSpacingExtra="8sp"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toTopOf="parent"
@@ -165,14 +167,14 @@
                     />
 
                 <TextView
-                    android:id="@+id/text"
+                    android:id="@+id/session_description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="22dp"
                     android:autoLink="web"
-                    android:text="@{session.desc}"
                     android:textAppearance="?textAppearanceBody1"
                     android:textColor="?android:attr/textColorPrimary"
+                    android:lineSpacingExtra="8sp"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/divider_survey_and_text"
@@ -188,7 +190,7 @@
                     app:isVisible="@{session.hasIntendedAudience}"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/text"
+                    app:layout_constraintTop_toBottomOf="@id/session_description"
                     />
 
                 <TextView

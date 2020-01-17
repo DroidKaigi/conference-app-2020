@@ -39,7 +39,7 @@ open class App : DaggerApplication(), AppComponentHolder {
         val settings = FirebaseFirestoreSettings.Builder()
             .setPersistenceEnabled(true)
             .build()
-        firestore.setFirestoreSettings(settings)
+        firestore.firestoreSettings = settings
     }
 
     private fun setupNightMode() {

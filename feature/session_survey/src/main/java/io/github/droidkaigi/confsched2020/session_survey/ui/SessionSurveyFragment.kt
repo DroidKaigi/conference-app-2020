@@ -20,6 +20,7 @@ import io.github.droidkaigi.confsched2020.session_survey.databinding.FragmentSes
 import io.github.droidkaigi.confsched2020.session_survey.ui.viewmodel.SessionSurveyViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -38,9 +39,9 @@ class SessionSurveyFragment : DaggerFragment() {
     }
 
     private val navArgs: SessionSurveyFragmentArgs by navArgs()
-    private lateinit var binding: FragmentSessionSurveyBinding
+    private var binding: FragmentSessionSurveyBinding by autoCleared()
 
-    private lateinit var progressTimeLatch: ProgressTimeLatch
+    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,
