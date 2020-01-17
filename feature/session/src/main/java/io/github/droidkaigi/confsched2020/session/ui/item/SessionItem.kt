@@ -31,7 +31,6 @@ import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.actionSessionToSessionDetail
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.actionSessionToSpeaker
-import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.util.lazyWithParam
 import kotlin.math.max
@@ -56,7 +55,7 @@ class SessionItem @AssistedInject constructor(
             sessionsViewModel
                 .favorite(session)
         }
-        bindFavoriteImage(session.isFavorited, viewBinding.favorite)
+        bindFavorite(session.isFavorited, viewBinding.favorite)
         viewBinding.root.setOnClickListener {
             viewBinding.root.findNavController()
                 .navigate(actionSessionToSessionDetail(session.id))
@@ -80,14 +79,14 @@ class SessionItem @AssistedInject constructor(
             payloads.forEach { payload ->
                 when (payload) {
                     is ItemPayload.FavoritePayload -> {
-                        bindFavoriteImage(payload.isFavorited, viewBinding.favorite)
+                        bindFavorite(payload.isFavorited, viewBinding.favorite)
                     }
                 }
             }
         }
     }
 
-    private fun bindFavoriteImage(
+    private fun bindFavorite(
         isFavorited: Boolean,
         imageButton: ImageButton
     ) {
