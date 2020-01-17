@@ -13,11 +13,8 @@ import androidx.work.WorkerParameters
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import io.github.droidkaigi.confsched2020.notification.Topic
-import io.github.droidkaigi.confsched2020.timber.error
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
-import timber.log.Timber
-import timber.log.debug
 
 class ManageTopicSubscriptionWorker(
     context: Context,
@@ -38,23 +35,16 @@ class ManageTopicSubscriptionWorker(
             runBlocking {
                 FirebaseInstanceId.getInstance().instanceId.await()
 
-                Timber.debug { "Found a token so proceed to subscribe the topic" }
-
                 topicsToBeSubscribed.forEach { topicName ->
                     FirebaseMessaging.getInstance().subscribeToTopic(topicName).await()
-
-                    Timber.debug { "Subscribed $topicName successfully" }
                 }
 
                 topicsToBeUnsubscribed.forEach { topicName ->
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(topicName).await()
 
-                    Timber.debug { "Unsubscribed $topicName successfully" }
                 }
             }
         } catch (th: Throwable) {
-            Timber.error(th)
-
             return ListenableWorker.Result.retry()
         }
 
