@@ -1,5 +1,7 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
+import android.content.Context
+import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -10,6 +12,7 @@ import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.core.view.doOnPreDraw
 import androidx.core.content.ContextCompat
@@ -109,6 +112,16 @@ class SessionDetailFragment : DaggerFragment() {
         binding.bottomAppBar.setOnMenuItemClickListener {
             handleNavigation(it.itemId)
         }
+
+        val windowManager = context?.getSystemService(Context.WINDOW_SERVICE) as? WindowManager
+        val display = windowManager?.defaultDisplay
+        val appUsableSize = Point()
+        display?.getSize(appUsableSize)
+        val realScreenSize = Point()
+        display?.getRealSize(realScreenSize)
+
+        val paddingBottom = realScreenSize.y - appUsableSize.y
+        binding.bottomAppBar.setPadding(0, 0, 0, paddingBottom)
     }
 
     private fun handleNavigation(@IdRes itemId: Int): Boolean {
