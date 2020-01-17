@@ -7,6 +7,7 @@ on:
 jobs:
   build:
     runs-on: macOS-latest
+    if: contains(github.event.pull_request.title, '[ci skip]') == false
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v1
@@ -90,6 +91,7 @@ jobs:
       JUNIT_TEST_RESULT_DIR: test-results/junit
       JUNIT_TEST_REPORT_DIR: test-reports/
     runs-on: macOS-latest
+    if: contains(github.event.pull_request.title, '[ci skip]') == false
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v1
@@ -183,16 +185,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-
             ${{ runner.os }}-m2-
-      - name: Set up emurator
-        run: |
-          echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install 'system-images;android-${{ matrix.api-level }};google_apis;x86'
-          echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd -n test_emulator -k 'system-images;android-${{ matrix.api-level }};google_apis;x86' -d "pixel" -f
-          nohup $ANDROID_HOME/emulator/emulator -avd test_emulator -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim > /dev/null 2>&1 &
-          $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
-          $ANDROID_HOME/platform-tools/adb devices
       - name: Run instrumentation test
-        run: |
-          $ANDROID_HOME/platform-tools/adb shell settings put global window_animation_scale 0.0
-          $ANDROID_HOME/platform-tools/adb shell settings put global transition_animation_scale 0.0
-          $ANDROID_HOME/platform-tools/adb shell settings put global animator_duration_scale 0.0
-          ./gradlew android-base:connectedDebugAndroidTest
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: google_apis
+          arch: x86
+          profile: pixel
+          disable-animations: true
+          script: ./gradlew android-base:connectedDebugAndroidTest
