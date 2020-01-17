@@ -23,7 +23,7 @@ class SponsorItem @AssistedInject constructor(
 
     override fun bind(viewBinding: ItemSponsorBinding, position: Int) {
         viewBinding.card.setOnClickListener {
-            systemViewModel.openUrl(sponsor.company.url)
+            systemViewModel.openUrl(it.context, sponsor.company.url)
         }
 
         viewBinding.image.load(sponsor.company.logoUrl) {
