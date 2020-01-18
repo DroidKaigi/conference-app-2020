@@ -68,7 +68,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_expand_less_12dp" />
+                android:src="@drawable/ic_expand_less_12dp"
+                app:tint="?attr/colorPrimary" />
         </FrameLayout>
 
         <View
