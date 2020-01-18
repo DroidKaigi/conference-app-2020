@@ -34,20 +34,8 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         preferenceModelFactory.get()
     }
 
-    private var isNightMode = false
-
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.setting, rootKey)
-
-        preferenceManager?.findPreference<SwitchPreferenceCompat>(SWITCH_DARK_THEME_KEY)?.also {
-            val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            isNightMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
-            it.isChecked = isNightMode
-            it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                preferenceViewModel.setNightMode(newValue as Boolean)
-                return@OnPreferenceChangeListener true
-            }
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,7 +46,16 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             .create(appComponent, PreferenceModule(this))
         component.inject(this)
 
-        preferenceViewModel.setNightMode(isNightMode)
+        preferenceManager?.findPreference<SwitchPreferenceCompat>(SWITCH_DARK_THEME_KEY)?.also {
+            val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+            it.isChecked = currentNightMode == Configuration.UI_MODE_NIGHT_YES
+            preferenceViewModel.setNightMode(it.isChecked)
+            it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                preferenceViewModel.setNightMode(newValue as Boolean)
+                return@OnPreferenceChangeListener true
+            }
+        }
+
         preferenceViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             AppCompatDelegate.setDefaultNightMode(
                 if (uiModel.isNightMode) {
