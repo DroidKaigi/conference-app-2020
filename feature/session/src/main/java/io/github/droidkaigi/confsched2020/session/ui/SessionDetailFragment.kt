@@ -222,7 +222,7 @@ class SessionDetailFragment : DaggerFragment() {
             val speaker: Speaker =
                 (session as? SpeechSession)?.speakers?.getOrNull(index) ?: return@forEach
             val speakerView = layoutInflater.inflate(
-                R.layout.layout_speaker, this, false
+                R.layout.layout_speaker_session_detail, this, false
             ) as ViewGroup
             val speakerNameView = speakerView.findViewById<TextView>(R.id.speaker)
             val speakerImageView = speakerView.findViewById<ImageView>(R.id.speaker_image)
