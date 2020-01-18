@@ -1,7 +1,6 @@
 package io.github.droidkaigi.confsched2020.notification
 
 import android.content.Context
-import io.github.droidkaigi.confsched2020.notification.R
 
 enum class NotificationChannelInfo(
     val channelId: String,

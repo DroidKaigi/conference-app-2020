@@ -11,7 +11,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import io.github.droidkaigi.confsched2020.notification.R
 
 fun Context.notificationBuilder(
     channelInfo: NotificationChannelInfo,
