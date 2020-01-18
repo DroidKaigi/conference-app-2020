@@ -113,7 +113,8 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
             groupAdapter.update(sessions.map {
                 sessionItemFactory.create(it, sessionsViewModel)
             })
-            binding.isEmptySessions = count <= 0
+            val favoritedSessionsCount = sessions.count()
+            binding.isEmptySessions = favoritedSessionsCount <= 0
         }
     }
 
