@@ -17,6 +17,7 @@ android {
         versionCode Versions.androidVersionCode
         versionName Versions.androidVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
     signingConfigs {
         debug {
@@ -68,6 +69,10 @@ android {
             ':feature:preference',
             ':feature:contributor'
     ]
+    testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        animationsDisabled = true
+    }
 }
 
 dependencies {
@@ -108,7 +113,11 @@ dependencies {
 
     testImplementation Dep.Test.junit
     androidTestImplementation Dep.Test.testRunner
+    androidTestImplementation Dep.Test.testRules
     androidTestImplementation Dep.Test.espressoCore
+    androidTestImplementation Dep.Test.testCoreKtx
+    androidTestImplementation Dep.Test.androidJunit4Ktx
+    androidTestUtil Dep.Test.orchestrator
 
     Dep.Hyperion.hyperionPlugins.forEach{
         debugImplementation it
