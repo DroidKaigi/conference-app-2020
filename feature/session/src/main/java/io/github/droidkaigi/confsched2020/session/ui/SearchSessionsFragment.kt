@@ -119,8 +119,8 @@ class SearchSessionsFragment : DaggerFragment() {
                 }
             ))
         }
-        binding.searchSessionRecycler.doOnApplyWindowInsets { view, insets, initialState ->
-            view.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+        binding.searchSessionRecycler.doOnApplyWindowInsets { searchSessionRecycler, insets, initialState ->
+            searchSessionRecycler.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
         }
 
         searchSessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SearchSessionsViewModel.UiModel ->

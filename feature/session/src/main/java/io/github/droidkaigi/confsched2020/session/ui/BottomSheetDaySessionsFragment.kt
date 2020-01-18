@@ -91,8 +91,8 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
         binding.expandLess.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
-        binding.sessionRecycler.doOnApplyWindowInsets { view, insets, initialState ->
-            view.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+        binding.sessionRecycler.doOnApplyWindowInsets { sessionRecycler, insets, initialState ->
+            sessionRecycler.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
         }
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
