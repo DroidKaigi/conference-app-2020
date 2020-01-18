@@ -30,7 +30,7 @@ internal abstract class DbModule {
 
     @Module
     internal object Providers {
-        @Singleton @JvmStatic @Provides fun cacheDatabase(
+        @Singleton @Provides fun cacheDatabase(
             context: Context,
             filename: String?
         ): CacheDatabase {
@@ -43,7 +43,7 @@ internal abstract class DbModule {
                 .build()
         }
 
-        @Singleton @JvmStatic @Provides fun sessionFeedbackDatabase(
+        @Singleton @Provides fun sessionFeedbackDatabase(
             context: Context,
             filename: String?
         ): SessionFeedbackDatabase {
@@ -56,37 +56,37 @@ internal abstract class DbModule {
                 .build()
         }
 
-        @JvmStatic @Provides fun sessionDao(database: CacheDatabase): SessionDao {
+        @Provides fun sessionDao(database: CacheDatabase): SessionDao {
             return database.sessionDao()
         }
 
-        @JvmStatic @Provides fun speakerDao(database: CacheDatabase): SpeakerDao {
+        @Provides fun speakerDao(database: CacheDatabase): SpeakerDao {
             return database.speakerDao()
         }
 
-        @JvmStatic @Provides fun sessionSpeakerJoinDao(
+        @Provides fun sessionSpeakerJoinDao(
             database: CacheDatabase
         ): SessionSpeakerJoinDao {
             return database.sessionSpeakerJoinDao()
         }
 
-        @JvmStatic @Provides fun sponsorDao(databaseSponsor: CacheDatabase): SponsorDao {
+        @Provides fun sponsorDao(databaseSponsor: CacheDatabase): SponsorDao {
             return databaseSponsor.sponsorDao()
         }
 
-        @JvmStatic @Provides fun announcementDao(database: CacheDatabase): AnnouncementDao {
+        @Provides fun announcementDao(database: CacheDatabase): AnnouncementDao {
             return database.announcementDao()
         }
 
-        @JvmStatic @Provides fun staffDao(database: CacheDatabase): StaffDao {
+        @Provides fun staffDao(database: CacheDatabase): StaffDao {
             return database.staffDao()
         }
 
-        @JvmStatic @Provides fun contributorDao(database: CacheDatabase): ContributorDao {
+        @Provides fun contributorDao(database: CacheDatabase): ContributorDao {
             return database.contributorDao()
         }
 
-        @JvmStatic @Provides fun sessionFeedbackDao(database: SessionFeedbackDatabase): SessionFeedbackDao {
+        @Provides fun sessionFeedbackDao(database: SessionFeedbackDatabase): SessionFeedbackDao {
             return database.sessionFeedbackDao()
         }
     }
