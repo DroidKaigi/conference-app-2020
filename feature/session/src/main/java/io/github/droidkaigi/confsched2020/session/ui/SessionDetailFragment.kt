@@ -45,6 +45,7 @@ import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
+import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailWipBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSurvey
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
@@ -59,7 +60,7 @@ private const val ELLIPSIS_LINE_COUNT = 6
 
 class SessionDetailFragment : DaggerFragment() {
 
-    private var binding: FragmentSessionDetailBinding by autoCleared()
+    private var binding: FragmentSessionDetailWipBinding by autoCleared()
 
     @Inject lateinit var systemViewModelFactory: Provider<SystemViewModel>
     private val systemViewModel by assistedActivityViewModels {
@@ -83,7 +84,7 @@ class SessionDetailFragment : DaggerFragment() {
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_session_detail,
+            R.layout.fragment_session_detail_wip,
             container,
             false
         )
@@ -130,70 +131,71 @@ class SessionDetailFragment : DaggerFragment() {
     }
 
     private fun setupSessionViews(session: Session) {
-        binding.sessionFavorite.setOnClickListener {
-            sessionDetailViewModel.favorite(session)
-        }
-        binding.survey.setOnClickListener {
-            findNavController().navigate(actionSessionToSurvey(session.id))
-        }
-        binding.session = session
-        setupSessionDescription(session.desc)
-        binding.speechSession = (session as? SpeechSession)
-        binding.lang = defaultLang()
-        binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
-        if (session is SpeechSession) {
-            val langLabel = session.lang.text.getByLang(defaultLang())
-            val categoryLabel = session.category.name.getByLang(defaultLang())
-            val newTag = "$categoryLabel:$categoryLabel"
-            val savedTag = binding.tags.tag
-            if (savedTag != newTag) {
-                binding.tags.removeAllViews()
-                binding.tags.addView(Chip(context).apply {
-                    text = categoryLabel
-                    isClickable = false
-                })
-                binding.tags.addView(Chip(context).apply {
-                    text = langLabel
-                    isClickable = false
-                })
-                binding.tags.tag = newTag
-            }
-        }
-        binding.speakers.bindSpeaker(session)
+        // TODO Change to RecyclerView
+//        binding.sessionFavorite.setOnClickListener {
+//            sessionDetailViewModel.favorite(session)
+//        }
+//        binding.survey.setOnClickListener {
+//            findNavController().navigate(actionSessionToSurvey(session.id))
+//        }
+//        binding.session = session
+//        setupSessionDescription(session.desc)
+//        binding.speechSession = (session as? SpeechSession)
+//        binding.lang = defaultLang()
+//        binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
+//        if (session is SpeechSession) {
+//            val langLabel = session.lang.text.getByLang(defaultLang())
+//            val categoryLabel = session.category.name.getByLang(defaultLang())
+//            val newTag = "$categoryLabel:$categoryLabel"
+//            val savedTag = binding.tags.tag
+//            if (savedTag != newTag) {
+//                binding.tags.removeAllViews()
+//                binding.tags.addView(Chip(context).apply {
+//                    text = categoryLabel
+//                    isClickable = false
+//                })
+//                binding.tags.addView(Chip(context).apply {
+//                    text = langLabel
+//                    isClickable = false
+//                })
+//                binding.tags.tag = newTag
+//            }
+//        }
+//        binding.speakers.bindSpeaker(session)
     }
 
     private fun setupSessionDescription(fullDescription: String) {
-        val textView = binding.sessionDescription
-        textView.doOnPreDraw {
-            textView.text = fullDescription
-            //Return here if not more than the specified number of rows
-            if (!(textView.lineCount > ELLIPSIS_LINE_COUNT && showEllipsis)) return@doOnPreDraw
-            val lastLineStartPosition = textView.layout.getLineStart(ELLIPSIS_LINE_COUNT - 1)
-            val ellipsis = getString(R.string.ellipsis_label)
-            val lastLineText = TextUtils.ellipsize(
-                fullDescription.substring(lastLineStartPosition),
-                textView.paint,
-                textView.width - textView.paint.measureText(ellipsis),
-                TextUtils.TruncateAt.END
-            )
-            val ellipsisColor = ContextCompat.getColor(requireContext(), R.color.design_default_color_secondary)
-            val onClickListener = {
-                TransitionManager.beginDelayedTransition(binding.sessionLayout)
-                textView.text = fullDescription
-                showEllipsis = !showEllipsis
-            }
-            val detailText = fullDescription.substring(0, lastLineStartPosition) + lastLineText
-            val text = buildSpannedString {
-                clickableSpan(onClickListener, {
-                    append(detailText)
-                    color(ellipsisColor) {
-                        append(ellipsis)
-                    }
-                })
-            }
-            textView.setText(text, TextView.BufferType.SPANNABLE)
-            textView.movementMethod = LinkMovementMethod.getInstance()
-        }
+//        val textView = binding.sessionDescription
+//        textView.doOnPreDraw {
+//            textView.text = fullDescription
+//            //Return here if not more than the specified number of rows
+//            if (!(textView.lineCount > ELLIPSIS_LINE_COUNT && showEllipsis)) return@doOnPreDraw
+//            val lastLineStartPosition = textView.layout.getLineStart(ELLIPSIS_LINE_COUNT - 1)
+//            val ellipsis = getString(R.string.ellipsis_label)
+//            val lastLineText = TextUtils.ellipsize(
+//                fullDescription.substring(lastLineStartPosition),
+//                textView.paint,
+//                textView.width - textView.paint.measureText(ellipsis),
+//                TextUtils.TruncateAt.END
+//            )
+//            val ellipsisColor = ContextCompat.getColor(requireContext(), R.color.design_default_color_secondary)
+//            val onClickListener = {
+//                TransitionManager.beginDelayedTransition(binding.sessionLayout)
+//                textView.text = fullDescription
+//                showEllipsis = !showEllipsis
+//            }
+//            val detailText = fullDescription.substring(0, lastLineStartPosition) + lastLineText
+//            val text = buildSpannedString {
+//                clickableSpan(onClickListener, {
+//                    append(detailText)
+//                    color(ellipsisColor) {
+//                        append(ellipsis)
+//                    }
+//                })
+//            }
+//            textView.setText(text, TextView.BufferType.SPANNABLE)
+//            textView.movementMethod = LinkMovementMethod.getInstance()
+//        }
     }
 
     private fun SpannableStringBuilder.clickableSpan(

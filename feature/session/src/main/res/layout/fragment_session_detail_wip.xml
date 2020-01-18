@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="session"
+            type="io.github.droidkaigi.confsched2020.model.Session"
+            />
+
+        <variable
+            name="speechSession"
+            type="io.github.droidkaigi.confsched2020.model.SpeechSession"
+            />
+
+        <variable
+            name="lang"
+            type="io.github.droidkaigi.confsched2020.model.Lang"
+            />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:theme="@style/Theme.DroidKaigi"
+        >
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/session_detail_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_app_bar"
+            style="@style/Widget.MaterialComponents.BottomAppBar.PrimarySurface"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:fabAlignmentMode="end"
+            app:hideOnScroll="true"
+            app:menu="@menu/menu_session_detail_bottomappbar"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/session_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@{session.isFavorited? @drawable/ic_bookmark_black_24dp : @drawable/ic_bookmark_border_black_24dp}"
+            app:backgroundTint="?colorSecondary"
+            app:layout_anchor="@id/bottom_app_bar"
+            app:tint="?colorOnSecondary"
+            tools:src="@drawable/ic_bookmark_black_24dp"
+            />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>
