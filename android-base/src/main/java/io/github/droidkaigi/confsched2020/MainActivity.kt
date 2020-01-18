@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched2020
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
@@ -22,6 +23,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.splitcompat.SplitCompat
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -85,6 +87,11 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private val statusBarColors: SystemUiManager by lazy {
         SystemUiManager(this)
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        SplitCompat.install(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

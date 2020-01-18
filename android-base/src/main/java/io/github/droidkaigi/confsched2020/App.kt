@@ -1,7 +1,9 @@
 package io.github.droidkaigi.confsched2020
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.BuildCompat
+import com.google.android.play.core.splitcompat.SplitCompat
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
@@ -20,6 +22,11 @@ open class App : DaggerApplication(), AppComponentHolder {
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         return appComponent
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        SplitCompat.install(this)
     }
 
     override fun onCreate() {

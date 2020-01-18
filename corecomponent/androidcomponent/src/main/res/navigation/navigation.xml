@@ -126,6 +126,7 @@
         android:id="@+id/staffs"
         android:name="io.github.droidkaigi.confsched2020.staff.ui.StaffsFragment"
         android:label="@string/staffs_label"
+        app:moduleName="staff"
         />
     <fragment
         android:id="@+id/sponsors"
@@ -149,6 +150,7 @@
         android:id="@+id/contributor"
         android:name="io.github.droidkaigi.confsched2020.contributor.ui.ContributorsFragment"
         android:label="@string/contributor_label"
+        app:moduleName="contributor"
         />
     <fragment
         android:id="@+id/announcement"
@@ -191,6 +193,7 @@
         android:id="@+id/setting"
         android:name="io.github.droidkaigi.confsched2020.preference.ui.PreferencesFragment"
         android:label="@string/setting_label"
+        app:moduleName="preference"
         />
     <chrome
         android:id="@+id/chrome"

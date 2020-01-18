@@ -72,6 +72,7 @@ object Dep {
             val ui = "androidx.navigation:navigation-ui:$version"
             val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
+            val dynamicFeature = "androidx.navigation:navigation-dynamic-features-fragment:2.3.0-SNAPSHOT"
         }
 
         object Work {
@@ -125,6 +126,10 @@ object Dep {
     object PlayServices {
         val auth = "com.google.android.gms:play-services-auth:16.0.1"
         val licensesPlugin = "com.google.android.gms:play-services-oss-licenses:16.0.1"
+    }
+
+    object Play {
+        val core = "com.google.android.play:core:1.6.4"
     }
 
     object Dagger {

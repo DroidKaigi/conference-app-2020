@@ -30,6 +30,9 @@ dependencies {
     api Dep.AndroidX.Navigation.fragmentKtx
     api Dep.AndroidX.Navigation.uiKtx
 
+    api Dep.Play.core
+    api(Dep.AndroidX.Navigation.dynamicFeature)
+
     implementation Dep.AndroidX.liveDataKtx
 
     implementation Dep.Ktor.clientAndroid
