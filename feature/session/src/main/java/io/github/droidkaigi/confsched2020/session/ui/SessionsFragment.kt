@@ -26,7 +26,6 @@ import dagger.android.support.DaggerFragment
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
-import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.ExpandFilterState
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.model.defaultLang
@@ -278,10 +277,11 @@ class SessionsFragment : DaggerFragment() {
                     resources.getDimension(R.dimen.bottom_sheet_corner_radius)
                 ) // same property Widget.DroidKaigi.BottomSheet shapeAppearance
                 .build()
-        val materialShapeDrawable = MaterialShapeDrawable(shapeAppearanceModel).apply {
-            setTint(
-                requireContext().getThemeColor(R.attr.colorSurface) // backgroundTint set again
-            ) // FrameLayout don't have materialShapeDrawable. BackgroundTint will be ignored.
+        val materialShapeDrawable = MaterialShapeDrawable.createWithElevationOverlay(
+            requireActivity(),
+            resources.getDimension(R.dimen.bottom_sheet_elevation)
+        ).apply {
+            setShapeAppearanceModel(shapeAppearanceModel)
         }
         binding.sessionsSheet.background =
             materialShapeDrawable // This setting will ignore Widget.DroidKaigi.BottomSheet backgroundTint
