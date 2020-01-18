@@ -16,4 +16,5 @@
     <string name="speaker">Speaker</string>
     <string name="session">Session</string>
     <string name="query_hint">Search</string>
+    <string name="empty_favorite_session">You choose your favorite sessions, then you can make a plan for you.</string>
 </resources>
