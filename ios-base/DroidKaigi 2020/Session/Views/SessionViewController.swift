@@ -34,7 +34,8 @@ final class SessionViewController: UIViewController {
             filterButton.setTitle("", for: .normal)
         }
     }
-
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     private let viewModel: SessionViewModel
 
     init(viewModel: SessionViewModel) {
