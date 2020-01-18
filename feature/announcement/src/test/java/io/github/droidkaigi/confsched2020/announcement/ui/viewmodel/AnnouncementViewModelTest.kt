@@ -36,7 +36,7 @@ class AnnouncementViewModelTest {
         valueHistory[0] shouldBe AnnouncementViewModel.UiModel.EMPTY.copy(isLoading = true)
         valueHistory[1].apply {
             isLoading shouldBe false
-            announcements shouldBe Dummies.announcements.map { announcementItemFactory.create(it) }
+            announcementItems shouldBe Dummies.announcements.map { announcementItemFactory.create(it) }
             error shouldBe null
             isEmpty shouldBe false
         }
