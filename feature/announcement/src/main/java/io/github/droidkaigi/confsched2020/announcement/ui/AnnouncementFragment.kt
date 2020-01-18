@@ -20,7 +20,6 @@ import dagger.android.support.DaggerFragment
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.announcement.R
 import io.github.droidkaigi.confsched2020.announcement.databinding.FragmentAnnouncementBinding
-import io.github.droidkaigi.confsched2020.announcement.ui.item.AnnouncementItem
 import io.github.droidkaigi.confsched2020.announcement.ui.viewmodel.AnnouncementViewModel
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
@@ -44,9 +43,6 @@ class AnnouncementFragment : DaggerFragment() {
     private val systemViewModel: SystemViewModel by assistedActivityViewModels {
         systemViewModelProvider.get()
     }
-
-    @Inject
-    lateinit var announcementItemFactory: AnnouncementItem.Factory
 
     private var binding: FragmentAnnouncementBinding by autoCleared()
 
@@ -88,7 +84,7 @@ class AnnouncementFragment : DaggerFragment() {
             progressTimeLatch.loading = uiModel.isLoading
             binding.emptyMessage.isVisible = uiModel.isEmpty
             groupAdapter.update(
-                uiModel.announcements.map { announcement -> announcementItemFactory.create(announcement) }
+                uiModel.announcements
             )
             uiModel.error?.let {
                 systemViewModel.onError(it)

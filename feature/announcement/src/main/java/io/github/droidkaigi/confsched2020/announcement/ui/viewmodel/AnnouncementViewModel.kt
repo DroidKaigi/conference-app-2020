@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.squareup.inject.assisted.AssistedInject
+import io.github.droidkaigi.confsched2020.announcement.ui.item.AnnouncementItem
 import io.github.droidkaigi.confsched2020.model.repository.AnnouncementRepository
 import io.github.droidkaigi.confsched2020.ext.combine
 import io.github.droidkaigi.confsched2020.ext.toAppError
@@ -16,13 +17,13 @@ import timber.log.Timber
 import timber.log.debug
 
 class AnnouncementViewModel @AssistedInject constructor(
-    private val announcementRepository: AnnouncementRepository
+    private val announcementRepository: AnnouncementRepository,
+    private val announcementItemFactory: AnnouncementItem.Factory
 ) : ViewModel() {
-
     data class UiModel(
         val isLoading: Boolean,
         val error: AppError?,
-        val announcements: List<Announcement>,
+        val announcements: List<AnnouncementItem>,
         val isEmpty: Boolean
     ) {
         companion object {
@@ -52,7 +53,7 @@ class AnnouncementViewModel @AssistedInject constructor(
         UiModel(
             isLoading = loadState.isLoading,
             error = loadState.getErrorIfExists().toAppError(),
-            announcements = announcements,
+            announcements = announcements.map { announcementItemFactory.create(it) },
             isEmpty = !loadState.isLoading && announcements.isEmpty()
         )
     }
