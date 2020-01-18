@@ -11,6 +11,8 @@
     <string name="description_filter_applied">フィルター%1$sを適用</string>
     <string name="description_filter_not_applied">フィルター%1$sを解除</string>
     <string name="staffs_label">スタッフリスト</string>
+    <!-- Speaker -->
+    <string name="speaker_label">スピーカー</string>
     <!-- Notification -->
     <string name="notification_title_session_start">マイセッション開始のお知らせ</string>
     <string name="notification_message_session_title">%1$s がもうすぐ始まります。</string>
