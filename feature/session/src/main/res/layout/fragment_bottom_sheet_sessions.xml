@@ -62,6 +62,7 @@
             app:layout_constraintBottom_toBottomOf="@id/start_filter"
             app:layout_constraintEnd_toEndOf="@id/start_filter"
             app:layout_constraintTop_toTopOf="@id/start_filter"
+            app:tint="?attr/colorPrimary"
             />
 
         <View
