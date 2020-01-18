@@ -102,7 +102,9 @@ class SessionsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         val initialPeekHeight = sessionSheetBehavior.peekHeight
         val gestureNavigationBottomSpace =
-            if (isEdgeToEdgeEnabled()) (48 * resources.displayMetrics.density).toInt() else 0
+            if (isEdgeToEdgeEnabled())
+                resources.getDimension(R.dimen.gesture_navigation_bottom_space).toInt()
+            else 0
 
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight =
