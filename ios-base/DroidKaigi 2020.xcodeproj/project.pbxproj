@@ -289,7 +289,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT/..\"\n./gradlew \":data:api:linkDebugFrameworkIosX64\"\n";
+			shellScript = "cd \"$SRCROOT/..\"\n./gradlew \":data:api:linkDebugFrameworkIosX64\" -PXCODE_CONFIGURATION=${CONFIGURATION}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
