@@ -102,6 +102,16 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out"
             />
+        <action
+            android:id="@+id/action_session_to_chrome"
+            app:destination="@id/chrome"
+            >
+            <argument
+                android:name="url"
+                app:argType="string"
+                app:nullable="false"
+                />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/speaker"

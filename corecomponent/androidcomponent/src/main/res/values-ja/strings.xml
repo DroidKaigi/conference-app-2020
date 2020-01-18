@@ -3,6 +3,7 @@
     <string name="announce_label">お知らせ</string>
     <string name="map_label">フロアマップ</string>
     <string name="session_label">タイムライン</string>
+    <string name="material_label">資料</string>
     <string name="about_label">DroidKaigi とは</string>
     <string name="sponsor_label">スポンサー</string>
     <string name="survey_label">全体アンケート</string>
