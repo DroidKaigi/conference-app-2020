@@ -1,10 +1,10 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -12,6 +12,7 @@ import androidx.core.view.size
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
@@ -47,6 +48,10 @@ class SessionItem @AssistedInject constructor(
 
     private val layoutInflater by lazyWithParam<Context, LayoutInflater> { context ->
         LayoutInflater.from(context)
+    }
+
+    companion object {
+        private const val TRANSITION_NAME_SUFFIX = "session"
     }
 
     override fun getLayout(): Int = R.layout.item_session
@@ -122,22 +127,29 @@ class SessionItem @AssistedInject constructor(
                 existSpeakerView.isVisible = true
                 existSpeakerView
             }
+            val speakerNameView = speakerView.findViewById<TextView>(R.id.speaker)
+            val speakerImageView = speakerView.findViewById<ImageView>(R.id.speaker_image)
+            speakerImageView.transitionName = "${speaker.id}-${TRANSITION_NAME_SUFFIX}"
             speakerView.setOnClickListener {
-                it.findNavController().navigate(actionSessionToSpeaker(speaker.id))
+                val extras = FragmentNavigatorExtras(
+                    speakerImageView to speakerImageView.transitionName
+                )
+                it.findNavController()
+                    .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX), extras)
             }
-            val textView: TextView = speakerView.findViewById(R.id.speaker)
-            bindSpeakerData(speaker, textView)
+            bindSpeakerData(speaker, speakerNameView, speakerImageView)
         }
     }
 
     private fun bindSpeakerData(
         speaker: Speaker,
-        textView: TextView
+        speakerNameView: TextView,
+        speakerImageView: ImageView
     ) {
-        textView.text = speaker.name
+        speakerNameView.text = speaker.name
 //        setHighlightText(textView, query)
         val imageUrl = speaker.imageUrl
-        val context = textView.context
+        val context = speakerNameView.context
         val placeHolder = run {
             VectorDrawableCompat.create(
                 context.resources,
@@ -149,7 +161,7 @@ class SessionItem @AssistedInject constructor(
                 )
             }
         }?.also {
-            textView.setLeftDrawable(it)
+            speakerImageView.setImageDrawable(it)
         }
 
         imageRequestDisposables += Coil.load(context, imageUrl) {
@@ -158,7 +170,7 @@ class SessionItem @AssistedInject constructor(
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
             target {
-                textView.setLeftDrawable(it)
+                speakerImageView.setImageDrawable(it)
             }
         }
     }
@@ -166,18 +178,6 @@ class SessionItem @AssistedInject constructor(
     override fun unbind(viewHolder: ViewHolder<ItemSessionBinding>) {
         super.unbind(viewHolder)
         imageRequestDisposables.forEach { it.dispose() }
-    }
-
-    private fun TextView.setLeftDrawable(drawable: Drawable) {
-        val res = context.resources
-        val widthDp = 32
-        val heightDp = 32
-        val widthPx = (widthDp * res.displayMetrics.density).toInt()
-        val heightPx = (heightDp * res.displayMetrics.density).toInt()
-        drawable.setBounds(0, 0, widthPx, heightPx)
-        setCompoundDrawables(
-            drawable, null, null, null
-        )
     }
 
     fun startSessionTime(): String = session.startTimeText
