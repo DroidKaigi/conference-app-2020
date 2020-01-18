@@ -13,10 +13,6 @@ enum class NotificationChannelInfo(
     FAVORITE_SESSION_START(
         "favorite_session_start_channel",
         R.string.notification_channel_name_start_favorite_session
-    ),
-    ANNOUNCEMENT(
-        "announcement",
-        R.string.notification_channel_name_announcement
     );
 
     fun channelName(context: Context): String = context.getString(channelNameResId)
