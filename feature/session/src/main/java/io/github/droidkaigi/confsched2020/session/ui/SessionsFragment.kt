@@ -242,9 +242,7 @@ class SessionsFragment : DaggerFragment() {
         val fragment: Fragment = when (tab) {
             is SessionPage.Day -> {
                 BottomSheetDaySessionsFragment.newInstance(
-                    BottomSheetDaySessionsFragmentArgs
-                        .Builder(tab.day)
-                        .build()
+                    BottomSheetDaySessionsFragmentArgs(tab.day)
                 )
             }
             SessionPage.Favorite -> {

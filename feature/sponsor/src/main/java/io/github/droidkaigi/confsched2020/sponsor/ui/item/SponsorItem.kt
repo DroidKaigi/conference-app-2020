@@ -11,7 +11,7 @@ import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Sponsor
 import io.github.droidkaigi.confsched2020.sponsor.R
 import io.github.droidkaigi.confsched2020.sponsor.databinding.ItemSponsorBinding
-import io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragmentDirections.actionSponsorsToChrome
+import io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragmentDirections.Companion.actionSponsorsToChrome
 
 class SponsorItem @AssistedInject constructor(
     @Assisted private val sponsor: Sponsor,

@@ -26,7 +26,7 @@ import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentMainSessionsBinding
-import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.actionSessionToSearchSessions
+import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.Companion.actionSessionToSearchSessions
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
@@ -100,9 +100,7 @@ class MainSessionsFragment : DaggerFragment() {
 
             override fun createFragment(position: Int): Fragment {
                return SessionsFragment.newInstance(
-                    SessionsFragmentArgs
-                        .Builder(position)
-                        .build()
+                    SessionsFragmentArgs(position)
                 )
             }
         }
