@@ -30,6 +30,9 @@ final class FilterViewController: UIViewController {
 
     private var embeddedView: UIView?
     private var embeddedViewController: UIViewController?
+    private let viewModel = SessionViewModel()
+
+    private let embeddedViewAnimator = UIViewPropertyAnimator(duration: 0.8, curve: .easeInOut)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +41,7 @@ final class FilterViewController: UIViewController {
         setUpAppBar()
         setUpTabBar()
         setUpContainerView()
+        bindToViewModel()
     }
 
     override func viewDidLayoutSubviews() {
@@ -110,45 +114,58 @@ final class FilterViewController: UIViewController {
     private func setUpContainerView() {
         self.view.addSubview(containerView)
 
-        let viewController = SessionViewController()
+        let viewController = SessionViewController(viewModel: viewModel)
         self.insert(viewController)
 
-        let animator = UIViewPropertyAnimator(duration: 0.8, curve: .easeInOut) { [weak self] in
+        embeddedViewAnimator.addAnimations { [weak self] in
             guard let self = self else { return }
             self.containerView.frame.origin.y += self.containerView.frame.height - 100
         }
-        animator.pausesOnCompletion = true
+        embeddedViewAnimator.pausesOnCompletion = true
+        embeddedViewAnimator.isUserInteractionEnabled = true
 
         let panGesture = UIPanGestureRecognizer()
         panGesture.rx.event.asDriver()
             .drive(onNext: { [weak self] recognizer in
-                guard let containerView = self?.containerView else { return }
+                guard let containerView = self?.containerView,
+                    let embeddedViewAnimator = self?.embeddedViewAnimator else { return }
 
                 switch recognizer.state {
                 case .began:
-                    animator.isReversed = false
-                    animator.isReversed = animator.fractionComplete > 0.5
+                    embeddedViewAnimator.isReversed = false
+                    embeddedViewAnimator.isReversed = embeddedViewAnimator.fractionComplete > 0.5
                     recognizer.setTranslation(.zero, in: containerView)
                 case .changed:
                     let moved = recognizer.translation(in: containerView)
                     let movePercentage = moved.y / containerView.frame.height
 
-                    if (!animator.isReversed && movePercentage < 0)
-                        || (animator.isReversed && movePercentage > 0) {
+                    if (!embeddedViewAnimator.isReversed && movePercentage < 0)
+                        || (embeddedViewAnimator.isReversed && movePercentage > 0) {
                         break
                     }
-                    animator.fractionComplete = abs(movePercentage)
+                    embeddedViewAnimator.fractionComplete = abs(movePercentage)
                 case .ended:
                     let thresholdPercentage: CGFloat = 0.1
-                    if animator.fractionComplete < thresholdPercentage {
-                        animator.isReversed.toggle()
+                    if embeddedViewAnimator.fractionComplete < thresholdPercentage {
+                        embeddedViewAnimator.isReversed.toggle()
+                    } else {
+                        self?.viewModel.toggleEmbddedView.accept(())
                     }
-                    animator.startAnimation()
+                    embeddedViewAnimator.startAnimation()
                 default:
                     break
                 }
             }).disposed(by: disposeBag)
         containerView.addGestureRecognizer(panGesture)
+    }
+
+    private func bindToViewModel() {
+        viewModel.isFocusedOnEmbeddedView
+            .skip(1)
+            .drive(Binder(self) { me, isFocusedOnEmbeddedView in
+                me.embeddedViewAnimator.isReversed = isFocusedOnEmbeddedView
+                me.embeddedViewAnimator.startAnimation()
+            }).disposed(by: disposeBag)
     }
 }
 
