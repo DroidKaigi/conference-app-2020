@@ -16,6 +16,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -97,6 +100,7 @@ class SessionsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initBottomSheetShapeAppearance()
         val initialPeekHeight = sessionSheetBehavior.peekHeight
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight = insets.systemWindowInsetBottom + initialPeekHeight
@@ -255,6 +259,31 @@ class SessionsFragment : DaggerFragment() {
             .replace(R.id.sessions_sheet, fragment, tab.title)
             .disallowAddToBackStack()
             .commit()
+    }
+
+    /**
+     * Override Widget.MaterialComponents.BottomSheet shapeAppearance
+     * see: https://github.com/DroidKaigi/conference-app-2020/issues/104
+     */
+    private fun initBottomSheetShapeAppearance() {
+        val shapeAppearanceModel =
+            ShapeAppearanceModel.Builder()
+                .setTopLeftCorner(
+                    CornerFamily.ROUNDED,
+                    resources.getDimension(R.dimen.bottom_sheet_corner_radius)
+                )
+                .build()
+        /**
+         * FrontLayer elevation is 1dp
+         * https://material.io/components/backdrop/#anatomy
+         */
+        val materialShapeDrawable = MaterialShapeDrawable.createWithElevationOverlay(
+            requireActivity(),
+            resources.getDimension(R.dimen.bottom_sheet_elevation)
+        ).apply {
+            setShapeAppearanceModel(shapeAppearanceModel)
+        }
+        binding.sessionsSheet.background = materialShapeDrawable
     }
 
     companion object {
