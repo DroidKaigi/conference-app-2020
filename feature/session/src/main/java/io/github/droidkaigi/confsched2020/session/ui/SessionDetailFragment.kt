@@ -217,7 +217,7 @@ class SessionDetailFragment : DaggerFragment() {
             val speaker: Speaker =
                 (session as? SpeechSession)?.speakers?.getOrNull(index) ?: return@forEach
             val speakerView = layoutInflater.inflate(
-                R.layout.layout_speaker, this, false
+                R.layout.layout_speaker_session_detail, this, false
             ) as ViewGroup
             speakerView.setOnClickListener {
                 findNavController().navigate(actionSessionToSpeaker(speaker.id))
@@ -264,8 +264,8 @@ class SessionDetailFragment : DaggerFragment() {
 
     private fun TextView.setLeftDrawable(drawable: Drawable) {
         val res = context.resources
-        val widthDp = 32
-        val heightDp = 32
+        val widthDp = 60
+        val heightDp = 60
         val widthPx = (widthDp * res.displayMetrics.density).toInt()
         val heightPx = (heightDp * res.displayMetrics.density).toInt()
         drawable.setBounds(0, 0, widthPx, heightPx)

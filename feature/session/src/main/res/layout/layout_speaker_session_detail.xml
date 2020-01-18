@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:id="@+id/speaker"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:drawableStart="@drawable/ic_person_outline_black_32dp"
+        android:drawablePadding="8dp"
+        android:paddingEnd="16dp"
+        android:gravity="center_vertical"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textColor="@color/speaker_name_session_detail"
+        tools:text="taka"
+        />
+</LinearLayout>
