@@ -36,7 +36,7 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
-                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                style="@style/Widget.DroidKaigi.Toolbar.Primary"
                 android:layout_width="0dp"
                 android:layout_height="?actionBarSize"
                 android:background="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorPrimarySurface : R.attr.colorSurface)}"

@@ -1,2 +1,8 @@
 <resources>
+    <style name="Widget.DroidKaigi.Toolbar.Primary" parent="@style/Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:theme">@style/SelectableItemTheme</item>
+    </style>
+    <style name="SelectableItemTheme">
+        <item name="colorControlHighlight">@color/white</item>
+    </style>
 </resources>
