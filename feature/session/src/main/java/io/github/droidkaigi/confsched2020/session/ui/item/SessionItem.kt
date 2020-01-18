@@ -3,7 +3,6 @@ package io.github.droidkaigi.confsched2020.session.ui.item
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -57,52 +56,22 @@ class SessionItem @AssistedInject constructor(
     override fun getLayout(): Int = R.layout.item_session
 
     override fun bind(viewBinding: ItemSessionBinding, position: Int) {
-        viewBinding.favorite.setOnClickListener {
-            sessionsViewModel
-                .favorite(session)
-        }
-        bindFavorite(session.isFavorited, viewBinding.favorite)
-        viewBinding.root.setOnClickListener {
-            viewBinding.root.findNavController()
-                .navigate(actionSessionToSessionDetail(session.id))
-        }
-        viewBinding.live.isVisible = session.isOnGoing
-        viewBinding.title.text = session.title.ja
-        viewBinding.room.text = session.room.name.getByLang(defaultLang())
-        viewBinding.survey.isEnabled = session.isFinished
-        imageRequestDisposables.clear()
-        viewBinding.speakers.bindSpeaker()
-    }
-
-    override fun bind(
-        viewBinding: ItemSessionBinding,
-        position: Int,
-        payloads: MutableList<Any>
-    ) {
-        if (payloads.isEmpty()) {
-            bind(viewBinding, position)
-        } else {
-            payloads.distinct().forEach { payload ->
-                when (payload) {
-                    is ItemPayload.FavoritePayload -> {
-                        bindFavorite(payload.isFavorited, viewBinding.favorite)
-                    }
-                }
+        with(viewBinding) {
+            favorite.setOnClickListener {
+                favorite.isSelected = !favorite.isSelected
+                sessionsViewModel.favorite(session)
             }
-        }
-    }
-
-    private fun bindFavorite(
-        isFavorited: Boolean,
-        imageButton: ImageButton
-    ) {
-        imageButton.setImageResource(
-            if (isFavorited) {
-                R.drawable.ic_bookmark_black_24dp
-            } else {
-                R.drawable.ic_bookmark_border_black_24dp
+            favorite.isSelected = session.isFavorited
+            root.setOnClickListener {
+                root.findNavController().navigate(actionSessionToSessionDetail(session.id))
             }
-        )
+            live.isVisible = session.isOnGoing
+            title.text = session.title.ja
+            room.text = session.room.name.getByLang(defaultLang())
+            survey.isEnabled = session.isFinished
+            imageRequestDisposables.clear()
+            speakers.bindSpeaker()
+        }
     }
 
     private fun ViewGroup.bindSpeaker() {
