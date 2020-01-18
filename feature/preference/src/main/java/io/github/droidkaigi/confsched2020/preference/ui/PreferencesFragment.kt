@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched2020.preference.ui
 
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -51,20 +52,33 @@ class PreferencesFragment : PreferenceFragmentCompat() {
             it.isChecked = currentNightMode == Configuration.UI_MODE_NIGHT_YES
             preferenceViewModel.setNightMode(it.isChecked)
             it.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                preferenceViewModel.setNightMode(newValue as Boolean)
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                    preferenceViewModel.setNightMode(newValue as Boolean)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(
+                        if (newValue as Boolean) {
+                            MODE_NIGHT_YES
+                        } else {
+                            MODE_NIGHT_NO
+                        }
+                    )
+                    (activity as? AppCompatActivity)?.delegate?.applyDayNight()
+                }
                 return@OnPreferenceChangeListener true
             }
         }
 
         preferenceViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            AppCompatDelegate.setDefaultNightMode(
-                if (uiModel.isNightMode) {
-                    MODE_NIGHT_YES
-                } else {
-                    MODE_NIGHT_NO
-                }
-            )
-            (activity as? AppCompatActivity)?.delegate?.applyDayNight()
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                AppCompatDelegate.setDefaultNightMode(
+                    if (uiModel.isNightMode) {
+                        MODE_NIGHT_YES
+                    } else {
+                        MODE_NIGHT_NO
+                    }
+                )
+                (activity as? AppCompatActivity)?.delegate?.applyDayNight()
+            }
         }
     }
 
