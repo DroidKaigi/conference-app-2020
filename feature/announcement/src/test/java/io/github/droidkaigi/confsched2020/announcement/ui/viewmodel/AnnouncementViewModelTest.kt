@@ -19,11 +19,14 @@ class AnnouncementViewModelTest {
     val mockkRule = MockkRule(this)
     @MockK(relaxed = true)
     lateinit var announcementRepository: AnnouncementRepository
+    @MockK(relaxed = true)
+    lateinit var announcementItemFactory: AnnouncementItem.Factory
 
     @Test
     fun load() {
         coEvery { announcementRepository.announcements() } returns flowOf(Dummies.announcements)
-        val announcementViewModel = AnnouncementViewModel(announcementRepository)
+        val announcementViewModel =
+            AnnouncementViewModel(announcementRepository, announcementItemFactory)
 
         val testObserver = announcementViewModel
             .uiModel
@@ -33,7 +36,7 @@ class AnnouncementViewModelTest {
         valueHistory[0] shouldBe AnnouncementViewModel.UiModel.EMPTY.copy(isLoading = true)
         valueHistory[1].apply {
             isLoading shouldBe false
-            announcements shouldBe Dummies.announcements
+            announcements shouldBe Dummies.announcements.map { announcementItemFactory.create(it) }
             error shouldBe null
             isEmpty shouldBe false
         }
