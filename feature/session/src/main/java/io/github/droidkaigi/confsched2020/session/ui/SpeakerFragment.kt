@@ -1,12 +1,9 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.distinctUntilChanged
@@ -17,7 +14,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
-import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.session.R
@@ -25,11 +21,12 @@ import io.github.droidkaigi.confsched2020.session.databinding.FragmentSpeakerBin
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerDetailItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerSessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SpeakerViewModel
+import io.github.droidkaigi.confsched2020.util.DaggerFragment
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 
-class SpeakerFragment : DaggerFragment() {
+class SpeakerFragment : DaggerFragment(R.layout.fragment_speaker) {
 
     private var binding: FragmentSpeakerBinding by autoCleared()
 
@@ -52,23 +49,12 @@ class SpeakerFragment : DaggerFragment() {
             }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_speaker,
-            container,
-            false
-        )
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
+
+        binding = FragmentSpeakerBinding.bind(view)
+
         progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
