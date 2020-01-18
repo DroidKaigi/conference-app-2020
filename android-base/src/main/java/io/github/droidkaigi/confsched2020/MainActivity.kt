@@ -1,9 +1,7 @@
 package io.github.droidkaigi.confsched2020
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.appcompat.content.res.AppCompatResources
