@@ -25,12 +25,15 @@ import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionManager
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.google.android.material.chip.Chip
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
@@ -48,6 +51,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDet
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailWipBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSurvey
+import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailTitleItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
@@ -131,7 +135,13 @@ class SessionDetailFragment : DaggerFragment() {
     }
 
     private fun setupSessionViews(session: Session) {
-        // TODO Change to RecyclerView
+        context?.let {
+            val adapter = GroupAdapter<ViewHolder<*>>()
+            binding.sessionDetailRecycler.adapter = adapter
+            binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(it)
+            adapter.add(SessionDetailTitleItem(it, session))
+        }
+
 //        binding.sessionFavorite.setOnClickListener {
 //            sessionDetailViewModel.favorite(session)
 //        }

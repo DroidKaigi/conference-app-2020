@@ -91,8 +91,6 @@
             tools:text="20min / Hall"
             />
 
-        <!-- ここまで大丈夫 -->
-
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/tags"
             android:layout_width="0dp"
