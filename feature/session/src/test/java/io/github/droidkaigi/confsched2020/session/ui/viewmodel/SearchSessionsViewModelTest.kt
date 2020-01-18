@@ -6,13 +6,9 @@ import io.github.droidkaigi.confsched2020.widget.component.MockkRule
 import io.github.droidkaigi.confsched2020.widget.component.ViewModelTestRule
 import io.kotlintest.shouldBe
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Test
-
-import org.junit.Assert.*
 import org.junit.Rule
 
 class SearchSessionsViewModelTest {
