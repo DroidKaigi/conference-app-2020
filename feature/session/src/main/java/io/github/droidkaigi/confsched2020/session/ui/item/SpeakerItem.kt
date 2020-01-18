@@ -71,7 +71,7 @@ class SpeakerItem @AssistedInject constructor(
         imageRequestDisposables.forEach { it.dispose() }
     }
 
-    fun TextView.setLeftDrawable(drawable: Drawable) {
+    private fun TextView.setLeftDrawable(drawable: Drawable) {
         val res = context.resources
         val widthDp = 64
         val heightDp = 64

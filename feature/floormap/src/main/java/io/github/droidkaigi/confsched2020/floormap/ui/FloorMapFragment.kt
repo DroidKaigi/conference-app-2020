@@ -13,11 +13,12 @@ import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.floormap.R
 import io.github.droidkaigi.confsched2020.floormap.databinding.FragmentFloormapBinding
+import io.github.droidkaigi.confsched2020.util.autoCleared
 
 // TODO: Apply the floor map UI
 class FloorMapFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentFloormapBinding
+    private var binding: FragmentFloormapBinding by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

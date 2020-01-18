@@ -1,11 +1,9 @@
 package io.github.droidkaigi.confsched2020
 
 import androidx.core.content.ContextCompat
-import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.dumpapp.DumperPlugin
 import com.facebook.stetho.inspector.protocol.ChromeDevtoolsDomain
-import io.fabric.sdk.android.Fabric
 import java.io.File
 
 class DebugApp : App() {
@@ -29,7 +27,5 @@ class DebugApp : App() {
                         .finish()
                 }
             })
-
-        Fabric.with(this, Crashlytics())
     }
 }
