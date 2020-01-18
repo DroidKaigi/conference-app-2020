@@ -19,7 +19,7 @@ import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSpeakerBinding
-import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragmentDirections.actionSessionToSpeaker
+import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragmentDirections.Companion.actionSessionToSpeaker
 
 class SpeakerItem @AssistedInject constructor(
     @Assisted val speaker: Speaker,
@@ -71,7 +71,7 @@ class SpeakerItem @AssistedInject constructor(
         imageRequestDisposables.forEach { it.dispose() }
     }
 
-    fun TextView.setLeftDrawable(drawable: Drawable) {
+    private fun TextView.setLeftDrawable(drawable: Drawable) {
         val res = context.resources
         val widthDp = 64
         val heightDp = 64

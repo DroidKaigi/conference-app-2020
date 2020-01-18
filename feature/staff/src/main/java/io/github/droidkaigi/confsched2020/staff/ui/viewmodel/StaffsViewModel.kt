@@ -11,7 +11,7 @@ import io.github.droidkaigi.confsched2020.model.StaffContents
 import javax.inject.Inject
 
 class StaffsViewModel @Inject constructor(
-    val staffRepository: StaffRepository
+    private val staffRepository: StaffRepository
 ) : ViewModel() {
 
     val staffContentsLoadState: LiveData<LoadState<StaffContents>> = liveData {

@@ -17,6 +17,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.hours
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -24,19 +26,21 @@ import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.model.SessionPage
+import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentMainSessionsBinding
-import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.actionSessionToSearchSessions
+import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.Companion.actionSessionToSearchSessions
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class MainSessionsFragment : DaggerFragment() {
 
-    private lateinit var binding: FragmentMainSessionsBinding
+    private var binding: FragmentMainSessionsBinding by autoCleared()
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -52,7 +56,7 @@ class MainSessionsFragment : DaggerFragment() {
     @Inject
     lateinit var sessionItemFactory: SessionItem.Factory
 
-    private lateinit var progressTimeLatch: ProgressTimeLatch
+    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,9 +103,7 @@ class MainSessionsFragment : DaggerFragment() {
 
             override fun createFragment(position: Int): Fragment {
                return SessionsFragment.newInstance(
-                    SessionsFragmentArgs
-                        .Builder(position)
-                        .build()
+                    SessionsFragmentArgs(position)
                 )
             }
         }
@@ -121,11 +123,11 @@ class MainSessionsFragment : DaggerFragment() {
                 }
             })
 
-        // TODO: implement currentItem logic
-//        val jstNow = DateTime.now().toOffset(9.hours)
-//        if (jstNow.yearInt == 2019 && jstNow.month1 == 2 && jstNow.dayOfMonth == 8) {
-//            binding.sessionsViewpager.currentItem = 1
-//        }
+        val jstNow = DateTime.now().toOffset(defaultTimeZoneOffset())
+        if (jstNow.yearInt == 2020 && jstNow.month1 == 2 && jstNow.dayOfMonth == 21) {
+            binding.sessionsViewpager.currentItem = 1
+        }
+
         tabLayoutMediator.attach()
     }
 

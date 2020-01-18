@@ -7,7 +7,7 @@ import io.ktor.client.request.url
 import io.ktor.http.parametersOf
 
 internal open class KtorGoogleFormApi constructor(
-    val httpClient: HttpClient
+    private val httpClient: HttpClient
 ) : GoogleFormApi {
 
     companion object {
