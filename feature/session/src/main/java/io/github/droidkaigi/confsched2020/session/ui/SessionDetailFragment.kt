@@ -75,7 +75,6 @@ class SessionDetailFragment : DaggerFragment() {
     @Inject lateinit var sessionItemFactory: SessionItem.Factory
 
     private var progressTimeLatch: ProgressTimeLatch by autoCleared()
-    private var showEllipsis = true
 
     companion object {
         private const val TRANSITION_NAME_SUFFIX = "detail"
@@ -108,7 +107,7 @@ class SessionDetailFragment : DaggerFragment() {
                 uiModel.error?.let { systemViewModel.onError(it) }
                 progressTimeLatch.loading = uiModel.isLoading
                 uiModel.session
-                    ?.let { session -> setupSessionViews(session) }
+                    ?.let { session -> setupSessionViews(session, uiModel.showEllipsis) }
             }
 
         binding.bottomAppBar.setOnMenuItemClickListener {
@@ -134,7 +133,7 @@ class SessionDetailFragment : DaggerFragment() {
         }
     }
 
-    private fun setupSessionViews(session: Session) {
+    private fun setupSessionViews(session: Session, showEllipsis: Boolean) {
         binding.sessionFavorite.setOnClickListener {
             sessionDetailViewModel.favorite(session)
         }
@@ -142,7 +141,7 @@ class SessionDetailFragment : DaggerFragment() {
             findNavController().navigate(actionSessionToSurvey(session.id))
         }
         binding.session = session
-        setupSessionDescription(session.desc)
+        setupSessionDescription(session.desc, showEllipsis)
         binding.speechSession = (session as? SpeechSession)
         binding.lang = defaultLang()
         binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
@@ -167,7 +166,7 @@ class SessionDetailFragment : DaggerFragment() {
         binding.speakers.bindSpeaker(session)
     }
 
-    private fun setupSessionDescription(fullDescription: String) {
+    private fun setupSessionDescription(fullDescription: String, showEllipsis: Boolean) {
         val textView = binding.sessionDescription
         textView.doOnPreDraw {
             textView.text = fullDescription
@@ -181,11 +180,12 @@ class SessionDetailFragment : DaggerFragment() {
                 textView.width - textView.paint.measureText(ellipsis),
                 TextUtils.TruncateAt.END
             )
-            val ellipsisColor = ContextCompat.getColor(requireContext(), R.color.design_default_color_secondary)
+            val ellipsisColor =
+                ContextCompat.getColor(requireContext(), R.color.design_default_color_secondary)
             val onClickListener = {
                 TransitionManager.beginDelayedTransition(binding.sessionLayout)
                 textView.text = fullDescription
-                showEllipsis = !showEllipsis
+                sessionDetailViewModel.expandDescription()
             }
             val detailText = fullDescription.substring(0, lastLineStartPosition) + lastLineText
             val text = buildSpannedString {
