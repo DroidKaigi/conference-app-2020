@@ -209,13 +209,13 @@ class SessionsFragment : DaggerFragment() {
      * https://android.googlesource.com/platform/frameworks/base/+/refs/heads/android10-mainline-release/core/java/android/view/WindowManagerPolicyConstants.java#60
      * */
     private fun isEdgeToEdgeEnabled(): Boolean {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) return false
         val configNavBarInteractionMode = Resources.getSystem().getIdentifier(
             "config_navBarInteractionMode",
             "integer",
             "android"
         )
-        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.P &&
-                context?.resources?.getInteger(configNavBarInteractionMode) == 2)
+        return (context?.resources?.getInteger(configNavBarInteractionMode) == 2)
     }
 
     private inline fun <reified T> ChipGroup.setupFilter(
