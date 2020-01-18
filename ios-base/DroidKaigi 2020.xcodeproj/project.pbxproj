@@ -151,6 +151,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 63245595239F28A800E7D32C /* Build configuration list for PBXNativeTarget "DroidKaigi 2020" */;
 			buildPhases = (
+				182382E923D2DEB00053C53B /* Build Kotlin Modules */,
 				63CDCDCC23AF660A0022D3DD /* CopyFiles */,
 				63245567239F28A700E7D32C /* Sources */,
 				63245568239F28A700E7D32C /* Frameworks */,
@@ -270,6 +271,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		182382E923D2DEB00053C53B /* Build Kotlin Modules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Build Kotlin Modules";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"$SRCROOT/..\"\n./gradlew \":data:api:linkDebugFrameworkIosX64\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		63245567239F28A700E7D32C /* Sources */ = {
