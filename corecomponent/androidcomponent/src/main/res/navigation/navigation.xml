@@ -112,6 +112,10 @@
             android:name="speakerId"
             app:argType="io.github.droidkaigi.confsched2020.model.SpeakerId"
             />
+        <argument
+            android:name="transitionNameSuffix"
+            app:argType="string"
+            />
 
         <action
             android:id="@+id/action_speaker_to_session_detail"
