@@ -132,34 +132,47 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
     }
 
     private fun setupSessionViews(session: Session) {
-        context?.let {
-            val adapter = GroupAdapter<ViewHolder<*>>()
-            binding.sessionDetailRecycler.adapter = adapter
-            binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(it)
-            binding.sessionDetailRecycler.addItemDecoration(SessionDetailItemDecoration(adapter, it))
-            adapter.add(SessionDetailTitleItem(it, session))
-            adapter.add(SessionDetailDescriptionItem(it, session))
-            if (session.hasIntendedAudience)
-                adapter.add(SessionDetailTargetItem(session))
-            if (session.hasSpeaker) {
-                adapter.add(SessionDetailSpeakerSubtitleItem())
-                var firstSpeaker = true
-                (session as? SpeechSession)?.speakers.orEmpty().indices.forEach { index ->
-                    val speaker: Speaker =
-                        (session as? SpeechSession)?.speakers?.getOrNull(index) ?: return@forEach
-                    adapter.add(SessionDetailSpeakerItem(viewLifecycleOwner, speaker, firstSpeaker))
-                    firstSpeaker = false
+        if (binding.sessionDetailRecycler.adapter == null) {
+            context?.let {
+                val adapter = GroupAdapter<ViewHolder<*>>()
+                binding.sessionDetailRecycler.adapter = adapter
+                binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(it)
+                binding.sessionDetailRecycler.addItemDecoration(
+                    SessionDetailItemDecoration(
+                        adapter,
+                        it
+                    )
+                )
+                adapter.add(SessionDetailTitleItem(it, session))
+                adapter.add(SessionDetailDescriptionItem(it, session))
+                if (session.hasIntendedAudience)
+                    adapter.add(SessionDetailTargetItem(session))
+                if (session.hasSpeaker) {
+                    adapter.add(SessionDetailSpeakerSubtitleItem())
+                    var firstSpeaker = true
+                    (session as? SpeechSession)?.speakers.orEmpty().indices.forEach { index ->
+                        val speaker: Speaker =
+                            (session as? SpeechSession)?.speakers?.getOrNull(index)
+                                ?: return@forEach
+                        adapter.add(
+                            SessionDetailSpeakerItem(
+                                viewLifecycleOwner,
+                                speaker,
+                                firstSpeaker
+                            )
+                        )
+                        firstSpeaker = false
+                    }
                 }
             }
         }
-
-//        binding.sessionFavorite.setOnClickListener {
-//            sessionDetailViewModel.favorite(session)
-//        }
+        binding.sessionFavorite.setOnClickListener {
+            sessionDetailViewModel.favorite(session)
+        }
 //        binding.survey.setOnClickListener {
 //            findNavController().navigate(actionSessionToSurvey(session.id))
 //        }
-//        binding.session = session
+        binding.session = session
 //        setupSessionDescription(session.desc)
 //        binding.speechSession = (session as? SpeechSession)
 //        binding.lang = defaultLang()
