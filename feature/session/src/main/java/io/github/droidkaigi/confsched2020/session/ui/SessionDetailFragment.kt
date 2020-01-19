@@ -68,6 +68,9 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
     @Inject
     lateinit var sessionDetailDescriptionItemFactory: SessionDetailDescriptionItem.Factory
 
+    @Inject
+    lateinit var sessionDetailSpeakerItemFactory: SessionDetailSpeakerItem.Factory
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -135,20 +138,18 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
                         val speaker: Speaker =
                             (session as? SpeechSession)?.speakers?.getOrNull(index)
                                 ?: return@forEach
-                        adapter.add(
-                            SessionDetailSpeakerItem(
-                                viewLifecycleOwner,
-                                speaker,
-                                firstSpeaker
-                            ) { extras ->
-                                findNavController()
-                                    .navigate(
-                                        actionSessionToSpeaker(
-                                            speaker.id,
-                                            TRANSITION_NAME_SUFFIX
-                                        ), extras
-                                    )
-                            }
+                        adapter.add(sessionDetailSpeakerItemFactory.create(
+                            speaker,
+                            firstSpeaker
+                        ) { extras ->
+                            findNavController()
+                                .navigate(
+                                    actionSessionToSpeaker(
+                                        speaker.id,
+                                        TRANSITION_NAME_SUFFIX
+                                    ), extras
+                                )
+                        }
                         )
                         firstSpeaker = false
                     }

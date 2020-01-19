@@ -3,12 +3,15 @@ package io.github.droidkaigi.confsched2020.session.ui.item
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
 import coil.transform.CircleCropTransformation
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.Speaker
@@ -19,11 +22,11 @@ import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment
 /**
  * @param first For setting margin by SessionDetailItemDecoration
  */
-class SessionDetailSpeakerItem(
-    private val lifecycleOwner: LifecycleOwner,
-    private val speaker: Speaker,
-    val first: Boolean,
-    private val onClick: (FragmentNavigator.Extras) -> Unit
+class SessionDetailSpeakerItem @AssistedInject constructor(
+    private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>,
+    @Assisted private val speaker: Speaker,
+    @Assisted val first: Boolean,
+    @Assisted private val onClick: (FragmentNavigator.Extras) -> Unit
 ) : BindableItem<ItemSessionDetailSpeakerBinding>() {
     override fun getLayout() = R.layout.item_session_detail_speaker
 
@@ -67,10 +70,19 @@ class SessionDetailSpeakerItem(
             crossfade(true)
             placeholder(placeHolder)
             transformations(CircleCropTransformation())
-            lifecycle(lifecycleOwner)
+            lifecycle(lifecycleOwnerLiveData.value)
             target {
                 speakerImageView.setImageDrawable(it)
             }
         }
+    }
+
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(
+            speaker: Speaker,
+            first: Boolean,
+            onClick: (FragmentNavigator.Extras) -> Unit
+        ): SessionDetailSpeakerItem
     }
 }
