@@ -6,12 +6,13 @@ import androidx.core.content.ContextCompat
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
+import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailMaterialBinding
 
 class SessionDetailMaterialItem @AssistedInject constructor(
-    @Assisted private val session: SpeechSession,
+    @Assisted private val session: Session,
     @Assisted private val listener: Listener
 ) :
     BindableItem<ItemSessionDetailMaterialBinding>() {
@@ -29,12 +30,16 @@ class SessionDetailMaterialItem @AssistedInject constructor(
     }
 
     private fun setUpMaterialData(binding: ItemSessionDetailMaterialBinding) {
-        session.videoUrl?.let {
-            setUpMovieView(binding, it)
-        } ?: setUpNoMovieView(binding)
-        session.slideUrl?.let {
-            setUpSlideView(binding, it)
-        } ?: setUpNoSlideView(binding)
+        if (session is SpeechSession) {
+            session.videoUrl?.let {
+                setUpMovieView(binding, it)
+            } ?: setUpNoMovieView(binding)
+            session.slideUrl?.let {
+                setUpSlideView(binding, it)
+            } ?: setUpNoSlideView(binding)
+        }
+        setUpNoMovieView(binding)
+        setUpNoSlideView(binding)
     }
 
     private fun setUpNoMovieView(binding: ItemSessionDetailMaterialBinding) {
@@ -84,7 +89,7 @@ class SessionDetailMaterialItem @AssistedInject constructor(
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            session: SpeechSession,
+            session: Session,
             listener: Listener
         ): SessionDetailMaterialItem
     }

@@ -163,28 +163,25 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail) {
                     firstSpeaker = false
                 }
             }
-            if (session is SpeechSession) {
-                adapter.add(
-                    sessionDetailMaterialItemFactory.create(
-                        session,
-                        object : SessionDetailMaterialItem.Listener {
-                            override fun onClickMovie(movieUrl: String) {
-                                findNavController().navigate(actionSessionToChrome(movieUrl))
-                            }
+            adapter.add(
+                sessionDetailMaterialItemFactory.create(
+                    session,
+                    object : SessionDetailMaterialItem.Listener {
+                        override fun onClickMovie(movieUrl: String) {
+                            findNavController().navigate(actionSessionToChrome(movieUrl))
+                        }
 
-                            override fun onClickSlide(slideUrl: String) {
-                                findNavController().navigate(actionSessionToChrome(slideUrl))
-                            }
-                        })
-                )
-            }
+                        override fun onClickSlide(slideUrl: String) {
+                            findNavController().navigate(actionSessionToChrome(slideUrl))
+                        }
+                    })
+            )
         }
         binding.sessionFavorite.setOnClickListener {
             sessionDetailViewModel.favorite(session)
         }
         binding.session = session
     }
-
 }
 
 @Module
