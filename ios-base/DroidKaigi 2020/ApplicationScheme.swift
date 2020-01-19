@@ -1,10 +1,3 @@
-//
-//  ApplicationScheme.swift
-//  DroidKaigi 2020
-//
-//  Created by 伊藤凌也 on 2020/01/17.
-//
-
 import UIKit
 import MaterialComponents
 
