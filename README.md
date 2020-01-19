@@ -232,5 +232,6 @@ This project uses some modern Android libraries and source codes.
   * [AutoClearedValue](https://github.com/android/architecture-components-samples/blob/9826b59956eb93c9e627bdf16a19a1c8bc28ce14/GithubBrowserSample/app/src/main/java/com/android/example/github/util/AutoClearedValue.kt)
 
 ### iOS
-
-// TODO: Add iOS Libraries
+* [XcodeGen](https://github.com/yonaskolb/XcodeGen)
+* [material-components-ios](https://github.com/material-components/material-components-ios)
+* [RxSwift](https://github.com/ReactiveX/RxSwift)
