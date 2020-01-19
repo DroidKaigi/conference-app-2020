@@ -15,6 +15,8 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
     typealias Elememt = [Session]
     var items: Elememt = []
 
+    private var previousTimeString = ""
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
@@ -29,11 +31,19 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
         session.speakers.forEach { speaker in
             cell.addSpeakerView(imageURL: URL(string: speaker.profilePicture ?? ""), speakerName: speaker.fullName ?? "")
         }
+
         let calendar = Calendar.current
         if let startsAt = session.startsAt {
             let hour = calendar.component(.hour, from: startsAt)
             let minute = String(format: "%02d", arguments: [calendar.component(.minute, from: startsAt)])
-            cell.timeLabel.text = "\(hour):\(minute)"
+            let timeString = "\(hour):\(minute)"
+
+            if previousTimeString != timeString {
+                cell.timeLabel.text = timeString
+            } else {
+                cell.timeLabel.text = ""
+            }
+            previousTimeString = timeString
         }
         cell.minutesAndRoomLabel.text = "\(session.minutes!)min / \(session.room?.name?.ja ?? "")"
 

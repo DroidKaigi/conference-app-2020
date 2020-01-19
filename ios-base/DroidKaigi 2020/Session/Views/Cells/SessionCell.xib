@@ -17,19 +17,19 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pV1-fq-chY">
-                        <rect key="frame" x="16" y="14" width="41" height="19.5"/>
+                        <rect key="frame" x="16" y="14" width="42" height="19.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20min / Hall" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dzM-Ka-b3H">
-                        <rect key="frame" x="75" y="16.5" width="68" height="14.5"/>
+                        <rect key="frame" x="76" y="16.5" width="68" height="14.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-3L-cDY">
-                        <rect key="frame" x="151" y="14" width="42" height="20"/>
+                        <rect key="frame" x="152" y="14" width="42" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LIVE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZKc-Oe-asn">
                                 <rect key="frame" x="4" y="-0.5" width="34.5" height="20.5"/>
@@ -47,7 +47,7 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Understanding Kotlin " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9um-YV-m4J">
-                        <rect key="frame" x="75" y="41" width="187.5" height="24.5"/>
+                        <rect key="frame" x="76" y="41" width="187.5" height="24.5"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24.5" id="kPz-Nd-wl2"/>
                         </constraints>
@@ -64,7 +64,7 @@
                         <state key="normal" image="ic_bookmark_border"/>
                     </button>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="rMR-Ci-Z50">
-                        <rect key="frame" x="75" y="66" width="187.5" height="40"/>
+                        <rect key="frame" x="76" y="66" width="187.5" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" id="PQ4-Ov-b0v"/>
                         </constraints>
@@ -75,6 +75,7 @@
                 <constraint firstItem="UDC-5H-VPQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9um-YV-m4J" secondAttribute="trailing" priority="750" constant="10" id="5hl-OH-p22"/>
                 <constraint firstItem="9um-YV-m4J" firstAttribute="leading" secondItem="dzM-Ka-b3H" secondAttribute="leading" id="860-Da-CXl"/>
                 <constraint firstItem="pV1-fq-chY" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="14" id="9gG-Ll-iWZ"/>
+                <constraint firstItem="dzM-Ka-b3H" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="76" id="CS0-Iy-yAT"/>
                 <constraint firstItem="dzM-Ka-b3H" firstAttribute="centerY" secondItem="pV1-fq-chY" secondAttribute="centerY" id="D5e-UJ-wiL"/>
                 <constraint firstItem="UDC-5H-VPQ" firstAttribute="centerY" secondItem="IOg-3L-cDY" secondAttribute="centerY" id="Hss-oV-oVM"/>
                 <constraint firstItem="rMR-Ci-Z50" firstAttribute="trailing" secondItem="9um-YV-m4J" secondAttribute="trailing" id="NKT-UD-I2j"/>
