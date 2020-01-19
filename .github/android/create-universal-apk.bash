@@ -19,7 +19,7 @@ java -jar bundletool-all.jar build-apks \
   --mode=universal\
   --ks=android-base/release.keystore\
   --ks-pass=pass:$RELEASE_KEYSTORE_STORE_PASSWORD\
-  --ks-key-alias=$RELEASE_KEYSTORE_KEY_ALIAS\
+  --ks-key-alias=droidkaigi\
   --key-pass=pass:$RELEASE_KEYSTORE_KEY_PASSWORD\
   --bundle=$aab_file\
   --output=android-base/build/universal.apks
