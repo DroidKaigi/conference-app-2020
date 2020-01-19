@@ -7,7 +7,7 @@ curl -o $HOME/toolkit.sh -sL "https://raw.githubusercontent.com/jmatsu/github-ac
 source $HOME/toolkit.sh
 
 # a directory for custom binaries
-local -r bin_dir="$HOME/.bin"
+readonly bin_dir="$HOME/.bin"
 mkdir -p $bin_dir
 
 curl -sL "https://raw.githubusercontent.com/jmatsu/transart/master/install.bash" | bash
