@@ -5,40 +5,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_start"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="24dp"
-            />
+            android:background="?attr/selectableItemBackground"
+            >
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="24dp"
-            />
+            <ImageView
+                android:id="@+id/speaker_image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/ic_person_outline_black_32dp"
+                />
 
-
-        <TextView
-            android:id="@+id/speaker"
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:drawableStart="@drawable/ic_person_outline_black_32dp"
-            android:layout_marginTop="18dp"
-            android:drawablePadding="8dp"
-            android:paddingEnd="16dp"
-            android:textAppearance="?attr/textAppearanceCaption"
-            android:textColor="@color/speaker_name"
-            app:layout_constraintEnd_toEndOf="@id/guideline_end"
-            app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="taka"
-            />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/speaker"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="16dp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/speaker_name_session_detail"
+                tools:text="taka"
+                />
+        </LinearLayout>
+    </FrameLayout>
 </layout>

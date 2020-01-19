@@ -86,7 +86,7 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
 
 
     companion object {
-        private const val TRANSITION_NAME_SUFFIX = "detail"
+        const val TRANSITION_NAME_SUFFIX = "detail"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
 import android.graphics.drawable.Drawable
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
@@ -12,6 +13,7 @@ import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailSpeakerBinding
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment
 
 class SessionDetailSpeakerItem(
     private val lifecycleOwner: LifecycleOwner,
@@ -20,14 +22,21 @@ class SessionDetailSpeakerItem(
     override fun getLayout() = R.layout.item_session_detail_speaker
 
     override fun bind(binding: ItemSessionDetailSpeakerBinding, position: Int) {
-        bindSpeakerData(binding.speaker)
+        val speakerNameView = binding.speaker
+        val speakerImageView = binding.speakerImage
+        speakerImageView.transitionName =
+            "${speaker.id}-${SessionDetailFragment.TRANSITION_NAME_SUFFIX}"
+        bindSpeakerData(speakerNameView, speakerImageView)
     }
 
-    private fun bindSpeakerData(textView: TextView) {
-        textView.text = speaker.name
+    private fun bindSpeakerData(
+        speakerNameView: TextView,
+        speakerImageView: ImageView
+    ) {
+        speakerNameView.text = speaker.name
 //        setHighlightText(textView, query)
         val imageUrl = speaker.imageUrl
-        val context = textView.context
+        val context = speakerNameView.context
         val placeHolder = run {
             VectorDrawableCompat.create(
                 context.resources,
@@ -39,7 +48,7 @@ class SessionDetailSpeakerItem(
                 )
             }
         }?.also {
-            textView.setLeftDrawable(it)
+            speakerImageView.setImageDrawable(it)
         }
 
         Coil.load(context, imageUrl) {
@@ -48,20 +57,8 @@ class SessionDetailSpeakerItem(
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwner)
             target {
-                textView.setLeftDrawable(it)
+                speakerImageView.setImageDrawable(it)
             }
         }
-    }
-
-    private fun TextView.setLeftDrawable(drawable: Drawable) {
-        val res = context.resources
-        val widthDp = 32
-        val heightDp = 32
-        val widthPx = (widthDp * res.displayMetrics.density).toInt()
-        val heightPx = (heightDp * res.displayMetrics.density).toInt()
-        drawable.setBounds(0, 0, widthPx, heightPx)
-        setCompoundDrawables(
-            drawable, null, null, null
-        )
     }
 }
