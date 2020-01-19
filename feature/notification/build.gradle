@@ -16,7 +16,6 @@ dependencies {
     implementation Dep.Kotlin.androidCoroutinesDispatcher
 
     implementation Dep.AndroidX.coreKtx
-    implementation Dep.AndroidX.Work.runtime
     implementation Dep.AndroidX.Work.runtimeKtx
 
     implementation Dep.Timber.android

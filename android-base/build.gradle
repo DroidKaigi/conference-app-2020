@@ -77,6 +77,7 @@ dependencies {
     implementation project(':feature:announcement')
     implementation project(':feature:about')
     implementation project(':feature:floormap')
+    implementation project(':feature:notification')
     implementation project(':feature:session_survey')
 
     implementation project(':data:repository')

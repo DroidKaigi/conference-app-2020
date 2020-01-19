@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2019.notification;
+package io.github.droidkaigi.confsched2020.notification;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("io.github.droidkaigi.confsched2019.notification.test", appContext.getPackageName());
+        assertEquals("io.github.droidkaigi.confsched2020.notification.test", appContext.getPackageName());
     }
 }

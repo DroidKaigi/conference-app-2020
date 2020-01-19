@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2019.notification;
+package io.github.droidkaigi.confsched2020.notification;
 
 import org.junit.Test;
 
