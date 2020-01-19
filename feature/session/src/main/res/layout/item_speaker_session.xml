@@ -7,6 +7,8 @@
 
     <data>
 
+        <import type="io.github.droidkaigi.confsched2020.model.TimeZoneOffsetKt" />
+
         <variable
             name="speechSession"
             type="io.github.droidkaigi.confsched2020.model.SpeechSession"
@@ -79,13 +81,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:text="@{speechSession.timeSummary(lang, TimeZoneOffsetKt.defaultTimeZoneOffset())}"
                 android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
                 app:layout_constraintBottom_toBottomOf="@id/time_icon"
                 app:layout_constraintStart_toEndOf="@id/time_icon"
                 app:layout_constraintTop_toTopOf="@id/time_icon"
                 tools:text="2月20日 11:00-11:20"
                 />
-            <!--  FIXME: use android:text="@{session.timeSummary(lang, timeOffset)}"-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
