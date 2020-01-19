@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
-import android.content.Context
 import android.text.SpannableStringBuilder
 import android.text.TextPaint
 import android.text.TextUtils
@@ -14,12 +13,16 @@ import androidx.core.text.color
 import androidx.core.text.inSpans
 import androidx.core.view.doOnPreDraw
 import androidx.transition.TransitionManager
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailDescriptionBinding
 
-class SessionDetailDescriptionItem(private val session: Session) :
+class SessionDetailDescriptionItem @AssistedInject constructor(
+    @Assisted private val session: Session
+) :
     BindableItem<ItemSessionDetailDescriptionBinding>() {
 
     companion object {
@@ -67,7 +70,6 @@ class SessionDetailDescriptionItem(private val session: Session) :
         }
     }
 
-
     private fun SpannableStringBuilder.clickableSpan(
         clickListener: () -> Unit,
         builderAction: SpannableStringBuilder.() -> Unit
@@ -83,4 +85,10 @@ class SessionDetailDescriptionItem(private val session: Session) :
         }, builderAction)
     }
 
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(
+            session: Session
+        ): SessionDetailDescriptionItem
+    }
 }

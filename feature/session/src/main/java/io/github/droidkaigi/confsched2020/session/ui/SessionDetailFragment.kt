@@ -65,6 +65,9 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
     @Inject
     lateinit var sessionDetailSpeakerSubtitleItemFactory: SessionDetailSpeakerSubtitleItem.Factory
 
+    @Inject
+    lateinit var sessionDetailDescriptionItemFactory: SessionDetailDescriptionItem.Factory
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -122,7 +125,7 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
                 adapter.add(SessionDetailTitleItem(it, session) {
                     findNavController().navigate(actionSessionToSurvey(session.id))
                 })
-                adapter.add(SessionDetailDescriptionItem(session))
+                adapter.add(sessionDetailDescriptionItemFactory.create(session))
                 if (session.hasIntendedAudience)
                     adapter.add(SessionDetailTargetItem(session))
                 if (session.hasSpeaker) {
