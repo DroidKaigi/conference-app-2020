@@ -1,4 +1,4 @@
-import api
+import repository
 
 final class SessionService {
     func convertSessionResponse(response: Response) -> [Session] {

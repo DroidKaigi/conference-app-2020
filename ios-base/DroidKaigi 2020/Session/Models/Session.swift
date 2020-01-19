@@ -1,4 +1,4 @@
-import api
+import repository
 
 struct Session {
     let response: SessionResponse
