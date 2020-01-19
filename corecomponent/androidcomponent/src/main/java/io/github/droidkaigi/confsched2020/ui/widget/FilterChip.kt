@@ -47,6 +47,7 @@ import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.withScale
 import androidx.core.graphics.withTranslation
 import com.google.android.material.math.MathUtils.lerp
+import io.github.droidkaigi.confsched2020.util.AndroidRInterpolator
 import io.github.droidkaigi.confsched2020.widget.component.R
 
 /**
@@ -147,7 +148,7 @@ class FilterChip @JvmOverloads constructor(
     private var progressAnimator: ValueAnimator? = null
 
     private val interp =
-        AnimationUtils.loadInterpolator(context, android.R.interpolator.fast_out_slow_in)
+        AnimationUtils.loadInterpolator(context, AndroidRInterpolator.fast_out_slow_in)
 
     init {
         val a = context.obtainStyledAttributes(

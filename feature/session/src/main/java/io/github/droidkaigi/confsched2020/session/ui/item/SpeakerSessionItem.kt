@@ -29,8 +29,6 @@ class SpeakerSessionItem @AssistedInject constructor(
         viewBinding.speechSession = speechSession
         viewBinding.lang = defaultLang()
 
-        viewBinding.time.text = speechSession.timeSummary(defaultLang(), defaultTimeZoneOffset())
-
         viewBinding.session.setOnClickListener {
             viewBinding.root.findNavController().navigate(
                 SpeakerFragmentDirections.actionSpeakerToSessionDetail(

@@ -7,6 +7,8 @@
 
     <data>
 
+        <import type="io.github.droidkaigi.confsched2020.model.TimeZoneOffsetKt" />
+
         <variable
             name="session"
             type="io.github.droidkaigi.confsched2020.model.Session"
@@ -46,6 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
+
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.bottomappbar.BottomAppBar
