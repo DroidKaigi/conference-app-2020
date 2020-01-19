@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2020.session.ui.item
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -61,7 +62,7 @@ class SessionItem @AssistedInject constructor(
                 favorite.isSelected = !favorite.isSelected
                 sessionsViewModel.favorite(session)
             }
-            favorite.isSelected = session.isFavorited
+            bindFavorite(session.isFavorited, favorite)
             root.setOnClickListener {
                 root.findNavController().navigate(actionSessionToSessionDetail(session.id))
             }
@@ -72,6 +73,31 @@ class SessionItem @AssistedInject constructor(
             imageRequestDisposables.clear()
             speakers.bindSpeaker()
         }
+    }
+
+    override fun bind(
+        viewBinding: ItemSessionBinding,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) {
+            bind(viewBinding, position)
+        } else {
+            payloads.distinct().forEach { payload ->
+                when (payload) {
+                    is ItemPayload.FavoritePayload -> {
+                        bindFavorite(payload.isFavorited, viewBinding.favorite)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun bindFavorite(
+        isFavorited: Boolean,
+        imageButton: ImageButton
+    ) {
+        imageButton.isSelected = isFavorited
     }
 
     private fun ViewGroup.bindSpeaker() {
