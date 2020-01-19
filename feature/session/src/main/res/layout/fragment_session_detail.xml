@@ -14,15 +14,6 @@
             type="io.github.droidkaigi.confsched2020.model.Session"
             />
 
-        <variable
-            name="speechSession"
-            type="io.github.droidkaigi.confsched2020.model.SpeechSession"
-            />
-
-        <variable
-            name="lang"
-            type="io.github.droidkaigi.confsched2020.model.Lang"
-            />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
