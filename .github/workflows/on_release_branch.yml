@@ -3,7 +3,7 @@ name: On release branch
 on:
   push:
     branches:
-      - "/release-test\/.*/"
+      - "/^release-test\\/.*$/"
       - master
       - release
     tags:
