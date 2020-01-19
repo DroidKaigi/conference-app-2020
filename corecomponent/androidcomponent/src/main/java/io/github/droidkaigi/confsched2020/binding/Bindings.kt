@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2020.binding
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.view.View
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 
@@ -11,9 +12,9 @@ fun View.showGone(show: Boolean) {
     isVisible = show
 }
 
-@BindingAdapter("isHide")
-fun View.showHide(show: Boolean) {
-    visibility = if (show) View.VISIBLE else View.INVISIBLE
+@BindingAdapter("isInvisible")
+fun View.showHide(invisible: Boolean) {
+    isInvisible = invisible
 }
 
 @BindingAdapter("isVisibleWithAnimation")

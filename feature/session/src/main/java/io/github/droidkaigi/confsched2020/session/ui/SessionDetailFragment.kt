@@ -1,28 +1,27 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.TextPaint
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.doOnPreDraw
+import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import androidx.core.text.inSpans
-import androidx.annotation.IdRes
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,7 +35,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
-import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
@@ -59,6 +57,7 @@ import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailTitleItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
+import io.github.droidkaigi.confsched2020.util.DaggerFragment
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
@@ -66,7 +65,7 @@ import javax.inject.Provider
 
 private const val ELLIPSIS_LINE_COUNT = 6
 
-class SessionDetailFragment : DaggerFragment() {
+class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wip) {
 
     private var binding: FragmentSessionDetailWipBinding by autoCleared()
 
@@ -85,22 +84,16 @@ class SessionDetailFragment : DaggerFragment() {
     private var progressTimeLatch: ProgressTimeLatch by autoCleared()
     private var showEllipsis = true
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_session_detail_wip,
-            container,
-            false
-        )
-        return binding.root
+
+    companion object {
+        private const val TRANSITION_NAME_SUFFIX = "detail"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding = FragmentSessionDetailWipBinding.bind(view)
+
         progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
@@ -244,26 +237,32 @@ class SessionDetailFragment : DaggerFragment() {
             val speaker: Speaker =
                 (session as? SpeechSession)?.speakers?.getOrNull(index) ?: return@forEach
             val speakerView = layoutInflater.inflate(
-                R.layout.layout_speaker, this, false
+                R.layout.layout_speaker_session_detail, this, false
             ) as ViewGroup
+            val speakerNameView = speakerView.findViewById<TextView>(R.id.speaker)
+            val speakerImageView = speakerView.findViewById<ImageView>(R.id.speaker_image)
+            speakerImageView.transitionName = "${speaker.id}-${TRANSITION_NAME_SUFFIX}"
             speakerView.setOnClickListener {
-                findNavController().navigate(actionSessionToSpeaker(speaker.id))
+                val extras = FragmentNavigatorExtras(
+                    speakerImageView to speakerImageView.transitionName
+                )
+                findNavController()
+                    .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX), extras)
             }
-            val textView: TextView = speakerView.findViewById(R.id.speaker)
-            bindSpeakerData(speaker, textView)
-
+            bindSpeakerData(speaker, speakerNameView, speakerImageView)
             addView(speakerView)
         }
     }
 
     private fun bindSpeakerData(
         speaker: Speaker,
-        textView: TextView
+        speakerNameView: TextView,
+        speakerImageView: ImageView
     ) {
-        textView.text = speaker.name
+        speakerNameView.text = speaker.name
 //        setHighlightText(textView, query)
         val imageUrl = speaker.imageUrl
-        val context = textView.context
+        val context = speakerNameView.context
         val placeHolder = run {
             VectorDrawableCompat.create(
                 context.resources,
@@ -275,7 +274,7 @@ class SessionDetailFragment : DaggerFragment() {
                 )
             }
         }?.also {
-            textView.setLeftDrawable(it)
+            speakerImageView.setImageDrawable(it)
         }
 
         Coil.load(context, imageUrl) {
@@ -284,21 +283,9 @@ class SessionDetailFragment : DaggerFragment() {
             transformations(CircleCropTransformation())
             lifecycle(viewLifecycleOwner)
             target {
-                textView.setLeftDrawable(it)
+                speakerImageView.setImageDrawable(it)
             }
         }
-    }
-
-    private fun TextView.setLeftDrawable(drawable: Drawable) {
-        val res = context.resources
-        val widthDp = 32
-        val heightDp = 32
-        val widthPx = (widthDp * res.displayMetrics.density).toInt()
-        val heightPx = (heightDp * res.displayMetrics.density).toInt()
-        drawable.setBounds(0, 0, widthPx, heightPx)
-        setCompoundDrawables(
-            drawable, null, null, null
-        )
     }
 }
 
