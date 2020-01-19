@@ -11,6 +11,18 @@ enum SessionViewControllerType: Int {
     case day1
     case day2
     case myPlan
+
+    var date: Date? {
+        let calendar = Calendar(identifier: .gregorian)
+        switch self {
+        case .day1:
+            return calendar.date(from: .init(year: 2020, month: 2, day: 20))
+        case .day2:
+            return calendar.date(from: .init(year: 2020, month: 2, day: 20))
+        case .myPlan:
+            return nil
+        }
+    }
 }
 
 final class SessionPageViewController: UIPageViewController {
@@ -24,14 +36,17 @@ final class SessionPageViewController: UIPageViewController {
         super.viewDidLoad()
         let viewModel = SessionViewModel()
         sessionViewControllers = [
-            SessionViewController(viewModel: viewModel),
-            SessionViewController(viewModel: viewModel),
-            SessionViewController(viewModel: viewModel),
+            SessionViewController(viewModel: viewModel, sessionViewType: .day1),
+            SessionViewController(viewModel: viewModel, sessionViewType: .day2),
+            SessionViewController(viewModel: viewModel, sessionViewType: .myPlan),
         ]
         setViewControllers([sessionViewControllers[0]], direction: .forward, animated: true)
         selectedViewControllerIndex = 0
         dataSource = self
         delegate = self
+
+        // rx
+        viewModel.viewDidLoad.accept(())
     }
 
     func setViewControllers(type: SessionViewControllerType) {

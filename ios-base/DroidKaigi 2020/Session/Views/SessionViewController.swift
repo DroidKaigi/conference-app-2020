@@ -44,9 +44,11 @@ final class SessionViewController: UIViewController {
     }
 
     private let viewModel: SessionViewModel
+    private let type: SessionViewControllerType
 
-    init(viewModel: SessionViewModel) {
+    init(viewModel: SessionViewModel, sessionViewType: SessionViewControllerType) {
         self.viewModel = viewModel
+        self.type = sessionViewType
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -57,8 +59,6 @@ final class SessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel.viewDidLoad.accept(())
-
         filterButton.rx.tap.asSignal()
             .emit(to: viewModel.toggleEmbddedView)
             .disposed(by: disposeBag)
@@ -68,6 +68,19 @@ final class SessionViewController: UIViewController {
 
         let dataSource = SessionViewDataSource()
         viewModel.sessions
+            .map({ [weak self] sessions -> [Session] in
+                let calendar = Calendar(identifier: .gregorian)
+                return sessions.filter({
+                    guard
+                        let startsAt = $0.startsAt,
+                        let typeDate = self?.type.date
+                    else {
+                        return false
+                    }
+                    print(startsAt, typeDate)
+                    return calendar.isDate(startsAt, inSameDayAs: typeDate)
+                })
+            })
             .drive(collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
     }
