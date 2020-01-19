@@ -12,28 +12,33 @@ import MaterialComponents
 
 final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
 
-    typealias Elememt = [String]
-    var items: Elememt
-
-    init(items: Elememt) {
-        self.items = items
-    }
+    typealias Elememt = [Session]
+    var items: Elememt = []
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? MDCSelfSizingStereoCell else {
-            return MDCSelfSizingStereoCell()
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SessionCell.identifier, for: indexPath) as? SessionCell else {
+            return SessionCell()
         }
 
-        cell.titleLabel.text = items[indexPath.item]
+        let session = items[indexPath.item]
+        cell.titleLabel.text = session.response.title?.en
+        session.speakers.forEach { speaker in
+            cell.addSpeakerView(imageURL: URL(string: speaker.profilePicture ?? ""), speakerName: speaker.fullName ?? "")
+        }
+        let calendar = Calendar.current
+        if let startsAt = session.startsAt {
+            let hour = calendar.component(.hour, from: startsAt)
+            let minute = String(format: "%02d", arguments: [calendar.component(.minute, from: startsAt)])
+            cell.timeLabel.text = "\(hour):\(minute)"
+        }
+        cell.minutesAndRoomLabel.text = "\(session.minutes!)min / \(session.room?.name?.ja ?? "")"
 
         return cell
     }
-
-
 }
 
 extension SessionViewDataSource: RxCollectionViewDataSourceType, SectionedViewDataSourceType {

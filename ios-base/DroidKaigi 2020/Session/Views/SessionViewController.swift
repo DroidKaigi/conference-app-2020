@@ -34,8 +34,15 @@ final class SessionViewController: UIViewController {
             filterButton.setTitle("", for: .normal)
         }
     }
-    @IBOutlet weak var collectionView: UICollectionView!
-    
+    @IBOutlet weak var collectionView: UICollectionView! {
+        didSet {
+            collectionView.register(UINib(nibName: "SessionCell", bundle: nil), forCellWithReuseIdentifier: SessionCell.identifier)
+            let layout = UICollectionViewFlowLayout()
+            layout.estimatedItemSize = .init(width: UIScreen.main.bounds.width, height: SessionCell.rowHeight)
+            collectionView.collectionViewLayout = layout
+        }
+    }
+
     private let viewModel: SessionViewModel
 
     init(viewModel: SessionViewModel) {
@@ -50,11 +57,18 @@ final class SessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        viewModel.viewDidLoad.accept(())
+
         filterButton.rx.tap.asSignal()
             .emit(to: viewModel.toggleEmbddedView)
             .disposed(by: disposeBag)
         viewModel.isFocusedOnEmbeddedView
             .drive(filterButton.rx.isSelected)
+            .disposed(by: disposeBag)
+
+        let dataSource = SessionViewDataSource()
+        viewModel.sessions
+            .drive(collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
     }
 }
