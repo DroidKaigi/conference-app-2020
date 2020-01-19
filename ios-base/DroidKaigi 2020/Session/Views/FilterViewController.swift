@@ -162,7 +162,6 @@ final class FilterViewController: UIViewController {
                 default:
                     break
                 }
-                print("hoge")
             }).disposed(by: disposeBag)
         containerView.addGestureRecognizer(panGesture)
     }
