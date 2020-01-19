@@ -45,7 +45,7 @@ class SessionsItemDecoration(
             val sessionItem = adapter.getItem(position) as SessionItem
             val startTimeText = calcTimeText(position, view)
 
-            if (index > 0) {
+            if (position > 0) {
                 val lastSessionItem = adapter.getItem(position - 1) as SessionItem
                 if (sessionItem.startSessionTime() == lastSessionItem.startSessionTime()) return@forEachIndexed
             }
