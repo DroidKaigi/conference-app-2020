@@ -143,8 +143,8 @@ class SessionDetailFragment : DaggerFragment() {
             binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(it)
             adapter.add(SessionDetailTitleItem(it, session))
             adapter.add(SessionDetailDescriptionItem(it, session))
-            adapter.add(SessionDetailTargetItem(session))
-
+            if(session.hasIntendedAudience)
+                adapter.add(SessionDetailTargetItem(session))
         }
 
 //        binding.sessionFavorite.setOnClickListener {
