@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
-            app:isHide="@{isFiltered}"
+            app:isInvisible="@{!isFiltered}"
             app:icon="@drawable/ic_filter_list_black_24dp"
             app:layout_constraintBottom_toBottomOf="@id/start_filter"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -57,7 +57,7 @@
             android:text="@string/start_filter"
             android:textAppearance="@style/TextAppearance.DroidKaigi.Body2"
             app:icon="@drawable/ic_filter_list_black_24dp"
-            app:isHide="@{(!isEmptySessions || isFiltered) &amp;&amp; !isCollapsed}"
+            app:isInvisible="@{(isEmptySessions &amp;&amp; !isFiltered) || isCollapsed}"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,7 +67,7 @@
             android:layout_height="30dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:visibility="gone"
-            app:isHide="@{isCollapsed}"
+            app:isInvisible="@{!isCollapsed}"
             app:layout_constraintBottom_toBottomOf="@id/start_filter"
             app:layout_constraintEnd_toEndOf="@id/start_filter"
             app:layout_constraintTop_toTopOf="@id/start_filter">
@@ -99,7 +99,7 @@
             android:orientation="vertical"
             android:paddingTop="8dp"
             app:isVisibleWithAnimation="@{!isEmptySessions}"
-            app:isHide="@{!isCollapsed}"
+            app:isInvisible="@{isCollapsed}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
