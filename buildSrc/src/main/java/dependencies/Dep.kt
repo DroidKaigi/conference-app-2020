@@ -134,8 +134,8 @@ object Dep {
         val android = "com.google.dagger:dagger-android:$version"
         val androidProcessor = "com.google.dagger:dagger-android-processor:$version"
         val assistedInjectAnnotations =
-            "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.0"
-        val assistedInjectProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:0.5.0"
+            "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2"
+        val assistedInjectProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:0.5.2"
     }
 
     object Ktor {

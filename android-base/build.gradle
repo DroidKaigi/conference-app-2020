@@ -51,9 +51,9 @@ android {
             applicationIdSuffix Packages.debugNameSuffix
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             signingConfig signingConfigs.release
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     dataBinding {
