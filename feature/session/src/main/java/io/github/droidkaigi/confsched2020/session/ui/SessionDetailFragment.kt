@@ -181,9 +181,9 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail) {
                 )
             }
         }
-//        binding.sessionFavorite.setOnClickListener {s
-//            sessionDetailViewModel.favorite(session)
-//        }
+        binding.sessionFavorite.setOnClickListener {
+            sessionDetailViewModel.favorite(session)
+        }
         binding.session = session
 //        setupSessionDescription(session.desc)
 //        binding.speechSession = (session as? SpeechSession)
