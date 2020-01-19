@@ -19,7 +19,7 @@ import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailDescriptionBinding
 
-class SessionDetailDescriptionItem(private val context: Context, private val session: Session) :
+class SessionDetailDescriptionItem(private val session: Session) :
     BindableItem<ItemSessionDetailDescriptionBinding>() {
 
     companion object {
@@ -38,6 +38,7 @@ class SessionDetailDescriptionItem(private val context: Context, private val ses
             //Return here if not more than the specified number of rows
             if (!(textView.lineCount > ELLIPSIS_LINE_COUNT && showEllipsis)) return@doOnPreDraw
             val lastLineStartPosition = textView.layout.getLineStart(ELLIPSIS_LINE_COUNT - 1)
+            val context = textView.context
             val ellipsis = context.getString(R.string.ellipsis_label)
             val lastLineText = TextUtils.ellipsize(
                 fullDescription.substring(lastLineStartPosition),
