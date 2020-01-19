@@ -4,13 +4,19 @@ import android.graphics.drawable.Drawable
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.xwray.groupie.databinding.BindableItem
-import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailMaterialBinding
 
-class SessionDetailMaterialItem(private val session: SpeechSession) :
+class SessionDetailMaterialItem(private val session: SpeechSession, private val listener: Listener) :
     BindableItem<ItemSessionDetailMaterialBinding>() {
+
+    interface Listener {
+        fun onClickMovie(movieUrl: String)
+
+        fun onClickSlide(slideUrl: String)
+    }
+
     override fun getLayout() = R.layout.item_session_detail_material
 
     override fun bind(binding: ItemSessionDetailMaterialBinding, position: Int) {
@@ -38,9 +44,9 @@ class SessionDetailMaterialItem(private val session: SpeechSession) :
             ContextCompat.getDrawable(context, R.drawable.ic_video_light_blue_24dp)
         icVideo?.let { binding.movie.setLeftDrawable(it, 24) }
         binding.movie.setTextColor(ContextCompat.getColor(context, R.color.light_blue_300))
-//        binding.movie.setOnClickListener {
-//            findNavController().navigate(actionSessionToChrome(movieUrl))
-//        }
+        binding.movie.setOnClickListener {
+            listener.onClickMovie(movieUrl)
+        }
     }
 
     private fun setUpNoSlideView(binding: ItemSessionDetailMaterialBinding) {
@@ -55,9 +61,9 @@ class SessionDetailMaterialItem(private val session: SpeechSession) :
             ContextCompat.getDrawable(context, R.drawable.ic_slide_light_blue_24dp)
         icSlide?.let { binding.slide.setLeftDrawable(it, 24) }
         binding.slide.setTextColor(ContextCompat.getColor(context, R.color.light_blue_300))
-//        binding.slide.setOnClickListener {
-//            findNavController().navigate(actionSessionToChrome(slideUrl))
-//        }
+        binding.slide.setOnClickListener {
+            listener.onClickSlide(slideUrl)
+        }
     }
 
     private fun TextView.setLeftDrawable(drawable: Drawable, sizeDp: Int = 32) {

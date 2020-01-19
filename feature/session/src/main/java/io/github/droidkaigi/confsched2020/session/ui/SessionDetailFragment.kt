@@ -165,7 +165,15 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail) {
                 }
             }
             if(session is SpeechSession) {
-                adapter.add(SessionDetailMaterialItem(session))
+                adapter.add(SessionDetailMaterialItem(session, object: SessionDetailMaterialItem.Listener {
+                    override fun onClickMovie(movieUrl: String) {
+                        findNavController().navigate(actionSessionToChrome(movieUrl))
+                    }
+
+                    override fun onClickSlide(slideUrl: String) {
+                        findNavController().navigate(actionSessionToChrome(slideUrl))
+                    }
+                }))
             }
         }
 //        binding.sessionFavorite.setOnClickListener {s
