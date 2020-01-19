@@ -69,6 +69,7 @@ class AnnouncementFragment : DaggerFragment(R.layout.fragment_announcement) {
         }.apply {
             loading = true
         }
+        announcementViewModel.loadLanguageSetting()
         announcementViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             progressTimeLatch.loading = uiModel.isLoading
             binding.emptyMessage.isVisible = uiModel.isEmpty
@@ -79,7 +80,6 @@ class AnnouncementFragment : DaggerFragment(R.layout.fragment_announcement) {
                 systemViewModel.onError(it)
             }
         }
-        announcementViewModel.load()
     }
 
     private class AnnouncementItemDecoration(val offset: Float) : RecyclerView.ItemDecoration() {
