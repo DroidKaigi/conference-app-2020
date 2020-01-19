@@ -130,7 +130,9 @@ final class FilterViewController: UIViewController {
 
         var baseY: CGFloat = 0
         panGesture.rx.event.asDriver()
-            .drive(onNext: { [weak self] recognizer in
+            .withLatestFrom(viewModel.isFocusedOnEmbeddedView) { ($0, $1) }
+            .drive(onNext: { [weak self] item in
+                let (recognizer, isFocused) = item
                 guard let containerView = self?.containerView else { return }
 
                 switch recognizer.state {
@@ -139,11 +141,21 @@ final class FilterViewController: UIViewController {
                     baseY = containerView.frame.minY
                 case .changed:
                     let moved = recognizer.translation(in: containerView)
+                    let nextY = containerView.frame.origin.y + moved.y
+                    if nextY < baseY && isFocused
+                        || nextY > baseY && !isFocused {
+                        break
+                    }
                     self?.containerView.frame.origin.y = baseY + moved.y
                 case .ended:
                     let thresholdPercentage: CGFloat = 0.1
                     let moved = recognizer.translation(in: containerView)
                     let movePercentage = moved.y / containerView.frame.height
+                    let currentY = containerView.frame.origin.y
+                    if (currentY <= baseY && isFocused)
+                    || (currentY >= baseY && !isFocused) {
+                        break
+                    }
                     if abs(movePercentage) > thresholdPercentage {
                         UIView.animate(withDuration: 0.2) {
                             self?.viewModel.toggleEmbddedView.accept(())
