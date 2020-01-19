@@ -7,10 +7,13 @@
 
     <data>
 
+        <import type="io.github.droidkaigi.confsched2020.model.TimeZoneOffsetKt" />
+
         <variable
             name="session"
             type="io.github.droidkaigi.confsched2020.model.Session"
             />
+
         <variable
             name="lang"
             type="io.github.droidkaigi.confsched2020.model.Lang"
@@ -43,8 +46,8 @@
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:lineSpacingExtra="8sp"
             android:layout_marginTop="18dp"
+            android:lineSpacingExtra="8sp"
             android:text="@{session.title.getByLang(lang)}"
             android:textAppearance="?textAppearanceHeadline5"
             android:textColor="@color/session_title"
@@ -70,6 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:text="@{session.timeSummary(lang, TimeZoneOffsetKt.defaultTimeZoneOffset())}"
             android:textAppearance="?textAppearanceCaption"
             android:textColor="?android:attr/textColorPrimary"
             app:layout_constraintBottom_toBottomOf="@id/time_icon"
@@ -77,7 +81,6 @@
             app:layout_constraintTop_toTopOf="@id/time_icon"
             tools:text="2月20日 11:00-11:20"
             />
-        <!--  FIXME: use android:text="@{session.timeSummary(lang, timeOffset)}"-->
 
         <TextView
             android:id="@+id/duration_room"

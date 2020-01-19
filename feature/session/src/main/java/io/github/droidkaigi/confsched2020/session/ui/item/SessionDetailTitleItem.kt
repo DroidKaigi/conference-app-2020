@@ -20,7 +20,6 @@ class SessionDetailTitleItem @AssistedInject constructor(
     override fun bind(binding: ItemSessionDetailTitleBinding, position: Int) {
         binding.session = session
         binding.lang = defaultLang()
-        binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
         if (session is SpeechSession) {
             val langLabel = session.lang.text.getByLang(defaultLang())
             val categoryLabel = session.category.name.getByLang(defaultLang())
