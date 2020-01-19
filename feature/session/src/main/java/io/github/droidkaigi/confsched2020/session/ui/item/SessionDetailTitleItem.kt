@@ -12,8 +12,7 @@ import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailTitleBinding
 
 class SessionDetailTitleItem @AssistedInject constructor(
-    @Assisted private val session: Session,
-    @Assisted private val onClickSurvey: () -> Unit
+    @Assisted private val session: Session
 ) :
     BindableItem<ItemSessionDetailTitleBinding>() {
     override fun getLayout() = R.layout.item_session_detail_title
@@ -41,16 +40,12 @@ class SessionDetailTitleItem @AssistedInject constructor(
                 binding.tags.tag = newTag
             }
         }
-        binding.survey.setOnClickListener {
-            onClickSurvey()
-        }
     }
 
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            session: Session,
-            onClickSurvey: () -> Unit
+            session: Session
         ): SessionDetailTitleItem
     }
 }
