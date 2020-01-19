@@ -79,7 +79,6 @@ kotlin {
             dependencies {
                 projectsList.forEach {
                     project(it).configurations.all { c ->
-                        println(c.name)
                         if (c.name == "iOSMainApi") {
                             c.dependencies.all { dep ->
                                 if (!(dep instanceof ProjectDependency)) {
@@ -102,7 +101,6 @@ kotlin {
             dependencies {
                 projectsList.forEach {
                     project(it).configurations.all { c ->
-                        println(c.name)
                         if (c.name == "iosX64MainApi") {
                             c.dependencies.all { dep ->
                                 if (!(dep instanceof ProjectDependency)) {
@@ -125,7 +123,6 @@ kotlin {
             dependencies {
                 projectsList.forEach {
                     project(it).configurations.all { c ->
-                        println(c.name)
                         if (c.name == "iosArm64MainApi") {
                             c.dependencies.all { dep ->
                                 if (!(dep instanceof ProjectDependency)) {
