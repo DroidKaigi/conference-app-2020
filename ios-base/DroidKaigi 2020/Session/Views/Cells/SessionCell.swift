@@ -26,7 +26,7 @@ final class SessionCell: UICollectionViewCell {
             let bookmarkBorderImage = UIImage(named: "ic_bookmark_border")
             let templatedBookmarkBorderImage = bookmarkBorderImage?.withRenderingMode(.alwaysTemplate)
             bookmarkButton.setImage(templatedBookmarkBorderImage, for: .normal)
-            bookmarkButton.tintColor = ApplicationScheme.shared.colorScheme.primaryColor
+            bookmarkButton.tintColor = UIColor(hex: "00B5E2")
         }
     }
     @IBOutlet weak var titleLabel: UILabel!
