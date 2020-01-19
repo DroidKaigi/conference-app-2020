@@ -11,6 +11,8 @@ on:
 
 jobs:
   build:
+    env:
+      RELEASE_BUILD: true
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
@@ -77,6 +79,7 @@ jobs:
 
   attach-gh-release:
     needs: build
+    if: github.ref != 'master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -131,7 +134,7 @@ jobs:
       shell: bash
     - name: Collect test artifacts
       if: always()
-      run: collect-test-artifacts.bash
+      run: ./.ci/scripts/collect-test-artifacts.bash
     - name: Store test reports to GitHub
       uses: actions/upload-artifact@v1
       if: always()
