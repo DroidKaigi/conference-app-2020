@@ -63,20 +63,20 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
     }
 
     @Inject
-    lateinit var sessionDetailSpeakerSubtitleItemFactory: SessionDetailSpeakerSubtitleItem.Factory
+    lateinit var sessionDetailTitleItemFactory: SessionDetailTitleItem.Factory
 
     @Inject
     lateinit var sessionDetailDescriptionItemFactory: SessionDetailDescriptionItem.Factory
 
     @Inject
-    lateinit var sessionDetailSpeakerItemFactory: SessionDetailSpeakerItem.Factory
-
-    @Inject
     lateinit var sessionDetailTargetItemFactory: SessionDetailTargetItem.Factory
 
     @Inject
-    lateinit var sessionDetailTitleItemFactory: SessionDetailTitleItem.Factory
+    lateinit var sessionDetailSpeakerSubtitleItemFactory: SessionDetailSpeakerSubtitleItem.Factory
 
+    @Inject
+    lateinit var sessionDetailSpeakerItemFactory: SessionDetailSpeakerItem.Factory
+    
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
