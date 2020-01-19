@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched2020.ui
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -38,7 +39,11 @@ class ChromeCustomTabsNavigator(private val context: Context) : Navigator<Chrome
             .setToolbarColor(context.getThemeColor(R.attr.colorAccent))
 
         val intent = builder.build()
-        intent.launchUrl(context, Uri.parse(url))
+        try {
+            intent.launchUrl(context, Uri.parse(url))
+        } catch (e: ActivityNotFoundException) {
+        } catch (e: Exception) {
+        }
         return null // Do not add to the back stack, managed by Chrome Custom Tabs
     }
 
