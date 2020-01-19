@@ -22,7 +22,6 @@
     <!-- FIXME: Wording change -->
     <string name="floor_map_disabled_message1">フロアマップが無効です</string>
     <string name="my_plan_shortcut_short_label1">MY PLAN</string>
-    <string name="my_plan_shortcut_long_label1">MY PLANを開く</string>
     <!-- FIXME: Wording change -->
     <string name="my_plan_disabled_message1">MY PLANが無効です</string>
 </resources>

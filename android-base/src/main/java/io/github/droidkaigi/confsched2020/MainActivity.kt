@@ -1,6 +1,12 @@
 package io.github.droidkaigi.confsched2020
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
+import android.graphics.drawable.Icon
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
@@ -92,6 +98,7 @@ class MainActivity : DaggerAppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         setupNavigation()
         setupStatusBarColors()
+        setupShortcuts()
 
         binding.drawerLayout.doOnApplyWindowInsets { _, insets, _ ->
             binding.drawerLayout.setChildInsetsWorkAround(insets)
@@ -204,6 +211,26 @@ class MainActivity : DaggerAppCompatActivity() {
         statusBarColors.statusBarColor.distinctUntilChanged().observe(this) { color ->
             window.statusBarColor = color
         }
+    }
+
+    private fun setupShortcuts() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return
+        val shortcutManager = getSystemService<ShortcutManager>(ShortcutManager::class.java)
+
+        val map = ShortcutInfo.Builder(this, "map")
+            .setShortLabel(getString(R.string.floor_map_shortcut_short_label1))
+            .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
+            .setIntent(Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://www.mysite.example.com/")))
+            .build()
+
+        val myPlan = ShortcutInfo.Builder(this, "my_plan")
+            .setShortLabel(getString(R.string.my_plan_shortcut_short_label1))
+            .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
+            .setIntent(Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://www.mysite.example.com/")))
+            .build()
+        shortcutManager.addDynamicShortcuts(listOf(map, myPlan))
     }
 
     private fun handleNavigation(@IdRes itemId: Int): Boolean {

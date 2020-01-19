@@ -46,7 +46,6 @@
     <!-- FIXME: Wording change -->
     <string name="floor_map_disabled_message1">Disabled Floormap</string>
     <string name="my_plan_shortcut_short_label1">MY PLAN</string>
-    <string name="my_plan_shortcut_long_label1">Open MY PLAN</string>
     <!-- FIXME: Wording change -->
     <string name="my_plan_disabled_message1">Disabled MY PLAN</string>
 </resources>
