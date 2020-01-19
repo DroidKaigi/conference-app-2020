@@ -39,4 +39,14 @@
     <string name="error_network" translatable="false">A network error has occurred.Please try again.</string>
     <string name="error_server" translatable="false">A server error has occurred.Please try again.</string>
     <string name="error_unknown" translatable="false">An unknown error has occurred.Please try again.</string>
+
+    <!-- Shortcut -->
+    <string name="floor_map_shortcut_short_label1">Floormap</string>
+    <string name="floor_map_shortcut_long_label1">Open Floormap</string>
+    <!-- FIXME: Wording change -->
+    <string name="floor_map_disabled_message1">Disabled Floormap</string>
+    <string name="my_plan_shortcut_short_label1">MY PLAN</string>
+    <string name="my_plan_shortcut_long_label1">Open MY PLAN</string>
+    <!-- FIXME: Wording change -->
+    <string name="my_plan_disabled_message1">Disabled MY PLAN</string>
 </resources>
