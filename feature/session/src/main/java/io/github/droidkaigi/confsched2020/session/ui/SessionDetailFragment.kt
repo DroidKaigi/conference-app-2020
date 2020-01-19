@@ -127,9 +127,6 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail) {
         binding.sessionFavorite.setOnClickListener {
             sessionDetailViewModel.favorite(session)
         }
-        binding.survey.setOnClickListener {
-            findNavController().navigate(actionSessionToSurvey(session.id))
-        }
         binding.session = session
         setupSessionDescription(session.desc)
         binding.speechSession = (session as? SpeechSession)
