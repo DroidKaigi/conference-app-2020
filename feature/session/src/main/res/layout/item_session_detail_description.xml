@@ -50,17 +50,5 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text."
             />
-
-        <View
-            android:id="@+id/divider_text_and_target"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="28dp"
-            android:background="@color/black_alpha_12"
-            app:isVisible="@{session.hasIntendedAudience}"
-            app:layout_constraintEnd_toEndOf="@id/guideline_end"
-            app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/session_description"
-            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
