@@ -8,6 +8,5 @@ class SessionDetailSpeakerSubtitleItem : BindableItem<ItemSessionDetailSpeakerSu
     override fun getLayout() = R.layout.item_session_detail_speaker_subtitle
 
     override fun bind(binding: ItemSessionDetailSpeakerSubtitleBinding, position: Int) {
-
     }
 }
