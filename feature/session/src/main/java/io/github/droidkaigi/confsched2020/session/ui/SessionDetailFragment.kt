@@ -28,6 +28,7 @@ import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirect
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSurvey
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailDescriptionItem
+import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailMaterialItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailSpeakerItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailSpeakerSubtitleItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailTargetItem
@@ -162,6 +163,9 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail) {
                     )
                     firstSpeaker = false
                 }
+            }
+            if(session is SpeechSession) {
+                adapter.add(SessionDetailMaterialItem(session))
             }
         }
 //        binding.sessionFavorite.setOnClickListener {s
