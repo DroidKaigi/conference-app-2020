@@ -119,7 +119,7 @@ final class FilterViewController: UIViewController {
     private func setUpContainerView() {
         self.view.addSubview(containerView)
 
-        let viewController = SessionPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        let viewController = SessionPageViewController(viewModel: viewModel, transitionStyle: .scroll, navigationOrientation: .horizontal)
         viewController.filterViewControllerDelegate = self
         self.insert(viewController)
 
