@@ -10,6 +10,10 @@ import RxSwift
 import RxCocoa
 import MaterialComponents
 
+protocol FilterViewControllerDelegate: class {
+    func shouldChangeTab(index: Int)
+}
+
 final class FilterViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
@@ -116,6 +120,7 @@ final class FilterViewController: UIViewController {
         self.view.addSubview(containerView)
 
         let viewController = SessionPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        viewController.filterViewControllerDelegate = self
         self.insert(viewController)
 
         embeddedViewAnimator.addAnimations { [weak self] in
@@ -204,6 +209,7 @@ extension FilterViewController: UIGestureRecognizerDelegate {
     }
 }
 
+/// - MDCTabBarDelegate
 extension FilterViewController: MDCTabBarDelegate {
     func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {
         switch item.tag {
@@ -215,6 +221,16 @@ extension FilterViewController: MDCTabBarDelegate {
             embeddedViewController?.setViewControllers(type: .myPlan)
         default:
             break
+        }
+    }
+}
+
+/// - FilterViewControllerDelegate
+extension FilterViewController: FilterViewControllerDelegate {
+    func shouldChangeTab(index: Int) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.tabBar.selectedItem = self.tabBar.items[index]
         }
     }
 }

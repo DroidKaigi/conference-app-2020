@@ -15,6 +15,8 @@ enum SessionViewControllerType: Int {
 
 final class SessionPageViewController: UIPageViewController {
 
+    weak var filterViewControllerDelegate: FilterViewControllerDelegate?
+
     var selectedViewControllerIndex: Int = 0
     var sessionViewControllers: [UIViewController] = []
 
@@ -29,6 +31,7 @@ final class SessionPageViewController: UIPageViewController {
         setViewControllers([sessionViewControllers[0]], direction: .forward, animated: true)
         selectedViewControllerIndex = 0
         dataSource = self
+        delegate = self
     }
 
     func setViewControllers(type: SessionViewControllerType) {
@@ -68,5 +71,15 @@ extension SessionPageViewController: UIPageViewControllerDataSource {
         default:
             return nil
         }
+    }
+}
+
+extension SessionPageViewController: UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard let changedVC = pageViewController.viewControllers?.first,
+            let changedIndex = sessionViewControllers.firstIndex(of: changedVC) else {
+            return
+        }
+        filterViewControllerDelegate?.shouldChangeTab(index: changedIndex)
     }
 }
