@@ -56,6 +56,7 @@ import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailTargetIte
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailTitleItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
+import io.github.droidkaigi.confsched2020.session.ui.widget.SessionDetailItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.DaggerFragment
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
@@ -83,7 +84,6 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
 
     private var progressTimeLatch: ProgressTimeLatch by autoCleared()
     private var showEllipsis = true
-
 
     companion object {
         const val TRANSITION_NAME_SUFFIX = "detail"
@@ -136,16 +136,19 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
             val adapter = GroupAdapter<ViewHolder<*>>()
             binding.sessionDetailRecycler.adapter = adapter
             binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(it)
+            binding.sessionDetailRecycler.addItemDecoration(SessionDetailItemDecoration(adapter, it))
             adapter.add(SessionDetailTitleItem(it, session))
             adapter.add(SessionDetailDescriptionItem(it, session))
-            if(session.hasIntendedAudience)
+            if (session.hasIntendedAudience)
                 adapter.add(SessionDetailTargetItem(session))
-            if(session.hasSpeaker) {
+            if (session.hasSpeaker) {
                 adapter.add(SessionDetailSpeakerSubtitleItem())
+                var firstSpeaker = true
                 (session as? SpeechSession)?.speakers.orEmpty().indices.forEach { index ->
                     val speaker: Speaker =
                         (session as? SpeechSession)?.speakers?.getOrNull(index) ?: return@forEach
-                    adapter.add(SessionDetailSpeakerItem(viewLifecycleOwner, speaker))
+                    adapter.add(SessionDetailSpeakerItem(viewLifecycleOwner, speaker, firstSpeaker))
+                    firstSpeaker = false
                 }
             }
         }
