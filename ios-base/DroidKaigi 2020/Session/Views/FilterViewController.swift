@@ -29,7 +29,7 @@ final class FilterViewController: UIViewController {
     }()
 
     private var embeddedView: UIView?
-    private var embeddedViewController: UIViewController?
+    private var embeddedViewController: SessionPageViewController?
     private let viewModel = SessionViewModel()
 
     private let embeddedViewAnimator = UIViewPropertyAnimator(duration: 0.8, curve: .easeInOut)
@@ -93,10 +93,11 @@ final class FilterViewController: UIViewController {
     }
 
     private func setUpTabBar() {
+        tabBar.delegate = self
         tabBar.items = [
             UITabBarItem(title: "DAY1", image: nil, tag: 0),
-            UITabBarItem(title: "DAY2", image: nil, tag: 0),
-            UITabBarItem(title: "MYPLAN", image: nil, tag: 0),
+            UITabBarItem(title: "DAY2", image: nil, tag: 1),
+            UITabBarItem(title: "MYPLAN", image: nil, tag: 2),
         ]
         tabBar.alignment = .justified
         tabBar.itemAppearance = .titles
@@ -114,7 +115,7 @@ final class FilterViewController: UIViewController {
     private func setUpContainerView() {
         self.view.addSubview(containerView)
 
-        let viewController = SessionViewController(viewModel: viewModel)
+        let viewController = SessionPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
         self.insert(viewController)
 
         embeddedViewAnimator.addAnimations { [weak self] in
@@ -125,6 +126,7 @@ final class FilterViewController: UIViewController {
         embeddedViewAnimator.isUserInteractionEnabled = true
 
         let panGesture = UIPanGestureRecognizer()
+        panGesture.delegate = self
         panGesture.rx.event.asDriver()
             .drive(onNext: { [weak self] recognizer in
                 guard let containerView = self?.containerView,
@@ -155,6 +157,7 @@ final class FilterViewController: UIViewController {
                 default:
                     break
                 }
+                print("hoge")
             }).disposed(by: disposeBag)
         containerView.addGestureRecognizer(panGesture)
     }
@@ -170,7 +173,7 @@ final class FilterViewController: UIViewController {
 }
 
 extension FilterViewController {
-    func insert(_ controller: UIViewController) {
+    func insert(_ controller: SessionPageViewController) {
         if let controller = self.embeddedViewController,
             let view = self.embeddedView {
             controller.willMove(toParent: nil)
@@ -187,5 +190,31 @@ extension FilterViewController {
         self.containerView.addSubview(controller.view)
         self.embeddedView = controller.view
         self.embeddedView?.backgroundColor = .white
+    }
+}
+
+extension FilterViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+
+        if let panGesture = gestureRecognizer as? UIPanGestureRecognizer {
+            let translation = panGesture.translation(in: gestureRecognizer.view)
+            return abs(translation.x) < abs(translation.y)
+        }
+        return true
+    }
+}
+
+extension FilterViewController: MDCTabBarDelegate {
+    func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {
+        switch item.tag {
+        case 0:
+            embeddedViewController?.setViewControllers(type: .day1)
+        case 1:
+            embeddedViewController?.setViewControllers(type: .day2)
+        case 2:
+            embeddedViewController?.setViewControllers(type: .myPlan)
+        default:
+            break
+        }
     }
 }
