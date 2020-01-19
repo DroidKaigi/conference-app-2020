@@ -10,7 +10,6 @@ import RxSwift
 
 final class SessionDataProvider {
     func fetchSessions() -> Observable<Response> {
-//        let api = ApiComponentKt.generateDroidKaigiApi()
         return Observable.create { observer -> Disposable in
             ApiComponentKt.generateDroidKaigiApi().getSessions(callback: { response in
                 observer.onNext(response)
