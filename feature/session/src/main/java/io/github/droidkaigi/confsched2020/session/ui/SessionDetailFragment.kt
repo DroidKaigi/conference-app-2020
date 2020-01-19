@@ -134,7 +134,6 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail) {
         setupSessionDescription(session.desc)
         binding.speechSession = (session as? SpeechSession)
         binding.lang = defaultLang()
-        binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
         if (session is SpeechSession) {
             val langLabel = session.lang.text.getByLang(defaultLang())
             val categoryLabel = session.category.name.getByLang(defaultLang())
