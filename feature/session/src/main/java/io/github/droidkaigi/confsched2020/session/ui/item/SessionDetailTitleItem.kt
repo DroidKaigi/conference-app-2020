@@ -1,7 +1,8 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
-import android.content.Context
 import com.google.android.material.chip.Chip
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SpeechSession
@@ -10,9 +11,9 @@ import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailTitleBinding
 
-class SessionDetailTitleItem(
-    private val session: Session,
-    private val onClickSurvey: () -> Unit
+class SessionDetailTitleItem @AssistedInject constructor(
+    @Assisted private val session: Session,
+    @Assisted private val onClickSurvey: () -> Unit
 ) :
     BindableItem<ItemSessionDetailTitleBinding>() {
     override fun getLayout() = R.layout.item_session_detail_title
@@ -43,5 +44,13 @@ class SessionDetailTitleItem(
         binding.survey.setOnClickListener {
             onClickSurvey()
         }
+    }
+
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(
+            session: Session,
+            onClickSurvey: () -> Unit
+        ): SessionDetailTitleItem
     }
 }

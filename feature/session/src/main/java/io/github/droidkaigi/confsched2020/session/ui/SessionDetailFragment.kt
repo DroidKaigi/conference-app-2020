@@ -74,6 +74,9 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
     @Inject
     lateinit var sessionDetailTargetItemFactory: SessionDetailTargetItem.Factory
 
+    @Inject
+    lateinit var sessionDetailTitleItemFactory: SessionDetailTitleItem.Factory
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -129,7 +132,7 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
                     )
                 )
             }
-            adapter.add(SessionDetailTitleItem(session) {
+            adapter.add(sessionDetailTitleItemFactory.create(session) {
                 findNavController().navigate(actionSessionToSurvey(session.id))
             })
             adapter.add(sessionDetailDescriptionItemFactory.create(session))
