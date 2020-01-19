@@ -161,7 +161,15 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
                                 viewLifecycleOwner,
                                 speaker,
                                 firstSpeaker
-                            )
+                            ) { extras ->
+                                findNavController()
+                                    .navigate(
+                                        actionSessionToSpeaker(
+                                            speaker.id,
+                                            TRANSITION_NAME_SUFFIX
+                                        ), extras
+                                    )
+                            }
                         )
                         firstSpeaker = false
                     }

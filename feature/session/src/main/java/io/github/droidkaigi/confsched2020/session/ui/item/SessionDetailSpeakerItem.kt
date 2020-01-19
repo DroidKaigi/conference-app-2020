@@ -3,6 +3,9 @@ package io.github.droidkaigi.confsched2020.session.ui.item
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
@@ -20,7 +23,8 @@ import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment
 class SessionDetailSpeakerItem(
     private val lifecycleOwner: LifecycleOwner,
     private val speaker: Speaker,
-    val first: Boolean
+    val first: Boolean,
+    private val onClick: (FragmentNavigator.Extras) -> Unit
 ) : BindableItem<ItemSessionDetailSpeakerBinding>() {
     override fun getLayout() = R.layout.item_session_detail_speaker
 
@@ -29,6 +33,12 @@ class SessionDetailSpeakerItem(
         val speakerImageView = binding.speakerImage
         speakerImageView.transitionName =
             "${speaker.id}-${SessionDetailFragment.TRANSITION_NAME_SUFFIX}"
+        binding.root.setOnClickListener {
+            val extras = FragmentNavigatorExtras(
+                speakerImageView to speakerImageView.transitionName
+            )
+            onClick(extras)
+        }
         bindSpeakerData(speakerNameView, speakerImageView)
     }
 
