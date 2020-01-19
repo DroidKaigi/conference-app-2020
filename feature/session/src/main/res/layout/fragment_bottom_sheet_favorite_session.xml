@@ -98,7 +98,6 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingTop="8dp"
-            app:isVisibleWithAnimation="@{!isEmptySessions}"
             app:isInvisible="@{isCollapsed}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
