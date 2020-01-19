@@ -84,7 +84,7 @@ class AnnouncementFragment : DaggerFragment() {
             progressTimeLatch.loading = uiModel.isLoading
             binding.emptyMessage.isVisible = uiModel.isEmpty
             groupAdapter.update(
-                uiModel.announcementItems
+                uiModel.announcements
             )
             uiModel.error?.let {
                 systemViewModel.onError(it)

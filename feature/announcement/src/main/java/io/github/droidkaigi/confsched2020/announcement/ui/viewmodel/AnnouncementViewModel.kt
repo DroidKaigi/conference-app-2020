@@ -23,7 +23,7 @@ class AnnouncementViewModel @AssistedInject constructor(
     data class UiModel(
         val isLoading: Boolean,
         val error: AppError?,
-        val announcementItems: List<AnnouncementItem>,
+        val announcements: List<AnnouncementItem>,
         val isEmpty: Boolean
     ) {
         companion object {
@@ -53,7 +53,7 @@ class AnnouncementViewModel @AssistedInject constructor(
         UiModel(
             isLoading = loadState.isLoading,
             error = loadState.getErrorIfExists().toAppError(),
-            announcementItems = announcements.map { announcementItemFactory.create(it) },
+            announcements = announcements.map { announcementItemFactory.create(it) },
             isEmpty = !loadState.isLoading && announcements.isEmpty()
         )
     }
