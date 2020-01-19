@@ -79,6 +79,7 @@ class BottomSheetFavoriteSessionsFragment :
         }
 
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
+            TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
             val sessions = uiModel.favoritedSessions
             val count = sessions.filter { it.shouldCountForFilter }.count()
             // For Android Lint
