@@ -1,7 +1,6 @@
 package io.github.droidkaigi.confsched2020.announcement.ui.viewmodel
 
 import com.jraska.livedata.test
-import io.github.droidkaigi.confsched2020.announcement.ui.item.AnnouncementItem
 import io.github.droidkaigi.confsched2020.model.repository.AnnouncementRepository
 import io.github.droidkaigi.confsched2020.widget.component.MockkRule
 import io.github.droidkaigi.confsched2020.widget.component.ViewModelTestRule
