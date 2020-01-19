@@ -22,7 +22,7 @@ import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.session.R
-import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailWipBinding
+import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSurvey
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailDescriptionItem
@@ -40,9 +40,9 @@ import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
-class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wip) {
+class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail) {
 
-    private var binding: FragmentSessionDetailWipBinding by autoCleared()
+    private var binding: FragmentSessionDetailBinding by autoCleared()
 
     @Inject lateinit var systemViewModelFactory: Provider<SystemViewModel>
     private val systemViewModel by assistedActivityViewModels {
@@ -76,11 +76,11 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
 
     @Inject
     lateinit var sessionDetailSpeakerItemFactory: SessionDetailSpeakerItem.Factory
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentSessionDetailWipBinding.bind(view)
+        binding = FragmentSessionDetailBinding.bind(view)
 
         progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
