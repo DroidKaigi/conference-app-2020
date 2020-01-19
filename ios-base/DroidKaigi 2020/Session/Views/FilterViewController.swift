@@ -127,38 +127,7 @@ final class FilterViewController: UIViewController {
 
         let panGesture = UIPanGestureRecognizer()
         panGesture.delegate = self
-//        panGesture.rx.event.asDriver()
-//            .drive(onNext: { [weak self] recognizer in
-//                guard let containerView = self?.containerView,
-//                    let embeddedViewAnimator = self?.embeddedViewAnimator else { return }
-//
-//                switch recognizer.state {
-//                case .began:
-//                    embeddedViewAnimator.isReversed = false
-//                    embeddedViewAnimator.isReversed = embeddedViewAnimator.fractionComplete > 0.5
-//                    recognizer.setTranslation(.zero, in: containerView)
-//                case .changed:
-//                    let moved = recognizer.translation(in: containerView)
-//                    let movePercentage = moved.y / containerView.frame.height
-//
-//                    if (!embeddedViewAnimator.isReversed && movePercentage < 0)
-//                        || (embeddedViewAnimator.isReversed && movePercentage > 0) {
-//                        break
-//                    }
-//                    embeddedViewAnimator.fractionComplete = abs(movePercentage)
-//                case .ended:
-//                    let thresholdPercentage: CGFloat = 0.1
-//                    if embeddedViewAnimator.fractionComplete < thresholdPercentage {
-//                        embeddedViewAnimator.isReversed.toggle()
-//                    } else {
-//                        self?.viewModel.toggleEmbddedView.accept(())
-//                    }
-//                    embeddedViewAnimator.startAnimation()
-//                default:
-//                    break
-//                }
-//                print(embeddedViewAnimator.isRunning)
-//            }).disposed(by: disposeBag)
+
         var baseY: CGFloat = 0
         panGesture.rx.event.asDriver()
             .drive(onNext: { [weak self] recognizer in
@@ -188,12 +157,6 @@ final class FilterViewController: UIViewController {
     }
 
     private func bindToViewModel() {
-//        viewModel.isFocusedOnEmbeddedView
-//            .skip(1)
-//            .drive(Binder(self) { me, isFocusedOnEmbeddedView in
-//                me.embeddedViewAnimator.isReversed = isFocusedOnEmbeddedView
-//                me.embeddedViewAnimator.startAnimation()
-//            }).disposed(by: disposeBag)
         viewModel.isFocusedOnEmbeddedView
             .skip(1)
             .drive(Binder(self) { me, isFocusedOnEmbeddedView in
