@@ -71,6 +71,9 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
     @Inject
     lateinit var sessionDetailSpeakerItemFactory: SessionDetailSpeakerItem.Factory
 
+    @Inject
+    lateinit var sessionDetailTargetItemFactory: SessionDetailTargetItem.Factory
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -130,7 +133,7 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
                 })
                 adapter.add(sessionDetailDescriptionItemFactory.create(session))
                 if (session.hasIntendedAudience)
-                    adapter.add(SessionDetailTargetItem(session))
+                    adapter.add(sessionDetailTargetItemFactory.create(session))
                 if (session.hasSpeaker) {
                     adapter.add(sessionDetailSpeakerSubtitleItemFactory.create())
                     var firstSpeaker = true
