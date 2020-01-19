@@ -5,12 +5,13 @@ import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.view.View
-import androidx.core.view.forEach
+import androidx.core.view.forEachIndexed
 import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.GroupAdapter
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
+import io.github.droidkaigi.confsched2020.util.AndroidRAttr
 
 class SessionsItemDecoration(
     private val adapter: GroupAdapter<*>,
@@ -23,7 +24,7 @@ class SessionsItemDecoration(
             isAntiAlias = true
             textAlign = Paint.Align.CENTER
             textSize = sessionTimeTextSizeInPx
-            color = context.getThemeColor(android.R.attr.textColorHint)
+            color = context.getThemeColor(AndroidRAttr.textColorHint)
         }
     }
     private val sessionTimeTextSizeInPx by lazy {
@@ -38,18 +39,17 @@ class SessionsItemDecoration(
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
-        var lastStartTimeText: StartTimeText? = null
-        parent.forEach { view ->
+        parent.forEachIndexed { index, view ->
             val position = parent.getChildAdapterPosition(view)
             if (position == RecyclerView.NO_POSITION) return
 
             val sessionItem = adapter.getItem(position) as SessionItem
             val startTimeText = calcTimeText(position, view)
 
-            lastStartTimeText?.let {
-                if (sessionItem.startSessionTime() == it.value) return@forEach
+            if (index > 0) {
+                val lastSessionItem = adapter.getItem(position - 1) as SessionItem
+                if (sessionItem.startSessionTime() == lastSessionItem.startSessionTime()) return@forEachIndexed
             }
-            lastStartTimeText = startTimeText
 
             c.drawText(
                 startTimeText.value,

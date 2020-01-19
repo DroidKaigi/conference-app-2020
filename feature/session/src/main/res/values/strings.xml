@@ -12,7 +12,11 @@
     <string name="filter_audience_category" translatable="false">Level</string>
     <string name="filter_category" translatable="false">Category</string>
     <string name="filter_language_support" translatable="false">Language Support</string>
+    <string name="ellipsis_label">Read more</string>
     <string name="speaker">Speaker</string>
     <string name="session">Session</string>
     <string name="query_hint">Search</string>
+    <string name="movie" translatable="false">MOVIE</string>
+    <string name="slide">SLIDE</string>
+    <string name="empty_favorite_session">You choose your favorite sessions, then you can make a plan for you.</string>
 </resources>

@@ -9,8 +9,8 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
 class CoroutinesRule : TestWatcher() {
-    val testDispatcher = TestCoroutineDispatcher()
-    val testScope = TestCoroutineScope(testDispatcher)
+    private val testDispatcher = TestCoroutineDispatcher()
+    private val testScope = TestCoroutineScope(testDispatcher)
 
     override fun starting(description: Description?) {
         super.starting(description)

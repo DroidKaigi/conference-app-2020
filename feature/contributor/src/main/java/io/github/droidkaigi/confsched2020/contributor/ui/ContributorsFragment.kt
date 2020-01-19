@@ -23,36 +23,25 @@ import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
-class ContributorsFragment : Fragment() {
+class ContributorsFragment : Fragment(R.layout.fragment_contributors) {
 
-    private lateinit var binding: FragmentContributorsBinding
+    private var binding: FragmentContributorsBinding by autoCleared()
 
     @Inject lateinit var contributorsFactory: Provider<ContributorsViewModel>
     private val contributorsViewModel by assistedViewModels {
         contributorsFactory.get()
     }
 
-    private lateinit var progressTimeLatch: ProgressTimeLatch
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_contributors,
-            container,
-            false
-        )
-        return binding.root
-    }
+    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding = FragmentContributorsBinding.bind(view)
 
         val appComponent = (requireContext().applicationContext as App).appComponent
         val component = DaggerContributorComponent.factory()

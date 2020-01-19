@@ -2,7 +2,7 @@ import dependencies.Dep
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'kotlin-kapt'
 
 apply from: rootProject.file('gradle/android.gradle')
@@ -16,6 +16,7 @@ dependencies {
     implementation project(":model")
     implementation Dep.AndroidX.constraint
     implementation Dep.AndroidX.design
+    implementation Dep.AndroidX.browser
     implementation Dep.Kotlin.stdlibJvm
 
     api Dep.Insetter.insetter
@@ -24,7 +25,6 @@ dependencies {
     implementation Dep.Kotlin.stdlibJvm
     api Dep.Kotlin.coroutines
 
-    api Dep.AndroidX.Navigation.runtime
     api Dep.AndroidX.Navigation.runtimeKtx
     api Dep.AndroidX.Navigation.fragmentKtx
     api Dep.AndroidX.Navigation.uiKtx
@@ -36,7 +36,6 @@ dependencies {
     implementation Dep.Firebase.auth
 
     api Dep.AndroidX.lifecycleExtensions
-    api Dep.AndroidX.Navigation.runtimeKtx
     api Dep.AndroidX.activityKtx
     api Dep.AndroidX.fragmentKtx
     api Dep.AndroidX.coreKtx
@@ -52,10 +51,13 @@ dependencies {
 
     implementation Dep.Coil.coil
 
+    implementation Dep.Timber.android
+
     testImplementation Dep.Test.junit
     testImplementation Dep.MockK.jvm
     androidTestImplementation Dep.Test.testRunner
     androidTestImplementation Dep.Test.espressoCore
+
 }
 repositories {
     if (!isCi) {

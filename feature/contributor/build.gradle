@@ -4,7 +4,7 @@ import dependencies.Versions
 apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 apply from: rootProject.file('gradle/android-dynamic-module.gradle')
 

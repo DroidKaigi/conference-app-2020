@@ -2,7 +2,7 @@ import dependencies.Dep
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 apply from: rootProject.file('gradle/android.gradle')
 
@@ -14,7 +14,6 @@ dependencies {
     implementation Dep.Kotlin.coroutines
 
     api Dep.Test.archCore
-    api Dep.Test.testCore
     api Dep.Test.liveDataTestingKtx
     api Dep.Test.coroutinesTest
 

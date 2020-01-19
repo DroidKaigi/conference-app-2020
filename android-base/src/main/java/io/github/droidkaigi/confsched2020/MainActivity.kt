@@ -8,6 +8,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentActivity
@@ -78,7 +79,7 @@ class MainActivity : DaggerAppCompatActivity() {
     }
     @Inject
     lateinit var sessionRepository: SessionRepository
-    val navController: NavController by lazy {
+    private val navController: NavController by lazy {
         Navigation.findNavController(this, R.id.root_nav_host_fragment)
     }
 
@@ -95,14 +96,35 @@ class MainActivity : DaggerAppCompatActivity() {
         binding.drawerLayout.doOnApplyWindowInsets { _, insets, _ ->
             binding.drawerLayout.setChildInsetsWorkAround(insets)
         }
-        binding.toolbar.doOnApplyWindowInsets { _, insets, initialState ->
-            binding.toolbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+        binding.contentContainer.doOnApplyWindowInsets { view, insets, initialState ->
+            view.updatePadding(
+                left = insets.systemWindowInsetLeft + initialState.paddings.left,
+                right = insets.systemWindowInsetRight + initialState.paddings.right
+            )
+        }
+        binding.toolbar.doOnApplyWindowInsets { view, insets, initialState ->
+            view.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 topMargin = insets.systemWindowInsetTop + initialState.margins.top
+            }
+            // Invalidate because option menu cannot be displayed after screen rotation
+            invalidateOptionsMenu()
+        }
+        binding.navView.doOnApplyWindowInsets { view, insets, initialState ->
+            view.apply {
+                // On seascape mode only, nav bar is overlapped with DrawerLayout.
+                // So set left padding and reset width.
+                val leftSpace = insets.systemWindowInsetLeft + initialState.paddings.left
+                updatePadding(left = leftSpace)
+                updateLayoutParams {
+                    if (getWidth() > 0) {
+                        width = measuredWidth + leftSpace
+                    }
+                }
             }
         }
 
         systemViewModel.errorLiveData.observe(this) { appError ->
-            Timber.warn(appError) { "AppError occured" }
+            Timber.warn(appError) { "AppError occurred" }
             Snackbar
                 .make(
                     findViewById(R.id.root_nav_host_fragment),

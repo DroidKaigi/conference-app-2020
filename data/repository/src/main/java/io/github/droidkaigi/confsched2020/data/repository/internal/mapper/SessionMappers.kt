@@ -17,8 +17,7 @@ import io.github.droidkaigi.confsched2020.model.SessionType
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeakerId
 import io.github.droidkaigi.confsched2020.model.SpeechSession
-
-private val jstOffset = 9.hours
+import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 
 fun SessionWithSpeakers.toSession(
     speakerEntities: List<SpeakerEntity>,
@@ -30,8 +29,8 @@ fun SessionWithSpeakers.toSession(
             id = SessionId(session.id),
             // dayNumber is starts with 1.
             // Example: First day = 1, Second day = 2. So I plus 1 to period days
-            dayNumber = DateTime(session.stime).toOffset(jstOffset).dayOfYear -
-                firstDay.toOffset(jstOffset).dayOfYear + 1,
+            dayNumber = DateTime(session.stime).toOffset(defaultTimeZoneOffset()).dayOfYear -
+                firstDay.toOffset(defaultTimeZoneOffset()).dayOfYear + 1,
             startTime = DateTime.fromUnix(session.stime),
             endTime = DateTime.fromUnix(session.etime),
             title = LocaledString(
@@ -56,8 +55,8 @@ fun SessionWithSpeakers.toSession(
             id = SessionId(session.id),
             // dayNumber is starts with 1.
             // Example: First day = 1, Second day = 2. So I plus 1 to period days
-            dayNumber = DateTime(session.stime).toOffset(jstOffset).dayOfYear -
-                firstDay.toOffset(jstOffset).dayOfYear + 1,
+            dayNumber = DateTime(session.stime).toOffset(defaultTimeZoneOffset()).dayOfYear -
+                firstDay.toOffset(defaultTimeZoneOffset()).dayOfYear + 1,
             startTime = DateTime.fromUnix(session.stime),
             endTime = DateTime.fromUnix(session.etime),
             title = LocaledString(session.title, requireNotNull(session.enTitle)),

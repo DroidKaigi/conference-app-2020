@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Module
 object DbComponentModule {
-    @JvmStatic @Provides @Singleton fun provideItemStore(
+    @Provides @Singleton fun provideItemStore(
         application: Application
     ): SessionDatabase {
         return DbComponent.factory()
@@ -22,7 +22,7 @@ object DbComponentModule {
             .sessionDatabase()
     }
 
-    @JvmStatic @Provides @Singleton fun provideSponsorStore(
+    @Provides @Singleton fun provideSponsorStore(
         application: Application
     ): SponsorDatabase {
         return DbComponent.factory()
@@ -30,7 +30,7 @@ object DbComponentModule {
             .sponsorDatabase()
     }
 
-    @JvmStatic @Provides @Singleton fun provideAnnouncementStore(
+    @Provides @Singleton fun provideAnnouncementStore(
         application: Application
     ): AnnouncementDatabase {
         return DbComponent.factory()
@@ -38,7 +38,7 @@ object DbComponentModule {
             .announcementDatabase()
     }
 
-    @JvmStatic @Provides @Singleton fun provideStaffStore(
+    @Provides @Singleton fun provideStaffStore(
         application: Application
     ): StaffDatabase {
         return DbComponent.factory()
@@ -46,7 +46,7 @@ object DbComponentModule {
             .staffDatabase()
     }
 
-    @JvmStatic @Provides @Singleton fun provideContributorStore(
+    @Provides @Singleton fun provideContributorStore(
         application: Application
     ): ContributorDatabase {
         return DbComponent.factory()

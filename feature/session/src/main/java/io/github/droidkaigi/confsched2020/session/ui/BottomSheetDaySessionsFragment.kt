@@ -1,12 +1,10 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -15,7 +13,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
-import dagger.android.support.DaggerFragment
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
@@ -28,12 +25,14 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewMod
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.session.ui.widget.SessionsItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
+import io.github.droidkaigi.confsched2020.util.DaggerFragment
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
-class BottomSheetDaySessionsFragment : DaggerFragment() {
+class BottomSheetDaySessionsFragment : DaggerFragment(R.layout.fragment_bottom_sheet_sessions) {
 
-    private lateinit var binding: FragmentBottomSheetSessionsBinding
+    private var binding: FragmentBottomSheetSessionsBinding by autoCleared()
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -60,22 +59,11 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
         BottomSheetDaySessionsFragmentArgs.fromBundle(arguments ?: Bundle())
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_bottom_sheet_sessions,
-            container,
-            false
-        )
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding = FragmentBottomSheetSessionsBinding.bind(view)
+
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
         binding.sessionRecycler.addItemDecoration(
@@ -90,8 +78,8 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
         binding.expandLess.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
-        binding.sessionRecycler.doOnApplyWindowInsets { view, insets, initialState ->
-            view.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+        binding.sessionRecycler.doOnApplyWindowInsets { sessionRecycler, insets, initialState ->
+            sessionRecycler.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
         }
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->

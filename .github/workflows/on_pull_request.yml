@@ -73,7 +73,7 @@ jobs:
 #          ignore_api_failure: true
       - uses: actions/cache@v1
         with:
-          path: ~/vendor/bundle
+          path: .ci/vendor/bundle
           key: ${{ runner.os }}-bundle-${{ hashFiles('.ci/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-bundle-
@@ -146,7 +146,7 @@ jobs:
           path: ${{ env.JUNIT_TEST_RESULT_DIR }}
       - uses: actions/cache@v1
         with:
-          path: ~/vendor/bundle
+          path: .ci/vendor/bundle
           key: ${{ runner.os }}-bundle-${{ hashFiles('.ci/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-bundle-
@@ -163,3 +163,35 @@ jobs:
       # - run: bundle exec danger --dangerfile=".ci/danger/apk_comparison.Dangerfile" --danger_id='apk_comparison' --remove-previous-comments
       #   env:
       #     DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # TODO This is a temporary one to check the test. You can delete it.
+  # Emurator's test is not stable now. Sometimes fail..
+  instrumentation-test:
+    runs-on: macOS-latest
+    if: contains(github.event.pull_request.title, '[run instrumentation test]') == true
+    strategy:
+      matrix:
+        api-level: [21, 23, 26]
+      fail-fast: false
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '8'
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-${{ hashFiles('**/*.gradle.kts') }}-
+            ${{ runner.os }}-m2-
+      - name: Run instrumentation test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: google_apis
+          arch: x86
+          profile: pixel
+          disable-animations: true
+          script: ./gradlew android-base:connectedDebugAndroidTest

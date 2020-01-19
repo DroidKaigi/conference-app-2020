@@ -25,7 +25,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     private val darkThemeSwitchChangeListener =
         Preference.OnPreferenceChangeListener { _, newValue ->
             AppCompatDelegate.setDefaultNightMode(
-                if ((newValue as Boolean)) {
+                if (newValue as Boolean) {
                     MODE_NIGHT_YES
                 } else {
                     MODE_NIGHT_NO
