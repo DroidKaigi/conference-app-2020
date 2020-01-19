@@ -1,16 +1,16 @@
 package dependencies
 
 private object Versions {
-    val androidTargetSdkVersion = 29
-    val androidCompileSdkVersion = 29
-    val androidMinSdkVersion = 21
+    const val androidTargetSdkVersion = 29
+    const val androidCompileSdkVersion = 29
+    const val androidMinSdkVersion = 21
 
-    private val versionMajor = 1
-    private val versionMinor = 0
-    private val versionPatch = 5
-    private val versionOffset = 0
-    val androidVersionCode =
+    private const val versionMajor = 1
+    private const val versionMinor = 0
+    private const val versionPatch = 5
+    private const val versionOffset = 0
+    const val androidVersionCode =
         (versionMajor * 10000 + versionMinor * 100 + versionPatch) * 100 + versionOffset
 
-    val androidVersionName = "$versionMajor.$versionMinor.$versionPatch"
+    const val androidVersionName = "$versionMajor.$versionMinor.$versionPatch"
 }
