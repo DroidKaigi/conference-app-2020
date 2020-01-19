@@ -62,6 +62,9 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
         const val TRANSITION_NAME_SUFFIX = "detail"
     }
 
+    @Inject
+    lateinit var sessionDetailSpeakerSubtitleItemFactory: SessionDetailSpeakerSubtitleItem.Factory
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -123,7 +126,7 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
                 if (session.hasIntendedAudience)
                     adapter.add(SessionDetailTargetItem(session))
                 if (session.hasSpeaker) {
-                    adapter.add(SessionDetailSpeakerSubtitleItem())
+                    adapter.add(sessionDetailSpeakerSubtitleItemFactory.create())
                     var firstSpeaker = true
                     (session as? SpeechSession)?.speakers.orEmpty().indices.forEach { index ->
                         val speaker: Speaker =
