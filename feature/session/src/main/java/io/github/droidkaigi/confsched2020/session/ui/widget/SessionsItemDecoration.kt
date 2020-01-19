@@ -11,6 +11,7 @@ import com.xwray.groupie.GroupAdapter
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
+import io.github.droidkaigi.confsched2020.util.AndroidRAttr
 
 class SessionsItemDecoration(
     private val adapter: GroupAdapter<*>,
@@ -23,7 +24,7 @@ class SessionsItemDecoration(
             isAntiAlias = true
             textAlign = Paint.Align.CENTER
             textSize = sessionTimeTextSizeInPx
-            color = context.getThemeColor(android.R.attr.textColorHint)
+            color = context.getThemeColor(AndroidRAttr.textColorHint)
         }
     }
     private val sessionTimeTextSizeInPx by lazy {
