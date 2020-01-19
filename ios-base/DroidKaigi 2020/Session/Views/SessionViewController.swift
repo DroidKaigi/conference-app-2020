@@ -67,7 +67,7 @@ final class SessionViewController: UIViewController {
             .disposed(by: disposeBag)
 
         let dataSource = SessionViewDataSource()
-        viewModel.sessions
+        let filteredSessions = viewModel.sessions.asObservable()
             .map({ [weak self] sessions -> [Session] in
                 let calendar = Calendar(identifier: .gregorian)
                 return sessions.filter({
@@ -77,12 +77,36 @@ final class SessionViewController: UIViewController {
                     else {
                         return false
                     }
-                    print(startsAt, typeDate)
                     return calendar.isDate(startsAt, inSameDayAs: typeDate)
                 })
             })
-            .drive(collectionView.rx.items(dataSource: dataSource))
+            .share(replay: 1, scope: .whileConnected)
+        filteredSessions
+            .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
+        filteredSessions
+            .filter({ [weak self] sessions in
+                guard let self = self else { return false }
+                return sessions.count == 0 && self.type == .myPlan
+            })
+            .bind(to: Binder(self) { me, _ in
+                DispatchQueue.main.async {
+                    me.showSuggestView()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+
+    func showSuggestView() {
+        let suggestView = SuggestView()
+        view.addSubview(suggestView)
+        suggestView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            suggestView.topAnchor.constraint(equalTo: view.topAnchor),
+            suggestView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            suggestView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            suggestView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
 }
 
