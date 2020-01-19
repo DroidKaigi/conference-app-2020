@@ -23,12 +23,6 @@ final class FilterViewController: UIViewController {
 
     private var containerView: UIView = {
         let view = ShapedShadowedView(frame: .zero)
-        let shapeGenerator = MDCRectangleShapeGenerator()
-        shapeGenerator.topLeftCorner =
-            ApplicationScheme.shared.shapeScheme.largeComponentShape.topLeftCorner
-        view.shapeGenerator = shapeGenerator
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = ApplicationScheme.shared.colorScheme.surfaceColor
         return view
     }()
 
@@ -123,42 +117,69 @@ final class FilterViewController: UIViewController {
         viewController.filterViewControllerDelegate = self
         self.insert(viewController)
 
+        let height = UIScreen.main.bounds.height - 100
         embeddedViewAnimator.addAnimations { [weak self] in
             guard let self = self else { return }
-            self.containerView.frame.origin.y += self.containerView.frame.height - 100
+            self.containerView.frame.origin.y = height
         }
         embeddedViewAnimator.pausesOnCompletion = true
         embeddedViewAnimator.isUserInteractionEnabled = true
 
         let panGesture = UIPanGestureRecognizer()
         panGesture.delegate = self
+//        panGesture.rx.event.asDriver()
+//            .drive(onNext: { [weak self] recognizer in
+//                guard let containerView = self?.containerView,
+//                    let embeddedViewAnimator = self?.embeddedViewAnimator else { return }
+//
+//                switch recognizer.state {
+//                case .began:
+//                    embeddedViewAnimator.isReversed = false
+//                    embeddedViewAnimator.isReversed = embeddedViewAnimator.fractionComplete > 0.5
+//                    recognizer.setTranslation(.zero, in: containerView)
+//                case .changed:
+//                    let moved = recognizer.translation(in: containerView)
+//                    let movePercentage = moved.y / containerView.frame.height
+//
+//                    if (!embeddedViewAnimator.isReversed && movePercentage < 0)
+//                        || (embeddedViewAnimator.isReversed && movePercentage > 0) {
+//                        break
+//                    }
+//                    embeddedViewAnimator.fractionComplete = abs(movePercentage)
+//                case .ended:
+//                    let thresholdPercentage: CGFloat = 0.1
+//                    if embeddedViewAnimator.fractionComplete < thresholdPercentage {
+//                        embeddedViewAnimator.isReversed.toggle()
+//                    } else {
+//                        self?.viewModel.toggleEmbddedView.accept(())
+//                    }
+//                    embeddedViewAnimator.startAnimation()
+//                default:
+//                    break
+//                }
+//                print(embeddedViewAnimator.isRunning)
+//            }).disposed(by: disposeBag)
+        var baseY: CGFloat = 0
         panGesture.rx.event.asDriver()
             .drive(onNext: { [weak self] recognizer in
-                guard let containerView = self?.containerView,
-                    let embeddedViewAnimator = self?.embeddedViewAnimator else { return }
+                guard let containerView = self?.containerView else { return }
 
                 switch recognizer.state {
                 case .began:
-                    embeddedViewAnimator.isReversed = false
-                    embeddedViewAnimator.isReversed = embeddedViewAnimator.fractionComplete > 0.5
                     recognizer.setTranslation(.zero, in: containerView)
+                    baseY = containerView.frame.minY
                 case .changed:
                     let moved = recognizer.translation(in: containerView)
-                    let movePercentage = moved.y / containerView.frame.height
-
-                    if (!embeddedViewAnimator.isReversed && movePercentage < 0)
-                        || (embeddedViewAnimator.isReversed && movePercentage > 0) {
-                        break
-                    }
-                    embeddedViewAnimator.fractionComplete = abs(movePercentage)
+                    self?.containerView.frame.origin.y = baseY + moved.y
                 case .ended:
                     let thresholdPercentage: CGFloat = 0.1
-                    if embeddedViewAnimator.fractionComplete < thresholdPercentage {
-                        embeddedViewAnimator.isReversed.toggle()
-                    } else {
-                        self?.viewModel.toggleEmbddedView.accept(())
+                    let moved = recognizer.translation(in: containerView)
+                    let movePercentage = moved.y / containerView.frame.height
+                    if abs(movePercentage) > thresholdPercentage {
+                        UIView.animate(withDuration: 0.2) {
+                            self?.viewModel.toggleEmbddedView.accept(())
+                        }
                     }
-                    embeddedViewAnimator.startAnimation()
                 default:
                     break
                 }
@@ -167,11 +188,24 @@ final class FilterViewController: UIViewController {
     }
 
     private func bindToViewModel() {
+//        viewModel.isFocusedOnEmbeddedView
+//            .skip(1)
+//            .drive(Binder(self) { me, isFocusedOnEmbeddedView in
+//                me.embeddedViewAnimator.isReversed = isFocusedOnEmbeddedView
+//                me.embeddedViewAnimator.startAnimation()
+//            }).disposed(by: disposeBag)
         viewModel.isFocusedOnEmbeddedView
             .skip(1)
             .drive(Binder(self) { me, isFocusedOnEmbeddedView in
-                me.embeddedViewAnimator.isReversed = isFocusedOnEmbeddedView
-                me.embeddedViewAnimator.startAnimation()
+                if isFocusedOnEmbeddedView {
+                    UIView.animate(withDuration: 0.2) {
+                        me.containerView.frame.origin.y = 148
+                    }
+                } else {
+                    UIView.animate(withDuration: 0.2) {
+                        me.containerView.frame.origin.y = UIScreen.main.bounds.height - 100
+                    }
+                }
             }).disposed(by: disposeBag)
     }
 }
