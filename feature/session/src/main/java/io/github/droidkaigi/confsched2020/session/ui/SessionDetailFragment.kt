@@ -52,6 +52,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDet
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSurvey
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailDescriptionItem
+import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailTargetItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailTitleItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
@@ -142,6 +143,8 @@ class SessionDetailFragment : DaggerFragment() {
             binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(it)
             adapter.add(SessionDetailTitleItem(it, session))
             adapter.add(SessionDetailDescriptionItem(it, session))
+            adapter.add(SessionDetailTargetItem(session))
+
         }
 
 //        binding.sessionFavorite.setOnClickListener {
