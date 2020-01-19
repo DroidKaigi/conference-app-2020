@@ -1,4 +1,4 @@
-import repository
+import ios_combined
 import RxSwift
 
 final class SessionDataProvider {

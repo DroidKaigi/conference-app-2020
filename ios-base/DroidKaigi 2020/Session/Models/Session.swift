@@ -1,4 +1,4 @@
-import repository
+import ios_combined
 
 struct Session {
     let response: SessionResponse

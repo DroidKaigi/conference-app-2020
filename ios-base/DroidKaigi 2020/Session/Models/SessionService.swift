@@ -1,20 +1,20 @@
-import repository
+import ios_combined
 
 final class SessionService {
     func convertSessionResponse(response: Response) -> [Session] {
         response.sessions.map { session -> Session in
 
             let room = response.rooms?.first(where: { room -> Bool in
-                room.id_ == session.roomId
+                room.id == session.roomId
             })
 
             let speakers = response.speakers?.filter({ (speaker) -> Bool in
-                session.speakers.contains(speaker.id_ ?? "")
+                session.speakers.contains(speaker.id ?? "")
             }) ?? []
 
             /// Single value?
             let categories = response.categories?.filter({ (category) -> Bool in
-                guard let categoryId = category.id_,
+                guard let categoryId = category.id,
                     let sessionCategoryId = session.sessionCategoryItemId else {
                         return false
                 }

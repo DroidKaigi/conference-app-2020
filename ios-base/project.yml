@@ -8,7 +8,7 @@ targets:
         deploymentTarget: "13.2"
         sources: DroidKaigi 2020
         dependencies:
-            - framework: ../data/repository/build/bin/iosX64/debugFramework/repository.framework
+            - framework: ../ios-combined/build/bin/iosX64/debugFramework/ios_combined.framework
     DroidKaigi 2020Tests:
         type: bundle.unit-test
         platform: iOS
