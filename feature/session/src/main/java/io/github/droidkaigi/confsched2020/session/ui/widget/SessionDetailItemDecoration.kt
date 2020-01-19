@@ -15,19 +15,25 @@ class SessionDetailItemDecoration(
 ) : RecyclerView.ItemDecoration() {
     override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
         val item = adapter.getItem(itemPosition)
+        val dp = context.resources.displayMetrics.density
+        var topMargin = 0 * dp
+        var bottomMargin = 0 * dp
         if (item is SessionDetailSpeakerItem) {
-            val dp = context.resources.displayMetrics.density
-            var topMargin = 8 * dp
-            var bottomMargin = 0 * dp
             if (item.first) {
                 // First speaker
                 topMargin = 18 * dp
+            } else {
+                topMargin += 0 * dp
             }
-            if (itemPosition == adapter.itemCount - 1) {
-                // Last speaker
-                bottomMargin = 18 * dp
-            }
-            outRect.set(0, topMargin.toInt(), 0, bottomMargin.toInt())
         }
+        if (itemPosition == adapter.itemCount - 1) {
+            // Last item
+            bottomMargin += 18 * dp
+            if(item is SessionDetailSpeakerItem) {
+                // Last item is speaker
+                bottomMargin += 32 * dp
+            }
+        }
+        outRect.set(0, topMargin.toInt(), 0, bottomMargin.toInt())
     }
 }
