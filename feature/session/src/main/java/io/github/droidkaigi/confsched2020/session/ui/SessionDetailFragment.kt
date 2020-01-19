@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.TextPaint
@@ -43,6 +44,7 @@ import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToChrome
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSurvey
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
@@ -152,6 +154,7 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail) {
             }
         }
         binding.speakers.bindSpeaker(session)
+        setUpMaterialData(session)
     }
 
     private fun setupSessionDescription(fullDescription: String) {
@@ -168,7 +171,8 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail) {
                 textView.width - textView.paint.measureText(ellipsis),
                 TextUtils.TruncateAt.END
             )
-            val ellipsisColor = ContextCompat.getColor(requireContext(), R.color.design_default_color_secondary)
+            val ellipsisColor =
+                ContextCompat.getColor(requireContext(), R.color.design_default_color_secondary)
             val onClickListener = {
                 TransitionManager.beginDelayedTransition(binding.sessionLayout)
                 textView.text = fullDescription
@@ -258,6 +262,60 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail) {
                 speakerImageView.setImageDrawable(it)
             }
         }
+    }
+
+    private fun setUpMaterialData(session: Session) {
+        if (session is SpeechSession) {
+            session.videoUrl?.let {
+                setUpMovieView(it)
+            } ?: setUpNoMovieView()
+            session.slideUrl?.let {
+                setUpSlideView(it)
+            } ?: setUpNoSlideView()
+            return
+        }
+        setUpNoMovieView()
+        setUpNoSlideView()
+    }
+
+    private fun setUpNoMovieView() {
+        val icVideo = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video_24dp)
+        icVideo?.let { binding.movie.setLeftDrawable(it, 24) }
+    }
+
+    private fun setUpMovieView(movieUrl: String) {
+        val icVideo =
+            ContextCompat.getDrawable(requireContext(), R.drawable.ic_video_light_blue_24dp)
+        icVideo?.let { binding.movie.setLeftDrawable(it, 24) }
+        binding.movie.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_blue_300))
+        binding.movie.setOnClickListener {
+            findNavController().navigate(actionSessionToChrome(movieUrl))
+        }
+    }
+
+    private fun setUpNoSlideView() {
+        val icSlide = ContextCompat.getDrawable(requireContext(), R.drawable.ic_slide_24dp)
+        icSlide?.let { binding.slide.setLeftDrawable(it, 24) }
+    }
+
+    private fun setUpSlideView(slideUrl: String) {
+        val icSlide =
+            ContextCompat.getDrawable(requireContext(), R.drawable.ic_slide_light_blue_24dp)
+        icSlide?.let { binding.slide.setLeftDrawable(it, 24) }
+        binding.slide.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_blue_300))
+        binding.slide.setOnClickListener {
+            findNavController().navigate(actionSessionToChrome(slideUrl))
+        }
+    }
+
+    private fun TextView.setLeftDrawable(drawable: Drawable, sizeDp: Int = 32) {
+        val res = context.resources
+        val widthPx = (sizeDp * res.displayMetrics.density).toInt()
+        val heightPx = (sizeDp * res.displayMetrics.density).toInt()
+        drawable.setBounds(0, 0, widthPx, heightPx)
+        setCompoundDrawables(
+            drawable, null, null, null
+        )
     }
 }
 
