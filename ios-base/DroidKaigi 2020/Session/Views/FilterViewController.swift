@@ -228,7 +228,7 @@ extension FilterViewController: MDCTabBarDelegate {
 /// - FilterViewControllerDelegate
 extension FilterViewController: FilterViewControllerDelegate {
     func shouldChangeTab(index: Int) {
-        DispatchQueue.main.async { [weak self] in
+        UIView.animate(withDuration: 0.2) { [weak self] in
             guard let self = self else { return }
             self.tabBar.selectedItem = self.tabBar.items[index]
         }
