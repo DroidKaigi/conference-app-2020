@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2020
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import androidx.annotation.IdRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -131,6 +132,13 @@ class MainActivity : DaggerAppCompatActivity() {
                 )
                 .show()
         }
+
+        // adjust searchView margin
+        val layout = binding.searchView.findViewById<LinearLayout>(R.id.search_edit_frame)
+        (layout.layoutParams as? LinearLayout.LayoutParams)?.let {
+            it.marginStart = 0
+            it.leftMargin = 0
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -182,6 +190,14 @@ class MainActivity : DaggerAppCompatActivity() {
                 R.attr.colorOnSurface
             }
         )
+
+        if (destination.label == "Search") {
+            binding.searchView.visibility = View.VISIBLE
+            binding.searchView.requestFocus()
+        } else {
+            binding.searchView.visibility = View.GONE
+        }
+
         binding.toolbar.navigationIcon = if (config.isTopLevel) {
             AppCompatResources.getDrawable(this, R.drawable.ic_menu_black_24dp)
         } else {

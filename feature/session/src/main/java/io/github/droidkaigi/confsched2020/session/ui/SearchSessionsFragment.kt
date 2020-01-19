@@ -8,9 +8,6 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
@@ -25,7 +22,6 @@ import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.ext.requireValue
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSearchSessionsBinding
@@ -36,8 +32,8 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SearchSessionsVie
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.session.ui.widget.SearchItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
-import java.util.Locale
 import io.github.droidkaigi.confsched2020.util.autoCleared
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -148,31 +144,31 @@ class SearchSessionsFragment : DaggerFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_search_sessions, menu)
-        val searchView = menu.findItem(R.id.search_view).actionView as SearchView
-        (searchView.findViewById(androidx.appcompat.R.id.search_button) as ImageView).setColorFilter(
-            ContextCompat.getColor(requireContext(), R.color.search_icon)
-        )
-        (searchView.findViewById(androidx.appcompat.R.id.search_close_btn) as ImageView).setColorFilter(
-            ContextCompat.getColor(requireContext(), R.color.search_close_icon)
-        )
-        searchView.isIconified = false
-        val searchResult = searchSessionsViewModel.uiModel.requireValue().searchResult
-        if (!searchResult.isEmpty()) {
-            searchView.setQuery(searchResult.query, false)
-        }
-        searchView.queryHint = resources.getString(R.string.query_hint)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(s: String): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(s: String): Boolean {
-                searchSessionsViewModel.updateSearchQuery(s)
-                return false
-            }
-        })
+//        super.onCreateOptionsMenu(menu, inflater)
+//        inflater.inflate(R.menu.menu_search_sessions, menu)
+//        val searchView = menu.findItem(R.id.search_view).actionView as SearchView
+//        (searchView.findViewById(androidx.appcompat.R.id.search_button) as ImageView).setColorFilter(
+//            ContextCompat.getColor(requireContext(), R.color.search_icon)
+//        )
+//        (searchView.findViewById(androidx.appcompat.R.id.search_close_btn) as ImageView).setColorFilter(
+//            ContextCompat.getColor(requireContext(), R.color.search_close_icon)
+//        )
+//        searchView.isIconified = false
+//        val searchResult = searchSessionsViewModel.uiModel.requireValue().searchResult
+//        if (!searchResult.isEmpty()) {
+//            searchView.setQuery(searchResult.query, false)
+//        }
+//        searchView.queryHint = resources.getString(R.string.query_hint)
+//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(s: String): Boolean {
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(s: String): Boolean {
+//                searchSessionsViewModel.updateSearchQuery(s)
+//                return false
+//            }
+//        })
     }
 
     companion object {

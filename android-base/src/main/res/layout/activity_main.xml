@@ -41,12 +41,23 @@
                 android:layout_height="?actionBarSize"
                 android:background="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorPrimarySurface : R.attr.colorSurface)}"
                 android:elevation="0dp"
+                app:contentInsetStart="0dp"
                 app:contentInsetStartWithNavigation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:titleTextColor="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorOnPrimarySurface : R.attr.colorOnSurface)}"
-                />
+                >
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:queryHint="@string/query_hint"
+                    app:iconifiedByDefault="@null"
+                    />
+
+            </com.google.android.material.appbar.MaterialToolbar>
 
             <!-- Ignore because FragmentContainerView bug. See https://github.com/DroidKaigi/conference-app-2020/issues/378 -->
             <fragment
