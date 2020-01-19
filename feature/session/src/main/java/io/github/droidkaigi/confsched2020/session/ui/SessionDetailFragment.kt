@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
@@ -26,7 +25,6 @@ import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToChrome
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
-import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSurvey
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailDescriptionItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailMaterialItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailSpeakerItem
