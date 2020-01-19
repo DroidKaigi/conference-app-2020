@@ -32,17 +32,21 @@
                         <rect key="frame" x="152" y="14" width="42" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LIVE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZKc-Oe-asn">
-                                <rect key="frame" x="4" y="-0.5" width="34.5" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="8" y="2" width="26" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.31805258990000002" green="0.69847029449999998" blue="0.87061280009999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
+                            <constraint firstItem="ZKc-Oe-asn" firstAttribute="leading" secondItem="IOg-3L-cDY" secondAttribute="leading" constant="8" id="2f1-m9-kVW"/>
+                            <constraint firstAttribute="bottom" secondItem="ZKc-Oe-asn" secondAttribute="bottom" constant="2" id="A7M-yq-qU4"/>
                             <constraint firstItem="ZKc-Oe-asn" firstAttribute="centerX" secondItem="IOg-3L-cDY" secondAttribute="centerX" id="EQh-Li-fy5"/>
                             <constraint firstAttribute="height" constant="20" id="Rbt-sJ-Wdg"/>
+                            <constraint firstAttribute="trailing" secondItem="ZKc-Oe-asn" secondAttribute="trailing" constant="8" id="RzJ-cS-c1O"/>
                             <constraint firstItem="ZKc-Oe-asn" firstAttribute="centerY" secondItem="IOg-3L-cDY" secondAttribute="centerY" id="WaG-zN-2Pa"/>
+                            <constraint firstItem="ZKc-Oe-asn" firstAttribute="top" secondItem="IOg-3L-cDY" secondAttribute="top" constant="2" id="fnp-H0-dH2"/>
                             <constraint firstAttribute="width" constant="42" id="v8Q-ip-xT1"/>
                         </constraints>
                     </view>
