@@ -10,7 +10,11 @@ import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailTitleBinding
 
-class SessionDetailTitleItem(private val context: Context, private val session: Session) :
+class SessionDetailTitleItem(
+    private val context: Context,
+    private val session: Session,
+    private val onClickSurvey: () -> Unit
+) :
     BindableItem<ItemSessionDetailTitleBinding>() {
     override fun getLayout() = R.layout.item_session_detail_title
 
@@ -35,6 +39,9 @@ class SessionDetailTitleItem(private val context: Context, private val session: 
                 })
                 binding.tags.tag = newTag
             }
+        }
+        binding.survey.setOnClickListener {
+            onClickSurvey()
         }
     }
 }

@@ -143,7 +143,9 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
                         it
                     )
                 )
-                adapter.add(SessionDetailTitleItem(it, session))
+                adapter.add(SessionDetailTitleItem(it, session) {
+                    findNavController().navigate(actionSessionToSurvey(session.id))
+                })
                 adapter.add(SessionDetailDescriptionItem(it, session))
                 if (session.hasIntendedAudience)
                     adapter.add(SessionDetailTargetItem(session))
