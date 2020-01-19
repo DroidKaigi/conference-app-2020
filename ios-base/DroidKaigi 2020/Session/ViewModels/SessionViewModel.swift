@@ -1,3 +1,4 @@
+import ios_combined
 import RxSwift
 import RxCocoa
 
@@ -21,7 +22,6 @@ final class SessionViewModel {
         self.sessions = sessionsRelay.asDriver()
 
         let dataProvider = SessionDataProvider()
-        let service = SessionService()
 
         let sessionsRequested = viewDidLoad.asObservable()
             .flatMap { dataProvider.fetchSessions().materialize() }
@@ -30,7 +30,6 @@ final class SessionViewModel {
         // success
         sessionsRequested
             .flatMap { $0.element.map(Observable.just) ?? .empty() }
-            .map(service.convertSessionResponse(response:))
             .bind(to: sessionsRelay)
             .disposed(by: disposeBag)
 

@@ -1,3 +1,4 @@
+import ios_combined
 import UIKit
 import RxSwift
 import RxCocoa
@@ -60,17 +61,11 @@ final class SessionViewController: UIViewController {
 
         let dataSource = SessionViewDataSource()
         let filteredSessions = viewModel.sessions.asObservable()
-            .map({ [weak self] sessions -> [Session] in
-                let calendar = Calendar(identifier: .gregorian)
-                return sessions.filter({
-                    guard
-                        let startsAt = $0.startsAt,
-                        let typeDate = self?.type.date
-                    else {
-                        return false
-                    }
-                    return calendar.isDate(startsAt, inSameDayAs: typeDate)
-                })
+            .map({ sessions -> [Session] in
+                return sessions.filter {
+                    print($0.dayNumber)
+                    return Int($0.dayNumber) == self.type.rawValue
+                }
             })
             .share(replay: 1, scope: .whileConnected)
         filteredSessions

@@ -1,9 +1,9 @@
 import UIKit
 
 enum SessionViewControllerType: Int {
-    case day1
-    case day2
-    case myPlan
+    case day1 = 1
+    case day2 = 2
+    case myPlan = 3
 
     var date: Date? {
         let calendar = Calendar(identifier: .gregorian)
@@ -57,7 +57,7 @@ final class SessionPageViewController: UIPageViewController {
             selectedViewControllerIndex < type.rawValue
             ? .forward : .reverse
         selectedViewControllerIndex = type.rawValue
-        setViewControllers([sessionViewControllers[type.rawValue]], direction: direction, animated: true)
+        setViewControllers([sessionViewControllers[type.rawValue - 1]], direction: direction, animated: true)
     }
 }
 

@@ -1,3 +1,4 @@
+import ios_combined
 import UIKit
 import RxSwift
 import RxCocoa
@@ -20,25 +21,19 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
         }
 
         let session = items[indexPath.item]
-        cell.titleLabel.text = session.response.title?.en
-        session.speakers.forEach { speaker in
-            cell.addSpeakerView(imageURL: URL(string: speaker.profilePicture ?? ""), speakerName: speaker.fullName ?? "")
-        }
+        cell.titleLabel.text = session.title.ja
+//        session.forEach { speaker in
+//            cell.addSpeakerView(imageURL: URL(string: speaker.profilePicture ?? ""), speakerName: speaker.fullName ?? "")
+//        }
 
-        let calendar = Calendar.current
-        if let startsAt = session.startsAt {
-            let hour = calendar.component(.hour, from: startsAt)
-            let minute = String(format: "%02d", arguments: [calendar.component(.minute, from: startsAt)])
-            let timeString = "\(hour):\(minute)"
-
-            if previousTimeString != timeString {
-                cell.timeLabel.text = timeString
-            } else {
-                cell.timeLabel.text = ""
-            }
-            previousTimeString = timeString
+        if previousTimeString != session.startTimeText {
+            cell.timeLabel.text = session.startTimeText
+        } else {
+            cell.timeLabel.text = ""
         }
-        cell.minutesAndRoomLabel.text = "\(session.minutes!)min / \(session.room?.name?.ja ?? "")"
+        previousTimeString = session.startTimeText
+        
+        cell.minutesAndRoomLabel.text = "\(session.timeInMinutes)min / \(session.room.name.ja)"
 
         return cell
     }
