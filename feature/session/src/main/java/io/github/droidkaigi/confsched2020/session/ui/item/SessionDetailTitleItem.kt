@@ -11,7 +11,6 @@ import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailTitleBinding
 
 class SessionDetailTitleItem(
-    private val context: Context,
     private val session: Session,
     private val onClickSurvey: () -> Unit
 ) :
@@ -29,6 +28,7 @@ class SessionDetailTitleItem(
             val savedTag = binding.tags.tag
             if (savedTag != newTag) {
                 binding.tags.removeAllViews()
+                val context = binding.tags.context
                 binding.tags.addView(Chip(context).apply {
                     text = categoryLabel
                     isClickable = false

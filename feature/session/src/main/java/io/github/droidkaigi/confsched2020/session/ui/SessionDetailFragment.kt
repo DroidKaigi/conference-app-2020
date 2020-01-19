@@ -118,44 +118,44 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail_wi
 
     private fun setupSessionViews(session: Session) {
         if (binding.sessionDetailRecycler.adapter == null) {
+            val adapter = GroupAdapter<ViewHolder<*>>()
+            binding.sessionDetailRecycler.adapter = adapter
+            binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(context)
             context?.let {
-                val adapter = GroupAdapter<ViewHolder<*>>()
-                binding.sessionDetailRecycler.adapter = adapter
-                binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(it)
                 binding.sessionDetailRecycler.addItemDecoration(
                     SessionDetailItemDecoration(
                         adapter,
                         it
                     )
                 )
-                adapter.add(SessionDetailTitleItem(it, session) {
-                    findNavController().navigate(actionSessionToSurvey(session.id))
-                })
-                adapter.add(sessionDetailDescriptionItemFactory.create(session))
-                if (session.hasIntendedAudience)
-                    adapter.add(sessionDetailTargetItemFactory.create(session))
-                if (session.hasSpeaker) {
-                    adapter.add(sessionDetailSpeakerSubtitleItemFactory.create())
-                    var firstSpeaker = true
-                    (session as? SpeechSession)?.speakers.orEmpty().indices.forEach { index ->
-                        val speaker: Speaker =
-                            (session as? SpeechSession)?.speakers?.getOrNull(index)
-                                ?: return@forEach
-                        adapter.add(sessionDetailSpeakerItemFactory.create(
-                            speaker,
-                            firstSpeaker
-                        ) { extras ->
-                            findNavController()
-                                .navigate(
-                                    actionSessionToSpeaker(
-                                        speaker.id,
-                                        TRANSITION_NAME_SUFFIX
-                                    ), extras
-                                )
-                        }
-                        )
-                        firstSpeaker = false
+            }
+            adapter.add(SessionDetailTitleItem(session) {
+                findNavController().navigate(actionSessionToSurvey(session.id))
+            })
+            adapter.add(sessionDetailDescriptionItemFactory.create(session))
+            if (session.hasIntendedAudience)
+                adapter.add(sessionDetailTargetItemFactory.create(session))
+            if (session.hasSpeaker) {
+                adapter.add(sessionDetailSpeakerSubtitleItemFactory.create())
+                var firstSpeaker = true
+                (session as? SpeechSession)?.speakers.orEmpty().indices.forEach { index ->
+                    val speaker: Speaker =
+                        (session as? SpeechSession)?.speakers?.getOrNull(index)
+                            ?: return@forEach
+                    adapter.add(sessionDetailSpeakerItemFactory.create(
+                        speaker,
+                        firstSpeaker
+                    ) { extras ->
+                        findNavController()
+                            .navigate(
+                                actionSessionToSpeaker(
+                                    speaker.id,
+                                    TRANSITION_NAME_SUFFIX
+                                ), extras
+                            )
                     }
+                    )
+                    firstSpeaker = false
                 }
             }
         }
