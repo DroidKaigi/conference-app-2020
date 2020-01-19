@@ -44,6 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="8sp"
+            android:layout_marginTop="18dp"
             android:text="@{session.title.getByLang(lang)}"
             android:textAppearance="?textAppearanceHeadline5"
             android:textColor="@color/session_title"

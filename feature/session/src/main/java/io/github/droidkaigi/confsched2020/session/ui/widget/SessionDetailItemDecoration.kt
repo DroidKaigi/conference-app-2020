@@ -25,7 +25,7 @@ class SessionDetailItemDecoration(
             }
             if (itemPosition == adapter.itemCount - 1) {
                 // Last speaker
-                bottomMargin = 32 * dp
+                bottomMargin = (32 + 18) * dp
             }
             outRect.set(0, topMargin.toInt(), 0, bottomMargin.toInt())
         }
