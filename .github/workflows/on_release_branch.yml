@@ -58,7 +58,7 @@ jobs:
           path: download-artifacts
       - run: .github/android/find-app-files.bash download-artifacts
         id: find-app-files
-      - run: echo "::set-output name=message::Release build of $(git rev-parse --short HEAD) at $(date)"
+      - run: "echo ::set-output name=message::Release build of $(git rev-parse --short HEAD) at $(date)"
         id: prep
       - uses: jmatsu/dg-upload-app-action@master
         id: dg
