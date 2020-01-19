@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     >
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/speaker"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        >
-
-        <TextView
-            android:id="@+id/speaker"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:drawableStart="@drawable/ic_person_outline_black_32dp"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            android:paddingEnd="16dp"
-            android:textAppearance="?attr/textAppearanceCaption"
-            android:textColor="@color/speaker_name"
-            tools:text="taka"
-            />
-    </LinearLayout>
-</layout>
+        android:layout_height="32dp"
+        android:drawableStart="@drawable/ic_person_outline_black_32dp"
+        android:drawablePadding="8dp"
+        android:paddingEnd="16dp"
+        android:gravity="center_vertical"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textColor="@color/speaker_name"
+        tools:text="taka"
+        />
+</LinearLayout>

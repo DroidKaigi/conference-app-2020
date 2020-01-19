@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.size
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
@@ -31,7 +30,6 @@ import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionBinding
-import io.github.droidkaigi.confsched2020.session.databinding.LayoutSpeakerBinding
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.Companion.actionSessionToSessionDetail
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
@@ -115,9 +113,9 @@ class SessionItem @AssistedInject constructor(
             }
             val speakerView = if (existSpeakerView == null) {
                 // NOTE: attachToRoot: true changes return value. https://stackoverflow.com/q/41491744/1474113
-                val inflater = layoutInflater.get(context)
-                val binding = DataBindingUtil.inflate<LayoutSpeakerBinding>(inflater, R.layout.layout_speaker, this, false)
-                val view = binding.root as ViewGroup
+                val view = layoutInflater.get(context).inflate(
+                    R.layout.layout_speaker, this, false
+                ) as ViewGroup
                 addView(view)
                 view
             } else {

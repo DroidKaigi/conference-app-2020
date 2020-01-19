@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="24dp"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="24dp"
+            />
+
+
+        <TextView
+            android:id="@+id/speaker"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:drawableStart="@drawable/ic_person_outline_black_32dp"
+            android:layout_marginTop="18dp"
+            android:drawablePadding="8dp"
+            android:paddingEnd="16dp"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textColor="@color/speaker_name"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="taka"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
