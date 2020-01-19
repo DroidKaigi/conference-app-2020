@@ -8,7 +8,7 @@ targets:
         deploymentTarget: "13.2"
         sources: DroidKaigi 2020
         dependencies:
-            - framework: ../data/api/build/bin/iosX64/releaseFramework/api.framework
+            - framework: ../data/api/build/bin/iosX64/debugFramework/api.framework
         preBuildScripts:
             - path: build_kotlin_modules.sh
               name: Build Kotlin Modules
