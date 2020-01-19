@@ -52,10 +52,15 @@ class SpeakerDetailItem @AssistedInject constructor(
             placeholder(placeHolder)
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
-            target {
-                viewBinding.speakerImage.setImageDrawable(it)
-                onImageLoadedCallback()
-            }
+            target(
+                onSuccess = {
+                    viewBinding.speakerImage.setImageDrawable(it)
+                    onImageLoadedCallback()
+                },
+                onError = {
+                    onImageLoadedCallback()
+                }
+            )
         }
     }
 
