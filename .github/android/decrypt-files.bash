@@ -18,7 +18,7 @@ readonly file="to_be_encrypted.zip"
 
 gpg --quiet --batch --yes \
     --decrypt --passphrase="$GPG_ENCRYPTION_PASSWORD" \
-    --output "$working_directory/$file" "$file.gpg"
+    --output "$working_directory/$file" "$working_directory/.encrypted/$file.gpg"
 
 unzip "$working_directory/$file"
 
