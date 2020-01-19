@@ -13,8 +13,8 @@ fun View.showGone(show: Boolean) {
 }
 
 @BindingAdapter("isInvisible")
-fun View.showHide(show: Boolean) {
-    isInvisible = show
+fun View.showHide(invisible: Boolean) {
+    isInvisible = invisible
 }
 
 @BindingAdapter("isVisibleWithAnimation")
