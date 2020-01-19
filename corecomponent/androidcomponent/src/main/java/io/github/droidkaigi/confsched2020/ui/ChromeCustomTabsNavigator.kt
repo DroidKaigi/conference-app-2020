@@ -14,6 +14,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.widget.component.R
+import timber.log.Timber
+import timber.log.debug
 
 @Navigator.Name("chrome")
 class ChromeCustomTabsNavigator(private val context: Context) : Navigator<ChromeCustomTabsNavigator.Destination>() {
@@ -42,7 +44,7 @@ class ChromeCustomTabsNavigator(private val context: Context) : Navigator<Chrome
         try {
             intent.launchUrl(context, Uri.parse(url))
         } catch (e: ActivityNotFoundException) {
-        } catch (e: Exception) {
+            Timber.debug(e) { "Fail ChromeCustomTabsNavigator. launchUrl()" }
         }
         return null // Do not add to the back stack, managed by Chrome Custom Tabs
     }
