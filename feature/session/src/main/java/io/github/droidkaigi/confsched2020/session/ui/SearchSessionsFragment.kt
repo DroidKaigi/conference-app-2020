@@ -7,8 +7,8 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -138,10 +138,16 @@ class SearchSessionsFragment : DaggerFragment(R.layout.fragment_search_sessions)
         inflater.inflate(R.menu.menu_search_sessions, menu)
         val searchView = menu.findItem(R.id.search_view).actionView as SearchView
         (searchView.findViewById(androidx.appcompat.R.id.search_button) as ImageView).setColorFilter(
-            ContextCompat.getColor(requireContext(), R.color.search_icon)
+            AppCompatResources.getColorStateList(
+                requireContext(),
+                R.color.search_icon
+            ).defaultColor
         )
         (searchView.findViewById(androidx.appcompat.R.id.search_close_btn) as ImageView).setColorFilter(
-            ContextCompat.getColor(requireContext(), R.color.search_close_icon)
+            AppCompatResources.getColorStateList(
+                requireContext(),
+                R.color.search_close_icon
+            ).defaultColor
         )
         searchView.isIconified = false
         val searchResult = searchSessionsViewModel.uiModel.requireValue().searchResult
