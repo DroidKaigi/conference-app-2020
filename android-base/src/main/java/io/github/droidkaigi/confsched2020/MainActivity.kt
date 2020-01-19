@@ -106,6 +106,7 @@ class MainActivity : DaggerAppCompatActivity() {
             view.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 topMargin = insets.systemWindowInsetTop + initialState.margins.top
             }
+            // Invalidate because option menu cannot be displayed after screen rotation
             invalidateOptionsMenu()
         }
         binding.navView.doOnApplyWindowInsets { view, insets, initialState ->
