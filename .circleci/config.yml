@@ -20,8 +20,8 @@ commands:
       - run: .circleci/android/create-cache-key.bash > ~/android.md5
       - restore_cache:
           keys:
-            - &key_restore_gradle_cache gradle-cache-{{ parameters.version }}-{{ checksum "~/android.md5 }}
-            - gradle-cache-{{ parameters.version }}-
+            - &key_restore_gradle_cache gradle-cache-<< parameters.version >>-{{ checksum "~/android.md5 }}
+            - gradle-cache-<< parameters.version >>-
       - run: .circleci/retry_command.bash ./gradlew androidDependenciesExtra dependencies
       - run: rm -f ~/.gradle/caches/modules-2/modules-2.lock ~/.gradle/caches/*/plugin-resolution/
       - save_cache:
@@ -36,8 +36,8 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - &key_restore_bundler_cache bundler-cache-{{ parameters.version }}-{{ checksum ".ci/Gemfile.lock" }}
-            - bundler-cache-{{ parameters.version }}-
+            - &key_restore_bundler_cache bundler-cache-<< parameters.version >>-{{ checksum ".ci/Gemfile.lock" }}
+            - bundler-cache-<< parameters.version >>-
       - run: bundle check --path=vendor/bundle --gemfile=.ci/Gemfile || bundle install --path=vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
       - save_cache:
           paths: ['.ci/vendor/bundle']
