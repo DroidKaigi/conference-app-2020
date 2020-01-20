@@ -30,7 +30,7 @@ import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
-class StaffsFragment : Fragment(R.layout.fragment_staffs) {
+class StaffsFragment : Fragment() {
 
     private var binding: FragmentStaffsBinding by autoCleared()
 
@@ -51,10 +51,22 @@ class StaffsFragment : Fragment(R.layout.fragment_staffs) {
 
     private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_staffs,
+            container,
+            false
+        )
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding = FragmentStaffsBinding.bind(view)
 
         val appComponent = (requireContext().applicationContext as App).appComponent
         val component = DaggerStaffComponent.factory()

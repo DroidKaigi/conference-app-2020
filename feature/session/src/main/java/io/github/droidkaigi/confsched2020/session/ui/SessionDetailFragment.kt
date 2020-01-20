@@ -7,6 +7,7 @@ import android.text.TextPaint
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -18,6 +19,7 @@ import androidx.core.text.color
 import androidx.core.text.inSpans
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -33,6 +35,7 @@ import coil.transform.CircleCropTransformation
 import com.google.android.material.chip.Chip
 import dagger.Module
 import dagger.Provides
+import dagger.android.support.DaggerFragment
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
@@ -50,7 +53,6 @@ import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirect
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
-import io.github.droidkaigi.confsched2020.util.DaggerFragment
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
@@ -58,7 +60,7 @@ import javax.inject.Provider
 
 private const val ELLIPSIS_LINE_COUNT = 6
 
-class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail) {
+class SessionDetailFragment : DaggerFragment() {
 
     private var binding: FragmentSessionDetailBinding by autoCleared()
 
@@ -81,11 +83,22 @@ class SessionDetailFragment : DaggerFragment(R.layout.fragment_session_detail) {
         private const val TRANSITION_NAME_SUFFIX = "detail"
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_session_detail,
+            container,
+            false
+        )
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding = FragmentSessionDetailBinding.bind(view)
-
         progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
