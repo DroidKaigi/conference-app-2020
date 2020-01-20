@@ -12,7 +12,7 @@ if [[ ! $CIRCLE_BRANCH =~ ^(master|release)$ ]]; then
   exit 0
 fi
 
-readonly apk_path="$(find android-base -name '*.apk' | head -1)"
+readonly apk_path="$(find android-base/build/outputs -name '*.apk' | head -1)"
 
 curl -X POST \
   -sSfL \
