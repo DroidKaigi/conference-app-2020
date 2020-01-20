@@ -23,7 +23,8 @@ class SessionDetailItemDecoration(
                 // First speaker
                 topMargin = 18 * dp
             } else {
-                topMargin += 0 * dp
+                // Other speaker
+                topMargin = 8 * dp
             }
         }
         if (itemPosition == adapter.itemCount - 1) {
