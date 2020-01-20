@@ -21,10 +21,16 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
         }
 
         let session = items[indexPath.item]
+
         cell.titleLabel.text = session.title.ja
-//        session.forEach { speaker in
-//            cell.addSpeakerView(imageURL: URL(string: speaker.profilePicture ?? ""), speakerName: speaker.fullName ?? "")
-//        }
+
+        var speakers: [Speaker] = []
+        if let speechSession = session as? SpeechSession {
+            speakers = speechSession.speakers
+        }
+        speakers.forEach { speaker in
+            cell.addSpeakerView(imageURL: URL(string: speaker.imageUrl ?? ""), speakerName: speaker.name)
+        }
 
         if previousTimeString != session.startTimeText {
             cell.timeLabel.text = session.startTimeText

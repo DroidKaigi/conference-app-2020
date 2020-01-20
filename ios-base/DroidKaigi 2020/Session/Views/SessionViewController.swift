@@ -62,10 +62,7 @@ final class SessionViewController: UIViewController {
         let dataSource = SessionViewDataSource()
         let filteredSessions = viewModel.sessions.asObservable()
             .map({ sessions -> [Session] in
-                return sessions.filter {
-                    print($0.dayNumber)
-                    return Int($0.dayNumber) == self.type.rawValue
-                }
+                sessions.filter { Int($0.dayNumber) == self.type.rawValue }
             })
             .share(replay: 1, scope: .whileConnected)
         filteredSessions
