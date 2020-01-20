@@ -2,7 +2,13 @@
 
 set -eu
 
-source $HOME/toolkit.sh
+github::debug() {
+    echo "::debug::$@"
+}
+
+github::set_output() {
+    echo "::set-output name=$1::$2"
+}
 
 readonly directory="$1"
 

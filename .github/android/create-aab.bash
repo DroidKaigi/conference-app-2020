@@ -3,9 +3,16 @@
 set -euo pipefail
 
 readonly working_directory="$(git rev-parse --show-toplevel)"
+
 cd "$working_directory"
 
-source $HOME/toolkit.sh
+github::debug() {
+    echo "::debug:: $@"
+}
+
+github::set_output() {
+    echo "::set-output name=$1::$2"
+}
 
 ./gradlew android-base:bundleRelease -x android-base:lintVitalRelease
 

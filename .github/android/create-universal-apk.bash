@@ -6,7 +6,21 @@ readonly working_directory="$(git rev-parse --show-toplevel)"
 
 cd "$working_directory"
 
-source $HOME/toolkit.sh
+github::debug() {
+    echo "::debug::$@"
+}
+
+github::error() {
+    echo "::error::$@"
+}
+
+github::failure() {
+    exit 1
+}
+
+github::set_output() {
+    echo "::set-output name=$1::$2"
+}
 
 readonly aab_file="$1"
 

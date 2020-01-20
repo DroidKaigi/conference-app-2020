@@ -2,7 +2,21 @@
 
 set -euo pipefail
 
-source $HOME/toolkit.sh
+github::debug() {
+    echo "::debug::$@"
+}
+
+github::error() {
+    echo "::error::$@"
+}
+
+github::failure() {
+    exit 1
+}
+
+github::set_output() {
+    echo "::set-output name=$1::$2"
+}
 
 if [[ -z "${GPG_ENCRYPTION_PASSWORD:-}" ]]; then
     github::error "GPG_ENCRYPTION_PASSWORD is required"
