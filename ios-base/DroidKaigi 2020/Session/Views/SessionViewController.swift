@@ -53,7 +53,9 @@ final class SessionViewController: UIViewController {
         super.viewDidLoad()
 
         filterButton.rx.tap.asSignal()
-            .emit(to: viewModel.toggleEmbddedView)
+            .emit(to: Binder(self) { me, _ in
+                me.viewModel.toggleEmbddedView()
+            })
             .disposed(by: disposeBag)
         viewModel.isFocusedOnEmbeddedView
             .drive(filterButton.rx.isSelected)

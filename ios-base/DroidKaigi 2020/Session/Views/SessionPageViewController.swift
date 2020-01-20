@@ -49,7 +49,7 @@ final class SessionPageViewController: UIPageViewController {
         delegate = self
 
         // rx
-        viewModel.viewDidLoad.accept(())
+        viewModel.viewDidLoad()
     }
 
     func setViewControllers(type: SessionViewControllerType) {

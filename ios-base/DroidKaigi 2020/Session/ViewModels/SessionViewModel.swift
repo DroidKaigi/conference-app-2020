@@ -7,8 +7,16 @@ final class SessionViewModel {
     private let disposeBag = DisposeBag()
 
     // input
-    let viewDidLoad = PublishRelay<Void>()
-    let toggleEmbddedView = PublishRelay<Void>()
+    private let viewDidLoadRelay = PublishRelay<Void>()
+    private let toggleEmbddedViewRelay = PublishRelay<Void>()
+
+    func viewDidLoad() {
+        viewDidLoadRelay.accept(())
+    }
+
+    func toggleEmbddedView() {
+        toggleEmbddedViewRelay.accept(())
+    }
 
     // output
     let isFocusedOnEmbeddedView: Driver<Bool>
@@ -23,12 +31,12 @@ final class SessionViewModel {
 
         let dataProvider = SessionDataProvider()
 
-        viewDidLoad.asObservable()
+        viewDidLoadRelay.asObservable()
             .flatMap { dataProvider.fetchSessions() }
             .bind(to: sessionsRelay)
             .disposed(by: disposeBag)
 
-        toggleEmbddedView
+        toggleEmbddedViewRelay.asObservable()
             .withLatestFrom(isFocusedOnEmbeddedViewRelay)
             .map { !$0 }
             .bind(to: isFocusedOnEmbeddedViewRelay)

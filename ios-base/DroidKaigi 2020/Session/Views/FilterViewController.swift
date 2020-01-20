@@ -151,7 +151,7 @@ final class FilterViewController: UIViewController {
                     }
                     if abs(movePercentage) > thresholdPercentage {
                         UIView.animate(withDuration: 0.2) {
-                            self?.viewModel.toggleEmbddedView.accept(())
+                            self?.viewModel.toggleEmbddedView()
                         }
                     }
                 default:
