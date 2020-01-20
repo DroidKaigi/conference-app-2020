@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -52,7 +56,8 @@ class SessionsFragment : DaggerFragment() {
             return (behavior as BottomSheetBehavior)
         }
 
-    @Inject lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
+    @Inject
+    lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
     private val sessionsViewModel: SessionsViewModel by assistedActivityViewModels {
         sessionsViewModelProvider.get()
     }
@@ -99,9 +104,16 @@ class SessionsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initBottomSheetShapeAppearance()
         val initialPeekHeight = sessionSheetBehavior.peekHeight
+        val gestureNavigationBottomSpace =
+            if (isEdgeToEdgeEnabled())
+                resources.getDimension(R.dimen.gesture_navigation_bottom_space).toInt()
+            else 0
+
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
-            sessionSheetBehavior.peekHeight = insets.systemWindowInsetBottom + initialPeekHeight
+            sessionSheetBehavior.peekHeight =
+                insets.systemWindowInsetBottom + initialPeekHeight + gestureNavigationBottomSpace
         }
         binding.fragmentSessionsScrollView.doOnApplyWindowInsets { scrollView, insets, initialState ->
             // Set a bottom padding due to the system UI is enabled.
@@ -212,6 +224,23 @@ class SessionsFragment : DaggerFragment() {
         overrideBackPressedCallback.isEnabled = false
     }
 
+    /**
+     * judge gesture navigation is enabled
+     * https://android.googlesource.com/platform/packages/apps/Settings.git/+/refs/heads/master/src/com/android/settings/gestures/SystemNavigationPreferenceController.java#97
+     *
+     * If configNavBarInteractionMode is equal to "2", it means gesture navigation
+     * https://android.googlesource.com/platform/frameworks/base/+/refs/heads/android10-mainline-release/core/java/android/view/WindowManagerPolicyConstants.java#60
+     * */
+    private fun isEdgeToEdgeEnabled(): Boolean {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) return false
+        val configNavBarInteractionMode = Resources.getSystem().getIdentifier(
+            "config_navBarInteractionMode",
+            "integer",
+            "android"
+        )
+        return (context?.resources?.getInteger(configNavBarInteractionMode) == 2)
+    }
+
     private inline fun <reified T> ChipGroup.setupFilter(
         allFilterSet: Set<T>,
         currentFilterSet: Set<T>,
@@ -273,6 +302,31 @@ class SessionsFragment : DaggerFragment() {
             .replace(R.id.sessions_sheet, fragment, tab.title)
             .disallowAddToBackStack()
             .commit()
+    }
+
+    /**
+     * Override Widget.MaterialComponents.BottomSheet shapeAppearance
+     * see: https://github.com/DroidKaigi/conference-app-2020/issues/104
+     */
+    private fun initBottomSheetShapeAppearance() {
+        val shapeAppearanceModel =
+            ShapeAppearanceModel.Builder()
+                .setTopLeftCorner(
+                    CornerFamily.ROUNDED,
+                    resources.getDimension(R.dimen.bottom_sheet_corner_radius)
+                )
+                .build()
+        /**
+         * FrontLayer elevation is 1dp
+         * https://material.io/components/backdrop/#anatomy
+         */
+        val materialShapeDrawable = MaterialShapeDrawable.createWithElevationOverlay(
+            requireActivity(),
+            resources.getDimension(R.dimen.bottom_sheet_elevation)
+        ).apply {
+            setShapeAppearanceModel(shapeAppearanceModel)
+        }
+        binding.sessionsSheet.background = materialShapeDrawable
     }
 
     companion object {

@@ -51,10 +51,13 @@ dependencies {
 
     implementation Dep.Coil.coil
 
+    implementation Dep.Timber.android
+
     testImplementation Dep.Test.junit
     testImplementation Dep.MockK.jvm
     androidTestImplementation Dep.Test.testRunner
     androidTestImplementation Dep.Test.espressoCore
+
 }
 repositories {
     if (!isCi) {
