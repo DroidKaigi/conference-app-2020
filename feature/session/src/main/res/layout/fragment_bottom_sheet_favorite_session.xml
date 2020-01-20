@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="isCollapsed"
+            type="Boolean" />
+
+        <variable
+            name="isFiltered"
+            type="Boolean" />
+
+        <variable
+            name="isEmptySessions"
+            type="Boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/session"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="io.github.droidkaigi.confsched2020.session.ui.SessionPagesFragment">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp" />
+
+        <TextView
+            android:id="@+id/filtered_session_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
+            app:isInvisible="@{!isFiltered}"
+            app:icon="@drawable/ic_filter_list_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/start_filter"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Applicable session: 12" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/start_filter"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_filter"
+            android:textAppearance="@style/TextAppearance.DroidKaigi.Body2"
+            app:icon="@drawable/ic_filter_list_black_24dp"
+            app:isInvisible="@{(isEmptySessions &amp;&amp; !isFiltered) || isCollapsed}"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/expand_less"
+            android:layout_width="28dp"
+            android:layout_height="30dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:visibility="gone"
+            app:isInvisible="@{!isCollapsed}"
+            app:layout_constraintBottom_toBottomOf="@id/start_filter"
+            app:layout_constraintEnd_toEndOf="@id/start_filter"
+            app:layout_constraintTop_toTopOf="@id/start_filter">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_expand_less_12dp"
+                app:tint="?attr/colorPrimary" />
+        </FrameLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/black_alpha_12"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/start_filter" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/session_recycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            app:isInvisible="@{isCollapsed || isEmptySessions}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/start_filter"
+            tools:listitem="@layout/item_session" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/empty_session"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:isInvisible="@{isCollapsed || !isEmptySessions}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/start_filter">
+
+            <ImageView
+                android:id="@+id/image_icon"
+                android:layout_width="56dp"
+                android:layout_height="72dp"
+                android:layout_marginStart="152dp"
+                android:layout_marginTop="112dp"
+                android:layout_marginEnd="152dp"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:tint="?colorSecondary"
+                app:layout_constraintBottom_toBottomOf="@id/empty_session"
+                app:layout_constraintEnd_toEndOf="@id/empty_session"
+                app:layout_constraintStart_toStartOf="@id/empty_session"
+                app:layout_constraintTop_toTopOf="@id/empty_session"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/ic_bookmark_black_24dp" />
+
+            <TextView
+                android:layout_width="280dp"
+                android:layout_height="72dp"
+                android:layout_marginTop="24dp"
+                android:gravity="center_horizontal"
+                android:lineSpacingMultiplier="1.5"
+                android:text="@string/empty_favorite_session"
+                android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
+                app:layout_constraintBottom_toBottomOf="@id/empty_session"
+                app:layout_constraintEnd_toEndOf="@id/empty_session"
+                app:layout_constraintStart_toStartOf="@id/empty_session"
+                app:layout_constraintTop_toBottomOf="@+id/image_icon"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

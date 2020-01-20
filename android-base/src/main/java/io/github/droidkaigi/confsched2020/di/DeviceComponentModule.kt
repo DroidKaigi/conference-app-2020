@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Module
 object DeviceComponentModule {
-    @JvmStatic @Provides @Singleton
+    @Provides @Singleton
     fun provideWifiManager(application: Application): WifiManager {
         return DeviceComponent.factory()
             .create(application)

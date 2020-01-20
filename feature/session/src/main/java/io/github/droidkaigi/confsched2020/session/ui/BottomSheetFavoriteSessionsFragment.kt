@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -15,12 +16,13 @@ import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.DaggerFragment
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.model.ExpandFilterState
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.session.R
-import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetSessionsBinding
+import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetFavoriteSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
@@ -30,7 +32,7 @@ import javax.inject.Provider
 
 class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
 
-    private var binding: FragmentBottomSheetSessionsBinding by autoCleared()
+    private var binding: FragmentBottomSheetFavoriteSessionBinding by autoCleared()
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -55,11 +57,11 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_bottom_sheet_sessions,
+            R.layout.fragment_bottom_sheet_favorite_session,
             container,
             false
         )
-        return binding.root
+        return binding.apply { isEmptySessions = false }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,22 +74,13 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
         binding.expandLess.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
+        binding.sessionRecycler.doOnApplyWindowInsets { view, insets, initialState ->
+            view.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+        }
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
-            binding.sessionRecycler.isVisible = when (uiModel.expandFilterState) {
-                ExpandFilterState.EXPANDED, ExpandFilterState.CHANGING ->
-                    true
-                else ->
-                    false
-            }
-            binding.startFilter.visibility = when (uiModel.expandFilterState) {
-                ExpandFilterState.EXPANDED, ExpandFilterState.CHANGING ->
-                    View.VISIBLE
-                else ->
-                    View.INVISIBLE
-            }
-            binding.expandLess.isVisible = when (uiModel.expandFilterState) {
+            binding.isCollapsed = when (uiModel.expandFilterState) {
                 ExpandFilterState.COLLAPSED ->
                     true
                 else ->
@@ -96,6 +89,7 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
         }
 
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
+            TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
             val sessions = uiModel.favoritedSessions
             val count = sessions.filter { it.shouldCountForFilter }.count()
             // For Android Lint
@@ -104,10 +98,12 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
                 R.string.applicable_session,
                 count as Int
             )
-            binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()
+            binding.isFiltered = uiModel.filters.isFiltered()
             groupAdapter.update(sessions.map {
                 sessionItemFactory.create(it, sessionsViewModel)
             })
+            val favoritedSessionsCount = sessions.count()
+            binding.isEmptySessions = favoritedSessionsCount <= 0
         }
     }
 

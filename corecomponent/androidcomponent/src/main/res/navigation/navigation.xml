@@ -102,6 +102,16 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out"
             />
+        <action
+            android:id="@+id/action_session_to_chrome"
+            app:destination="@id/chrome"
+            >
+            <argument
+                android:name="url"
+                app:argType="string"
+                app:nullable="false"
+                />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/speaker"
@@ -111,6 +121,10 @@
         <argument
             android:name="speakerId"
             app:argType="io.github.droidkaigi.confsched2020.model.SpeakerId"
+            />
+        <argument
+            android:name="transitionNameSuffix"
+            app:argType="string"
             />
 
         <action
@@ -131,7 +145,20 @@
         android:id="@+id/sponsors"
         android:name="io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragment"
         android:label="@string/sponsor_label"
-        />
+        >
+
+        <action
+            android:id="@+id/action_sponsors_to_chrome"
+            app:destination="@id/chrome"
+            >
+
+            <argument
+                android:name="url"
+                app:argType="string"
+                app:nullable="false"
+                />
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/contributor"
         android:name="io.github.droidkaigi.confsched2020.contributor.ui.ContributorsFragment"
@@ -149,7 +176,16 @@
         android:id="@+id/about"
         android:name="io.github.droidkaigi.confsched2020.about.ui.AboutFragment"
         android:label="@string/about_label"
-        />
+        >
+        <action
+            android:id="@+id/action_about_to_staffs"
+            app:destination="@id/staffs"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
+    </fragment>
     <fragment
         android:id="@+id/floormap"
         android:name="io.github.droidkaigi.confsched2020.floormap.ui.FloorMapFragment"
@@ -169,5 +205,10 @@
         android:id="@+id/setting"
         android:name="io.github.droidkaigi.confsched2020.preference.ui.PreferencesFragment"
         android:label="@string/setting_label"
+        />
+    <chrome
+        android:id="@+id/chrome"
+        android:name="io.github.droidkaigi.confsched2020.ui.ChromeCustomTabsNavigator"
+        android:label="chrome"
         />
 </navigation>

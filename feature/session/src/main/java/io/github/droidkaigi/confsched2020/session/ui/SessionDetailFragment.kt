@@ -13,19 +13,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.doOnPreDraw
+import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import androidx.core.text.inSpans
-import androidx.annotation.IdRes
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionManager
@@ -48,8 +50,9 @@ import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
-import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.actionSessionToSpeaker
-import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.actionSessionToSurvey
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToChrome
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSurvey
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
@@ -78,6 +81,10 @@ class SessionDetailFragment : DaggerFragment() {
 
     private var progressTimeLatch: ProgressTimeLatch by autoCleared()
     private var showEllipsis = true
+
+    companion object {
+        private const val TRANSITION_NAME_SUFFIX = "detail"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -146,14 +153,10 @@ class SessionDetailFragment : DaggerFragment() {
         binding.sessionFavorite.setOnClickListener {
             sessionDetailViewModel.favorite(session)
         }
-        binding.survey.setOnClickListener {
-            findNavController().navigate(actionSessionToSurvey(session.id))
-        }
         binding.session = session
         setupSessionDescription(session.desc)
         binding.speechSession = (session as? SpeechSession)
         binding.lang = defaultLang()
-        binding.time.text = session.timeSummary(defaultLang(), defaultTimeZoneOffset())
         if (session is SpeechSession) {
             val langLabel = session.lang.text.getByLang(defaultLang())
             val categoryLabel = session.category.name.getByLang(defaultLang())
@@ -173,6 +176,7 @@ class SessionDetailFragment : DaggerFragment() {
             }
         }
         binding.speakers.bindSpeaker(session)
+        setUpMaterialData(session)
     }
 
     private fun setupSessionDescription(fullDescription: String) {
@@ -189,7 +193,8 @@ class SessionDetailFragment : DaggerFragment() {
                 textView.width - textView.paint.measureText(ellipsis),
                 TextUtils.TruncateAt.END
             )
-            val ellipsisColor = ContextCompat.getColor(requireContext(), R.color.design_default_color_secondary)
+            val ellipsisColor =
+                ContextCompat.getColor(requireContext(), R.color.design_default_color_secondary)
             val onClickListener = {
                 TransitionManager.beginDelayedTransition(binding.sessionLayout)
                 textView.text = fullDescription
@@ -230,26 +235,32 @@ class SessionDetailFragment : DaggerFragment() {
             val speaker: Speaker =
                 (session as? SpeechSession)?.speakers?.getOrNull(index) ?: return@forEach
             val speakerView = layoutInflater.inflate(
-                R.layout.layout_speaker, this, false
+                R.layout.layout_speaker_session_detail, this, false
             ) as ViewGroup
+            val speakerNameView = speakerView.findViewById<TextView>(R.id.speaker)
+            val speakerImageView = speakerView.findViewById<ImageView>(R.id.speaker_image)
+            speakerImageView.transitionName = "${speaker.id}-${TRANSITION_NAME_SUFFIX}"
             speakerView.setOnClickListener {
-                findNavController().navigate(actionSessionToSpeaker(speaker.id))
+                val extras = FragmentNavigatorExtras(
+                    speakerImageView to speakerImageView.transitionName
+                )
+                findNavController()
+                    .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX), extras)
             }
-            val textView: TextView = speakerView.findViewById(R.id.speaker)
-            bindSpeakerData(speaker, textView)
-
+            bindSpeakerData(speaker, speakerNameView, speakerImageView)
             addView(speakerView)
         }
     }
 
     private fun bindSpeakerData(
         speaker: Speaker,
-        textView: TextView
+        speakerNameView: TextView,
+        speakerImageView: ImageView
     ) {
-        textView.text = speaker.name
+        speakerNameView.text = speaker.name
 //        setHighlightText(textView, query)
         val imageUrl = speaker.imageUrl
-        val context = textView.context
+        val context = speakerNameView.context
         val placeHolder = run {
             VectorDrawableCompat.create(
                 context.resources,
@@ -261,7 +272,7 @@ class SessionDetailFragment : DaggerFragment() {
                 )
             }
         }?.also {
-            textView.setLeftDrawable(it)
+            speakerImageView.setImageDrawable(it)
         }
 
         Coil.load(context, imageUrl) {
@@ -270,17 +281,59 @@ class SessionDetailFragment : DaggerFragment() {
             transformations(CircleCropTransformation())
             lifecycle(viewLifecycleOwner)
             target {
-                textView.setLeftDrawable(it)
+                speakerImageView.setImageDrawable(it)
             }
         }
     }
 
-    fun TextView.setLeftDrawable(drawable: Drawable) {
+    private fun setUpMaterialData(session: Session) {
+        if (session is SpeechSession) {
+            session.videoUrl?.let {
+                setUpMovieView(it)
+            } ?: setUpNoMovieView()
+            session.slideUrl?.let {
+                setUpSlideView(it)
+            } ?: setUpNoSlideView()
+            return
+        }
+        setUpNoMovieView()
+        setUpNoSlideView()
+    }
+
+    private fun setUpNoMovieView() {
+        val icVideo = ContextCompat.getDrawable(requireContext(), R.drawable.ic_video_24dp)
+        icVideo?.let { binding.movie.setLeftDrawable(it, 24) }
+    }
+
+    private fun setUpMovieView(movieUrl: String) {
+        val icVideo =
+            ContextCompat.getDrawable(requireContext(), R.drawable.ic_video_light_blue_24dp)
+        icVideo?.let { binding.movie.setLeftDrawable(it, 24) }
+        binding.movie.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_blue_300))
+        binding.movie.setOnClickListener {
+            findNavController().navigate(actionSessionToChrome(movieUrl))
+        }
+    }
+
+    private fun setUpNoSlideView() {
+        val icSlide = ContextCompat.getDrawable(requireContext(), R.drawable.ic_slide_24dp)
+        icSlide?.let { binding.slide.setLeftDrawable(it, 24) }
+    }
+
+    private fun setUpSlideView(slideUrl: String) {
+        val icSlide =
+            ContextCompat.getDrawable(requireContext(), R.drawable.ic_slide_light_blue_24dp)
+        icSlide?.let { binding.slide.setLeftDrawable(it, 24) }
+        binding.slide.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_blue_300))
+        binding.slide.setOnClickListener {
+            findNavController().navigate(actionSessionToChrome(slideUrl))
+        }
+    }
+
+    private fun TextView.setLeftDrawable(drawable: Drawable, sizeDp: Int = 32) {
         val res = context.resources
-        val widthDp = 32
-        val heightDp = 32
-        val widthPx = (widthDp * res.displayMetrics.density).toInt()
-        val heightPx = (heightDp * res.displayMetrics.density).toInt()
+        val widthPx = (sizeDp * res.displayMetrics.density).toInt()
+        val heightPx = (sizeDp * res.displayMetrics.density).toInt()
         drawable.setBounds(0, 0, widthPx, heightPx)
         setCompoundDrawables(
             drawable, null, null, null
