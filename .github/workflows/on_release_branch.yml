@@ -33,6 +33,9 @@ jobs:
           ${{ runner.os }}-m2-
     - run: .github/android/create-aab.bash
       id: create-aab
+      env:
+        RELEASE_KEYSTORE_KEY_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}
+        RELEASE_KEYSTORE_STORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_STORE_PASSWORD }}
     - name: Store an aab to GitHub
       uses: actions/upload-artifact@v1
       with:
@@ -40,6 +43,9 @@ jobs:
         path: ${{ steps.create-aab.outputs.path }}
     - run: .github/android/create-universal-apk.bash ${{ steps.create-aab.outputs.path }}
       id: create-apk
+      env:
+        RELEASE_KEYSTORE_KEY_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}
+        RELEASE_KEYSTORE_STORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_STORE_PASSWORD }}
     - name: Store an apk to GitHub
       uses: actions/upload-artifact@v1
       with:
