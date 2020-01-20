@@ -51,6 +51,14 @@ jobs:
       with:
         name: apk
         path: ${{ steps.create-apk.outputs.path }}
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: Assembler
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: always()
 
   deploy-deploygate:
     needs: build
@@ -153,3 +161,11 @@ jobs:
       with:
         name: test-results
         path: ${{ env.JUNIT_TEST_RESULT_DIR }}
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: Linter
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: failure()
