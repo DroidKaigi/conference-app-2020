@@ -44,12 +44,10 @@ import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.defaultLang
-import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToChrome
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
-import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSurvey
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel

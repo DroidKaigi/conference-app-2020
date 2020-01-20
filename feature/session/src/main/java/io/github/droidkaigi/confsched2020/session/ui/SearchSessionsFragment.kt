@@ -94,7 +94,7 @@ class SearchSessionsFragment : DaggerFragment() {
         view?.let {
             val imm =
                 context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as? InputMethodManager
-            imm?.hideSoftInputFromWindow(it.windowToken, 0);
+            imm?.hideSoftInputFromWindow(it.windowToken, 0)
         }
     }
 

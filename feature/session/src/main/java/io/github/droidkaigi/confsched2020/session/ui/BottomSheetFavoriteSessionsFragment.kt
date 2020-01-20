@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
@@ -74,7 +73,7 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
         binding.expandLess.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
-        binding.sessionRecycler.doOnApplyWindowInsets { view, insets, initialState ->
+        binding.sessionRecycler.doOnApplyWindowInsets { _, insets, initialState ->
             view.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
         }
 
