@@ -78,6 +78,7 @@
                 android:layout_gravity="center_vertical|end"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_expand_less_12dp"
+                android:contentDescription="@null"
                 app:tint="?attr/colorPrimary" />
         </FrameLayout>
 
@@ -120,32 +121,29 @@
                 android:id="@+id/image_icon"
                 android:layout_width="56dp"
                 android:layout_height="72dp"
-                android:layout_marginStart="152dp"
-                android:layout_marginTop="112dp"
-                android:layout_marginEnd="152dp"
                 android:padding="0dp"
+                android:layout_marginBottom="24dp"
                 android:scaleType="centerCrop"
                 android:tint="?colorSecondary"
-                app:layout_constraintBottom_toBottomOf="@id/empty_session"
-                app:layout_constraintEnd_toEndOf="@id/empty_session"
-                app:layout_constraintStart_toStartOf="@id/empty_session"
-                app:layout_constraintTop_toTopOf="@id/empty_session"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/ic_bookmark_black_24dp" />
+                app:layout_constraintBottom_toTopOf="@+id/empty_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/ic_bookmark_black_24dp"
+                android:contentDescription="@null"
+                />
 
             <TextView
+                android:id="@+id/empty_text"
                 android:layout_width="280dp"
                 android:layout_height="72dp"
-                android:layout_marginTop="24dp"
                 android:gravity="center_horizontal"
                 android:lineSpacingMultiplier="1.5"
                 android:text="@string/empty_favorite_session"
                 android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
-                app:layout_constraintBottom_toBottomOf="@id/empty_session"
-                app:layout_constraintEnd_toEndOf="@id/empty_session"
-                app:layout_constraintStart_toStartOf="@id/empty_session"
-                app:layout_constraintTop_toBottomOf="@+id/image_icon"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
