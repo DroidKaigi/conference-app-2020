@@ -91,11 +91,8 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
                 super.onScrolled(recyclerView, dx, dy)
 
                 val scrollDirectionUp = -1
-                if (binding.sessionRecycler.canScrollVertically(scrollDirectionUp)) {
-                    binding.divider.elevation = 0f
-                } else {
-                    binding.divider.elevation = 10f
-                }
+                binding.dividerShadow.isVisible =
+                    binding.sessionRecycler.canScrollVertically(scrollDirectionUp)
             }
         })
         binding.startFilter.setOnClickListener {
