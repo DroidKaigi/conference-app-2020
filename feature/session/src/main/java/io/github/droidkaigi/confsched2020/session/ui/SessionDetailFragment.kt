@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -94,6 +95,7 @@ class SessionDetailFragment : DaggerFragment() {
             container,
             false
         )
+        activity!!.window.navigationBarColor = Color.parseColor("#88FFFFFF")
         return binding.root
     }
 
@@ -325,6 +327,11 @@ class SessionDetailFragment : DaggerFragment() {
         setCompoundDrawables(
             drawable, null, null, null
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activity!!.window.navigationBarColor = Color.parseColor("#00FFFFFF")
     }
 }
 
