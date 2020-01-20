@@ -217,13 +217,14 @@ class MainActivity : DaggerAppCompatActivity() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return
         val shortcutManager = getSystemService<ShortcutManager>(ShortcutManager::class.java)
 
+        // todo: Transition to floor map
         val map = ShortcutInfo.Builder(this, "map")
             .setShortLabel(getString(R.string.floor_map_shortcut_short_label1))
             .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
             .setIntent(Intent(Intent.ACTION_VIEW,
                 Uri.parse("https://www.mysite.example.com/")))
             .build()
-
+        // todo: Transition to My Plan
         val myPlan = ShortcutInfo.Builder(this, "my_plan")
             .setShortLabel(getString(R.string.my_plan_shortcut_short_label1))
             .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
