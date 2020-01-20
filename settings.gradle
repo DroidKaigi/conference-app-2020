@@ -23,4 +23,6 @@ enableFeaturePreview('GRADLE_METADATA')
 
 rootProject.name='conference-app-2020'
 
-apply from: "ios-settings.gradle"
+if (System.getenv("BUILD_IOS") == "true") {
+  include ':ios-combined'
+}
