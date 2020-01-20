@@ -1,5 +1,13 @@
 # require 'pry'
 
+# Report issues to only modified lines except simple messages and markdowns
+github.dismiss_out_of_range_messages = {
+  warning: true,
+  error: true,
+  message: false,
+  markdown: false
+}
+
 # Create inline comments to report warning or more serious issues which happen only on modified files
 android_lint.tap do |plugin|
   plugin.skip_gradle_task = true
