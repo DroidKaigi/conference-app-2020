@@ -31,8 +31,10 @@ unzip android-base/build/universal.apks -d android-base/build/outputs/universal-
 readonly path="$(find android-base/build/outputs/universal-apk -name '*.apk' | head -1)"
 
 if [[ -f "$path" ]]; then
+    github::debug "found an apk file at $path"
     github::set_output "path" "$path"
     github::set_output "hit" "true"
 else
+    github::debug "found an apk file"
     github::set_output "hit" "false"
 fi

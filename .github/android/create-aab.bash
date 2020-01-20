@@ -11,12 +11,11 @@ source $HOME/toolkit.sh
 
 readonly path="$(find android-base/build/outputs -name '*.aab' | head -1)"
 
-find android-base/build/outputs -name '*.aab' | head -1
-github::debug "$path"
-
 if [[ -f "$path" ]]; then
+    github::debug "found an aab file at $path"
     github::set_output "path" "$path"
     github::set_output "hit" "true"
 else
+    github::debug "could not find an aab file"
     github::set_output "hit" "false"
 fi
