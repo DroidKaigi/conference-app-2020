@@ -12,7 +12,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -269,16 +268,10 @@ class SessionsFragment : DaggerFragment() {
 
     private fun setupSessionsFragment() {
         val tab = SessionPage.pages[args.tabIndex]
-        val fragment: Fragment = when (tab) {
-            is SessionPage.Day -> {
-                BottomSheetDaySessionsFragment.newInstance(
-                    BottomSheetDaySessionsFragmentArgs(tab.day)
-                )
-            }
-            SessionPage.Favorite -> {
-                BottomSheetFavoriteSessionsFragment.newInstance()
-            }
-        }
+
+        val fragment = BottomSheetSessionsFragment.newInstance(
+            BottomSheetSessionsFragmentArgs(tab)
+        )
 
         childFragmentManager
             .beginTransaction()
@@ -326,12 +319,7 @@ abstract class SessionsFragmentModule {
     @ContributesAndroidInjector(
         modules = [SessionAssistedInjectModule::class]
     )
-    abstract fun contributeBottomSheetDaySessionsFragment(): BottomSheetDaySessionsFragment
-
-    @ContributesAndroidInjector(
-        modules = [SessionAssistedInjectModule::class]
-    )
-    abstract fun contributeBottomSheetFavoriteSessionsFragment(): BottomSheetFavoriteSessionsFragment
+    abstract fun contributeBottomSheetSessionsFragment(): BottomSheetSessionsFragment
 
     @Module
     companion object {
