@@ -1,7 +1,7 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
-import android.content.Context
 import android.text.method.LinkMovementMethod
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
@@ -11,7 +11,6 @@ import coil.transform.CircleCropTransformation
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
-import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
@@ -23,20 +22,9 @@ class SpeakerDetailItem @AssistedInject constructor(
     @Assisted @Named("transitionNameSuffix")
     val transitionNameSuffix: String,
     @Assisted val onImageLoadedCallback: () -> Unit,
-    private val context: Context,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
 ) : BindableItem<ItemSpeakerDetailBinding>(speaker.id.hashCode().toLong()),
     EqualableContentsProvider {
-
-    private val placeHolder = VectorDrawableCompat.create(
-        context.resources,
-        R.drawable.ic_person_outline_black_32dp,
-        null
-    )?.apply {
-        setTint(
-            context.getThemeColor(R.attr.colorOnBackground)
-        )
-    }
 
     override fun getLayout(): Int = R.layout.item_speaker_detail
 
@@ -48,12 +36,26 @@ class SpeakerDetailItem @AssistedInject constructor(
 
         speaker.imageUrl ?: onImageLoadedCallback()
 
+        val context = viewBinding.root.context
+        val placeHolder = VectorDrawableCompat.create(
+            context.resources,
+            R.drawable.ic_person_outline_black_32dp,
+            null
+        )?.apply {
+            setTint(
+                ContextCompat.getColor(context, R.color.speaker_icon)
+            )
+        }
+
         Coil.load(context, speaker.imageUrl) {
             crossfade(true)
             placeholder(placeHolder)
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
             target(
+                onStart = {
+                    viewBinding.speakerImage.setImageDrawable(it)
+                },
                 onSuccess = {
                     viewBinding.speakerImage.setImageDrawable(it)
                     onImageLoadedCallback()
