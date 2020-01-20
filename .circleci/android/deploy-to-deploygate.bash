@@ -7,7 +7,7 @@ die() {
   exit 1
 }
 
-if [[ ! $CIRCLE_BRANCH =~ ^(master|release)$ ]]; then
+if [[ $CIRCLE_BRANCH =~ ^(master|release)$ ]]; then
   echo "Skip deployment"
   exit 0
 fi
