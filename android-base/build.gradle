@@ -33,7 +33,6 @@ android {
         if (isReleaseBuild) {
             assert releaseKeystore.exists()
             assert System.getenv("RELEASE_KEYSTORE_STORE_PASSWORD")
-            assert System.getenv("RELEASE_KEYSTORE_KEY_ALIAS")
             assert System.getenv("RELEASE_KEYSTORE_KEY_PASSWORD")
         }
 
@@ -41,7 +40,7 @@ android {
             release {
                 storeFile releaseKeystore
                 storePassword System.getenv("RELEASE_KEYSTORE_STORE_PASSWORD")
-                keyAlias System.getenv("RELEASE_KEYSTORE_KEY_ALIAS")
+                keyAlias "droidkaigi"
                 keyPassword System.getenv("RELEASE_KEYSTORE_KEY_PASSWORD")
             }
         }
