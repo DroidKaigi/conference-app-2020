@@ -30,7 +30,7 @@ class SessionDetailItemDecoration(
         if (itemPosition == adapter.itemCount - 1) {
             // Last item
             bottomMargin += 18 * dp
-            if(item is SessionDetailSpeakerItem) {
+            if (item is SessionDetailSpeakerItem) {
                 // Last item is speaker
                 bottomMargin += 32 * dp
             }

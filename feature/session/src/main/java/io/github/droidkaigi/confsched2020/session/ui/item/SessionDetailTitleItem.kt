@@ -7,7 +7,6 @@ import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.defaultLang
-import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailTitleBinding
 

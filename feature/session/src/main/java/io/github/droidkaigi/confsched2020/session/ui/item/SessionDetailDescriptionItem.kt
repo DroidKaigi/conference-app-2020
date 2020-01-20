@@ -38,7 +38,7 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
         val textView = binding.sessionDescription
         textView.doOnPreDraw {
             textView.text = fullDescription
-            //Return here if not more than the specified number of rows
+            // Return here if not more than the specified number of rows
             if (!(textView.lineCount > ELLIPSIS_LINE_COUNT && showEllipsis)) return@doOnPreDraw
             val lastLineStartPosition = textView.layout.getLineStart(ELLIPSIS_LINE_COUNT - 1)
             val context = textView.context
