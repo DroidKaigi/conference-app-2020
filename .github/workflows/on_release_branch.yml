@@ -133,6 +133,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: .github/android/setup_env.bash
+    - run: .github/android/decrypt-files.bash
+      env:
+        GPG_ENCRYPTION_PASSWORD: ${{ secrets.GPG_ENCRYPTION_PASSWORD }}
     - uses: actions/setup-java@v1
       with:
         java-version: '8'
