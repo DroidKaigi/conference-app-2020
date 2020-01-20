@@ -3,12 +3,15 @@ package io.github.droidkaigi.confsched2020.session.ui
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.core.view.updatePadding
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -21,6 +24,7 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import dagger.android.support.DaggerFragment
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
@@ -35,12 +39,11 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewMod
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.ui.widget.FilterChip
 import io.github.droidkaigi.confsched2020.ui.widget.onCheckedChanged
-import io.github.droidkaigi.confsched2020.util.DaggerFragment
 import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
-class SessionsFragment : DaggerFragment(R.layout.fragment_sessions) {
+class SessionsFragment : DaggerFragment() {
 
     private var binding: FragmentSessionsBinding by autoCleared()
     private lateinit var overrideBackPressedCallback: OnBackPressedCallback
@@ -83,12 +86,23 @@ class SessionsFragment : DaggerFragment(R.layout.fragment_sessions) {
             }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_sessions,
+            container,
+            false
+        )
+        setHasOptionsMenu(true)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding = FragmentSessionsBinding.bind(view)
-        setHasOptionsMenu(true)
-
         initBottomSheetShapeAppearance()
         val initialPeekHeight = sessionSheetBehavior.peekHeight
         val gestureNavigationBottomSpace =

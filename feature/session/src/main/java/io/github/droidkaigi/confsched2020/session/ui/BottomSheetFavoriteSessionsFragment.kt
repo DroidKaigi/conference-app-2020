@@ -1,10 +1,12 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -13,6 +15,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
+import dagger.android.support.DaggerFragment
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
@@ -23,13 +26,11 @@ import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomShee
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
-import io.github.droidkaigi.confsched2020.util.DaggerFragment
 import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
-class BottomSheetFavoriteSessionsFragment :
-    DaggerFragment(R.layout.fragment_bottom_sheet_favorite_session) {
+class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
 
     private var binding: FragmentBottomSheetFavoriteSessionBinding by autoCleared()
 
@@ -49,13 +50,22 @@ class BottomSheetFavoriteSessionsFragment :
     @Inject
     lateinit var sessionItemFactory: SessionItem.Factory
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_bottom_sheet_favorite_session,
+            container,
+            false
+        )
+        return binding.apply { isEmptySessions = false }.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding = FragmentBottomSheetFavoriteSessionBinding.bind(view).apply {
-            isEmptySessions = false
-        }
-
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
         binding.startFilter.setOnClickListener {
