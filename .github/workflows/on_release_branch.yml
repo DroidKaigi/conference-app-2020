@@ -3,7 +3,7 @@ name: On release branch
 on:
   push:
     branches:
-      - "release-test/**"
+      # - "release-test/**"
       - master
       - release
     tags:
@@ -114,7 +114,7 @@ jobs:
           path: download-artifacts
       - run: .github/android/find-app-files.bash download-artifacts
         id: find-app-files
-      - run: .github/android/dump-version-name
+      - run: .github/android/dump-version-name.bash
         id: version-name
       - run: .ci/scripts/github-release/update-draft.bash
         env:
