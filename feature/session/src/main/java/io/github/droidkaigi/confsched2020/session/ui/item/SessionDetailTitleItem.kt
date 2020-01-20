@@ -27,14 +27,18 @@ class SessionDetailTitleItem @AssistedInject constructor(
             if (savedTag != newTag) {
                 binding.tags.removeAllViews()
                 val context = binding.tags.context
-                binding.tags.addView(Chip(context).apply {
-                    text = categoryLabel
-                    isClickable = false
-                })
-                binding.tags.addView(Chip(context).apply {
-                    text = langLabel
-                    isClickable = false
-                })
+                binding.tags.addView(
+                    Chip(context).apply {
+                        text = categoryLabel
+                        isClickable = false
+                    }
+                )
+                binding.tags.addView(
+                    Chip(context).apply {
+                        text = langLabel
+                        isClickable = false
+                    }
+                )
                 binding.tags.tag = newTag
             }
         }

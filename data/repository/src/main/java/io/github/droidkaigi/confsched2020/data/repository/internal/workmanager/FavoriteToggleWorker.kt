@@ -29,5 +29,3 @@ internal class FavoriteToggleWorker(
         const val INPUT_SESSION_ID_KEY = "INPUT_SESSION_ID_KEY"
     }
 }
-
-

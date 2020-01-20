@@ -43,7 +43,7 @@ class SpeakerItem @AssistedInject constructor(
                 .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX), extras)
         }
         viewBinding.name.text = speaker.name
-        viewBinding.image.transitionName = "${speaker.id}-${TRANSITION_NAME_SUFFIX}"
+        viewBinding.image.transitionName = "${speaker.id}-$TRANSITION_NAME_SUFFIX"
 
         imageRequestDisposables.clear()
         val imageUrl = speaker.imageUrl

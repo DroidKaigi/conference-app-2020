@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
 fun <T> Flow<T>.toLoadingState(): Flow<LoadState<T>> {
-    return map<T,LoadState<T>> { LoadState.Loaded(it) }
+    return map<T, LoadState<T>> { LoadState.Loaded(it) }
         .onStart {
             @Suppress("UNCHECKED_CAST")
             emit(LoadState.Loading as LoadState<T>)

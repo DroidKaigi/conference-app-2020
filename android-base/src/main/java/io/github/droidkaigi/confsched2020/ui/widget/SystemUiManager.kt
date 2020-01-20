@@ -66,10 +66,10 @@ class SystemUiManager(
         // Status bar color
         _statusBarColor.value =
             if ((isIndigoBackground == true || isNightMode()) && drawerIsOpened) {
-            COLOR_STATUS_BAR_VISIBLE
-        } else {
-            COLOR_STATUS_BAR_INVISIBLE
-        }
+                COLOR_STATUS_BAR_VISIBLE
+            } else {
+                COLOR_STATUS_BAR_INVISIBLE
+            }
     }
 
     private fun updateColorsPreM() {
@@ -86,10 +86,10 @@ class SystemUiManager(
         // Status bar color
         _statusBarColor.value =
             if (!(isIndigoBackground == true || isNightMode()) || drawerIsOpened) {
-            COLOR_STATUS_BAR_VISIBLE
-        } else {
-            COLOR_STATUS_BAR_INVISIBLE
-        }
+                COLOR_STATUS_BAR_VISIBLE
+            } else {
+                COLOR_STATUS_BAR_INVISIBLE
+            }
     }
 
     private fun isNightMode(): Boolean {
