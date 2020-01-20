@@ -59,6 +59,7 @@ final class SessionViewController: UIViewController {
             .drive(filterButton.rx.isSelected)
             .disposed(by: disposeBag)
 
+        /// TODO: Error handling for viewModel.sessions
         let dataSource = SessionViewDataSource()
         let filteredSessions = viewModel.sessions.asObservable()
             .map({ sessions -> [Session] in

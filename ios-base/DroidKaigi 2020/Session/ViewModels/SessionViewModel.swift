@@ -23,20 +23,10 @@ final class SessionViewModel {
 
         let dataProvider = SessionDataProvider()
 
-        let sessionsRequested = viewDidLoad.asObservable()
-            .flatMap { dataProvider.fetchSessions().materialize() }
-            .share()
-
-        // success
-        sessionsRequested
-            .flatMap { $0.element.map(Observable.just) ?? .empty() }
+        viewDidLoad.asObservable()
+            .flatMap { dataProvider.fetchSessions() }
             .bind(to: sessionsRelay)
             .disposed(by: disposeBag)
-
-        // failure
-        /// TODO: Error handling
-        sessionsRequested
-            .flatMap { $0.error.map(Observable.just) ?? .empty() }
 
         toggleEmbddedView
             .withLatestFrom(isFocusedOnEmbeddedViewRelay)

@@ -2,13 +2,13 @@ import ios_combined
 import RxSwift
 
 final class SessionDataProvider {
-    func fetchSessions() -> Observable<[Session]> {
-        return Observable.create { observer -> Disposable in
+    func fetchSessions() -> Single<[Session]> {
+        return Single.create { observer -> Disposable in
             ApiComponentKt.generateDroidKaigiApi().getSessions(callback: { response in
                 let model = ResponseToModelMapperKt.toModel(response)
-                observer.onNext(model.sessions)
+                observer(.success(model.sessions))
             }) { error in
-                observer.onError(KotlinError(localizedDescription: error.description()))
+                observer(.error(KotlinError(localizedDescription: error.description())))
             }
             return Disposables.create()
         }
