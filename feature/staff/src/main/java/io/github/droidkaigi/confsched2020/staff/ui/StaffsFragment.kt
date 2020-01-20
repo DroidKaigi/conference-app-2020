@@ -24,6 +24,7 @@ import io.github.droidkaigi.confsched2020.staff.databinding.FragmentStaffsBindin
 import io.github.droidkaigi.confsched2020.staff.ui.di.StaffAssistedInjectModule
 import io.github.droidkaigi.confsched2020.staff.ui.item.StaffItem
 import io.github.droidkaigi.confsched2020.staff.ui.viewmodel.StaffsViewModel
+import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
@@ -37,6 +38,12 @@ class StaffsFragment : Fragment() {
     lateinit var staffsFactory: Provider<StaffsViewModel>
     private val staffsViewModel by assistedViewModels {
         staffsFactory.get()
+    }
+
+    @Inject
+    lateinit var systemViewModelFactory: Provider<SystemViewModel>
+    private val systemViewModel by assistedViewModels {
+        systemViewModelFactory.get()
     }
 
     @Inject
@@ -80,7 +87,9 @@ class StaffsFragment : Fragment() {
                 staffItemFactory.create(it)
             })
 
-            uiModel.error?.printStackTrace()
+            uiModel.error?.let {
+                systemViewModel.onError(it)
+            }
         }
     }
 }
