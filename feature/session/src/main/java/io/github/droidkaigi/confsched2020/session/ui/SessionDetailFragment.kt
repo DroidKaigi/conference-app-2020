@@ -14,6 +14,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.xwray.groupie.Group
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -66,6 +67,8 @@ class SessionDetailFragment : DaggerFragment() {
         const val TRANSITION_NAME_SUFFIX = "detail"
     }
 
+    private var adapter: GroupAdapter<ViewHolder<*>> by autoCleared()
+
     @Inject
     lateinit var sessionDetailTitleItemFactory: SessionDetailTitleItem.Factory
 
@@ -100,6 +103,17 @@ class SessionDetailFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = GroupAdapter()
+        binding.sessionDetailRecycler.adapter = adapter
+        binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(context)
+        context?.let {
+            binding.sessionDetailRecycler.addItemDecoration(
+                SessionDetailItemDecoration(
+                    adapter,
+                    it
+                )
+            )
+        }
         progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
@@ -138,62 +152,48 @@ class SessionDetailFragment : DaggerFragment() {
     }
 
     private fun setupSessionViews(session: Session) {
-        if (binding.sessionDetailRecycler.adapter == null) {
-            val adapter = GroupAdapter<ViewHolder<*>>()
-            binding.sessionDetailRecycler.adapter = adapter
-            binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(context)
-            context?.let {
-                binding.sessionDetailRecycler.addItemDecoration(
-                    SessionDetailItemDecoration(
-                        adapter,
-                        it
-                    )
-                )
+        val items = mutableListOf<Group>()
+        items += sessionDetailTitleItemFactory.create(session)
+        items += sessionDetailDescriptionItemFactory.create(session)
+        if (session.hasIntendedAudience)
+            items += sessionDetailTargetItemFactory.create(session)
+        if (session.hasSpeaker) {
+            items += sessionDetailSpeakerSubtitleItemFactory.create()
+            var firstSpeaker = true
+            (session as? SpeechSession)?.speakers.orEmpty().indices.forEach { index ->
+                val speaker: Speaker =
+                    (session as? SpeechSession)?.speakers?.getOrNull(index)
+                        ?: return@forEach
+                items +=
+                    sessionDetailSpeakerItemFactory.create(
+                        speaker,
+                        firstSpeaker
+                    ) { extras ->
+                        findNavController()
+                            .navigate(
+                                actionSessionToSpeaker(
+                                    speaker.id,
+                                    TRANSITION_NAME_SUFFIX
+                                ),
+                                extras
+                            )
+                    }
+                firstSpeaker = false
             }
-            adapter.add(sessionDetailTitleItemFactory.create(session))
-            adapter.add(sessionDetailDescriptionItemFactory.create(session))
-            if (session.hasIntendedAudience)
-                adapter.add(sessionDetailTargetItemFactory.create(session))
-            if (session.hasSpeaker) {
-                adapter.add(sessionDetailSpeakerSubtitleItemFactory.create())
-                var firstSpeaker = true
-                (session as? SpeechSession)?.speakers.orEmpty().indices.forEach { index ->
-                    val speaker: Speaker =
-                        (session as? SpeechSession)?.speakers?.getOrNull(index)
-                            ?: return@forEach
-                    adapter.add(
-                        sessionDetailSpeakerItemFactory.create(
-                            speaker,
-                            firstSpeaker
-                        ) { extras ->
-                            findNavController()
-                                .navigate(
-                                    actionSessionToSpeaker(
-                                        speaker.id,
-                                        TRANSITION_NAME_SUFFIX
-                                    ),
-                                    extras
-                                )
-                        }
-                    )
-                    firstSpeaker = false
+        }
+        items += sessionDetailMaterialItemFactory.create(
+            session,
+            object : SessionDetailMaterialItem.Listener {
+                override fun onClickMovie(movieUrl: String) {
+                    findNavController().navigate(actionSessionToChrome(movieUrl))
+                }
+
+                override fun onClickSlide(slideUrl: String) {
+                    findNavController().navigate(actionSessionToChrome(slideUrl))
                 }
             }
-            adapter.add(
-                sessionDetailMaterialItemFactory.create(
-                    session,
-                    object : SessionDetailMaterialItem.Listener {
-                        override fun onClickMovie(movieUrl: String) {
-                            findNavController().navigate(actionSessionToChrome(movieUrl))
-                        }
-
-                        override fun onClickSlide(slideUrl: String) {
-                            findNavController().navigate(actionSessionToChrome(slideUrl))
-                        }
-                    }
-                )
-            )
-        }
+        )
+        adapter.update(items)
         binding.sessionFavorite.setOnClickListener {
             sessionDetailViewModel.favorite(session)
         }
