@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched2020.di
 
 import android.app.Application
+import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -36,6 +37,7 @@ interface AppComponent : AndroidInjector<App>, AppComponentInterface {
     override fun sessionRepository(): SessionRepository
     fun staffRepository(): StaffRepository
     fun contributorRepository(): ContributorRepository
+    fun appContext(): Context
 }
 
 fun Application.createAppComponent() = DaggerAppComponent.factory().create(this)

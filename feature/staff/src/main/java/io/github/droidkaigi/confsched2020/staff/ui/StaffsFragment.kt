@@ -1,5 +1,7 @@
 package io.github.droidkaigi.confsched2020.staff.ui
 
+import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -113,4 +115,6 @@ interface StaffComponent {
     }
 
     fun inject(fragment: StaffsFragment)
+
+    fun appContext(): Context
 }
