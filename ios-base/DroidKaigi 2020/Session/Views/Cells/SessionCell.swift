@@ -5,10 +5,10 @@ final class SessionCell: UICollectionViewCell {
     static let identifier = "SessionCell"
     static let rowHeight: CGFloat = 120
 
-    @IBOutlet weak var liveBatch: UIView! {
+    @IBOutlet weak var liveBadge: UIView! {
         didSet {
-            liveBatch.layer.cornerRadius = 5
-            liveBatch.clipsToBounds = true
+            liveBadge.layer.cornerRadius = 5
+            liveBadge.clipsToBounds = true
         }
     }
     @IBOutlet weak var bookmarkButton: UIButton! {

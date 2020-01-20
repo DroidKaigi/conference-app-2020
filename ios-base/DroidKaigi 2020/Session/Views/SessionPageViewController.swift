@@ -20,12 +20,12 @@ enum SessionViewControllerType: Int {
 
 final class SessionPageViewController: UIPageViewController {
 
-    let viewModel: SessionViewModel
+    private let viewModel: SessionViewModel
+
+    private var selectedViewControllerIndex: Int = 0
+    private var sessionViewControllers: [UIViewController] = []
 
     weak var filterViewControllerDelegate: FilterViewControllerDelegate?
-
-    var selectedViewControllerIndex: Int = 0
-    var sessionViewControllers: [UIViewController] = []
 
     init(viewModel: SessionViewModel, transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
         self.viewModel = viewModel

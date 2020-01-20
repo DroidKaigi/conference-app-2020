@@ -3,11 +3,7 @@ import MaterialComponents
 
 final class ApplicationScheme: NSObject {
 
-    private static var singleton = ApplicationScheme()
-
-    static var shared: ApplicationScheme {
-        return singleton
-    }
+    static let shared: ApplicationScheme = ApplicationScheme()
 
     public let colorScheme: MDCColorScheming = {
         return ApplicationScheme.semanticColorScheme
