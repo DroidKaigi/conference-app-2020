@@ -42,15 +42,9 @@ env:
 jobs:
   include:
     - stage: build-and-deploy
-      script: ./gradlew android-base:assembleDebug --offline
-      deploy:
-        provider: script
-        script: ./.travis/android/deploy.bash
-        on:
-          all_branches: true
-          tags: false
-          condition: "! $TRAVIS_BRANCH =~ ^(master|release)$"
-        skip_cleanup: true
+      script:
+        - ./gradlew android-base:assembleDebug --offline
+        - ./.travis/android/deploy.bash
     - stage: test
       script:
         - ./gradlew lintDebug testDebug ktlint --continue || true

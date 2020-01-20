@@ -7,6 +7,11 @@ die() {
   exit 1
 }
 
+if [[ ! $TRAVIS_BRANCH =~ ^(master|release)$ ]]; then
+  echo "Skip deployment"
+  exit 0
+fi
+
 readonly apk_path="$(find android-base -name '*.apk' | head -1)"
 
 curl -X POST \
