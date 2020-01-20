@@ -68,27 +68,22 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <FrameLayout
+        <ImageView
             android:id="@+id/expand_less"
-            android:layout_width="28dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:visibility="gone"
+            android:padding="16dp"
+            android:src="@drawable/ic_expand_less_12dp"
+            android:visibility="invisible"
             app:isInvisible="@{!isCollapsed}"
             app:layout_constraintBottom_toBottomOf="@id/start_filter"
             app:layout_constraintEnd_toEndOf="@id/start_filter"
             app:layout_constraintTop_toTopOf="@id/start_filter"
-            >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_expand_less_12dp"
-                app:tint="?attr/colorPrimary"
-                />
-        </FrameLayout>
+            app:tint="?attr/colorPrimary"
+            />
 
         <View
             android:id="@+id/divider"
@@ -125,40 +120,36 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/start_filter"
+            app:layout_constraintTop_toTopOf="parent"
             >
 
             <ImageView
-                android:id="@+id/image_icon"
+                android:id="@+id/empty_icon"
                 android:layout_width="56dp"
                 android:layout_height="72dp"
-                android:layout_marginStart="152dp"
-                android:layout_marginTop="112dp"
-                android:layout_marginEnd="152dp"
-                android:padding="0dp"
                 android:scaleType="centerCrop"
                 android:tint="?colorSecondary"
-                app:layout_constraintBottom_toBottomOf="@id/empty_session"
-                app:layout_constraintEnd_toEndOf="@id/empty_session"
-                app:layout_constraintStart_toStartOf="@id/empty_session"
-                app:layout_constraintTop_toTopOf="@id/empty_session"
-                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintBottom_toTopOf="@id/empty_message"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_bookmark_black_24dp"
                 />
 
             <TextView
+                android:id="@+id/empty_message"
                 android:layout_width="280dp"
-                android:layout_height="72dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:gravity="center_horizontal"
                 android:lineSpacingMultiplier="1.5"
                 android:text="@string/empty_favorite_session"
                 android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
-                app:layout_constraintBottom_toBottomOf="@id/empty_session"
-                app:layout_constraintEnd_toEndOf="@id/empty_session"
-                app:layout_constraintStart_toStartOf="@id/empty_session"
-                app:layout_constraintTop_toBottomOf="@+id/image_icon"
-                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/empty_icon"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
