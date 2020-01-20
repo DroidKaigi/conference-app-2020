@@ -129,7 +129,7 @@ internal class RoomDatabase @Inject constructor(
         }
     }
 
-    override suspend fun contributorList(): List<ContributorEntity> =
+    override fun contributorList(): Flow<List<ContributorEntity>> =
         contributorDao.allContributors()
 
     override suspend fun save(apiResponse: ContributorResponse) {

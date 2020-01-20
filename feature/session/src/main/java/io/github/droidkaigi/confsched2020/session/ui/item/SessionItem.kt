@@ -34,6 +34,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.Companion.actionSessionToSessionDetail
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
+import io.github.droidkaigi.confsched2020.ui.SpeakerPlaceholderCreator
 import io.github.droidkaigi.confsched2020.util.lazyWithParam
 import kotlin.math.max
 
@@ -147,23 +148,13 @@ class SessionItem @AssistedInject constructor(
 //        setHighlightText(textView, query)
         val imageUrl = speaker.imageUrl
         val context = speakerNameView.context
-        val placeHolder = run {
-            VectorDrawableCompat.create(
-                context.resources,
-                R.drawable.ic_person_outline_black_32dp,
-                null
-            )?.apply {
-                setTint(
-                    AppCompatResources.getColorStateList(context, R.color.speaker_icon).defaultColor
-                )
-            }
-        }?.also {
+        val placeholder = SpeakerPlaceholderCreator.create(context)?.also {
             speakerImageView.setImageDrawable(it)
         }
 
         imageRequestDisposables += Coil.load(context, imageUrl) {
             crossfade(true)
-            placeholder(placeHolder)
+            placeholder(placeholder)
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
             target {

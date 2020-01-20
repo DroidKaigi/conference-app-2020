@@ -19,6 +19,7 @@ import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSpeakerBinding
 import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragmentDirections.Companion.actionSessionToSpeaker
+import io.github.droidkaigi.confsched2020.ui.SpeakerPlaceholderCreator
 
 class SpeakerItem @AssistedInject constructor(
     @Assisted val speaker: Speaker,
@@ -48,23 +49,13 @@ class SpeakerItem @AssistedInject constructor(
         imageRequestDisposables.clear()
         val imageUrl = speaker.imageUrl
         val context = viewBinding.name.context
-        val placeHolder = run {
-            VectorDrawableCompat.create(
-                context.resources,
-                R.drawable.ic_person_outline_black_32dp,
-                null
-            )?.apply {
-                setTint(
-                    AppCompatResources.getColorStateList(context, R.color.speaker_icon).defaultColor
-                )
-            }
-        }?.also {
+        val placeholder = SpeakerPlaceholderCreator.create(context)?.also {
             viewBinding.image.setImageDrawable(it)
         }
 
         imageRequestDisposables += Coil.load(context, imageUrl) {
             crossfade(true)
-            placeholder(placeHolder)
+            placeholder(placeholder)
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
             target {

@@ -18,6 +18,7 @@ import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailSpeakerBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment
+import io.github.droidkaigi.confsched2020.ui.SpeakerPlaceholderCreator
 
 /**
  * @param first For setting margin by SessionDetailItemDecoration
@@ -52,23 +53,13 @@ class SessionDetailSpeakerItem @AssistedInject constructor(
 //        setHighlightText(textView, query)
         val imageUrl = speaker.imageUrl
         val context = speakerNameView.context
-        val placeHolder = run {
-            VectorDrawableCompat.create(
-                context.resources,
-                R.drawable.ic_person_outline_black_32dp,
-                null
-            )?.apply {
-                setTint(
-                    context.getThemeColor(R.attr.colorOnBackground)
-                )
-            }
-        }?.also {
+        val placeholder = SpeakerPlaceholderCreator.create(context)?.also {
             speakerImageView.setImageDrawable(it)
         }
 
         Coil.load(context, imageUrl) {
             crossfade(true)
-            placeholder(placeHolder)
+            placeholder(placeholder)
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
             target {
