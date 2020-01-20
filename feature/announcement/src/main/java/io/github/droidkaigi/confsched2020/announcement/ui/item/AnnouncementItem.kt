@@ -96,12 +96,15 @@ class AnnouncementItem @AssistedInject constructor(
                 }
                 val detailText = fullText.substring(0, lastLineStartPosition) + lastLineText
                 val text = buildSpannedString {
-                    clickableSpan(onClickListener, {
-                        append(detailText)
-                        color(ellipsisColor) {
-                            append(label)
+                    clickableSpan(
+                        onClickListener,
+                        {
+                            append(detailText)
+                            color(ellipsisColor) {
+                                append(label)
+                            }
                         }
-                    })
+                    )
                 }
                 setText(text, TextView.BufferType.SPANNABLE)
                 movementMethod = LinkMovementMethod.getInstance()
@@ -113,15 +116,18 @@ class AnnouncementItem @AssistedInject constructor(
         clickListener: () -> Unit,
         builderAction: SpannableStringBuilder.() -> Unit
     ) {
-        inSpans(object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                clickListener()
-            }
+        inSpans(
+            object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    clickListener()
+                }
 
-            override fun updateDrawState(ds: TextPaint) {
-                // NOP
-            }
-        }, builderAction)
+                override fun updateDrawState(ds: TextPaint) {
+                    // NOP
+                }
+            },
+            builderAction
+        )
     }
 
     @AssistedInject.Factory

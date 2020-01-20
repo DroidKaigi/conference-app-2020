@@ -58,12 +58,15 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
             }
             val detailText = fullDescription.substring(0, lastLineStartPosition) + lastLineText
             val text = buildSpannedString {
-                clickableSpan(onClickListener, {
-                    append(detailText)
-                    color(ellipsisColor) {
-                        append(ellipsis)
+                clickableSpan(
+                    onClickListener,
+                    {
+                        append(detailText)
+                        color(ellipsisColor) {
+                            append(ellipsis)
+                        }
                     }
-                })
+                )
             }
             textView.setText(text, TextView.BufferType.SPANNABLE)
             textView.movementMethod = LinkMovementMethod.getInstance()
@@ -74,15 +77,18 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
         clickListener: () -> Unit,
         builderAction: SpannableStringBuilder.() -> Unit
     ) {
-        inSpans(object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                clickListener()
-            }
+        inSpans(
+            object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    clickListener()
+                }
 
-            override fun updateDrawState(ds: TextPaint) {
-                // nothing
-            }
-        }, builderAction)
+                override fun updateDrawState(ds: TextPaint) {
+                    // nothing
+                }
+            },
+            builderAction
+        )
     }
 
     @AssistedInject.Factory

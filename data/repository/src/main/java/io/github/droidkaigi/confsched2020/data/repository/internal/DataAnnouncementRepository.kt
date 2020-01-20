@@ -9,10 +9,10 @@ import io.github.droidkaigi.confsched2020.model.Announcement
 import io.github.droidkaigi.confsched2020.model.Lang
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.model.repository.AnnouncementRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import java.util.Locale
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class DataAnnouncementRepository @Inject constructor(
     private val droidKaigiApi: DroidKaigiApi,

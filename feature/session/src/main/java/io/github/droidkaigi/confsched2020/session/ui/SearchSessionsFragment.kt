@@ -94,7 +94,7 @@ class SearchSessionsFragment : DaggerFragment() {
         view?.let {
             val imm =
                 context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as? InputMethodManager
-            imm?.hideSoftInputFromWindow(it.windowToken, 0);
+            imm?.hideSoftInputFromWindow(it.windowToken, 0)
         }
     }
 
@@ -103,23 +103,25 @@ class SearchSessionsFragment : DaggerFragment() {
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.searchSessionRecycler.adapter = groupAdapter
         context?.let {
-            binding.searchSessionRecycler.addItemDecoration(SearchItemDecoration(
-                it,
-                getGroupId = { position ->
-                    when (val item = groupAdapter.getItem(position)) {
-                        is SpeakerItem -> item.speaker.name[0].toUpperCase().toLong()
-                        is SessionItem -> item.title().getByLang(defaultLang())[0].toUpperCase().toLong()
-                        else -> SearchItemDecoration.EMPTY_ID
+            binding.searchSessionRecycler.addItemDecoration(
+                SearchItemDecoration(
+                    it,
+                    getGroupId = { position ->
+                        when (val item = groupAdapter.getItem(position)) {
+                            is SpeakerItem -> item.speaker.name[0].toUpperCase().toLong()
+                            is SessionItem -> item.title().getByLang(defaultLang())[0].toUpperCase().toLong()
+                            else -> SearchItemDecoration.EMPTY_ID
+                        }
+                    },
+                    getInitial = { position ->
+                        when (val item = groupAdapter.getItem(position)) {
+                            is SpeakerItem -> item.speaker.name[0].toUpperCase().toString()
+                            is SessionItem -> item.title().getByLang(defaultLang())[0].toUpperCase().toString()
+                            else -> SearchItemDecoration.DEFAULT_INITIAL
+                        }
                     }
-                },
-                getInitial = { position ->
-                    when (val item = groupAdapter.getItem(position)) {
-                        is SpeakerItem -> item.speaker.name[0].toUpperCase().toString()
-                        is SessionItem -> item.title().getByLang(defaultLang())[0].toUpperCase().toString()
-                        else -> SearchItemDecoration.DEFAULT_INITIAL
-                    }
-                }
-            ))
+                )
+            )
         }
         binding.searchSessionRecycler.doOnApplyWindowInsets { searchSessionRecycler, insets, initialState ->
             searchSessionRecycler.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
@@ -130,20 +132,24 @@ class SearchSessionsFragment : DaggerFragment() {
 
             if (uiModel.searchResult.speakers.isNotEmpty()) {
                 groupAdapter.add(sectionHeaderItemFactory.create(resources.getString(R.string.speaker)))
-                groupAdapter.addAll(uiModel.searchResult.speakers.map {
-                    speakerItemFactory.create(it)
-                }.sortedBy {
-                    it.speaker.name.toUpperCase(Locale.getDefault())
-                })
+                groupAdapter.addAll(
+                    uiModel.searchResult.speakers.map {
+                        speakerItemFactory.create(it)
+                    }.sortedBy {
+                        it.speaker.name.toUpperCase(Locale.getDefault())
+                    }
+                )
             }
 
             if (uiModel.searchResult.sessions.isNotEmpty()) {
                 groupAdapter.add(sectionHeaderItemFactory.create(resources.getString(R.string.session)))
-                groupAdapter.addAll(uiModel.searchResult.sessions.map {
-                    sessionItemFactory.create(it, sessionsViewModel)
-                }.sortedBy {
-                    it.title().getByLang(defaultLang())
-                })
+                groupAdapter.addAll(
+                    uiModel.searchResult.sessions.map {
+                        sessionItemFactory.create(it, sessionsViewModel)
+                    }.sortedBy {
+                        it.title().getByLang(defaultLang())
+                    }
+                )
             }
         }
     }
@@ -188,7 +194,8 @@ abstract class SearchSessionsFragmentModule {
     @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
+        @JvmStatic @Provides
+        fun providesLifecycleOwnerLiveData(
             searchSessionsFragment: SearchSessionsFragment
         ): LiveData<LifecycleOwner> {
             return searchSessionsFragment.viewLifecycleOwnerLiveData

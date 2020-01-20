@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
@@ -99,9 +98,11 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
                 count as Int
             )
             binding.isFiltered = uiModel.filters.isFiltered()
-            groupAdapter.update(sessions.map {
-                sessionItemFactory.create(it, sessionsViewModel)
-            })
+            groupAdapter.update(
+                sessions.map {
+                    sessionItemFactory.create(it, sessionsViewModel)
+                }
+            )
             val favoritedSessionsCount = sessions.count()
             binding.isEmptySessions = favoritedSessionsCount <= 0
         }

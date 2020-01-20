@@ -73,8 +73,7 @@ class SessionDetailViewModel @AssistedInject constructor(
                 .toAppError()
                 ?: favoriteState
                     .getErrorIfExists()
-                    .toAppError()
-            ,
+                    .toAppError(),
             session = sessions
         )
     }

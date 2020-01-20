@@ -18,7 +18,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.soywiz.klock.DateTime
-import com.soywiz.klock.hours
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -102,7 +101,7 @@ class MainSessionsFragment : DaggerFragment() {
             override fun getItemCount(): Int = SessionPage.pages.size
 
             override fun createFragment(position: Int): Fragment {
-               return SessionsFragment.newInstance(
+                return SessionsFragment.newInstance(
                     SessionsFragmentArgs(position)
                 )
             }
@@ -137,7 +136,7 @@ class MainSessionsFragment : DaggerFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.session_search -> {
                 findNavController().navigate(actionSessionToSearchSessions())
                 return false

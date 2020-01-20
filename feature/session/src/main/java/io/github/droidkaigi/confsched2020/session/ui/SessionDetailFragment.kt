@@ -161,18 +161,20 @@ class SessionDetailFragment : DaggerFragment() {
                     val speaker: Speaker =
                         (session as? SpeechSession)?.speakers?.getOrNull(index)
                             ?: return@forEach
-                    adapter.add(sessionDetailSpeakerItemFactory.create(
-                        speaker,
-                        firstSpeaker
-                    ) { extras ->
-                        findNavController()
-                            .navigate(
-                                actionSessionToSpeaker(
-                                    speaker.id,
-                                    TRANSITION_NAME_SUFFIX
-                                ), extras
-                            )
-                    }
+                    adapter.add(
+                        sessionDetailSpeakerItemFactory.create(
+                            speaker,
+                            firstSpeaker
+                        ) { extras ->
+                            findNavController()
+                                .navigate(
+                                    actionSessionToSpeaker(
+                                        speaker.id,
+                                        TRANSITION_NAME_SUFFIX
+                                    ),
+                                    extras
+                                )
+                        }
                     )
                     firstSpeaker = false
                 }
@@ -188,7 +190,8 @@ class SessionDetailFragment : DaggerFragment() {
                         override fun onClickSlide(slideUrl: String) {
                             findNavController().navigate(actionSessionToChrome(slideUrl))
                         }
-                    })
+                    }
+                )
             )
         }
         binding.sessionFavorite.setOnClickListener {
@@ -203,7 +206,8 @@ abstract class SessionDetailFragmentModule {
     @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
+        @JvmStatic @Provides
+        fun providesLifecycleOwnerLiveData(
             sessionDetailFragment: SessionDetailFragment
         ): LiveData<LifecycleOwner> {
             return sessionDetailFragment.viewLifecycleOwnerLiveData
