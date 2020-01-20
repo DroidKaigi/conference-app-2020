@@ -114,6 +114,7 @@ class SessionDetailFragment : DaggerFragment() {
                 )
             )
         }
+        
         progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
