@@ -3,10 +3,13 @@ package io.github.droidkaigi.confsched2020
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.IdRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -93,6 +96,7 @@ class MainActivity : DaggerAppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         setupNavigation()
         setupStatusBarColors()
+        setupSearchView()
 
         binding.drawerLayout.doOnApplyWindowInsets { _, insets, _ ->
             binding.drawerLayout.setChildInsetsWorkAround(insets)
@@ -132,13 +136,38 @@ class MainActivity : DaggerAppCompatActivity() {
                 )
                 .show()
         }
+    }
+
+    private fun setupSearchView() {
+        val searchView = binding.searchView
 
         // adjust searchView margin
-        val layout = binding.searchView.findViewById<LinearLayout>(R.id.search_edit_frame)
+        val layout = searchView.findViewById<LinearLayout>(R.id.search_edit_frame)
         (layout.layoutParams as? LinearLayout.LayoutParams)?.let {
             it.marginStart = 0
             it.leftMargin = 0
         }
+
+        searchView.isIconified = false
+        (searchView.findViewById(androidx.appcompat.R.id.search_button) as ImageView).setColorFilter(
+            ContextCompat.getColor(baseContext, R.color.search_icon)
+        )
+        (searchView.findViewById(androidx.appcompat.R.id.search_close_btn) as ImageView).setColorFilter(
+            ContextCompat.getColor(baseContext, R.color.search_close_icon)
+        )
+        searchView.isIconified = false
+        searchView.queryHint = resources.getString(R.string.query_hint)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(s: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(s: String): Boolean {
+                // https://github.com/DroidKaigi/conference-app-2020/issues/101#issuecomment-576210780
+//                searchSessionsViewModel.updateSearchQuery(s)
+                return false
+            }
+        })
     }
 
     @SuppressLint("RestrictedApi")

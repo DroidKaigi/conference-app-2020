@@ -145,20 +145,12 @@ class SearchSessionsFragment : DaggerFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 //        super.onCreateOptionsMenu(menu, inflater)
-//        inflater.inflate(R.menu.menu_search_sessions, menu)
-//        val searchView = menu.findItem(R.id.search_view).actionView as SearchView
-//        (searchView.findViewById(androidx.appcompat.R.id.search_button) as ImageView).setColorFilter(
-//            ContextCompat.getColor(requireContext(), R.color.search_icon)
-//        )
-//        (searchView.findViewById(androidx.appcompat.R.id.search_close_btn) as ImageView).setColorFilter(
-//            ContextCompat.getColor(requireContext(), R.color.search_close_icon)
-//        )
-//        searchView.isIconified = false
+
 //        val searchResult = searchSessionsViewModel.uiModel.requireValue().searchResult
 //        if (!searchResult.isEmpty()) {
 //            searchView.setQuery(searchResult.query, false)
 //        }
-//        searchView.queryHint = resources.getString(R.string.query_hint)
+
 //        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 //            override fun onQueryTextSubmit(s: String): Boolean {
 //                return false
