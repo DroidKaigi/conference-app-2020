@@ -22,7 +22,7 @@ commands:
       - run: .circleci/android/create-cache-key.bash > ~/android.md5
       - restore_cache:
           keys:
-            - &key_restore_gradle_cache gradle-cache-<< parameters.version >>-{{ checksum "~/android.md5 }}
+            - &key_restore_gradle_cache gradle-cache-<< parameters.version >>-{{ checksum "~/android.md5" }}
             - gradle-cache-<< parameters.version >>-
       - run: .circleci/retry_command.bash ./gradlew androidDependenciesExtra dependencies
       - run: rm -f ~/.gradle/caches/modules-2/modules-2.lock ~/.gradle/caches/*/plugin-resolution/
