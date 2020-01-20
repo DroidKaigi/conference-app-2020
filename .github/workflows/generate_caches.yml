@@ -1,8 +1,9 @@
 name: Genarate caches
 
-push:
-  branches:
-    - master # specify default branch and main base branches of pull request
+on:
+  push:
+    branches:
+      - master # specify default branch and main base branches of pull request
 
 jobs:
   ganerate-m2-cache:
