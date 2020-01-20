@@ -51,10 +51,7 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Understanding Kotlin " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9um-YV-m4J">
-                        <rect key="frame" x="76" y="41" width="187.5" height="24.5"/>
-                        <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24.5" id="kPz-Nd-wl2"/>
-                        </constraints>
+                        <rect key="frame" x="76" y="41" width="187.5" height="24"/>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -68,7 +65,7 @@
                         <state key="normal" image="ic_bookmark_border"/>
                     </button>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="rMR-Ci-Z50">
-                        <rect key="frame" x="76" y="66" width="187.5" height="40"/>
+                        <rect key="frame" x="76" y="65.5" width="187.5" height="40.5"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" id="PQ4-Ov-b0v"/>
                         </constraints>
