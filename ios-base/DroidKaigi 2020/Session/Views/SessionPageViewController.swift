@@ -11,7 +11,7 @@ enum SessionViewControllerType: Int {
         case .day1:
             return calendar.date(from: .init(year: 2020, month: 2, day: 20))
         case .day2:
-            return calendar.date(from: .init(year: 2020, month: 2, day: 20))
+            return calendar.date(from: .init(year: 2020, month: 2, day: 21))
         case .myPlan:
             return nil
         }
