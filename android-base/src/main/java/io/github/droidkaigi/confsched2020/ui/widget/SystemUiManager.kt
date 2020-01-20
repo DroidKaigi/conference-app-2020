@@ -2,12 +2,12 @@ package io.github.droidkaigi.confsched2020.ui.widget
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import io.github.droidkaigi.confsched2020.ext.isNightMode
 
 class SystemUiManager(
     val context: Context
@@ -54,7 +54,7 @@ class SystemUiManager(
         // | No                | Black/Invisible | Black/Invisible |
 
         // Icon color: change based on theme with View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        _systemUiVisibility.value = if (isIndigoBackground == true || isNightMode()) {
+        _systemUiVisibility.value = if (isIndigoBackground == true || context.isNightMode()) {
             0
         } else {
             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -65,7 +65,7 @@ class SystemUiManager(
 
         // Status bar color
         _statusBarColor.value =
-            if ((isIndigoBackground == true || isNightMode()) && drawerIsOpened) {
+            if ((isIndigoBackground == true || context.isNightMode()) && drawerIsOpened) {
             COLOR_STATUS_BAR_VISIBLE
         } else {
             COLOR_STATUS_BAR_INVISIBLE
@@ -85,21 +85,10 @@ class SystemUiManager(
 
         // Status bar color
         _statusBarColor.value =
-            if (!(isIndigoBackground == true || isNightMode()) || drawerIsOpened) {
+            if (!(isIndigoBackground == true || context.isNightMode()) || drawerIsOpened) {
             COLOR_STATUS_BAR_VISIBLE
         } else {
             COLOR_STATUS_BAR_INVISIBLE
-        }
-    }
-
-    private fun isNightMode(): Boolean {
-        val nightModeFlags =
-            context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return when (nightModeFlags) {
-            Configuration.UI_MODE_NIGHT_YES -> true
-            Configuration.UI_MODE_NIGHT_NO -> false
-            Configuration.UI_MODE_NIGHT_UNDEFINED -> false
-            else -> false
         }
     }
 
