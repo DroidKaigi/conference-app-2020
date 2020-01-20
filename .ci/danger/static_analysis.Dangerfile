@@ -36,6 +36,10 @@ checkstyle_reports.tap do |plugin|
 end
 
 # If everything is okay, say LGTM to the author
-if (status_report[:errors] + status_report[:warnings]).empty?
+return unless status_report[:errors].empty?
+
+if status_report[:warnings].empty?
   markdown("No issue was reported. Cool!")
+else
+  markdown("No error was reported but at least one warning was found.")
 end
