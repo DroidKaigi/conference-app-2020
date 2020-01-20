@@ -6,14 +6,12 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
 import coil.request.RequestDisposable

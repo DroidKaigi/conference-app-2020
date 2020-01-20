@@ -5,7 +5,6 @@ import android.text.method.LinkMovementMethod
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
 import coil.transform.CircleCropTransformation

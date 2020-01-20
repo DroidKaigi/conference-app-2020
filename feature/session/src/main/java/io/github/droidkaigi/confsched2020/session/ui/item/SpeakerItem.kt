@@ -1,11 +1,9 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
 import coil.request.RequestDisposable

@@ -6,14 +6,12 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
-import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailSpeakerBinding
