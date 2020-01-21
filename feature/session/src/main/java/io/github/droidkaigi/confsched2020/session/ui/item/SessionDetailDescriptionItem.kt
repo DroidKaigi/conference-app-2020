@@ -15,6 +15,7 @@ import androidx.core.view.doOnPreDraw
 import androidx.transition.TransitionManager
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.session.R
@@ -32,6 +33,8 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
     private var showEllipsis = true
 
     override fun getLayout() = R.layout.item_session_detail_description
+
+    override fun isSameAs(other: Item<*>?): Boolean = other is SessionDetailDescriptionItem
 
     override fun bind(binding: ItemSessionDetailDescriptionBinding, position: Int) {
         val fullDescription = session.desc

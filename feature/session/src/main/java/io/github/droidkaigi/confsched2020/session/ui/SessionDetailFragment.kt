@@ -14,6 +14,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.xwray.groupie.Group
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
@@ -113,6 +114,10 @@ class SessionDetailFragment : DaggerFragment() {
                     it
                 )
             )
+        }
+        val itemAnimator = binding.sessionDetailRecycler.itemAnimator
+        if (itemAnimator is SimpleItemAnimator) {
+            itemAnimator.supportsChangeAnimations = false
         }
 
         progressTimeLatch = ProgressTimeLatch { showProgress ->
