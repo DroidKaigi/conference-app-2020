@@ -48,7 +48,8 @@ open class App : DaggerApplication(), AppComponentHolder {
     private fun setupNightMode() {
 
         val nightMode = when {
-            PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean(SWITCH_DARK_THEME_KEY, false) -> {
+            PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                .getBoolean(SWITCH_DARK_THEME_KEY, false) -> {
                 AppCompatDelegate.MODE_NIGHT_YES
             }
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
