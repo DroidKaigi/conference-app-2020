@@ -9,6 +9,7 @@
         android:id="@+id/session"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
         tools:context="io.github.droidkaigi.confsched2020.session.ui.SessionPagesFragment"
         >
 
