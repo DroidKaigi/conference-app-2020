@@ -46,7 +46,7 @@ class ContributorsFragment : Fragment() {
 
     private var binding: FragmentContributorsBinding by autoCleared()
     private var progressTimeLatch: ProgressTimeLatch by autoCleared()
-    private val groupAdapter = GroupAdapter<ViewHolder<*>>()
+    private var groupAdapter: GroupAdapter<ViewHolder<*>> by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,6 +66,7 @@ class ContributorsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         inject()
 
+        groupAdapter = GroupAdapter()
         binding.contributorRecycler.adapter = groupAdapter
 
         progressTimeLatch = ProgressTimeLatch { showProgress ->
