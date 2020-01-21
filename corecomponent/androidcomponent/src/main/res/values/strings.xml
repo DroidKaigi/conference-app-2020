@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Session -->
     <string name="session_label">Session</string>
     <!-- Speaker -->
@@ -34,9 +34,25 @@
     <string name="notification_message_session_start_time">%1$s to %2$s @ %3$s</string>
     <!-- Tabular Form -->
     <string name="tabular_form_label">Timetable</string>
-
+    <!-- Preference -->
     <string name="theme_label" translatable="false">Theme</string>
     <string name="dark_theme_label" translatable="false">Dark theme</string>
+    <string name="pref_theme_value_default" translatable="false">default</string>
+    <string name="pref_theme_value_light" translatable="false">light</string>
+    <string name="pref_theme_value_dark" translatable="false">dark</string>
+    <string name="pref_theme_entry_default">System default</string>
+    <string name="pref_theme_entry_light">Light</string>
+    <string name="pref_theme_entry_dark">Dark</string>
+    <!-- override in v29 -->
+    <string name="pref_theme_default" translatable="false">@string/pref_theme_value_light</string>
+    <string-array name="pref_theme_entries" tools:ignore="InconsistentArrays">
+        <item>@string/pref_theme_entry_light</item>
+        <item>@string/pref_theme_entry_dark</item>
+    </string-array>
+    <string-array name="pref_theme_entry_values" tools:ignore="InconsistentArrays">
+        <item>@string/pref_theme_value_light</item>
+        <item>@string/pref_theme_value_dark</item>
+    </string-array>
 
     <string name="error_network" translatable="false">A network error has occurred.Please try again.</string>
     <string name="error_server" translatable="false">A server error has occurred.Please try again.</string>
