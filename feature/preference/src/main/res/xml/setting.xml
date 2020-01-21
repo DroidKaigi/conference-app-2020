@@ -10,7 +10,7 @@
             android:title="@string/dark_theme_label"
             android:entries="@array/pref_theme_entries"
             android:entryValues="@array/pref_theme_entry_values"
-            android:defaultValue="@string/pref_theme_value_default"
+            android:defaultValue="@string/pref_theme_default"
             android:summary="%s"
             />
     </PreferenceCategory>
