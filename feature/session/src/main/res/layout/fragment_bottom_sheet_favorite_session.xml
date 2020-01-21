@@ -149,7 +149,6 @@
                 app:layout_constraintTop_toTopOf="@id/empty_session"
                 app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/ic_bookmark_black_24dp"
-                tools:ignore="ContentDescription"
                 />
 
             <TextView
