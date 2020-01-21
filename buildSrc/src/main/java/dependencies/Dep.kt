@@ -19,8 +19,10 @@ object Dep {
     object Test {
         val junit = "junit:junit:4.12"
         val testRunner = "androidx.test:runner:1.3.0-alpha02"
-        val testCore = "androidx.test:core:1.1.0"
-        val androidJunit4 = "androidx.test.ext.junit:1.1.0"
+        val testRules = "androidx.test:rules:1.3.0-alpha02"
+        val testCoreKtx = "androidx.test:core-ktx:1.2.1-alpha02"
+        val androidJunit4Ktx = "androidx.test.ext:junit-ktx:1.1.2-alpha02"
+        val orchestrator = "androidx.test:orchestrator:1.3.0-alpha02"
         val archCore = "androidx.arch.core:core-testing:2.1.0"
         val liveDataTestingKtx = "com.jraska.livedata:testing-ktx:1.1.0"
         val espressoCore = "androidx.test.espresso:espresso-core:3.3.0-alpha02"
@@ -65,11 +67,8 @@ object Dep {
         }
 
         object Navigation {
-            val version = "2.2.0-beta01"
-            val runtime = "androidx.navigation:navigation-runtime:$version"
+            val version = "2.2.0-rc04"
             val runtimeKtx = "androidx.navigation:navigation-runtime-ktx:$version"
-            val fragment = "androidx.navigation:navigation-fragment:$version"
-            val ui = "androidx.navigation:navigation-ui:$version"
             val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
         }
@@ -135,12 +134,12 @@ object Dep {
         val android = "com.google.dagger:dagger-android:$version"
         val androidProcessor = "com.google.dagger:dagger-android-processor:$version"
         val assistedInjectAnnotations =
-            "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.0"
-        val assistedInjectProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:0.5.0"
+            "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2"
+        val assistedInjectProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:0.5.2"
     }
 
     object Ktor {
-        val version = "1.3.0-beta-2"
+        val version = "1.3.0"
         val clientCommon = "io.ktor:ktor-client-core:$version"
         val clientAndroid = "io.ktor:ktor-client-okhttp:$version"
         val clientIos = "io.ktor:ktor-client-ios:$version"

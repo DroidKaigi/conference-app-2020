@@ -91,8 +91,8 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
         binding.expandLess.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
-        binding.sessionRecycler.doOnApplyWindowInsets { view, insets, initialState ->
-            view.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+        binding.sessionRecycler.doOnApplyWindowInsets { sessionRecycler, insets, initialState ->
+            sessionRecycler.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
         }
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
@@ -129,9 +129,11 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
                 count as Int
             )
             binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()
-            groupAdapter.update(sessions.map {
-                sessionItemFactory.create(it, sessionsViewModel)
-            })
+            groupAdapter.update(
+                sessions.map {
+                    sessionItemFactory.create(it, sessionsViewModel)
+                }
+            )
             uiModel.error?.let {
                 systemViewModel.onError(it)
             }

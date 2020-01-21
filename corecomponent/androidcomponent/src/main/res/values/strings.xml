@@ -3,6 +3,8 @@
     <string name="session_label">Session</string>
     <!-- Speaker -->
     <string name="speaker_label" translatable="false">Speaker</string>
+    <!-- Material -->
+    <string name="material_label" translatable="false">Material</string>
     <!-- Announce -->
     <string name="announce_label">Announce</string>
     <!-- About -->
@@ -34,7 +36,7 @@
     <string name="tabular_form_label">Timetable</string>
 
     <string name="theme_label" translatable="false">Theme</string>
-    <string name="dark_theme_label" translatable="false">DarkTheme</string>
+    <string name="dark_theme_label" translatable="false">Dark theme</string>
 
     <string name="error_network" translatable="false">A network error has occurred.Please try again.</string>
     <string name="error_server" translatable="false">A server error has occurred.Please try again.</string>

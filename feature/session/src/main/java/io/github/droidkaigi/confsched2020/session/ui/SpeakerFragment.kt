@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
@@ -11,6 +12,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
+import androidx.transition.TransitionInflater
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -23,6 +25,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.FragmentSpeakerBin
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerDetailItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerSessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SpeakerViewModel
+import io.github.droidkaigi.confsched2020.util.AndroidRTransition
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
@@ -42,6 +45,14 @@ class SpeakerFragment : DaggerFragment() {
     private val navArgs: SpeakerFragmentArgs by navArgs()
     private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = TransitionInflater.from(requireContext())
+            .inflateTransition(AndroidRTransition.move).apply {
+                interpolator = AccelerateDecelerateInterpolator()
+            }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,6 +69,7 @@ class SpeakerFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
         progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
@@ -74,8 +86,11 @@ class SpeakerFragment : DaggerFragment() {
                 val sessions = uiModel.sessions.takeIf { it.isNotEmpty() } ?: return@observe
 
                 groupAdapter.update(
-                    listOf(speakerDetailItemFactory.create(speaker)) +
-                        sessions.map { speakerSessionItemFactory.create(it) }
+                    listOf(
+                        speakerDetailItemFactory.create(speaker, navArgs.transitionNameSuffix) {
+                            startPostponedEnterTransition()
+                        }
+                    ) + sessions.map { speakerSessionItemFactory.create(it) }
                 )
             }
     }
@@ -86,7 +101,8 @@ abstract class SpeakerFragmentModule {
     @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
+        @JvmStatic @Provides
+        fun providesLifecycleOwnerLiveData(
             speakerFragment: SpeakerFragment
         ): LiveData<LifecycleOwner> {
             return speakerFragment.viewLifecycleOwnerLiveData

@@ -21,6 +21,7 @@ import io.github.droidkaigi.confsched2020.App
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.isNightMode
 import io.github.droidkaigi.confsched2020.preference.R
 import io.github.droidkaigi.confsched2020.preference.ui.di.PreferenceAssistedInjectModule
 import io.github.droidkaigi.confsched2020.preference.ui.viewmodel.PreferenceViewModel

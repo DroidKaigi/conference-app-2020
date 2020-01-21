@@ -9,8 +9,7 @@ import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.internal.ViewUtils.doOnApplyWindowInsets
+import androidx.navigation.Navigation
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -78,9 +77,9 @@ class AboutFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
-        binding.staffs.setOnClickListener {
-            findNavController().navigate(AboutFragmentDirections.actionAboutToStaffs())
-        }
+        binding.staffs.setOnClickListener(
+            Navigation.createNavigateOnClickListener(AboutFragmentDirections.actionAboutToStaffs())
+        )
         // TODO: Add AboutUI into RecyclerView
     }
 }
