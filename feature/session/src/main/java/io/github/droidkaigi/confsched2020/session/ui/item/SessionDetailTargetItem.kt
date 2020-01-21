@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched2020.session.ui.item
 
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SpeechSession
@@ -20,6 +21,8 @@ class SessionDetailTargetItem @AssistedInject constructor(
         binding.session = session
         binding.speechSession = (session as? SpeechSession)
     }
+
+    override fun isSameAs(other: Item<*>?) = other is SessionDetailTargetItem
 
     @AssistedInject.Factory
     interface Factory {

@@ -1,11 +1,3 @@
-//
-//  DroidKaigi_2020UITests.swift
-//  DroidKaigi 2020UITests
-//
-//  Created by takahiro menju on 2019/12/10.
-//  Copyright © 2019 DroidKaigi. All rights reserved.
-//
-
 import XCTest
 
 class DroidKaigi_2020UITests: XCTestCase {

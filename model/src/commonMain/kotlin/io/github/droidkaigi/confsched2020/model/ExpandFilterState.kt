@@ -5,10 +5,10 @@ enum class ExpandFilterState {
     CHANGING,
     COLLAPSED;
     fun toggledState(): ExpandFilterState {
-        if (this == EXPANDED){
+        if (this == EXPANDED) {
             return COLLAPSED
         }
-        if (this == COLLAPSED){
+        if (this == COLLAPSED) {
             return EXPANDED
         }
         return this

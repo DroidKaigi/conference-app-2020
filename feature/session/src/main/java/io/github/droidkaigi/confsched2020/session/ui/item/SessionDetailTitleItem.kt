@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2020.session.ui.item
 import com.google.android.material.chip.Chip
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SpeechSession
@@ -27,18 +28,24 @@ class SessionDetailTitleItem @AssistedInject constructor(
             if (savedTag != newTag) {
                 binding.tags.removeAllViews()
                 val context = binding.tags.context
-                binding.tags.addView(Chip(context).apply {
-                    text = categoryLabel
-                    isClickable = false
-                })
-                binding.tags.addView(Chip(context).apply {
-                    text = langLabel
-                    isClickable = false
-                })
+                binding.tags.addView(
+                    Chip(context).apply {
+                        text = categoryLabel
+                        isClickable = false
+                    }
+                )
+                binding.tags.addView(
+                    Chip(context).apply {
+                        text = langLabel
+                        isClickable = false
+                    }
+                )
                 binding.tags.tag = newTag
             }
         }
     }
+
+    override fun isSameAs(other: Item<*>?) = other is SessionDetailTitleItem
 
     @AssistedInject.Factory
     interface Factory {

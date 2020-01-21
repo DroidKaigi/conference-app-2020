@@ -14,6 +14,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
+import com.xwray.groupie.Group
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -66,6 +68,8 @@ class SessionDetailFragment : DaggerFragment() {
         const val TRANSITION_NAME_SUFFIX = "detail"
     }
 
+    private var adapter: GroupAdapter<ViewHolder<*>> by autoCleared()
+
     @Inject
     lateinit var sessionDetailTitleItemFactory: SessionDetailTitleItem.Factory
 
@@ -100,6 +104,22 @@ class SessionDetailFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = GroupAdapter()
+        binding.sessionDetailRecycler.adapter = adapter
+        binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(context)
+        context?.let {
+            binding.sessionDetailRecycler.addItemDecoration(
+                SessionDetailItemDecoration(
+                    adapter,
+                    it
+                )
+            )
+        }
+        val itemAnimator = binding.sessionDetailRecycler.itemAnimator
+        if (itemAnimator is SimpleItemAnimator) {
+            itemAnimator.supportsChangeAnimations = false
+        }
+
         progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
@@ -138,30 +158,20 @@ class SessionDetailFragment : DaggerFragment() {
     }
 
     private fun setupSessionViews(session: Session) {
-        if (binding.sessionDetailRecycler.adapter == null) {
-            val adapter = GroupAdapter<ViewHolder<*>>()
-            binding.sessionDetailRecycler.adapter = adapter
-            binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(context)
-            context?.let {
-                binding.sessionDetailRecycler.addItemDecoration(
-                    SessionDetailItemDecoration(
-                        adapter,
-                        it
-                    )
-                )
-            }
-            adapter.add(sessionDetailTitleItemFactory.create(session))
-            adapter.add(sessionDetailDescriptionItemFactory.create(session))
-            if (session.hasIntendedAudience)
-                adapter.add(sessionDetailTargetItemFactory.create(session))
-            if (session.hasSpeaker) {
-                adapter.add(sessionDetailSpeakerSubtitleItemFactory.create())
-                var firstSpeaker = true
-                (session as? SpeechSession)?.speakers.orEmpty().indices.forEach { index ->
-                    val speaker: Speaker =
-                        (session as? SpeechSession)?.speakers?.getOrNull(index)
-                            ?: return@forEach
-                    adapter.add(sessionDetailSpeakerItemFactory.create(
+        val items = mutableListOf<Group>()
+        items += sessionDetailTitleItemFactory.create(session)
+        items += sessionDetailDescriptionItemFactory.create(session)
+        if (session.hasIntendedAudience)
+            items += sessionDetailTargetItemFactory.create(session)
+        if (session.hasSpeaker) {
+            items += sessionDetailSpeakerSubtitleItemFactory.create()
+            var firstSpeaker = true
+            (session as? SpeechSession)?.speakers.orEmpty().indices.forEach { index ->
+                val speaker: Speaker =
+                    (session as? SpeechSession)?.speakers?.getOrNull(index)
+                        ?: return@forEach
+                items +=
+                    sessionDetailSpeakerItemFactory.create(
                         speaker,
                         firstSpeaker
                     ) { extras ->
@@ -170,27 +180,26 @@ class SessionDetailFragment : DaggerFragment() {
                                 actionSessionToSpeaker(
                                     speaker.id,
                                     TRANSITION_NAME_SUFFIX
-                                ), extras
+                                ),
+                                extras
                             )
                     }
-                    )
-                    firstSpeaker = false
+                firstSpeaker = false
+            }
+        }
+        items += sessionDetailMaterialItemFactory.create(
+            session,
+            object : SessionDetailMaterialItem.Listener {
+                override fun onClickMovie(movieUrl: String) {
+                    findNavController().navigate(actionSessionToChrome(movieUrl))
+                }
+
+                override fun onClickSlide(slideUrl: String) {
+                    findNavController().navigate(actionSessionToChrome(slideUrl))
                 }
             }
-            adapter.add(
-                sessionDetailMaterialItemFactory.create(
-                    session,
-                    object : SessionDetailMaterialItem.Listener {
-                        override fun onClickMovie(movieUrl: String) {
-                            findNavController().navigate(actionSessionToChrome(movieUrl))
-                        }
-
-                        override fun onClickSlide(slideUrl: String) {
-                            findNavController().navigate(actionSessionToChrome(slideUrl))
-                        }
-                    })
-            )
-        }
+        )
+        adapter.update(items)
         binding.sessionFavorite.setOnClickListener {
             sessionDetailViewModel.favorite(session)
         }
@@ -203,7 +212,8 @@ abstract class SessionDetailFragmentModule {
     @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
+        @JvmStatic @Provides
+        fun providesLifecycleOwnerLiveData(
             sessionDetailFragment: SessionDetailFragment
         ): LiveData<LifecycleOwner> {
             return sessionDetailFragment.viewLifecycleOwnerLiveData

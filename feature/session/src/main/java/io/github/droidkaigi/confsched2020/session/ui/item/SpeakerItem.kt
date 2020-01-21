@@ -1,6 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
-import androidx.core.content.ContextCompat
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
@@ -43,7 +43,7 @@ class SpeakerItem @AssistedInject constructor(
                 .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX), extras)
         }
         viewBinding.name.text = speaker.name
-        viewBinding.image.transitionName = "${speaker.id}-${TRANSITION_NAME_SUFFIX}"
+        viewBinding.image.transitionName = "${speaker.id}-$TRANSITION_NAME_SUFFIX"
 
         imageRequestDisposables.clear()
         val imageUrl = speaker.imageUrl
@@ -55,7 +55,7 @@ class SpeakerItem @AssistedInject constructor(
                 null
             )?.apply {
                 setTint(
-                    ContextCompat.getColor(context, R.color.speaker_icon)
+                    AppCompatResources.getColorStateList(context, R.color.speaker_icon).defaultColor
                 )
             }
         }?.also {

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.lifecycle.LifecycleOwner
@@ -101,9 +101,11 @@ class SessionItem @AssistedInject constructor(
     }
 
     private fun ViewGroup.bindSpeaker() {
-        (0 until max(
-            size, (session as? SpeechSession)?.speakers.orEmpty().size
-        )).forEach { index ->
+        (
+            0 until max(
+                size, (session as? SpeechSession)?.speakers.orEmpty().size
+            )
+            ).forEach { index ->
             val existSpeakerView = getChildAt(index) as? ViewGroup
             val speaker: Speaker? = (session as? SpeechSession)?.speakers?.getOrNull(index)
             if (speaker == null) {
@@ -124,7 +126,7 @@ class SessionItem @AssistedInject constructor(
             }
             val speakerNameView = speakerView.findViewById<TextView>(R.id.speaker)
             val speakerImageView = speakerView.findViewById<ImageView>(R.id.speaker_image)
-            speakerImageView.transitionName = "${speaker.id}-${TRANSITION_NAME_SUFFIX}"
+            speakerImageView.transitionName = "${speaker.id}-$TRANSITION_NAME_SUFFIX"
             speakerView.setOnClickListener {
                 val extras = FragmentNavigatorExtras(
                     speakerImageView to speakerImageView.transitionName
@@ -152,7 +154,7 @@ class SessionItem @AssistedInject constructor(
                 null
             )?.apply {
                 setTint(
-                    ContextCompat.getColor(context, R.color.speaker_icon)
+                    AppCompatResources.getColorStateList(context, R.color.speaker_icon).defaultColor
                 )
             }
         }?.also {
