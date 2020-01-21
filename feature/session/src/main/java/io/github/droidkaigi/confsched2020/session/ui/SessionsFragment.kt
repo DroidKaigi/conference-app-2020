@@ -119,26 +119,26 @@ class SessionsFragment : DaggerFragment() {
             scrollView.updatePadding(bottom = insets.systemWindowInsetBottom + initialPeekHeight + initialState.paddings.bottom)
         }
         sessionSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
+                BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
 
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                sessionTabViewModel.setExpand(
-                    when (newState) {
-                        BottomSheetBehavior.STATE_COLLAPSED -> {
-                            ExpandFilterState.COLLAPSED
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    sessionTabViewModel.setExpand(
+                        when (newState) {
+                            BottomSheetBehavior.STATE_COLLAPSED -> {
+                                ExpandFilterState.COLLAPSED
+                            }
+                            BottomSheetBehavior.STATE_EXPANDED -> {
+                                ExpandFilterState.EXPANDED
+                            }
+                            else -> {
+                                ExpandFilterState.CHANGING
+                            }
                         }
-                        BottomSheetBehavior.STATE_EXPANDED -> {
-                            ExpandFilterState.EXPANDED
-                        }
-                        else -> {
-                            ExpandFilterState.CHANGING
-                        }
-                    }
-                )
-            }
-        })
+                    )
+                }
+            })
         binding.filterReset.setOnClickListener {
             sessionsViewModel.resetFilter()
         }

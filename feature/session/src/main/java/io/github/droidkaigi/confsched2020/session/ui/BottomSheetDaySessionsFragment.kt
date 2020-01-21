@@ -129,9 +129,11 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
                 count as Int
             )
             binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()
-            groupAdapter.update(sessions.map {
-                sessionItemFactory.create(it, sessionsViewModel)
-            })
+            groupAdapter.update(
+                sessions.map {
+                    sessionItemFactory.create(it, sessionsViewModel)
+                }
+            )
             uiModel.error?.let {
                 systemViewModel.onError(it)
             }

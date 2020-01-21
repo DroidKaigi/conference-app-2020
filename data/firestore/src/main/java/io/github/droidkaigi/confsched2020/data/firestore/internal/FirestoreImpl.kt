@@ -10,6 +10,7 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
 import io.github.droidkaigi.confsched2020.data.firestore.Firestore
 import io.github.droidkaigi.confsched2020.model.SessionId
+import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -19,7 +20,6 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import timber.log.debug
-import javax.inject.Inject
 
 internal class FirestoreImpl @Inject constructor() : Firestore {
 

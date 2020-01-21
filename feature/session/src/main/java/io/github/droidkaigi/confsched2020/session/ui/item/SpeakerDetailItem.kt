@@ -20,7 +20,8 @@ import javax.inject.Named
 
 class SpeakerDetailItem @AssistedInject constructor(
     @Assisted val speaker: Speaker,
-    @Assisted @Named("transitionNameSuffix") val transitionNameSuffix: String,
+    @Assisted @Named("transitionNameSuffix")
+    val transitionNameSuffix: String,
     @Assisted val onImageLoadedCallback: () -> Unit,
     private val context: Context,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
@@ -43,7 +44,7 @@ class SpeakerDetailItem @AssistedInject constructor(
         viewBinding.speaker = speaker
 
         viewBinding.speakerDescription.movementMethod = LinkMovementMethod.getInstance()
-        viewBinding.speakerImage.transitionName = "${speaker.id}-${transitionNameSuffix}"
+        viewBinding.speakerImage.transitionName = "${speaker.id}-$transitionNameSuffix"
 
         speaker.imageUrl ?: onImageLoadedCallback()
 

@@ -14,6 +14,7 @@ dependencies {
     implementation project(':feature:system')
 
     implementation project(':corecomponent:androidcomponent')
+    implementation project(':corecomponent:androidtestcomponent')
     implementation project(":data:repository")
 
     implementation Dep.Kotlin.stdlibJvm

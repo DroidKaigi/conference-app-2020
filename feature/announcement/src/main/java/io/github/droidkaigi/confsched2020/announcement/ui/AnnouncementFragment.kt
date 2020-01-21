@@ -53,7 +53,8 @@ class AnnouncementFragment : DaggerFragment() {
     private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(
