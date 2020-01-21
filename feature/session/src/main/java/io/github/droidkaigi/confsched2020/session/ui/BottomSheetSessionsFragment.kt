@@ -112,6 +112,12 @@ class BottomSheetSessionsFragment : DaggerFragment() {
                 SessionPage.Favorite -> uiModel.favoritedSessions
             }
             val count = sessions.filter { it.shouldCountForFilter }.count()
+
+            if (page == SessionPage.Favorite) {
+                TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
+                binding.isEmptyFavoritePage = sessions.isEmpty()
+            }
+
             // For Android Lint
             @Suppress("USELESS_CAST")
             binding.filteredSessionCount.text = getString(
@@ -123,7 +129,6 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             groupAdapter.update(sessions.map {
                 sessionItemFactory.create(it, sessionsViewModel)
             })
-            binding.isEmptyFavoritePage = (page == SessionPage.Favorite) && sessions.isEmpty()
             uiModel.error?.let {
                 systemViewModel.onError(it)
             }
