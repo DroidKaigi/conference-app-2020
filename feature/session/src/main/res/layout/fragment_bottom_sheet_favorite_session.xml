@@ -153,8 +153,9 @@
 
             <TextView
                 android:layout_width="280dp"
-                android:layout_height="72dp"
+                android:layout_height="0dp"
                 android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
                 android:gravity="center_horizontal"
                 android:lineSpacingMultiplier="1.5"
                 android:text="@string/empty_favorite_session"
