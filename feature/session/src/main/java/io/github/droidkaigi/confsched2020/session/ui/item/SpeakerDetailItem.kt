@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
+import android.content.Context
 import android.text.method.LinkMovementMethod
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
@@ -15,6 +16,7 @@ import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSpeakerDetailBinding
+import io.github.droidkaigi.confsched2020.util.lazyWithParam
 import javax.inject.Named
 
 class SpeakerDetailItem @AssistedInject constructor(
@@ -25,6 +27,18 @@ class SpeakerDetailItem @AssistedInject constructor(
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
 ) : BindableItem<ItemSpeakerDetailBinding>(speaker.id.hashCode().toLong()),
     EqualableContentsProvider {
+
+    private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> { context ->
+        VectorDrawableCompat.create(
+            context.resources,
+            R.drawable.ic_person_outline_black_32dp,
+            null
+        )?.apply {
+            setTint(
+                ContextCompat.getColor(context, R.color.speaker_icon)
+            )
+        }
+    }
 
     override fun getLayout(): Int = R.layout.item_speaker_detail
 
@@ -37,19 +51,10 @@ class SpeakerDetailItem @AssistedInject constructor(
         speaker.imageUrl ?: onImageLoadedCallback()
 
         val context = viewBinding.root.context
-        val placeHolder = VectorDrawableCompat.create(
-            context.resources,
-            R.drawable.ic_person_outline_black_32dp,
-            null
-        )?.apply {
-            setTint(
-                ContextCompat.getColor(context, R.color.speaker_icon)
-            )
-        }
 
         Coil.load(context, speaker.imageUrl) {
             crossfade(true)
-            placeholder(placeHolder)
+            placeholder(placeholder.get(context))
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
             target(
