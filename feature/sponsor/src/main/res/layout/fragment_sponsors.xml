@@ -16,6 +16,7 @@
             android:id="@+id/sponsor_recycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
