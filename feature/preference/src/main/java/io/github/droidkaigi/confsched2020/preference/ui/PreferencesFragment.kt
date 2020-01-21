@@ -61,15 +61,17 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
     // region temporary functions until appropriate structure have built
     private fun String.toNightMode() = when (this) {
+        getString(MainR.string.pref_theme_value_default) -> NightMode.SYSTEM
+        getString(MainR.string.pref_theme_value_battery) -> NightMode.BATTERY
         getString(MainR.string.pref_theme_value_dark) -> NightMode.YES
         getString(MainR.string.pref_theme_value_light) -> NightMode.NO
-        getString(MainR.string.pref_theme_value_default) -> NightMode.SYSTEM
         else -> throw IllegalArgumentException("should not happen")
     }
 
     private val NightMode.platformValue: Int
         get() = when (this) {
             NightMode.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            NightMode.BATTERY -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
             NightMode.YES -> AppCompatDelegate.MODE_NIGHT_YES
             NightMode.NO -> AppCompatDelegate.MODE_NIGHT_NO
         }

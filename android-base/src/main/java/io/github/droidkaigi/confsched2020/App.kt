@@ -53,6 +53,7 @@ open class App : DaggerApplication(), AppComponentHolder {
                 .getString(DARK_THEME_KEY, getString(R.string.pref_theme_value_default))) {
                 getString(R.string.pref_theme_value_dark) -> AppCompatDelegate.MODE_NIGHT_YES
                 getString(R.string.pref_theme_value_light) -> AppCompatDelegate.MODE_NIGHT_NO
+                getString(R.string.pref_theme_value_battery) -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
                 else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
             }
         AppCompatDelegate.setDefaultNightMode(nightMode)

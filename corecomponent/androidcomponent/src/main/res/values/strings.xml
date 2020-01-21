@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Session -->
     <string name="session_label">Session</string>
     <!-- Speaker -->
@@ -38,20 +38,24 @@
     <string name="theme_label" translatable="false">Theme</string>
     <string name="dark_theme_label" translatable="false">Dark theme</string>
     <string name="pref_theme_value_default" translatable="false">default</string>
+    <string name="pref_theme_value_battery" translatable="false">battery</string>
     <string name="pref_theme_value_light" translatable="false">light</string>
     <string name="pref_theme_value_dark" translatable="false">dark</string>
     <string name="pref_theme_entry_default">System default</string>
+    <string name="pref_theme_entry_battery">When battery saver is on</string>
     <string name="pref_theme_entry_light">Light</string>
     <string name="pref_theme_entry_dark">Dark</string>
     <!-- override in v29 -->
-    <string name="pref_theme_default" translatable="false">@string/pref_theme_value_light</string>
-    <string-array name="pref_theme_entries" tools:ignore="InconsistentArrays">
+    <string name="pref_theme_default" translatable="false">@string/pref_theme_value_battery</string>
+    <string-array name="pref_theme_entries">
         <item>@string/pref_theme_entry_light</item>
         <item>@string/pref_theme_entry_dark</item>
+        <item>@string/pref_theme_entry_battery</item>
     </string-array>
-    <string-array name="pref_theme_entry_values" tools:ignore="InconsistentArrays">
+    <string-array name="pref_theme_entry_values">
         <item>@string/pref_theme_value_light</item>
         <item>@string/pref_theme_value_dark</item>
+        <item>@string/pref_theme_value_battery</item>
     </string-array>
 
     <string name="error_network" translatable="false">A network error has occurred.Please try again.</string>
