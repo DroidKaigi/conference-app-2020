@@ -4,10 +4,14 @@
     <PreferenceCategory
         android:key="categoryTheme"
         android:title="@string/theme_label">
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:key="switchDarkTheme"
-            android:title="@string/dark_theme_label" />
-    </PreferenceCategory>
 
+        <ListPreference
+            android:key="darkTheme"
+            android:title="@string/dark_theme_label"
+            android:entries="@array/pref_theme_entries"
+            android:entryValues="@array/pref_theme_entry_values"
+            android:defaultValue="@string/pref_theme_value_default"
+            android:summary="%s"
+            />
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched2020
 
-import android.os.Build
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.FirebaseApp
@@ -16,7 +15,8 @@ import timber.log.LogcatTree
 import timber.log.Timber
 
 open class App : DaggerApplication(), AppComponentHolder {
-    private val SWITCH_DARK_THEME_KEY = "switchDarkTheme"
+
+    private val DARK_THEME_KEY = "darkTheme"
 
     override val appComponent: AppComponent by lazy {
         createAppComponent()
@@ -48,19 +48,13 @@ open class App : DaggerApplication(), AppComponentHolder {
     }
 
     private fun setupNightMode() {
-
-        val nightMode = when {
-            PreferenceManager.getDefaultSharedPreferences(applicationContext)
-                .getBoolean(SWITCH_DARK_THEME_KEY, false) -> {
-                AppCompatDelegate.MODE_NIGHT_YES
+        val nightMode =
+            when (PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                .getString(DARK_THEME_KEY, getString(R.string.pref_theme_value_default))) {
+                getString(R.string.pref_theme_value_dark) -> AppCompatDelegate.MODE_NIGHT_YES
+                getString(R.string.pref_theme_value_light) -> AppCompatDelegate.MODE_NIGHT_NO
+                else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
             }
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
-                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            }
-            else -> {
-                AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
-            }
-        }
         AppCompatDelegate.setDefaultNightMode(nightMode)
     }
 
