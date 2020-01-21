@@ -2,7 +2,6 @@ package io.github.droidkaigi.confsched2020.session.ui.item
 
 import android.content.Context
 import android.text.method.LinkMovementMethod
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
