@@ -1,11 +1,10 @@
 import ios_combined
-import UIKit
-import RxSwift
-import RxCocoa
 import MaterialComponents
+import RxCocoa
+import RxSwift
+import UIKit
 
 final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
-
     typealias Element = [Session]
     var items: Element = []
 
@@ -38,7 +37,7 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
             cell.timeLabel.text = ""
         }
         previousTimeString = session.startTimeText
-        
+
         cell.minutesAndRoomLabel.text = "\(session.timeInMinutes)min / \(session.room.name.ja)"
 
         return cell
