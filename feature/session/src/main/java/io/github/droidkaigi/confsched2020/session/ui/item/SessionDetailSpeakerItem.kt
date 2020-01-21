@@ -27,7 +27,7 @@ class SessionDetailSpeakerItem @AssistedInject constructor(
     @Assisted private val speaker: Speaker,
     @Assisted val first: Boolean,
     @Assisted private val onClick: (FragmentNavigator.Extras) -> Unit
-) : BindableItem<ItemSessionDetailSpeakerBinding>() {
+) : BindableItem<ItemSessionDetailSpeakerBinding>(speaker.id.hashCode().toLong()) {
     override fun getLayout() = R.layout.item_session_detail_speaker
 
     override fun bind(binding: ItemSessionDetailSpeakerBinding, position: Int) {

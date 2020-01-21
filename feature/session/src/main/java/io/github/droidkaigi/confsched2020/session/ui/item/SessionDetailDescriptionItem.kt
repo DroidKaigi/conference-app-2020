@@ -23,7 +23,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailD
 class SessionDetailDescriptionItem @AssistedInject constructor(
     @Assisted private val session: Session
 ) :
-    BindableItem<ItemSessionDetailDescriptionBinding>() {
+    BindableItem<ItemSessionDetailDescriptionBinding>(1L) {
 
     companion object {
         private const val ELLIPSIS_LINE_COUNT = 6

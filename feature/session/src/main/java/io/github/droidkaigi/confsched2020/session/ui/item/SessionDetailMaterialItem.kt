@@ -15,7 +15,7 @@ class SessionDetailMaterialItem @AssistedInject constructor(
     @Assisted private val session: Session,
     @Assisted private val listener: Listener
 ) :
-    BindableItem<ItemSessionDetailMaterialBinding>() {
+    BindableItem<ItemSessionDetailMaterialBinding>(1L) {
 
     interface Listener {
         fun onClickMovie(movieUrl: String)

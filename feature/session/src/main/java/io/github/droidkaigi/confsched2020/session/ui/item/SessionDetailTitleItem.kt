@@ -13,7 +13,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailT
 class SessionDetailTitleItem @AssistedInject constructor(
     @Assisted private val session: Session
 ) :
-    BindableItem<ItemSessionDetailTitleBinding>() {
+    BindableItem<ItemSessionDetailTitleBinding>(1L) {
     override fun getLayout() = R.layout.item_session_detail_title
 
     override fun bind(binding: ItemSessionDetailTitleBinding, position: Int) {
