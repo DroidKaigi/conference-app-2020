@@ -3,11 +3,10 @@ package io.github.droidkaigi.confsched2020.preference.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.distinctUntilChanged
 import io.github.droidkaigi.confsched2020.ext.combine
 import javax.inject.Inject
 
-class PreferenceViewModel @Inject constructor(): ViewModel() {
+class PreferenceViewModel @Inject constructor() : ViewModel() {
 
     data class UiModel(
         val isNightMode: Boolean
@@ -17,9 +16,7 @@ class PreferenceViewModel @Inject constructor(): ViewModel() {
         }
     }
 
-    private val _nightModeLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
-    private val nightModeLiveData
-        get() = _nightModeLiveData.distinctUntilChanged()
+    private val nightModeLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
 
     var uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
@@ -31,7 +28,6 @@ class PreferenceViewModel @Inject constructor(): ViewModel() {
     }
 
     fun setNightMode(newValue: Boolean) {
-        _nightModeLiveData.value = newValue
-
+        nightModeLiveData.value = newValue
     }
 }
