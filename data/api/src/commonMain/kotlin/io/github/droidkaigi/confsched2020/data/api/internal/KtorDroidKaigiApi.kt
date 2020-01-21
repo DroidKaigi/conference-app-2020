@@ -62,6 +62,21 @@ internal open class KtorDroidKaigiApi constructor(
             getSessions()
         }
 
+    override fun getAnnouncements(
+        lang: LangParameter,
+        callback: (response: AnnouncementListResponse) -> Unit,
+        onError: (error: Exception) -> Unit
+    ) {
+        GlobalScope.launch(requireNotNull(coroutineDispatcherForCallback)) {
+            try {
+                val response = getAnnouncements(lang)
+                callback(response)
+            } catch (ex: Exception) {
+                onError(ex)
+            }
+        }
+    }
+
     override fun getAnnouncementsAsync(lang: LangParameter): Deferred<AnnouncementListResponse> =
         GlobalScope.async(requireNotNull(coroutineDispatcherForCallback)) {
             getAnnouncements(lang)
