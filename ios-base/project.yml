@@ -7,8 +7,11 @@ targets:
         platform: iOS
         deploymentTarget: "13.2"
         sources: DroidKaigi 2020
+        configFiles:
+            Debug: Configs/DroidKaigi 2020-Debug.xcconfig
+            Release: Configs/DroidKaigi 2020-Release.xcconfig
         dependencies:
-            - framework: ../ios-combined/build/bin/iosX64/debugFramework/ios_combined.framework
+            - framework: build/ios_combined.framework
         preBuildScripts:
             - path: build_kotlin_modules.sh
               name: Build Kotlin Modules
