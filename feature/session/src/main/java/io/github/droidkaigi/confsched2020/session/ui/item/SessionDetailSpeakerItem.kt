@@ -1,11 +1,13 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
+import android.content.Context
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
 import coil.transform.CircleCropTransformation
@@ -16,7 +18,8 @@ import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailSpeakerBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment
-import io.github.droidkaigi.confsched2020.ui.SpeakerPlaceholderCreator
+import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
+import io.github.droidkaigi.confsched2020.util.lazyWithParam
 
 /**
  * @param first For setting margin by SessionDetailItemDecoration
@@ -27,6 +30,11 @@ class SessionDetailSpeakerItem @AssistedInject constructor(
     @Assisted val first: Boolean,
     @Assisted private val onClick: (FragmentNavigator.Extras) -> Unit
 ) : BindableItem<ItemSessionDetailSpeakerBinding>(speaker.id.hashCode().toLong()) {
+
+    private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> {
+        ProfilePlaceholderCreator.create(it)
+    }
+
     override fun getLayout() = R.layout.item_session_detail_speaker
 
     override fun bind(binding: ItemSessionDetailSpeakerBinding, position: Int) {
@@ -51,7 +59,7 @@ class SessionDetailSpeakerItem @AssistedInject constructor(
 //        setHighlightText(textView, query)
         val imageUrl = speaker.imageUrl
         val context = speakerNameView.context
-        val placeholder = SpeakerPlaceholderCreator.create(context)?.also {
+        val placeholder = placeholder.get(context)?.also {
             speakerImageView.setImageDrawable(it)
         }
 

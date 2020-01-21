@@ -12,6 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
 import coil.request.RequestDisposable
@@ -32,7 +33,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.Companion.actionSessionToSessionDetail
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
-import io.github.droidkaigi.confsched2020.ui.SpeakerPlaceholderCreator
+import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
 import io.github.droidkaigi.confsched2020.util.lazyWithParam
 import kotlin.math.max
 
@@ -47,6 +48,10 @@ class SessionItem @AssistedInject constructor(
 
     private val layoutInflater by lazyWithParam<Context, LayoutInflater> { context ->
         LayoutInflater.from(context)
+    }
+
+    private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> { context ->
+        ProfilePlaceholderCreator.create(context)
     }
 
     companion object {
@@ -146,7 +151,7 @@ class SessionItem @AssistedInject constructor(
 //        setHighlightText(textView, query)
         val imageUrl = speaker.imageUrl
         val context = speakerNameView.context
-        val placeholder = SpeakerPlaceholderCreator.create(context)?.also {
+        val placeholder = placeholder.get(context)?.also {
             speakerImageView.setImageDrawable(it)
         }
 

@@ -75,29 +75,11 @@ class ContributorsFragment : Fragment() {
         }
 
         contributorsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            when (uiModel.viewState) {
-                is ContributorsViewModel.ViewState.Loading -> renderLoadingState()
-                is ContributorsViewModel.ViewState.Loaded -> renderLoadedState(uiModel.viewState)
-                is ContributorsViewModel.ViewState.Error -> renderErrorState(uiModel.viewState)
+            progressTimeLatch.loading = uiModel.isLoading
+            groupAdapter.update(uiModel.contributors.toItems())
+            uiModel.error?.let {
+                systemViewModel.onError(it)
             }
-        }
-    }
-
-    private fun renderLoadingState() {
-        progressTimeLatch.loading = true
-    }
-
-    private fun renderLoadedState(state: ContributorsViewModel.ViewState.Loaded) {
-        progressTimeLatch.loading = false
-        groupAdapter.update(state.contributors.toItems())
-        binding.contributorRecycler.visibility = View.VISIBLE
-    }
-
-    private fun renderErrorState(state: ContributorsViewModel.ViewState.Error) {
-        progressTimeLatch.loading = false
-        binding.contributorRecycler.visibility = View.GONE
-        state.error?.let {
-            systemViewModel.onError(it)
         }
     }
 

@@ -1,9 +1,11 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
+import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
 import coil.request.RequestDisposable
@@ -17,7 +19,8 @@ import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSpeakerBinding
 import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragmentDirections.Companion.actionSessionToSpeaker
-import io.github.droidkaigi.confsched2020.ui.SpeakerPlaceholderCreator
+import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
+import io.github.droidkaigi.confsched2020.util.lazyWithParam
 
 class SpeakerItem @AssistedInject constructor(
     @Assisted val speaker: Speaker,
@@ -26,6 +29,9 @@ class SpeakerItem @AssistedInject constructor(
     EqualableContentsProvider {
 
     private val imageRequestDisposables = mutableListOf<RequestDisposable>()
+    private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> { context ->
+        ProfilePlaceholderCreator.create(context)
+    }
 
     companion object {
         private const val TRANSITION_NAME_SUFFIX = "speaker"
@@ -47,7 +53,7 @@ class SpeakerItem @AssistedInject constructor(
         imageRequestDisposables.clear()
         val imageUrl = speaker.imageUrl
         val context = viewBinding.name.context
-        val placeholder = SpeakerPlaceholderCreator.create(context)?.also {
+        val placeholder = placeholder.get(context)?.also {
             viewBinding.image.setImageDrawable(it)
         }
 

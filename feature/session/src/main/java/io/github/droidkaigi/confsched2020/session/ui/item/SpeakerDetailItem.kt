@@ -5,6 +5,7 @@ import android.text.method.LinkMovementMethod
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
 import coil.transform.CircleCropTransformation
@@ -15,8 +16,8 @@ import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSpeakerDetailBinding
+import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
 import io.github.droidkaigi.confsched2020.util.lazyWithParam
-import io.github.droidkaigi.confsched2020.ui.SpeakerPlaceholderCreator
 import javax.inject.Named
 
 class SpeakerDetailItem @AssistedInject constructor(
@@ -29,7 +30,7 @@ class SpeakerDetailItem @AssistedInject constructor(
     EqualableContentsProvider {
 
     private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> { context ->
-        SpeakerPlaceholderCreator.create(context)
+        ProfilePlaceholderCreator.create(context)
     }
 
     override fun getLayout(): Int = R.layout.item_speaker_detail

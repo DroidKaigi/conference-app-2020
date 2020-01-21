@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import io.github.droidkaigi.confsched2020.widget.component.R
 
-object SpeakerPlaceholderCreator {
+object ProfilePlaceholderCreator {
 
     fun create(context: Context): VectorDrawableCompat? =
         VectorDrawableCompat.create(
@@ -14,8 +14,6 @@ object SpeakerPlaceholderCreator {
             R.drawable.ic_person_outline_black_32dp,
             null
         )?.apply {
-            setTint(
-                AppCompatResources.getColorStateList(context, R.color.speaker_icon).defaultColor
-            )
+            setTint(AppCompatResources.getColorStateList(context, R.color.profile_icon).defaultColor)
         }
 }

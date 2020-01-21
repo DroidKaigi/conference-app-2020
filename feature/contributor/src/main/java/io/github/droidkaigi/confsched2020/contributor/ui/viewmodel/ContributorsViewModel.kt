@@ -18,22 +18,14 @@ class ContributorsViewModel @Inject constructor(
     private val contributorRepository: ContributorRepository
 ) : ViewModel() {
 
-    /**
-     * [ViewState] has to be wrapped to workaround a compile error about type mismatch.
-     * [combine] doesn't seem to understand child classes.
-     */
-    data class UiModel(val viewState: ViewState) {
+    data class UiModel(
+        val isLoading: Boolean,
+        val error: AppError?,
+        val contributors: List<Contributor>
+    ) {
         companion object {
-            val DEFAULT = UiModel(ViewState.Loading)
+            val EMPTY = UiModel(false, null, emptyList())
         }
-    }
-
-    sealed class ViewState {
-        object Loading : ViewState()
-
-        data class Loaded(val contributors: List<Contributor>) : ViewState()
-
-        data class Error(val error: AppError?) : ViewState()
     }
 
     private var contributors: List<Contributor> = emptyList()
@@ -48,40 +40,21 @@ class ContributorsViewModel @Inject constructor(
         try {
             contributorRepository.refresh()
         } catch (exception: Exception) {
-            // Emit error so that uiModel knows when it's done loading
-            emit(toErrorLoadState(exception))
+            // We can show contributors with cache
         }
     }
 
     val uiModel: LiveData<UiModel> = combine(
-        initialValue = UiModel.DEFAULT,
+        initialValue = UiModel.EMPTY,
         liveData1 = contributorsLoadStateLiveData
     ) { _, loadState ->
-        when (loadState) {
-            is LoadState.Loading -> UiModel(ViewState.Loading)
-            is LoadState.Error -> {
-                val appError = loadState.getErrorIfExists()?.toAppError()
-                if (contributors.isNotEmpty()) {
-                    UiModel(ViewState.Loaded(contributors))
-                } else {
-                    UiModel(ViewState.Error(appError))
-                }
-            }
-            is LoadState.Loaded -> {
-                contributors = loadState.value
-                if (loadState.value.isNotEmpty()) {
-                    UiModel(ViewState.Loaded(loadState.value))
-                } else {
-                    // Continue treating as loading until data is fetched or error'ed.
-                    // e.g. the first time app is installed when there's no cache yet,
-                    // repository returns an empty list
-                    UiModel(ViewState.Loading)
-                }
-            }
+        if (loadState is LoadState.Loaded) {
+            contributors = loadState.value
         }
+        UiModel(
+            isLoading = loadState.isLoading,
+            error = loadState.getErrorIfExists()?.toAppError(),
+            contributors = contributors
+        )
     }
-
-    // Had to make this a method so that the compiler doesn't complain about the type
-    private fun toErrorLoadState(exception: Exception): LoadState<List<Contributor>> =
-        LoadState.Error(exception)
 }
