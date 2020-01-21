@@ -129,6 +129,7 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
                 count as Int
             )
             binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()
+            binding.startFilter.text = if (uiModel.filters.isFiltered()) getString(R.string.filter_now) else getString(R.string.start_filter)
             groupAdapter.update(sessions.map {
                 sessionItemFactory.create(it, sessionsViewModel)
             })

@@ -2,6 +2,7 @@
 <resources>
     <string name="session_on_going">ON GOING</string>
     <string name="start_filter">Filter</string>
+    <string name="filter_now">絞り込み中</string>
     <string name="intended_audience_title">Intended audience</string>
     <string name="session_share" translatable="false">Share</string>
     <string name="applicable_session">Applicable session: %1$d</string>
