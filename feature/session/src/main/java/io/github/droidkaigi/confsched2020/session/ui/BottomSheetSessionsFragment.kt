@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
@@ -21,17 +22,19 @@ import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.model.ExpandFilterState
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.session.R
-import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetFavoriteSessionBinding
+import io.github.droidkaigi.confsched2020.session.databinding.FragmentBottomSheetSessionsBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
+import io.github.droidkaigi.confsched2020.session.ui.widget.SessionsItemDecoration
+import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
-class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
+class BottomSheetSessionsFragment : DaggerFragment() {
 
-    private var binding: FragmentBottomSheetFavoriteSessionBinding by autoCleared()
+    private var binding: FragmentBottomSheetSessionsBinding by autoCleared()
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -41,13 +44,22 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
     @Inject
     lateinit var sessionTabViewModelProvider: Provider<SessionTabViewModel>
     private val sessionTabViewModel: SessionTabViewModel by assistedActivityViewModels({
-        SessionPage.Favorite.title
+        args.page.title
     }) {
         sessionTabViewModelProvider.get()
     }
 
     @Inject
+    lateinit var systemViewModelProvider: Provider<SystemViewModel>
+    private val systemViewModel: SystemViewModel by assistedActivityViewModels {
+        systemViewModelProvider.get()
+    }
+
+    @Inject
     lateinit var sessionItemFactory: SessionItem.Factory
+    private val args: BottomSheetSessionsFragmentArgs by lazy {
+        BottomSheetSessionsFragmentArgs.fromBundle(arguments ?: Bundle())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,25 +68,31 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
     ): View {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_bottom_sheet_favorite_session,
+            R.layout.fragment_bottom_sheet_sessions,
             container,
             false
         )
-        return binding.apply { isEmptySessions = false }.root
+        return binding.apply { isEmptyFavoritePage = false }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
+        binding.sessionRecycler.addItemDecoration(
+            SessionsItemDecoration(
+                groupAdapter,
+                requireContext()
+            )
+        )
         binding.startFilter.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
         binding.expandLess.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
-        binding.sessionRecycler.doOnApplyWindowInsets { view, insets, initialState ->
-            view.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+        binding.sessionRecycler.doOnApplyWindowInsets { sessionRecycler, insets, initialState ->
+            sessionRecycler.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
         }
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
@@ -88,9 +106,18 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
         }
 
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
-            TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
-            val sessions = uiModel.favoritedSessions
+            val page = args.page
+            val sessions = when (page) {
+                is SessionPage.Day -> uiModel.dayToSessionsMap[page].orEmpty()
+                SessionPage.Favorite -> uiModel.favoritedSessions
+            }
             val count = sessions.filter { it.shouldCountForFilter }.count()
+
+            if (page == SessionPage.Favorite) {
+                TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
+                binding.isEmptyFavoritePage = sessions.isEmpty()
+            }
+
             // For Android Lint
             @Suppress("USELESS_CAST")
             binding.filteredSessionCount.text = getString(
@@ -98,34 +125,44 @@ class BottomSheetFavoriteSessionsFragment : DaggerFragment() {
                 count as Int
             )
             binding.isFiltered = uiModel.filters.isFiltered()
-            groupAdapter.update(
-                sessions.map {
-                    sessionItemFactory.create(it, sessionsViewModel)
-                }
-            )
-            val favoritedSessionsCount = sessions.count()
-            binding.isEmptySessions = favoritedSessionsCount <= 0
+            binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()
+            val startFilterTextRes = if (uiModel.filters.isFiltered()) {
+                R.string.filter_now
+            } else {
+                R.string.start_filter
+            }
+            binding.startFilter.text = getString(startFilterTextRes)
+            groupAdapter.update(sessions.map {
+                sessionItemFactory.create(it, sessionsViewModel)
+            })
+            uiModel.error?.let {
+                systemViewModel.onError(it)
+            }
         }
     }
 
     companion object {
-        fun newInstance(): BottomSheetFavoriteSessionsFragment {
-            return BottomSheetFavoriteSessionsFragment()
+        fun newInstance(
+            args: BottomSheetSessionsFragmentArgs
+        ): BottomSheetSessionsFragment {
+            return BottomSheetSessionsFragment().apply {
+                arguments = args.toBundle()
+            }
         }
     }
 }
 
 @Module
-abstract class BottomSheetFavoriteSessionsFragmentModule {
+abstract class BottomSheetSessionsFragmentModule {
     @Module
     companion object {
         @PageScope
         @JvmStatic
         @Provides
         fun providesLifecycleOwnerLiveData(
-            mainBottomSheetFavoriteSessionsFragment: BottomSheetFavoriteSessionsFragment
+            mainBottomSheetSessionsFragment: BottomSheetSessionsFragment
         ): LiveData<LifecycleOwner> {
-            return mainBottomSheetFavoriteSessionsFragment.viewLifecycleOwnerLiveData
+            return mainBottomSheetSessionsFragment.viewLifecycleOwnerLiveData
         }
     }
 }
