@@ -17,6 +17,7 @@ import io.github.droidkaigi.confsched2020.model.SessionFeedback
 import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -24,7 +25,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import timber.log.debug
-import javax.inject.Inject
 
 internal class DataSessionRepository @Inject constructor(
     private val droidKaigiApi: DroidKaigiApi,
@@ -70,10 +70,12 @@ internal class DataSessionRepository @Inject constructor(
             val firstDay = DateTime(sessionEntities.first().session.stime)
             val sessions: List<Session> = sessionEntities
                 .map { it.toSession(speakerEntities, fabSessionIds, firstDay) }
-                .sortedWith(compareBy(
-                    { it.startTime.unixMillisLong },
-                    { it.room.id }
-                ))
+                .sortedWith(
+                    compareBy(
+                        { it.startTime.unixMillisLong },
+                        { it.room.id }
+                    )
+                )
             sessions
         }
     }

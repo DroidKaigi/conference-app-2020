@@ -60,10 +60,10 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.di.SponsorsAssistedInjectMo
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.PageConfiguration
 import io.github.droidkaigi.confsched2020.ui.widget.SystemUiManager
-import timber.log.Timber
-import timber.log.warn
 import javax.inject.Inject
 import javax.inject.Provider
+import timber.log.Timber
+import timber.log.warn
 
 class MainActivity : DaggerAppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {

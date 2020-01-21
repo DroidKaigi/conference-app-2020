@@ -9,18 +9,23 @@ import io.github.droidkaigi.confsched2020.data.db.entity.SessionSpeakerJoinEntit
 @Entity(
     tableName = "session_speaker_join", primaryKeys = ["sessionId", "speakerId"],
     foreignKeys = [
-        (ForeignKey(
-            entity = SessionEntityImpl::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("sessionId"),
-            onDelete = CASCADE
-        )),
-        (ForeignKey(
-            entity = SpeakerEntityImpl::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("speakerId"),
-            onDelete = CASCADE
-        ))]
+        (
+            ForeignKey(
+                entity = SessionEntityImpl::class,
+                parentColumns = arrayOf("id"),
+                childColumns = arrayOf("sessionId"),
+                onDelete = CASCADE
+            )
+            ),
+        (
+            ForeignKey(
+                entity = SpeakerEntityImpl::class,
+                parentColumns = arrayOf("id"),
+                childColumns = arrayOf("speakerId"),
+                onDelete = CASCADE
+            )
+            )
+    ]
 )
 internal class SessionSpeakerJoinEntityImpl(
     override val sessionId: String,
