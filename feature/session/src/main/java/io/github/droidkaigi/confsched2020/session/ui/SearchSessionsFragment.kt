@@ -171,6 +171,7 @@ class SearchSessionsFragment : DaggerFragment() {
             ).defaultColor
         )
         searchView.isIconified = false
+        searchView.clearFocus()
         val searchResult = searchSessionsViewModel.uiModel.requireValue().searchResult
         if (!searchResult.isEmpty()) {
             searchView.setQuery(searchResult.query, false)
@@ -186,6 +187,10 @@ class SearchSessionsFragment : DaggerFragment() {
                 return false
             }
         })
+        searchView.setOnCloseListener {
+            searchView.setQuery("", true)
+            true
+        }
     }
 
     companion object {
