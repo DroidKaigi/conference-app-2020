@@ -13,8 +13,10 @@ targets:
         dependencies:
             - framework: build/ios_combined.framework
         preBuildScripts:
-            - path: build_kotlin_modules.sh
+            - path: scripts/build_kotlin_modules.sh
               name: Build Kotlin Modules
+            - path: scripts/lint.sh
+              name: "Run Lint"
     DroidKaigi 2020Tests:
         type: bundle.unit-test
         platform: iOS
