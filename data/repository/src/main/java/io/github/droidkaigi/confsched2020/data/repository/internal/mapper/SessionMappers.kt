@@ -1,7 +1,6 @@
 package io.github.droidkaigi.confsched2020.data.repository.internal.mapper
 
 import com.soywiz.klock.DateTime
-import com.soywiz.klock.hours
 import io.github.droidkaigi.confsched2020.data.db.entity.SessionFeedbackEntity
 import io.github.droidkaigi.confsched2020.data.db.entity.SessionWithSpeakers
 import io.github.droidkaigi.confsched2020.data.db.entity.SpeakerEntity

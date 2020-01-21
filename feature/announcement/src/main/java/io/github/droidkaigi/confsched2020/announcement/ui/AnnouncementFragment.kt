@@ -53,7 +53,8 @@ class AnnouncementFragment : DaggerFragment() {
     private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(
@@ -83,7 +84,7 @@ class AnnouncementFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
-
+        announcementViewModel.loadLanguageSetting()
         announcementViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             progressTimeLatch.loading = uiModel.isLoading
             binding.emptyMessage.isVisible = uiModel.isEmpty

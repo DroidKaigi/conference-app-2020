@@ -3,9 +3,9 @@ package io.github.droidkaigi.confsched2020.data.repository.internal
 import io.github.droidkaigi.confsched2020.data.api.DroidKaigiApi
 import io.github.droidkaigi.confsched2020.data.db.ContributorDatabase
 import io.github.droidkaigi.confsched2020.data.db.entity.ContributorEntity
-import io.github.droidkaigi.confsched2020.model.repository.ContributorRepository
 import io.github.droidkaigi.confsched2020.model.Contributor
 import io.github.droidkaigi.confsched2020.model.ContributorContents
+import io.github.droidkaigi.confsched2020.model.repository.ContributorRepository
 import javax.inject.Inject
 
 class DataContributorRepository @Inject constructor(

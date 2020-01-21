@@ -1,5 +1,7 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
+import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import androidx.core.view.children
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -53,7 +56,8 @@ class SessionsFragment : DaggerFragment() {
             return (behavior as BottomSheetBehavior)
         }
 
-    @Inject lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
+    @Inject
+    lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
     private val sessionsViewModel: SessionsViewModel by assistedActivityViewModels {
         sessionsViewModelProvider.get()
     }
@@ -102,34 +106,40 @@ class SessionsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         initBottomSheetShapeAppearance()
         val initialPeekHeight = sessionSheetBehavior.peekHeight
+        val gestureNavigationBottomSpace =
+            if (isEdgeToEdgeEnabled())
+                resources.getDimension(R.dimen.gesture_navigation_bottom_space).toInt()
+            else 0
+
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
-            sessionSheetBehavior.peekHeight = insets.systemWindowInsetBottom + initialPeekHeight
+            sessionSheetBehavior.peekHeight =
+                insets.systemWindowInsetBottom + initialPeekHeight + gestureNavigationBottomSpace
         }
         binding.fragmentSessionsScrollView.doOnApplyWindowInsets { scrollView, insets, initialState ->
             // Set a bottom padding due to the system UI is enabled.
             scrollView.updatePadding(bottom = insets.systemWindowInsetBottom + initialPeekHeight + initialState.paddings.bottom)
         }
         sessionSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
+                BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
 
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                sessionTabViewModel.setExpand(
-                    when (newState) {
-                        BottomSheetBehavior.STATE_COLLAPSED -> {
-                            ExpandFilterState.COLLAPSED
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    sessionTabViewModel.setExpand(
+                        when (newState) {
+                            BottomSheetBehavior.STATE_COLLAPSED -> {
+                                ExpandFilterState.COLLAPSED
+                            }
+                            BottomSheetBehavior.STATE_EXPANDED -> {
+                                ExpandFilterState.EXPANDED
+                            }
+                            else -> {
+                                ExpandFilterState.CHANGING
+                            }
                         }
-                        BottomSheetBehavior.STATE_EXPANDED -> {
-                            ExpandFilterState.EXPANDED
-                        }
-                        else -> {
-                            ExpandFilterState.CHANGING
-                        }
-                    }
-                )
-            }
-        })
+                    )
+                }
+            })
         binding.filterReset.setOnClickListener {
             sessionsViewModel.resetFilter()
         }
@@ -183,6 +193,22 @@ class SessionsFragment : DaggerFragment() {
             ) { checked, level ->
                 sessionsViewModel.filterChanged(level, checked)
             }
+
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+                // This block is the workaround to fix issue #118 only for Android 5.
+                // See: https://github.com/DroidKaigi/conference-app-2020/issues/118
+                fun fragmentContainerView(view: View): FragmentContainerView? {
+                    var parent = view.parent
+                    while (parent != null && parent !is FragmentContainerView) {
+                        parent = parent.parent
+                    }
+                    return parent as? FragmentContainerView
+                }
+
+                // On Android 5, performing layout views containing ChipGroup is not invoked after binding construction.
+                // So, we have to request layout explicitly for FragmentContainerView (or the view placed upside of it).
+                fragmentContainerView(binding.root)?.requestLayout()
+            }
         }
     }
 
@@ -196,6 +222,23 @@ class SessionsFragment : DaggerFragment() {
     override fun onPause() {
         super.onPause()
         overrideBackPressedCallback.isEnabled = false
+    }
+
+    /**
+     * judge gesture navigation is enabled
+     * https://android.googlesource.com/platform/packages/apps/Settings.git/+/refs/heads/master/src/com/android/settings/gestures/SystemNavigationPreferenceController.java#97
+     *
+     * If configNavBarInteractionMode is equal to "2", it means gesture navigation
+     * https://android.googlesource.com/platform/frameworks/base/+/refs/heads/android10-mainline-release/core/java/android/view/WindowManagerPolicyConstants.java#60
+     * */
+    private fun isEdgeToEdgeEnabled(): Boolean {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) return false
+        val configNavBarInteractionMode = Resources.getSystem().getIdentifier(
+            "config_navBarInteractionMode",
+            "integer",
+            "android"
+        )
+        return (context?.resources?.getInteger(configNavBarInteractionMode) == 2)
     }
 
     private inline fun <reified T> ChipGroup.setupFilter(

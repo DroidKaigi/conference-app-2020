@@ -22,7 +22,7 @@ class DebugApp : App() {
                             val dataDir = ContextCompat.getDataDir(applicationContext)
                             // Add WorkManager database
                             File(dataDir, "no_backup").listFiles().toList() +
-                                    File(dataDir, "databases").listFiles().toList()
+                                File(dataDir, "databases").listFiles().toList()
                         }
                         .finish()
                 }
