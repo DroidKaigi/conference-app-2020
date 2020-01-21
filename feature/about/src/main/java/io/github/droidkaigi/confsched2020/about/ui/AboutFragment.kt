@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -18,6 +19,8 @@ import dagger.android.support.DaggerFragment
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.about.R
 import io.github.droidkaigi.confsched2020.about.databinding.FragmentAboutBinding
+import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentDirections.Companion.actionAboutToChrome
+import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentDirections.Companion.actionAboutToStaffs
 import io.github.droidkaigi.confsched2020.about.ui.viewmodel.AboutViewModel
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
@@ -78,9 +81,16 @@ class AboutFragment : DaggerFragment() {
             loading = true
         }
         binding.staffs.setOnClickListener(
-            Navigation.createNavigateOnClickListener(AboutFragmentDirections.actionAboutToStaffs())
+            Navigation.createNavigateOnClickListener(actionAboutToStaffs())
         )
+        binding.twitter.setOnClickListener {
+            openTwitter()
+        }
         // TODO: Add AboutUI into RecyclerView
+    }
+
+    private fun openTwitter() {
+        findNavController().navigate(actionAboutToChrome("https://twitter.com/DroidKaigi"))
     }
 }
 

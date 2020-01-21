@@ -173,6 +173,13 @@
         android:label="@string/about_label"
         >
         <action
+            android:id="@+id/action_about_to_floormap"
+            app:destination="@id/floormap"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+        <action
             android:id="@+id/action_about_to_staffs"
             app:destination="@id/staffs"
             app:enterAnim="@anim/fade_in"
@@ -180,6 +187,14 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out"
             />
+        <action
+            android:id="@+id/action_about_to_chrome"
+            app:destination="@id/chrome">
+            <argument
+                android:name="url"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/floormap"
