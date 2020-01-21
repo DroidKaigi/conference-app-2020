@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SpeechSession
@@ -15,7 +16,7 @@ class SessionDetailMaterialItem @AssistedInject constructor(
     @Assisted private val session: Session,
     @Assisted private val listener: Listener
 ) :
-    BindableItem<ItemSessionDetailMaterialBinding>(1L) {
+    BindableItem<ItemSessionDetailMaterialBinding>() {
 
     interface Listener {
         fun onClickMovie(movieUrl: String)
@@ -28,6 +29,8 @@ class SessionDetailMaterialItem @AssistedInject constructor(
     override fun bind(binding: ItemSessionDetailMaterialBinding, position: Int) {
         setUpMaterialData(binding)
     }
+
+    override fun isSameAs(other: Item<*>?) = other is SessionDetailMaterialItem
 
     private fun setUpMaterialData(binding: ItemSessionDetailMaterialBinding) {
         if (session is SpeechSession) {
