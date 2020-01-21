@@ -8,14 +8,14 @@ final class SessionViewModel {
 
     // input
     private let viewDidLoadRelay = PublishRelay<Void>()
-    private let toggleEmbddedViewRelay = PublishRelay<Void>()
+    private let toggleEmbeddedViewRelay = PublishRelay<Void>()
 
     func viewDidLoad() {
         viewDidLoadRelay.accept(())
     }
 
-    func toggleEmbddedView() {
-        toggleEmbddedViewRelay.accept(())
+    func toggleEmbeddedView() {
+        toggleEmbeddedViewRelay.accept(())
     }
 
     // output
@@ -36,7 +36,7 @@ final class SessionViewModel {
             .bind(to: sessionsRelay)
             .disposed(by: disposeBag)
 
-        toggleEmbddedViewRelay.asObservable()
+        toggleEmbeddedViewRelay.asObservable()
             .withLatestFrom(isFocusedOnEmbeddedViewRelay)
             .map { !$0 }
             .bind(to: isFocusedOnEmbeddedViewRelay)

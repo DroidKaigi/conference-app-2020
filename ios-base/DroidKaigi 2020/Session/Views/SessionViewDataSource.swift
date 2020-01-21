@@ -6,8 +6,8 @@ import MaterialComponents
 
 final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
 
-    typealias Elememt = [Session]
-    var items: Elememt = []
+    typealias Element = [Session]
+    var items: Element = []
 
     private var previousTimeString = ""
 
@@ -46,7 +46,7 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
 }
 
 extension SessionViewDataSource: RxCollectionViewDataSourceType, SectionedViewDataSourceType {
-    func collectionView(_ collectionView: UICollectionView, observedEvent: Event<SessionViewDataSource.Elememt>) {
+    func collectionView(_ collectionView: UICollectionView, observedEvent: Event<SessionViewDataSource.Element>) {
         Binder(self) { dataSource, items in
             dataSource.items = items
             collectionView.reloadData()
