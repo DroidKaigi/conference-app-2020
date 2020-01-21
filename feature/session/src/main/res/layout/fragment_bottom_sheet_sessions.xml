@@ -5,6 +5,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
+    <data>
+        <variable
+            name="isCollapsed"
+            type="Boolean" />
+
+        <variable
+            name="isFiltered"
+            type="Boolean" />
+
+        <variable
+            name="isEmptyFavoritePage"
+            type="Boolean" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/session"
         android:layout_width="match_parent"
@@ -33,6 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
+            app:isInvisible="@{!isFiltered}"
             app:icon="@drawable/ic_filter_list_black_24dp"
             app:layout_constraintBottom_toBottomOf="@id/start_filter"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -48,6 +63,7 @@
             android:text="@string/start_filter"
             android:textAppearance="@style/TextAppearance.DroidKaigi.Body2"
             app:icon="@drawable/ic_filter_list_black_24dp"
+            app:isInvisible="@{(isEmptyFavoritePage &amp;&amp; !isFiltered) || isCollapsed}"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toTopOf="parent"
             />
@@ -56,9 +72,13 @@
             android:id="@+id/expand_less"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="16dp"
             android:src="@drawable/ic_expand_less_12dp"
-            android:visibility="gone"
+            android:visibility="invisible"
+            app:isInvisible="@{!isCollapsed}"
             app:layout_constraintBottom_toBottomOf="@id/start_filter"
             app:layout_constraintEnd_toEndOf="@id/start_filter"
             app:layout_constraintTop_toTopOf="@id/start_filter"
@@ -83,6 +103,7 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingTop="8dp"
+            app:isInvisible="@{isCollapsed || isEmptyFavoritePage}"
             android:splitMotionEvents="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -91,5 +112,47 @@
             app:layout_constraintTop_toBottomOf="@id/start_filter"
             tools:listitem="@layout/item_session"
             />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/empty_session"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:isInvisible="@{isCollapsed || !isEmptyFavoritePage || isFiltered}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <ImageView
+                android:id="@+id/empty_icon"
+                android:layout_width="56dp"
+                android:layout_height="72dp"
+                android:scaleType="centerCrop"
+                android:tint="?colorSecondary"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintBottom_toTopOf="@id/empty_message"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_bookmark_black_24dp"
+                tools:ignore="ContentDescription"
+                />
+
+            <TextView
+                android:id="@+id/empty_message"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center_horizontal"
+                android:lineSpacingMultiplier="1.5"
+                android:text="@string/empty_favorite_session"
+                android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/empty_icon"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

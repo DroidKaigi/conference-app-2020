@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched2020.model
 
-sealed class SessionPage {
+@AndroidParcelize
+sealed class SessionPage : AndroidParcel {
 
     object Favorite : SessionPage() {
         override val title = "My Plan"
