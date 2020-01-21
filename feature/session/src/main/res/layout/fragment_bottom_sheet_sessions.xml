@@ -104,6 +104,7 @@
             android:orientation="vertical"
             android:paddingTop="8dp"
             app:isInvisible="@{isCollapsed || isEmptyFavoritePage}"
+            android:splitMotionEvents="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

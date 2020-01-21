@@ -51,13 +51,15 @@ class SpeakerViewModelTest {
             id = SessionId("speech_session_id_2")
         )
 
-        coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents.copy(
-            sessions = listOf(
-                Dummies.serviceSession,
-                Dummies.speachSession1,
-                speachSession2
+        coEvery { sessionRepository.sessionContents() } returns flowOf(
+            Dummies.sessionContents.copy(
+                sessions = listOf(
+                    Dummies.serviceSession,
+                    Dummies.speachSession1,
+                    speachSession2
+                )
             )
-        ))
+        )
         val speakerViewModel = SpeakerViewModel(
             speakerId = Dummies.speakers.first().id,
             sessionRepository = sessionRepository

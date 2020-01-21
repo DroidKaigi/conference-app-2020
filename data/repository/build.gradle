@@ -1,5 +1,7 @@
 import dependencies.Dep
 
+def ideaActive = System.getProperty("idea.active") == "true"
+
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-multiplatform'
 apply plugin: 'kotlin-kapt'
@@ -7,18 +9,26 @@ apply plugin: 'kotlin-kapt'
 apply from: rootProject.file('gradle/android.gradle')
 
 kotlin {
-    targets {
-        fromPreset(presets.android, 'android')
-
-        def buildForDevice = project.findProperty("device")?.toBoolean() ?: false
-        def iosPreset = (buildForDevice) ? presets.iosArm64 : presets.iosX64
-        fromPreset(iosPreset, 'ios') {
+    android("android")
+    iosArm64("iosArm64") {
+        binaries {
+            framework {
+                freeCompilerArgs += "-Xobjc-generics"
+            }
+        }
+    }
+    iosX64("iosX64") {
+        binaries {
+            framework {
+                freeCompilerArgs += "-Xobjc-generics"
+            }
+        }
+    }
+    if (ideaActive) {
+        iosX64("ios") {
             binaries {
                 framework {
-                    // Disable bitcode embedding for the simulator build.
-                    if (!buildForDevice) {
-                        embedBitcode("disable")
-                    }
+                    freeCompilerArgs += "-Xobjc-generics"
                 }
             }
         }

@@ -86,9 +86,11 @@ class SpeakerFragment : DaggerFragment() {
                 val sessions = uiModel.sessions.takeIf { it.isNotEmpty() } ?: return@observe
 
                 groupAdapter.update(
-                    listOf(speakerDetailItemFactory.create(speaker, navArgs.transitionNameSuffix) {
-                        startPostponedEnterTransition()
-                    }) + sessions.map { speakerSessionItemFactory.create(it) }
+                    listOf(
+                        speakerDetailItemFactory.create(speaker, navArgs.transitionNameSuffix) {
+                            startPostponedEnterTransition()
+                        }
+                    ) + sessions.map { speakerSessionItemFactory.create(it) }
                 )
             }
     }
@@ -99,7 +101,8 @@ abstract class SpeakerFragmentModule {
     @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
+        @JvmStatic @Provides
+        fun providesLifecycleOwnerLiveData(
             speakerFragment: SpeakerFragment
         ): LiveData<LifecycleOwner> {
             return speakerFragment.viewLifecycleOwnerLiveData

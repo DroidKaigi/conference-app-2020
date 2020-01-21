@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched2020.preference.ui
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +17,7 @@ import dagger.Provides
 import io.github.droidkaigi.confsched2020.App
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
+import io.github.droidkaigi.confsched2020.ext.isNightMode
 import io.github.droidkaigi.confsched2020.preference.R
 
 class PreferencesFragment : PreferenceFragmentCompat() {
@@ -39,8 +39,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.setting, rootKey)
 
         preferenceManager?.findPreference<SwitchPreferenceCompat>(SWITCH_DARK_THEME_KEY)?.also {
-            val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            it.isChecked = currentNightMode == Configuration.UI_MODE_NIGHT_YES
+            it.isChecked = requireContext().isNightMode()
             it.onPreferenceChangeListener = darkThemeSwitchChangeListener
         }
     }
