@@ -15,8 +15,6 @@ internal class ContributorEntityImpl(
     override val iconUrl: String,
     @ColumnInfo(name = "contributor_profile_url")
     override val profileUrl: String,
-    @ColumnInfo(name = "contributor_type")
-    override val type: String,
     @ColumnInfo(name = "contributor_order")
     override val order: Int
 ) : ContributorEntity

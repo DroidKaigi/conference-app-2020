@@ -1,11 +1,10 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
-import android.graphics.drawable.Drawable
-import android.widget.TextView
-import androidx.core.content.ContextCompat
+import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
@@ -19,7 +18,9 @@ import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSpeakerBinding
-import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragmentDirections.actionSessionToSpeaker
+import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragmentDirections.Companion.actionSessionToSpeaker
+import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
+import io.github.droidkaigi.confsched2020.util.lazyWithParam
 
 class SpeakerItem @AssistedInject constructor(
     @Assisted val speaker: Speaker,
@@ -28,40 +29,41 @@ class SpeakerItem @AssistedInject constructor(
     EqualableContentsProvider {
 
     private val imageRequestDisposables = mutableListOf<RequestDisposable>()
+    private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> { context ->
+        ProfilePlaceholderCreator.create(context)
+    }
+
+    companion object {
+        private const val TRANSITION_NAME_SUFFIX = "speaker"
+    }
 
     override fun getLayout(): Int = R.layout.item_speaker
 
     override fun bind(viewBinding: ItemSpeakerBinding, position: Int) {
         viewBinding.root.setOnClickListener {
+            val extras = FragmentNavigatorExtras(
+                viewBinding.image to viewBinding.image.transitionName
+            )
             viewBinding.root.findNavController()
-                .navigate(actionSessionToSpeaker(speaker.id))
+                .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX), extras)
         }
         viewBinding.name.text = speaker.name
+        viewBinding.image.transitionName = "${speaker.id}-$TRANSITION_NAME_SUFFIX"
 
         imageRequestDisposables.clear()
         val imageUrl = speaker.imageUrl
         val context = viewBinding.name.context
-        val placeHolder = run {
-            VectorDrawableCompat.create(
-                context.resources,
-                R.drawable.ic_person_outline_black_32dp,
-                null
-            )?.apply {
-                setTint(
-                    ContextCompat.getColor(context, R.color.speaker_icon)
-                )
-            }
-        }?.also {
-            viewBinding.name.setLeftDrawable(it)
+        val placeholder = placeholder.get(context)?.also {
+            viewBinding.image.setImageDrawable(it)
         }
 
         imageRequestDisposables += Coil.load(context, imageUrl) {
             crossfade(true)
-            placeholder(placeHolder)
+            placeholder(placeholder)
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
             target {
-                viewBinding.name.setLeftDrawable(it)
+                viewBinding.image.setImageDrawable(it)
             }
         }
     }
@@ -69,18 +71,6 @@ class SpeakerItem @AssistedInject constructor(
     override fun unbind(viewHolder: ViewHolder<ItemSpeakerBinding>) {
         super.unbind(viewHolder)
         imageRequestDisposables.forEach { it.dispose() }
-    }
-
-    fun TextView.setLeftDrawable(drawable: Drawable) {
-        val res = context.resources
-        val widthDp = 64
-        val heightDp = 64
-        val widthPx = (widthDp * res.displayMetrics.density).toInt()
-        val heightPx = (heightDp * res.displayMetrics.density).toInt()
-        drawable.setBounds(0, 0, widthPx, heightPx)
-        setCompoundDrawables(
-            drawable, null, null, null
-        )
     }
 
     override fun providerEqualableContents(): Array<*> {

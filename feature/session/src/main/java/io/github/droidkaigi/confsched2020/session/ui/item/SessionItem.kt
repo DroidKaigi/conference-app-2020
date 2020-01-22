@@ -1,16 +1,17 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.Coil
 import coil.api.load
@@ -18,6 +19,7 @@ import coil.request.RequestDisposable
 import coil.transform.CircleCropTransformation
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import com.xwray.groupie.databinding.ViewHolder
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
@@ -28,10 +30,10 @@ import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionBinding
-import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.actionSessionToSessionDetail
-import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.actionSessionToSpeaker
-import io.github.droidkaigi.confsched2020.session.ui.di.SessionAssistedInjectModule
+import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.Companion.actionSessionToSessionDetail
+import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
+import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
 import io.github.droidkaigi.confsched2020.util.lazyWithParam
 import kotlin.math.max
 
@@ -42,41 +44,72 @@ class SessionItem @AssistedInject constructor(
 ) : BindableItem<ItemSessionBinding>(session.id.hashCode().toLong()),
     EqualableContentsProvider {
 
-    val imageRequestDisposables = mutableListOf<RequestDisposable>()
+    private val imageRequestDisposables = mutableListOf<RequestDisposable>()
 
-    val layoutInflater by lazyWithParam<Context, LayoutInflater> { context ->
+    private val layoutInflater by lazyWithParam<Context, LayoutInflater> { context ->
         LayoutInflater.from(context)
+    }
+
+    private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> { context ->
+        ProfilePlaceholderCreator.create(context)
+    }
+
+    companion object {
+        private const val TRANSITION_NAME_SUFFIX = "session"
     }
 
     override fun getLayout(): Int = R.layout.item_session
 
     override fun bind(viewBinding: ItemSessionBinding, position: Int) {
-        viewBinding.favorite.setOnClickListener {
-            sessionsViewModel
-                .favorite(session)
+        with(viewBinding) {
+            favorite.setOnClickListener {
+                favorite.isSelected = !favorite.isSelected
+                sessionsViewModel.favorite(session)
+            }
+            bindFavorite(session.isFavorited, favorite)
+            root.setOnClickListener {
+                root.findNavController().navigate(actionSessionToSessionDetail(session.id))
+            }
+            live.isVisible = session.isOnGoing
+            title.text = session.title.ja
+            room.text = session.room.name.getByLang(defaultLang())
+            survey.isEnabled = session.isFinished
+            imageRequestDisposables.clear()
+            speakers.bindSpeaker()
         }
-        viewBinding.favorite.setImageResource(
-            if (session.isFavorited)
-                R.drawable.ic_bookmark_black_24dp
-            else
-                R.drawable.ic_bookmark_border_black_24dp
-        )
-        viewBinding.root.setOnClickListener {
-            viewBinding.root.findNavController()
-                .navigate(actionSessionToSessionDetail(session.id))
+    }
+
+    override fun bind(
+        viewBinding: ItemSessionBinding,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) {
+            bind(viewBinding, position)
+        } else {
+            payloads.distinct().forEach { payload ->
+                when (payload) {
+                    is ItemPayload.FavoritePayload -> {
+                        bindFavorite(payload.isFavorited, viewBinding.favorite)
+                    }
+                }
+            }
         }
-        viewBinding.live.isVisible = session.isOnGoing
-        viewBinding.title.text = session.title.ja
-        viewBinding.room.text = session.room.name.getByLang(defaultLang())
-        viewBinding.survey.isEnabled = session.isFinished
-        imageRequestDisposables.clear()
-        viewBinding.speakers.bindSpeaker()
+    }
+
+    private fun bindFavorite(
+        isFavorited: Boolean,
+        imageButton: ImageButton
+    ) {
+        imageButton.isSelected = isFavorited
     }
 
     private fun ViewGroup.bindSpeaker() {
-        (0 until max(
-            size, (session as? SpeechSession)?.speakers.orEmpty().size
-        )).forEach { index ->
+        (
+            0 until max(
+                size, (session as? SpeechSession)?.speakers.orEmpty().size
+            )
+            ).forEach { index ->
             val existSpeakerView = getChildAt(index) as? ViewGroup
             val speaker: Speaker? = (session as? SpeechSession)?.speakers?.getOrNull(index)
             if (speaker == null) {
@@ -95,43 +128,40 @@ class SessionItem @AssistedInject constructor(
                 existSpeakerView.isVisible = true
                 existSpeakerView
             }
+            val speakerNameView = speakerView.findViewById<TextView>(R.id.speaker)
+            val speakerImageView = speakerView.findViewById<ImageView>(R.id.speaker_image)
+            speakerImageView.transitionName = "${speaker.id}-$TRANSITION_NAME_SUFFIX"
             speakerView.setOnClickListener {
-                it.findNavController().navigate(actionSessionToSpeaker(speaker.id))
+                val extras = FragmentNavigatorExtras(
+                    speakerImageView to speakerImageView.transitionName
+                )
+                it.findNavController()
+                    .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX), extras)
             }
-            val textView: TextView = speakerView.findViewById(R.id.speaker)
-            bindSpeakerData(speaker, textView)
+            bindSpeakerData(speaker, speakerNameView, speakerImageView)
         }
     }
 
     private fun bindSpeakerData(
         speaker: Speaker,
-        textView: TextView
+        speakerNameView: TextView,
+        speakerImageView: ImageView
     ) {
-        textView.text = speaker.name
+        speakerNameView.text = speaker.name
 //        setHighlightText(textView, query)
         val imageUrl = speaker.imageUrl
-        val context = textView.context
-        val placeHolder = run {
-            VectorDrawableCompat.create(
-                context.resources,
-                R.drawable.ic_person_outline_black_32dp,
-                null
-            )?.apply {
-                setTint(
-                    ContextCompat.getColor(context, R.color.speaker_icon)
-                )
-            }
-        }?.also {
-            textView.setLeftDrawable(it)
+        val context = speakerNameView.context
+        val placeholder = placeholder.get(context)?.also {
+            speakerImageView.setImageDrawable(it)
         }
 
         imageRequestDisposables += Coil.load(context, imageUrl) {
             crossfade(true)
-            placeholder(placeHolder)
+            placeholder(placeholder)
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
             target {
-                textView.setLeftDrawable(it)
+                speakerImageView.setImageDrawable(it)
             }
         }
     }
@@ -141,21 +171,17 @@ class SessionItem @AssistedInject constructor(
         imageRequestDisposables.forEach { it.dispose() }
     }
 
-    fun TextView.setLeftDrawable(drawable: Drawable) {
-        val res = context.resources
-        val widthDp = 32
-        val heightDp = 32
-        val widthPx = (widthDp * res.displayMetrics.density).toInt()
-        val heightPx = (heightDp * res.displayMetrics.density).toInt()
-        drawable.setBounds(0, 0, widthPx, heightPx)
-        setCompoundDrawables(
-            drawable, null, null, null
-        )
-    }
-
     fun startSessionTime(): String = session.startTimeText
 
     fun title(): LocaledString = session.title
+
+    override fun getChangePayload(newItem: Item<*>?): Any? {
+        return when {
+            newItem !is SessionItem -> null
+            isChangeFavorited(newItem) -> ItemPayload.FavoritePayload(newItem.session.isFavorited)
+            else -> null
+        }
+    }
 
     override fun providerEqualableContents(): Array<*> {
         return arrayOf(session)
@@ -165,8 +191,16 @@ class SessionItem @AssistedInject constructor(
         return isSameContents(other)
     }
 
+    private fun isChangeFavorited(newItem: SessionItem): Boolean {
+        return session.isFavorited != newItem.session.isFavorited
+    }
+
     override fun hashCode(): Int {
         return contentsHash()
+    }
+
+    private sealed class ItemPayload {
+        data class FavoritePayload(val isFavorited: Boolean) : ItemPayload()
     }
 
     @AssistedInject.Factory

@@ -21,7 +21,8 @@ class FloorMapFragment : DaggerFragment() {
     private var binding: FragmentFloormapBinding by autoCleared()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(

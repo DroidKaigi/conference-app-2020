@@ -60,10 +60,10 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.di.SponsorsAssistedInjectMo
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.PageConfiguration
 import io.github.droidkaigi.confsched2020.ui.widget.SystemUiManager
-import timber.log.Timber
-import timber.log.warn
 import javax.inject.Inject
 import javax.inject.Provider
+import timber.log.Timber
+import timber.log.warn
 
 class MainActivity : DaggerAppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
@@ -79,7 +79,7 @@ class MainActivity : DaggerAppCompatActivity() {
     }
     @Inject
     lateinit var sessionRepository: SessionRepository
-    val navController: NavController by lazy {
+    private val navController: NavController by lazy {
         Navigation.findNavController(this, R.id.root_nav_host_fragment)
     }
 
@@ -96,19 +96,21 @@ class MainActivity : DaggerAppCompatActivity() {
         binding.drawerLayout.doOnApplyWindowInsets { _, insets, _ ->
             binding.drawerLayout.setChildInsetsWorkAround(insets)
         }
-        binding.contentContainer.doOnApplyWindowInsets { _, insets, initialState ->
-            binding.contentContainer.updatePadding(
+        binding.contentContainer.doOnApplyWindowInsets { view, insets, initialState ->
+            view.updatePadding(
                 left = insets.systemWindowInsetLeft + initialState.paddings.left,
                 right = insets.systemWindowInsetRight + initialState.paddings.right
             )
         }
-        binding.toolbar.doOnApplyWindowInsets { _, insets, initialState ->
-            binding.toolbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+        binding.toolbar.doOnApplyWindowInsets { view, insets, initialState ->
+            view.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 topMargin = insets.systemWindowInsetTop + initialState.margins.top
             }
+            // Invalidate because option menu cannot be displayed after screen rotation
+            invalidateOptionsMenu()
         }
-        binding.navView.doOnApplyWindowInsets { _, insets, initialState ->
-            binding.navView.apply {
+        binding.navView.doOnApplyWindowInsets { view, insets, initialState ->
+            view.apply {
                 // On seascape mode only, nav bar is overlapped with DrawerLayout.
                 // So set left padding and reset width.
                 val leftSpace = insets.systemWindowInsetLeft + initialState.paddings.left

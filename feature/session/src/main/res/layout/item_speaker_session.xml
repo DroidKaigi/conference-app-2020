@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import type="io.github.droidkaigi.confsched2020.model.TimeZoneOffsetKt" />
+
+        <variable
+            name="speechSession"
+            type="io.github.droidkaigi.confsched2020.model.SpeechSession"
+            />
+
+        <variable
+            name="lang"
+            type="io.github.droidkaigi.confsched2020.model.Lang"
+            />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="24dp"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="24dp"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/session"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackground"
+            app:isVisible="@{speechSession.hasSpeaker}"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/speaker_session_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="8sp"
+                android:text="@{speechSession.title.getByLang(lang)}"
+                android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="DroidKaigi App Architecture"
+                />
+
+            <ImageView
+                android:id="@+id/time_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_access_time_black_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/speaker_session_name"
+                app:tint="?android:attr/textColorPrimary"
+                />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@{speechSession.timeSummary(lang, TimeZoneOffsetKt.defaultTimeZoneOffset())}"
+                android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
+                app:layout_constraintBottom_toBottomOf="@id/time_icon"
+                app:layout_constraintStart_toEndOf="@id/time_icon"
+                app:layout_constraintTop_toTopOf="@id/time_icon"
+                tools:text="2月20日 11:00-11:20"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
