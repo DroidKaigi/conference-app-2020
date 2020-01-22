@@ -92,7 +92,7 @@ class MainSessionsFragment : DaggerFragment() {
         }.apply {
             loading = true
         }
-        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
+        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             progressTimeLatch.loading = uiModel.isLoading
         }
         binding.sessionsViewpager.adapter = object : FragmentStateAdapter(
