@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -45,12 +44,10 @@ import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.defaultLang
-import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToChrome
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
-import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSurvey
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
@@ -95,7 +92,7 @@ class SessionDetailFragment : DaggerFragment() {
             container,
             false
         )
-        activity!!.window.navigationBarColor = Color.parseColor("#88FFFFFF")
+        activity?.window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         return binding.root
     }
 
@@ -327,11 +324,6 @@ class SessionDetailFragment : DaggerFragment() {
         setCompoundDrawables(
             drawable, null, null, null
         )
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        activity!!.window.navigationBarColor = Color.parseColor("#00FFFFFF")
     }
 }
 
