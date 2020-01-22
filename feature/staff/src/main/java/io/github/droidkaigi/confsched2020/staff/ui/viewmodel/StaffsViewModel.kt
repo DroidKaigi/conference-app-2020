@@ -3,21 +3,19 @@ package io.github.droidkaigi.confsched2020.staff.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
 import com.dropbox.android.external.store4.MemoryPolicy
 import com.dropbox.android.external.store4.StoreBuilder
+import com.dropbox.android.external.store4.StoreRequest
+import com.dropbox.android.external.store4.StoreResponse
 import io.github.droidkaigi.confsched2020.data.api.DroidKaigiApi
 import io.github.droidkaigi.confsched2020.data.api.response.StaffResponse
 import io.github.droidkaigi.confsched2020.data.db.StaffDatabase
 import io.github.droidkaigi.confsched2020.data.db.entity.StaffEntity
 import io.github.droidkaigi.confsched2020.ext.combine
 import io.github.droidkaigi.confsched2020.ext.toAppError
-import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
-import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.Staff
 import io.github.droidkaigi.confsched2020.model.StaffContents
-import io.github.droidkaigi.confsched2020.model.repository.StaffRepository
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -25,8 +23,7 @@ import javax.inject.Inject
 @FlowPreview
 class StaffsViewModel @Inject constructor(
     private val api: DroidKaigiApi,
-    private val staffDatabase: StaffDatabase,
-    private val staffRepository: StaffRepository
+    private val staffDatabase: StaffDatabase
 ) : ViewModel() {
 
     data class UiModel(
@@ -47,30 +44,24 @@ class StaffsViewModel @Inject constructor(
         .cachePolicy(MemoryPolicy.builder().build())
         .build()
 
-    private val staffContentsLoadState: LiveData<LoadState<StaffContents>> = liveData {
-        emitSource(
-            staffRepository.staffs()
-                .toLoadingState()
-                .asLiveData()
-        )
-        staffRepository.refresh()
-    }
+    private val staffContentsLoadState: LiveData<StoreResponse<StaffContents>> =
+        store.stream(StoreRequest.cached(key = Unit, refresh = true)).asLiveData()
 
     val uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
         liveData1 = staffContentsLoadState
-    ) { _, loadState ->
-        val staffContents = when (loadState) {
-            is LoadState.Loaded -> {
-                loadState.value
+    ) { _, storeResponse ->
+        val staffContents = when (storeResponse) {
+            is StoreResponse.Data -> {
+                storeResponse.value
             }
             else -> {
                 StaffContents.EMPTY
             }
         }
         UiModel(
-            isLoading = loadState.isLoading,
-            error = loadState.getErrorIfExists().toAppError(),
+            isLoading = storeResponse is StoreResponse.Loading,
+            error = storeResponse.errorOrNull().toAppError(),
             staffContents = staffContents
         )
     }
