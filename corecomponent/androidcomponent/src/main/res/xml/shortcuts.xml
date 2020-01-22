@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="floor_map"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/floor_map_shortcut_short_label1">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="io.github.droidkaigi.confsched2020"
+            android:targetClass="io.github.droidkaigi.confsched2020.MainActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="my_plan"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/my_plan_shortcut_short_label1">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="io.github.droidkaigi.confsched2020"
+            android:targetClass="io.github.droidkaigi.confsched2020.MainActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>

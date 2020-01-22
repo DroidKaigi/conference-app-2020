@@ -98,7 +98,7 @@ class MainActivity : DaggerAppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         setupNavigation()
         setupStatusBarColors()
-        setupShortcuts()
+//        setupShortcuts()
 
         binding.drawerLayout.doOnApplyWindowInsets { _, insets, _ ->
             binding.drawerLayout.setChildInsetsWorkAround(insets)
@@ -233,7 +233,7 @@ class MainActivity : DaggerAppCompatActivity() {
             .setIntent(Intent(Intent.ACTION_VIEW,
                 Uri.parse("https://www.mysite.example.com/")))
             .build()
-        shortcutManager.addDynamicShortcuts(listOf(map, myPlan))
+        shortcutManager?.addDynamicShortcuts(listOf(map, myPlan))
     }
 
     private fun handleNavigation(@IdRes itemId: Int): Boolean {
