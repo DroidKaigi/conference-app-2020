@@ -6,6 +6,11 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>api.droidkaigi.jp</key>
+			<dict>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
 			<key>deploy-preview-49--droidkaigi-api-dev.netlify.com</key>
 			<dict>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
