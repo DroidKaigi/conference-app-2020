@@ -94,7 +94,7 @@ class BottomSheetSessionsFragment : DaggerFragment() {
         binding.sessionRecycler.doOnApplyWindowInsets { sessionRecycler, insets, initialState ->
             sessionRecycler.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
         }
-
+        // for ci check
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
             binding.isCollapsed = when (uiModel.expandFilterState) {
