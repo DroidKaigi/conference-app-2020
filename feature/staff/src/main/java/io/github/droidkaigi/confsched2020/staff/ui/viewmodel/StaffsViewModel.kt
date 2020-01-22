@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched2020.staff.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -53,7 +52,6 @@ class StaffsViewModel @Inject constructor(
         initialValue = UiModel.EMPTY,
         liveData1 = staffContentsLoadState
     ) { _, storeResponse ->
-        println("combine: ${storeResponse.origin}")
         val staffContents = when (storeResponse) {
             is StoreResponse.Data -> {
                 storeResponse.value
@@ -76,5 +74,4 @@ class StaffsViewModel @Inject constructor(
     }
 
     private fun StaffEntity.toStaff(): Staff = Staff(id, name, iconUrl, profileUrl)
-
 }
