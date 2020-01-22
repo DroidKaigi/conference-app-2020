@@ -23,13 +23,11 @@ sealed class Session(
         append(minutes)
         if (lang == Lang.JA) {
             append("分")
-            append(" / ")
-            append(room.name .ja)
         } else {
             append("minutes")
-            append(" / ")
-            append(room.name .en)
         }
+        append(" / ")
+        append(room.name.getByLang(lang))
     }
 
     fun timeSummary(lang: Lang, timezoneOffset: TimezoneOffset) = buildString {
