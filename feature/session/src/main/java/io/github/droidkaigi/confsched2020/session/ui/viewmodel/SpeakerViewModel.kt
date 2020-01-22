@@ -43,12 +43,16 @@ class SpeakerViewModel @AssistedInject constructor(
             }
     }
 
-    private val speakerSessionLoadingStateLiveData: LiveData<LoadState<List<SpeechSession>>> = liveData {
+    private val speakerSessionLoadingStateLiveData = liveData {
         sessionRepository.sessionContents()
             .map {
                 it.sessions
                     .filterIsInstance<SpeechSession>()
-                    .filter { session -> session.speakers.firstOrNull { speaker -> speakerId == speaker.id } != null }
+                    .filter { session ->
+                        session.speakers.firstOrNull { speaker ->
+                            speakerId == speaker.id
+                        } != null
+                    }
             }
             .toLoadingState()
             .collect { loadState: LoadState<List<SpeechSession>> ->

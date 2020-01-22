@@ -102,7 +102,9 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             sessionTabViewModel.toggleExpand()
         }
         binding.sessionRecycler.doOnApplyWindowInsets { sessionRecycler, insets, initialState ->
-            sessionRecycler.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+            sessionRecycler.updatePadding(
+                bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+            )
         }
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
@@ -115,7 +117,7 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             }
         }
 
-        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
+        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             val page = args.page
             val sessions = when (page) {
                 is SessionPage.Day -> uiModel.dayToSessionsMap[page].orEmpty()
@@ -124,7 +126,9 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             val count = sessions.filter { it.shouldCountForFilter }.count()
 
             if (page == SessionPage.Favorite) {
-                TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
+                TransitionManager.beginDelayedTransition(
+                    binding.sessionRecycler.parent as ViewGroup
+                )
                 binding.isEmptyFavoritePage = sessions.isEmpty()
             }
 
