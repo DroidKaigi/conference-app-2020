@@ -11,6 +11,7 @@ import dagger.android.DaggerApplication
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.AppComponentHolder
 import io.github.droidkaigi.confsched2020.di.createAppComponent
+import io.github.droidkaigi.confsched2020.image.CoilInitializer
 import timber.log.LogcatTree
 import timber.log.Timber
 
@@ -30,6 +31,7 @@ open class App : DaggerApplication(), AppComponentHolder {
         setupTimber()
         setupFirestore()
         setupNightMode()
+        setupCoil()
     }
 
     private fun setupTimber() {
@@ -60,5 +62,9 @@ open class App : DaggerApplication(), AppComponentHolder {
             }
         }
         AppCompatDelegate.setDefaultNightMode(nightMode)
+    }
+
+    private fun setupCoil() {
+        CoilInitializer.init(this)
     }
 }

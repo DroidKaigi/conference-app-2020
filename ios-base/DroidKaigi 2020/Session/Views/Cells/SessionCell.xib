@@ -66,7 +66,7 @@
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="rMR-Ci-Z50">
                         <rect key="frame" x="76" y="65.5" width="187.5" height="40.5"/>
                         <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" id="PQ4-Ov-b0v"/>
+                            <constraint firstAttribute="height" priority="250" id="PQ4-Ov-b0v"/>
                         </constraints>
                     </stackView>
                 </subviews>

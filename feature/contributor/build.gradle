@@ -11,6 +11,7 @@ apply from: rootProject.file('gradle/android-dynamic-module.gradle')
 dependencies {
     implementation project(':android-base')
 
+    implementation project(':feature:system')
     implementation project(':corecomponent:androidcomponent')
     implementation project(":data:repository")
 
@@ -37,6 +38,7 @@ dependencies {
 
     implementation Dep.Coil.coil
 
+    testImplementation project(':corecomponent:androidtestcomponent')
     testImplementation Dep.Test.junit
     testImplementation Dep.Test.kotlinTestAssertions
     testImplementation Dep.MockK.jvm

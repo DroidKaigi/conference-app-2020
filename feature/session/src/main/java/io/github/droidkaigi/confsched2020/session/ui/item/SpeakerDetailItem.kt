@@ -11,11 +11,12 @@ import coil.transform.CircleCropTransformation
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
-import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSpeakerDetailBinding
+import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
+import io.github.droidkaigi.confsched2020.util.lazyWithParam
 import javax.inject.Named
 
 class SpeakerDetailItem @AssistedInject constructor(
@@ -23,19 +24,12 @@ class SpeakerDetailItem @AssistedInject constructor(
     @Assisted @Named("transitionNameSuffix")
     val transitionNameSuffix: String,
     @Assisted val onImageLoadedCallback: () -> Unit,
-    private val context: Context,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
 ) : BindableItem<ItemSpeakerDetailBinding>(speaker.id.hashCode().toLong()),
     EqualableContentsProvider {
 
-    private val placeHolder = VectorDrawableCompat.create(
-        context.resources,
-        R.drawable.ic_person_outline_black_32dp,
-        null
-    )?.apply {
-        setTint(
-            context.getThemeColor(R.attr.colorOnBackground)
-        )
+    private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> { context ->
+        ProfilePlaceholderCreator.create(context)
     }
 
     override fun getLayout(): Int = R.layout.item_speaker_detail
@@ -48,12 +42,17 @@ class SpeakerDetailItem @AssistedInject constructor(
 
         speaker.imageUrl ?: onImageLoadedCallback()
 
+        val context = viewBinding.root.context
+
         Coil.load(context, speaker.imageUrl) {
             crossfade(true)
-            placeholder(placeHolder)
+            placeholder(placeholder.get(context))
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
             target(
+                onStart = {
+                    viewBinding.speakerImage.setImageDrawable(it)
+                },
                 onSuccess = {
                     viewBinding.speakerImage.setImageDrawable(it)
                     onImageLoadedCallback()

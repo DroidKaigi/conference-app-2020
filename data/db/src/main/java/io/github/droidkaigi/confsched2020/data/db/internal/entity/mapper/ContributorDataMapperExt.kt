@@ -4,17 +4,15 @@ import io.github.droidkaigi.confsched2020.data.api.response.ContributorItemRespo
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.ContributorEntityImpl
 
 internal fun List<ContributorItemResponse>.toContributorEntities(): List<ContributorEntityImpl> =
-    mapIndexed { index, response ->
-        response.toContributorEntities(index)
+    map {
+        it.toContributorEntities()
     }
 
-internal fun ContributorItemResponse.toContributorEntities(index: Int): ContributorEntityImpl {
-    return ContributorEntityImpl(
+internal fun ContributorItemResponse.toContributorEntities(): ContributorEntityImpl =
+    ContributorEntityImpl(
         id = id,
-        name = name,
+        name = username,
         iconUrl = iconUrl,
         profileUrl = profileUrl,
-        type = type,
-        order = index
+        order = sort
     )
-}
