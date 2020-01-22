@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched2020.di
 
 import android.content.Context
+import com.dropbox.android.external.store4.Store
 import dagger.Module
 import dagger.Provides
 import io.github.droidkaigi.confsched2020.data.api.DroidKaigiApi
@@ -12,6 +13,7 @@ import io.github.droidkaigi.confsched2020.data.db.SponsorDatabase
 import io.github.droidkaigi.confsched2020.data.db.StaffDatabase
 import io.github.droidkaigi.confsched2020.data.firestore.Firestore
 import io.github.droidkaigi.confsched2020.data.repository.RepositoryComponent
+import io.github.droidkaigi.confsched2020.model.StaffContents
 import io.github.droidkaigi.confsched2020.model.repository.AnnouncementRepository
 import io.github.droidkaigi.confsched2020.model.repository.ContributorRepository
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
@@ -55,6 +57,12 @@ object RepositoryComponentModule {
     ): ContributorRepository {
         return repositoryComponent.contributorRepository()
     }
+
+//    @Provides @Singleton
+//    fun provideStaffsStore(api: DroidKaigiApi,
+//       staffDatabase: StaffDatabase): Store<Unit, StaffContents> {
+//
+//    }
 
     @Provides @Singleton
     fun provideRepositoryComponent(

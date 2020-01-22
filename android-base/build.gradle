@@ -109,6 +109,7 @@ dependencies {
     compileOnly Dep.Dagger.assistedInjectAnnotations
     kapt Dep.Dagger.assistedInjectProcessor
     implementation Dep.Groupie.groupie
+    implementation Dep.Store.store
 
     testImplementation Dep.Test.junit
     androidTestImplementation Dep.Test.testRunner

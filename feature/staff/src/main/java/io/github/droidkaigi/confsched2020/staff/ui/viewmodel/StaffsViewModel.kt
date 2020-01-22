@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.dropbox.android.external.store4.MemoryPolicy
+import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
 import com.dropbox.android.external.store4.StoreRequest
 import com.dropbox.android.external.store4.StoreResponse
@@ -22,6 +23,7 @@ import javax.inject.Inject
 
 @FlowPreview
 class StaffsViewModel @Inject constructor(
+    private val store: Store<Unit, StaffContents>,
     private val api: DroidKaigiApi,
     private val staffDatabase: StaffDatabase
 ) : ViewModel() {
@@ -36,13 +38,13 @@ class StaffsViewModel @Inject constructor(
         }
     }
 
-    private val store = StoreBuilder.fromNonFlow<Unit, StaffResponse> { api.getStaffs() }
-        .persister(
-            reader = { readFromLocal() },
-            writer = { _: Unit, output: StaffResponse -> staffDatabase.save(output) }
-        )
-        .cachePolicy(MemoryPolicy.builder().build())
-        .build()
+//    private val store = StoreBuilder.fromNonFlow<Unit, StaffResponse> { api.getStaffs() }
+//        .persister(
+//            reader = { readFromLocal() },
+//            writer = { _: Unit, output: StaffResponse -> staffDatabase.save(output) }
+//        )
+//        .cachePolicy(MemoryPolicy.builder().build())
+//        .build()
 
     private val staffContentsLoadState: LiveData<StoreResponse<StaffContents>> =
         store.stream(StoreRequest.cached(key = Unit, refresh = true)).asLiveData()
