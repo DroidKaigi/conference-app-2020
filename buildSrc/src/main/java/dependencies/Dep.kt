@@ -221,4 +221,8 @@ object Dep {
     object Insetter {
         val insetter = "dev.chrisbanes:insetter-ktx:0.2.0"
     }
+
+    object PhotoView {
+        val photoview =  "com.github.chrisbanes:PhotoView:2.3.0"
+    }
 }
