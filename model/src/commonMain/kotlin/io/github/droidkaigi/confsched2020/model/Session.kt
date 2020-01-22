@@ -24,7 +24,7 @@ sealed class Session(
         if (lang == Lang.JA) {
             append("分")
         } else {
-            append("minutes")
+            append("min")
         }
         append(" / ")
         append(room.name.getByLang(lang))
