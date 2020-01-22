@@ -3,13 +3,16 @@ package io.github.droidkaigi.confsched2020.session.ui
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.core.view.updatePadding
-import androidx.fragment.app.Fragment
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -21,6 +24,7 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import dagger.android.support.DaggerFragment
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
@@ -35,12 +39,11 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewMod
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.ui.widget.FilterChip
 import io.github.droidkaigi.confsched2020.ui.widget.onCheckedChanged
-import io.github.droidkaigi.confsched2020.util.DaggerFragment
 import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
-class SessionsFragment : DaggerFragment(R.layout.fragment_sessions) {
+class SessionsFragment : DaggerFragment() {
 
     private var binding: FragmentSessionsBinding by autoCleared()
     private lateinit var overrideBackPressedCallback: OnBackPressedCallback
@@ -83,12 +86,23 @@ class SessionsFragment : DaggerFragment(R.layout.fragment_sessions) {
             }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_sessions,
+            container,
+            false
+        )
+        setHasOptionsMenu(true)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding = FragmentSessionsBinding.bind(view)
-        setHasOptionsMenu(true)
-
         initBottomSheetShapeAppearance()
         val initialPeekHeight = sessionSheetBehavior.peekHeight
         val gestureNavigationBottomSpace =
@@ -105,26 +119,26 @@ class SessionsFragment : DaggerFragment(R.layout.fragment_sessions) {
             scrollView.updatePadding(bottom = insets.systemWindowInsetBottom + initialPeekHeight + initialState.paddings.bottom)
         }
         sessionSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
+                BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
 
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                sessionTabViewModel.setExpand(
-                    when (newState) {
-                        BottomSheetBehavior.STATE_COLLAPSED -> {
-                            ExpandFilterState.COLLAPSED
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    sessionTabViewModel.setExpand(
+                        when (newState) {
+                            BottomSheetBehavior.STATE_COLLAPSED -> {
+                                ExpandFilterState.COLLAPSED
+                            }
+                            BottomSheetBehavior.STATE_EXPANDED -> {
+                                ExpandFilterState.EXPANDED
+                            }
+                            else -> {
+                                ExpandFilterState.CHANGING
+                            }
                         }
-                        BottomSheetBehavior.STATE_EXPANDED -> {
-                            ExpandFilterState.EXPANDED
-                        }
-                        else -> {
-                            ExpandFilterState.CHANGING
-                        }
-                    }
-                )
-            }
-        })
+                    )
+                }
+            })
         binding.filterReset.setOnClickListener {
             sessionsViewModel.resetFilter()
         }
@@ -177,6 +191,22 @@ class SessionsFragment : DaggerFragment(R.layout.fragment_sessions) {
                 filterName = { it.name }
             ) { checked, level ->
                 sessionsViewModel.filterChanged(level, checked)
+            }
+
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+                // This block is the workaround to fix issue #118 only for Android 5.
+                // See: https://github.com/DroidKaigi/conference-app-2020/issues/118
+                fun fragmentContainerView(view: View): FragmentContainerView? {
+                    var parent = view.parent
+                    while (parent != null && parent !is FragmentContainerView) {
+                        parent = parent.parent
+                    }
+                    return parent as? FragmentContainerView
+                }
+
+                // On Android 5, performing layout views containing ChipGroup is not invoked after binding construction.
+                // So, we have to request layout explicitly for FragmentContainerView (or the view placed upside of it).
+                fragmentContainerView(binding.root)?.requestLayout()
             }
         }
     }
@@ -255,16 +285,10 @@ class SessionsFragment : DaggerFragment(R.layout.fragment_sessions) {
 
     private fun setupSessionsFragment() {
         val tab = SessionPage.pages[args.tabIndex]
-        val fragment: Fragment = when (tab) {
-            is SessionPage.Day -> {
-                BottomSheetDaySessionsFragment.newInstance(
-                    BottomSheetDaySessionsFragmentArgs(tab.day)
-                )
-            }
-            SessionPage.Favorite -> {
-                BottomSheetFavoriteSessionsFragment.newInstance()
-            }
-        }
+
+        val fragment = BottomSheetSessionsFragment.newInstance(
+            BottomSheetSessionsFragmentArgs(tab)
+        )
 
         childFragmentManager
             .beginTransaction()
@@ -312,12 +336,7 @@ abstract class SessionsFragmentModule {
     @ContributesAndroidInjector(
         modules = [SessionAssistedInjectModule::class]
     )
-    abstract fun contributeBottomSheetDaySessionsFragment(): BottomSheetDaySessionsFragment
-
-    @ContributesAndroidInjector(
-        modules = [SessionAssistedInjectModule::class]
-    )
-    abstract fun contributeBottomSheetFavoriteSessionsFragment(): BottomSheetFavoriteSessionsFragment
+    abstract fun contributeBottomSheetSessionsFragment(): BottomSheetSessionsFragment
 
     @Module
     companion object {

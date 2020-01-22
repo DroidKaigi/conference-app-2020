@@ -9,12 +9,13 @@ import io.github.droidkaigi.confsched2020.data.db.DbComponent
 import io.github.droidkaigi.confsched2020.data.db.SessionDatabase
 import io.github.droidkaigi.confsched2020.data.db.SponsorDatabase
 import io.github.droidkaigi.confsched2020.data.db.StaffDatabase
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
+import kotlinx.coroutines.Dispatchers
 
 @Module
 object DbComponentModule {
-    @Provides @Singleton fun provideItemStore(
+    @Provides @Singleton
+    fun provideItemStore(
         application: Application
     ): SessionDatabase {
         return DbComponent.factory()
@@ -22,7 +23,8 @@ object DbComponentModule {
             .sessionDatabase()
     }
 
-    @Provides @Singleton fun provideSponsorStore(
+    @Provides @Singleton
+    fun provideSponsorStore(
         application: Application
     ): SponsorDatabase {
         return DbComponent.factory()
@@ -30,7 +32,8 @@ object DbComponentModule {
             .sponsorDatabase()
     }
 
-    @Provides @Singleton fun provideAnnouncementStore(
+    @Provides @Singleton
+    fun provideAnnouncementStore(
         application: Application
     ): AnnouncementDatabase {
         return DbComponent.factory()
@@ -38,7 +41,8 @@ object DbComponentModule {
             .announcementDatabase()
     }
 
-    @Provides @Singleton fun provideStaffStore(
+    @Provides @Singleton
+    fun provideStaffStore(
         application: Application
     ): StaffDatabase {
         return DbComponent.factory()
@@ -46,7 +50,8 @@ object DbComponentModule {
             .staffDatabase()
     }
 
-    @Provides @Singleton fun provideContributorStore(
+    @Provides @Singleton
+    fun provideContributorStore(
         application: Application
     ): ContributorDatabase {
         return DbComponent.factory()

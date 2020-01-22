@@ -75,6 +75,7 @@
             app:itemBackground="@android:color/transparent"
             app:itemIconTint="@color/nav_drawer_item_selector"
             app:itemTextColor="@color/nav_drawer_item_selector"
+            app:itemIconPadding="34dp"
             app:menu="@menu/menu_nav_drawer"
             />
     </androidx.drawerlayout.widget.DrawerLayout>

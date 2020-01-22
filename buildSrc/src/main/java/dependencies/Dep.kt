@@ -134,12 +134,12 @@ object Dep {
         val android = "com.google.dagger:dagger-android:$version"
         val androidProcessor = "com.google.dagger:dagger-android-processor:$version"
         val assistedInjectAnnotations =
-            "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.0"
-        val assistedInjectProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:0.5.0"
+            "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2"
+        val assistedInjectProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:0.5.2"
     }
 
     object Ktor {
-        val version = "1.3.0-beta-2"
+        val version = "1.3.0"
         val clientCommon = "io.ktor:ktor-client-core:$version"
         val clientAndroid = "io.ktor:ktor-client-okhttp:$version"
         val clientIos = "io.ktor:ktor-client-ios:$version"
@@ -220,5 +220,9 @@ object Dep {
 
     object Insetter {
         val insetter = "dev.chrisbanes:insetter-ktx:0.2.0"
+    }
+
+    object PhotoView {
+        val photoview =  "com.github.chrisbanes:PhotoView:2.3.0"
     }
 }

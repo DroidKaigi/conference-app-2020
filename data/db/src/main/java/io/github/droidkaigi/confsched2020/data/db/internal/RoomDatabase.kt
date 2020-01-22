@@ -34,10 +34,10 @@ import io.github.droidkaigi.confsched2020.data.db.internal.entity.mapper.toSpeak
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.mapper.toSponsorEntities
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.mapper.toStaffEntities
 import io.github.droidkaigi.confsched2020.model.SessionFeedback
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 internal class RoomDatabase @Inject constructor(
     private val cacheDatabase: CacheDatabase,
@@ -129,7 +129,7 @@ internal class RoomDatabase @Inject constructor(
         }
     }
 
-    override suspend fun contributorList(): List<ContributorEntity> =
+    override fun contributorList(): Flow<List<ContributorEntity>> =
         contributorDao.allContributors()
 
     override suspend fun save(apiResponse: ContributorResponse) {

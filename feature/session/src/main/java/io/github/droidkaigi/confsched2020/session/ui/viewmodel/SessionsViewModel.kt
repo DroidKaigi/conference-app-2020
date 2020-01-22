@@ -23,10 +23,10 @@ import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.debug
-import javax.inject.Inject
 
 class SessionsViewModel @Inject constructor(
     private val sessionRepository: SessionRepository

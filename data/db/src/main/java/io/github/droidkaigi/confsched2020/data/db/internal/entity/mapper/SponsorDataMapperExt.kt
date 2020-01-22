@@ -29,4 +29,3 @@ internal fun CompanyNameResponse.toCompanyNameEntityImpl(): CompanyNameEntityImp
         enName = en
     )
 }
-

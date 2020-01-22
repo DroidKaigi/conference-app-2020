@@ -5,5 +5,5 @@ data class Contributor(
     val name: String,
     val iconUrl: String,
     val profileUrl: String,
-    val type: String
+    val rankOrder: String
 )

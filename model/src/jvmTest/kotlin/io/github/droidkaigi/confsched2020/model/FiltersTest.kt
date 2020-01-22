@@ -3,12 +3,12 @@ package io.github.droidkaigi.confsched2020.model
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import org.junit.After
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 @RunWith(Enclosed::class)
 class FiltersTest {

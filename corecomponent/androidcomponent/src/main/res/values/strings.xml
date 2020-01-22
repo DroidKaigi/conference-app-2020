@@ -3,6 +3,8 @@
     <string name="session_label">Session</string>
     <!-- Speaker -->
     <string name="speaker_label" translatable="false">Speaker</string>
+    <!-- Material -->
+    <string name="material_label" translatable="false">Material</string>
     <!-- Announce -->
     <string name="announce_label">Announce</string>
     <!-- About -->
