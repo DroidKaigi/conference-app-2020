@@ -58,12 +58,6 @@ object RepositoryComponentModule {
         return repositoryComponent.contributorRepository()
     }
 
-//    @Provides @Singleton
-//    fun provideStaffsStore(api: DroidKaigiApi,
-//       staffDatabase: StaffDatabase): Store<Unit, StaffContents> {
-//
-//    }
-
     @Provides @Singleton
     fun provideRepositoryComponent(
         context: Context,

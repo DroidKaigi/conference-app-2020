@@ -37,16 +37,16 @@ class StaffsViewModel @Inject constructor(
         }
     }
 
-    private val store = StoreBuilder.fromNonFlow<Unit, StaffResponse> { api.getStaffs() }
+    private val store = StoreBuilder.fromNonFlow<String, StaffResponse> { api.getStaffs() }
         .persister(
             reader = { readFromLocal(staffDatabase) },
-            writer = { _: Unit, output: StaffResponse -> staffDatabase.save(output) }
+            writer = { _: String, output: StaffResponse -> staffDatabase.save(output) }
         )
         .cachePolicy(MemoryPolicy.builder().build())
         .build()
 
     private val staffContentsLoadState: LiveData<StoreResponse<StaffContents>> =
-        store.stream(StoreRequest.cached(key = Unit, refresh = true)).asLiveData()
+        store.stream(StoreRequest.cached(key = "", refresh = true)).asLiveData()
 
     val uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
