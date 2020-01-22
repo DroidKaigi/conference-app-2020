@@ -1,0 +1,12 @@
+// Generated using xcconfig-extractor 0.6.0 by Toshihiro Suzuki - https://github.com/toshi0383/xcconfig-extractor
+#include "Base.xcconfig"
+ENABLE_TESTABILITY = YES
+GCC_OPTIMIZATION_LEVEL = 0
+MTL_ENABLE_DEBUG_INFO = YES
+ONLY_ACTIVE_ARCH = YES
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) DEBUG=1
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG
+GCC_DYNAMIC_NO_PIC = NO
+SWIFT_OPTIMIZATION_LEVEL = -Onone
+DEBUG_INFORMATION_FORMAT = dwarf
+

@@ -3,14 +3,14 @@ package io.github.droidkaigi.confsched2020.data.repository.internal
 import io.github.droidkaigi.confsched2020.data.api.DroidKaigiApi
 import io.github.droidkaigi.confsched2020.data.db.SponsorDatabase
 import io.github.droidkaigi.confsched2020.data.db.entity.SponsorEntity
-import io.github.droidkaigi.confsched2020.model.repository.SponsorRepository
 import io.github.droidkaigi.confsched2020.model.Company
 import io.github.droidkaigi.confsched2020.model.LocaledString
 import io.github.droidkaigi.confsched2020.model.Sponsor
 import io.github.droidkaigi.confsched2020.model.SponsorCategory
+import io.github.droidkaigi.confsched2020.model.repository.SponsorRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 class DataSponsorRepository @Inject constructor(
     private val api: DroidKaigiApi,

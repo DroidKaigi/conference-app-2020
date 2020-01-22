@@ -17,6 +17,8 @@ dependencies {
     implementation Dep.AndroidX.constraint
     implementation Dep.AndroidX.design
 
+    implementation Dep.PhotoView.photoview
+
     implementation Dep.Dagger.core
     implementation Dep.Dagger.androidSupport
     kapt Dep.Dagger.compiler

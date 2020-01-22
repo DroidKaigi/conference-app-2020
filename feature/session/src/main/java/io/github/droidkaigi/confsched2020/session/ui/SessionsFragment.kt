@@ -12,7 +12,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -119,26 +119,26 @@ class SessionsFragment : DaggerFragment() {
             scrollView.updatePadding(bottom = insets.systemWindowInsetBottom + initialPeekHeight + initialState.paddings.bottom)
         }
         sessionSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
+                BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
 
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                sessionTabViewModel.setExpand(
-                    when (newState) {
-                        BottomSheetBehavior.STATE_COLLAPSED -> {
-                            ExpandFilterState.COLLAPSED
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    sessionTabViewModel.setExpand(
+                        when (newState) {
+                            BottomSheetBehavior.STATE_COLLAPSED -> {
+                                ExpandFilterState.COLLAPSED
+                            }
+                            BottomSheetBehavior.STATE_EXPANDED -> {
+                                ExpandFilterState.EXPANDED
+                            }
+                            else -> {
+                                ExpandFilterState.CHANGING
+                            }
                         }
-                        BottomSheetBehavior.STATE_EXPANDED -> {
-                            ExpandFilterState.EXPANDED
-                        }
-                        else -> {
-                            ExpandFilterState.CHANGING
-                        }
-                    }
-                )
-            }
-        })
+                    )
+                }
+            })
         binding.filterReset.setOnClickListener {
             sessionsViewModel.resetFilter()
         }
@@ -191,6 +191,22 @@ class SessionsFragment : DaggerFragment() {
                 filterName = { it.name }
             ) { checked, level ->
                 sessionsViewModel.filterChanged(level, checked)
+            }
+
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+                // This block is the workaround to fix issue #118 only for Android 5.
+                // See: https://github.com/DroidKaigi/conference-app-2020/issues/118
+                fun fragmentContainerView(view: View): FragmentContainerView? {
+                    var parent = view.parent
+                    while (parent != null && parent !is FragmentContainerView) {
+                        parent = parent.parent
+                    }
+                    return parent as? FragmentContainerView
+                }
+
+                // On Android 5, performing layout views containing ChipGroup is not invoked after binding construction.
+                // So, we have to request layout explicitly for FragmentContainerView (or the view placed upside of it).
+                fragmentContainerView(binding.root)?.requestLayout()
             }
         }
     }
@@ -269,16 +285,10 @@ class SessionsFragment : DaggerFragment() {
 
     private fun setupSessionsFragment() {
         val tab = SessionPage.pages[args.tabIndex]
-        val fragment: Fragment = when (tab) {
-            is SessionPage.Day -> {
-                BottomSheetDaySessionsFragment.newInstance(
-                    BottomSheetDaySessionsFragmentArgs(tab.day)
-                )
-            }
-            SessionPage.Favorite -> {
-                BottomSheetFavoriteSessionsFragment.newInstance()
-            }
-        }
+
+        val fragment = BottomSheetSessionsFragment.newInstance(
+            BottomSheetSessionsFragmentArgs(tab)
+        )
 
         childFragmentManager
             .beginTransaction()
@@ -326,12 +336,7 @@ abstract class SessionsFragmentModule {
     @ContributesAndroidInjector(
         modules = [SessionAssistedInjectModule::class]
     )
-    abstract fun contributeBottomSheetDaySessionsFragment(): BottomSheetDaySessionsFragment
-
-    @ContributesAndroidInjector(
-        modules = [SessionAssistedInjectModule::class]
-    )
-    abstract fun contributeBottomSheetFavoriteSessionsFragment(): BottomSheetFavoriteSessionsFragment
+    abstract fun contributeBottomSheetSessionsFragment(): BottomSheetSessionsFragment
 
     @Module
     companion object {
