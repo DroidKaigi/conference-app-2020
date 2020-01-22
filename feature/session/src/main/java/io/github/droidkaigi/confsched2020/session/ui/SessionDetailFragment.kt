@@ -27,23 +27,16 @@ import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
-<<<<<<< HEAD
-import io.github.droidkaigi.confsched2020.model.defaultLang
-=======
->>>>>>> upstream/master
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToChrome
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
-<<<<<<< HEAD
-=======
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailDescriptionItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailMaterialItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailSpeakerItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailSpeakerSubtitleItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailTargetItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailTitleItem
->>>>>>> upstream/master
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.session.ui.widget.SessionDetailItemDecoration
