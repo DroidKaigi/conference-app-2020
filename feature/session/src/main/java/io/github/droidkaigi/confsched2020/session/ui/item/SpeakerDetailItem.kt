@@ -2,7 +2,6 @@ package io.github.droidkaigi.confsched2020.session.ui.item
 
 import android.content.Context
 import android.text.method.LinkMovementMethod
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
@@ -16,6 +15,7 @@ import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSpeakerDetailBinding
+import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
 import io.github.droidkaigi.confsched2020.util.lazyWithParam
 import javax.inject.Named
 
@@ -29,15 +29,7 @@ class SpeakerDetailItem @AssistedInject constructor(
     EqualableContentsProvider {
 
     private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> { context ->
-        VectorDrawableCompat.create(
-            context.resources,
-            R.drawable.ic_person_outline_black_32dp,
-            null
-        )?.apply {
-            setTint(
-                ContextCompat.getColor(context, R.color.speaker_icon)
-            )
-        }
+        ProfilePlaceholderCreator.create(context)
     }
 
     override fun getLayout(): Int = R.layout.item_speaker_detail
