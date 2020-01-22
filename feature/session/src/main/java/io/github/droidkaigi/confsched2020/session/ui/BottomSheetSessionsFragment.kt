@@ -90,9 +90,8 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val scrollDirectionUp = -1
                 binding.dividerShadow.isVisible =
-                    binding.sessionRecycler.canScrollVertically(scrollDirectionUp)
+                    binding.sessionRecycler.canScrollVertically(-1)
             }
         })
         binding.startFilter.setOnClickListener {
