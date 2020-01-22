@@ -38,11 +38,13 @@ class StaffsViewModelTest {
 
         val valueHistory = testObserver.valueHistory()
         println(valueHistory)
+        // from cache
         valueHistory[0].apply {
             isLoading shouldBe false
             error shouldBe null
             staffContents shouldBe Dummies.staffContents
         }
+        // then fetch from network
         valueHistory[1] shouldBe StaffsViewModel.UiModel.EMPTY.copy(isLoading = true)
 //        valueHistory[2].apply {
 //            isLoading shouldBe false
