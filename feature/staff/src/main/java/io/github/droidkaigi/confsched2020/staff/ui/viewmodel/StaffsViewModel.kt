@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
+import io.github.droidkaigi.confsched2020.data.api.DroidKaigiApi
+import io.github.droidkaigi.confsched2020.data.db.StaffDatabase
 import io.github.droidkaigi.confsched2020.ext.combine
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
@@ -14,6 +16,8 @@ import io.github.droidkaigi.confsched2020.model.repository.StaffRepository
 import javax.inject.Inject
 
 class StaffsViewModel @Inject constructor(
+    private val api: DroidKaigiApi,
+    private val staffDatabase: StaffDatabase,
     private val staffRepository: StaffRepository
 ) : ViewModel() {
 
