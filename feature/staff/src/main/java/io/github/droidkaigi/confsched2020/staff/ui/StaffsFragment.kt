@@ -36,6 +36,7 @@ import io.github.droidkaigi.confsched2020.staff.ui.viewmodel.StaffsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import io.github.droidkaigi.confsched2020.util.autoCleared
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Provider
@@ -112,8 +113,11 @@ class StaffModule(private val fragment: StaffsFragment) {
         return fragment.viewLifecycleOwnerLiveData
     }
 
+    // Add here for convenience
+    @FlowPreview
     @Provides
-    fun provideStaffContentsStore(api: DroidKaigiApi,
+    fun provideStaffContentsStore(
+        api: DroidKaigiApi,
         staffDatabase: StaffDatabase
     ): Store<Unit, StaffContents> {
         return StoreBuilder.fromNonFlow<Unit, StaffResponse> { api.getStaffs() }
