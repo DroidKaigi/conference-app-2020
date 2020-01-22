@@ -1,6 +1,8 @@
 import MaterialComponents
 import Nuke
 import UIKit
+import RxCocoa
+import RxSwift
 
 final class SessionCell: UICollectionViewCell {
     static let identifier = "SessionCell"
@@ -30,14 +32,16 @@ final class SessionCell: UICollectionViewCell {
     @IBOutlet weak var minutesAndRoomLabel: UILabel!
     @IBOutlet weak var speakersStackView: UIStackView!
 
+    private var disposeBag = DisposeBag()
+
     override func awakeFromNib() {
         super.awakeFromNib()
         translatesAutoresizingMaskIntoConstraints = false
         widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
     }
 
-    func addSpeakerView(imageURL: URL?, speakerName: String) {
-        let view = UIView()
+    func addSpeakerView(imageURL: URL?, speakerName: String, speakerTapHandler: @escaping () -> ()) {
+        let view = UIControl()
         let speakerIconView = UIImageView()
         if let imageURL = imageURL {
             let options = ImageLoadingOptions(transition: .fadeIn(duration: 0.3))
@@ -68,10 +72,18 @@ final class SessionCell: UICollectionViewCell {
 
         speakerIconView.layer.cornerRadius = 16
         speakerIconView.clipsToBounds = true
+
+        view.rx.controlEvent(.touchDown)
+            .subscribe(onNext: {
+                speakerTapHandler()
+            })
+            .disposed(by: disposeBag)
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
+
+        disposeBag = DisposeBag()
 
         speakersStackView.subviews.forEach { subview in
             subview.removeFromSuperview()
