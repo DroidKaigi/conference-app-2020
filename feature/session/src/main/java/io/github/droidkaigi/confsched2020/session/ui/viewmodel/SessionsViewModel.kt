@@ -59,7 +59,8 @@ class SessionsViewModel @Inject constructor(
             Timber.debug(e) { "Fail sessionRepository.refresh()" }
         }
     }
-    private var favoriteLoadingStateLiveData: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.Loaded)
+    private var favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
+        MutableLiveData(LoadingState.Loaded)
 
     private val filterLiveData: MutableLiveData<Filters> = MutableLiveData(Filters())
 
@@ -136,28 +137,44 @@ class SessionsViewModel @Inject constructor(
     fun filterChanged(category: Category, checked: Boolean) {
         val filters = filterLiveData.requireValue()
         filterLiveData.value = filters.copy(
-            categories = if (checked) filters.categories + category else filters.categories - category
+            categories = if (checked) {
+                filters.categories + category
+            } else {
+                filters.categories - category
+            }
         )
     }
 
     fun filterChanged(lang: Lang, checked: Boolean) {
         val filters = filterLiveData.requireValue()
         filterLiveData.value = filters.copy(
-            langs = if (checked) filters.langs + lang else filters.langs - lang
+            langs = if (checked) {
+                filters.langs + lang
+            } else {
+                filters.langs - lang
+            }
         )
     }
 
     fun filterChanged(langSupport: LangSupport, checked: Boolean) {
         val filters = filterLiveData.requireValue()
         filterLiveData.value = filters.copy(
-            langSupports = if (checked) filters.langSupports + langSupport else filters.langSupports - langSupport
+            langSupports = if (checked) {
+                filters.langSupports + langSupport
+            } else {
+                filters.langSupports - langSupport
+            }
         )
     }
 
     fun filterChanged(audienceCategory: AudienceCategory, checked: Boolean) {
         val filters = filterLiveData.requireValue()
         filterLiveData.value = filters.copy(
-            audienceCategories = if (checked) filters.audienceCategories + audienceCategory else filters.audienceCategories - audienceCategory
+            audienceCategories = if (checked) {
+                filters.audienceCategories + audienceCategory
+            } else {
+                filters.audienceCategories - audienceCategory
+            }
         )
     }
 

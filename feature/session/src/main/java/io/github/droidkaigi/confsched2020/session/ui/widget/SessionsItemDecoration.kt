@@ -48,7 +48,9 @@ class SessionsItemDecoration(
 
             if (position > 0) {
                 val lastSessionItem = adapter.getItem(position - 1) as SessionItem
-                if (sessionItem.startSessionTime() == lastSessionItem.startSessionTime()) return@forEachIndexed
+                if (sessionItem.startSessionTime() == lastSessionItem.startSessionTime()) {
+                    return@forEachIndexed
+                }
             }
 
             c.drawText(
@@ -67,7 +69,8 @@ class SessionsItemDecoration(
         } else null
 
         var positionY =
-            view.top.coerceAtLeast(sessionTimeTextMarginTopInPx.toInt()) + sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
+            view.top.coerceAtLeast(sessionTimeTextMarginTopInPx.toInt()) +
+                sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
         if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
             positionY = positionY.coerceAtMost(view.bottom.toFloat())
         }
