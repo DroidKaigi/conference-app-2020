@@ -1,7 +1,7 @@
 import ios_combined
 import RxSwift
 
-final class AnnouncementDataProvider {
+final class AnnouncementsDataProvider {
     enum Transformer {
         static let dateFormatter: DateFormatter = {
             let formatter = DateFormatter()
