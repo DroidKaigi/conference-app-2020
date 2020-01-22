@@ -187,7 +187,8 @@ object Dep {
             "com.willowtreeapps.hyperion:hyperion-crash:$version",
             "com.willowtreeapps.hyperion:hyperion-shared-preferences:$version",
             "com.willowtreeapps.hyperion:hyperion-geiger-counter:$version",
-            "com.willowtreeapps.hyperion:hyperion-build-config:$version"
+            "com.willowtreeapps.hyperion:hyperion-build-config:$version",
+            "com.willowtreeapps.hyperion:hyperion-plugin:$version"
         )
     }
 
@@ -224,5 +225,9 @@ object Dep {
 
     object PhotoView {
         val photoview =  "com.github.chrisbanes:PhotoView:2.3.0"
+    }
+
+    object Google {
+        val autoservice = "com.google.auto.service:auto-service:1.0-rc6"
     }
 }
