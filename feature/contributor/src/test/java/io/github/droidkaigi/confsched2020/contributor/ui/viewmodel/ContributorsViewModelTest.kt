@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
 
-class ContributorsViewModelTest{
+class ContributorsViewModelTest {
     @get:Rule
     val viewModelTestRule = ViewModelTestRule()
     @get:Rule
@@ -20,7 +20,7 @@ class ContributorsViewModelTest{
     lateinit var contributorRepository: ContributorRepository
 
     @Test
-    fun load(){
+    fun load() {
         coEvery { contributorRepository.contributorContents() } returns flowOf(Dummies.contributors)
         val contributorsViewModel = ContributorsViewModel(contributorRepository)
 
