@@ -99,7 +99,8 @@ class SessionDetailFragment : DaggerFragment() {
             container,
             false
         )
-        activity?.window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        activity?.window?.decorView?.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         return binding.root
     }
 
