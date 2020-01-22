@@ -225,4 +225,9 @@ object Dep {
     object PhotoView {
         val photoview =  "com.github.chrisbanes:PhotoView:2.3.0"
     }
+
+    object Store {
+        val version = "4.0.0-alpha01"
+        val store = "com.dropbox.mobile.store:store4:$version"
+    }
 }

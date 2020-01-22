@@ -40,6 +40,8 @@ dependencies {
 
     implementation Dep.Coil.coil
 
+    implementation Dep.Store.store
+
     testImplementation Dep.Test.junit
     testImplementation Dep.Test.kotlinTestAssertions
     testImplementation Dep.MockK.jvm
