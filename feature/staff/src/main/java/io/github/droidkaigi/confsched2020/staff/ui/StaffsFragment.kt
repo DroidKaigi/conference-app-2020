@@ -38,6 +38,7 @@ class StaffsFragment : Fragment() {
     @FlowPreview
     @Inject
     lateinit var staffsFactory: Provider<StaffsViewModel>
+    @FlowPreview
     private val staffsViewModel by assistedViewModels {
         staffsFactory.get()
     }

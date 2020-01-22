@@ -1,12 +1,8 @@
 package io.github.droidkaigi.confsched2020.staff.ui.viewmodel
 
-import com.dropbox.android.external.store4.StoreBuilder
 import com.jraska.livedata.test
 import io.github.droidkaigi.confsched2020.data.api.DroidKaigiApi
-import io.github.droidkaigi.confsched2020.data.api.response.StaffItemResponse
-import io.github.droidkaigi.confsched2020.data.api.response.StaffResponse
 import io.github.droidkaigi.confsched2020.data.db.StaffDatabase
-import io.github.droidkaigi.confsched2020.model.repository.StaffRepository
 import io.github.droidkaigi.confsched2020.widget.component.MockkRule
 import io.github.droidkaigi.confsched2020.widget.component.ViewModelTestRule
 import io.kotlintest.shouldBe
