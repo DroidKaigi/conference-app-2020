@@ -4,4 +4,3 @@ enum class TextExpandState {
     EXPANDED,
     COLLAPSED;
 }
-
