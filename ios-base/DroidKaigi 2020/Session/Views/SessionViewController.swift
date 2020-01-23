@@ -1,11 +1,10 @@
 import ios_combined
-import UIKit
-import RxSwift
-import RxCocoa
 import MaterialComponents
+import RxCocoa
+import RxSwift
+import UIKit
 
 final class SessionViewController: UIViewController {
-
     private let disposeBag = DisposeBag()
 
     @IBOutlet weak var filteredSessionCountLabel: UILabel! {
@@ -13,6 +12,7 @@ final class SessionViewController: UIViewController {
             filteredSessionCountLabel.font = ApplicationScheme.shared.typographyScheme.caption
         }
     }
+
     @IBOutlet weak var filterButton: MDCButton! {
         didSet {
             filterButton.isSelected = true
@@ -27,6 +27,7 @@ final class SessionViewController: UIViewController {
             filterButton.setTitle("", for: .normal)
         }
     }
+
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.register(UINib(nibName: "SessionCell", bundle: nil), forCellWithReuseIdentifier: SessionCell.identifier)
@@ -41,7 +42,7 @@ final class SessionViewController: UIViewController {
 
     init(viewModel: SessionViewModel, sessionViewType: SessionViewControllerType) {
         self.viewModel = viewModel
-        self.type = sessionViewType
+        type = sessionViewType
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -61,21 +62,21 @@ final class SessionViewController: UIViewController {
             .drive(filterButton.rx.isSelected)
             .disposed(by: disposeBag)
 
-        /// TODO: Error handling for viewModel.sessions
+        // TODO: Error handling for viewModel.sessions
         let dataSource = SessionViewDataSource()
         let filteredSessions = viewModel.sessions.asObservable()
-            .map({ sessions -> [Session] in
+            .map { sessions -> [Session] in
                 sessions.filter { Int($0.dayNumber) == self.type.rawValue }
-            })
+            }
             .share(replay: 1, scope: .whileConnected)
         filteredSessions
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         filteredSessions
-            .filter({ [weak self] sessions in
+            .filter { [weak self] sessions in
                 guard let self = self else { return false }
                 return sessions.count == 0 && self.type == .myPlan
-            })
+            }
             .bind(to: Binder(self) { me, _ in
                 DispatchQueue.main.async {
                     me.showSuggestView()
@@ -92,8 +93,7 @@ final class SessionViewController: UIViewController {
             suggestView.topAnchor.constraint(equalTo: view.topAnchor),
             suggestView.leftAnchor.constraint(equalTo: view.leftAnchor),
             suggestView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            suggestView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            suggestView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
 }
-
