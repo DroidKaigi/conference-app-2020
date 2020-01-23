@@ -1,8 +1,8 @@
 package io.github.droidkaigi.confsched2020.preference.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -55,7 +55,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         preferenceViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             AppCompatDelegate.setDefaultNightMode(uiModel.nightMode.platformValue)
-            (activity as? AppCompatActivity)?.delegate?.applyDayNight()
         }
     }
 
@@ -70,7 +69,10 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
     private val NightMode.platformValue: Int
         get() = when (this) {
-            NightMode.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            NightMode.SYSTEM -> {
+                if (Build.VERSION.SDK_INT < 29) AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+                else AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            }
             NightMode.BATTERY -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
             NightMode.YES -> AppCompatDelegate.MODE_NIGHT_YES
             NightMode.NO -> AppCompatDelegate.MODE_NIGHT_NO
