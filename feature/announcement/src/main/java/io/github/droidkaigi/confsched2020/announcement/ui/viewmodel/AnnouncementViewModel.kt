@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched2020.announcement.ui.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -33,8 +32,9 @@ class AnnouncementViewModel @AssistedInject constructor(
             val EMPTY = UiModel(false, null, listOf(), false)
         }
     }
+
     private val languageLiveData = MutableLiveData(defaultLang())
-    private val announcementLoadStateLiveData: LiveData<LoadState<List<Announcement>>> = languageLiveData
+    private val announcementLoadStateLiveData = languageLiveData
         .distinctUntilChanged()
         .switchMap {
             liveData<LoadState<List<Announcement>>> {

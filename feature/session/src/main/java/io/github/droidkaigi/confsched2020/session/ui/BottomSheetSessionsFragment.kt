@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
@@ -85,6 +86,17 @@ class BottomSheetSessionsFragment : DaggerFragment() {
                 requireContext()
             )
         )
+        binding.sessionRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val isVisibleShadow =
+                    binding.sessionRecycler.canScrollVertically(-1)
+
+                binding.divider.isVisible = !isVisibleShadow
+                binding.dividerShadow.isVisible = isVisibleShadow
+            }
+        })
         binding.startFilter.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
@@ -92,7 +104,9 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             sessionTabViewModel.toggleExpand()
         }
         binding.sessionRecycler.doOnApplyWindowInsets { sessionRecycler, insets, initialState ->
-            sessionRecycler.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+            sessionRecycler.updatePadding(
+                bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+            )
         }
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
@@ -105,7 +119,7 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             }
         }
 
-        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
+        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             val page = args.page
             val sessions = when (page) {
                 is SessionPage.Day -> uiModel.dayToSessionsMap[page].orEmpty()
@@ -114,7 +128,9 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             val count = sessions.filter { it.shouldCountForFilter }.count()
 
             if (page == SessionPage.Favorite) {
-                TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
+                TransitionManager.beginDelayedTransition(
+                    binding.sessionRecycler.parent as ViewGroup
+                )
                 binding.isEmptyFavoritePage = sessions.isEmpty()
             }
 

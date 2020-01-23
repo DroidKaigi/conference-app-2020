@@ -1,7 +1,7 @@
 package io.github.droidkaigi.confsched2020.announcement.ui.viewmodel
 
 import com.soywiz.klock.DateTime
-import io.github.droidkaigi.confsched2020.model.*
+import io.github.droidkaigi.confsched2020.model.Announcement
 
 object Dummies {
     val announcements = listOf(
