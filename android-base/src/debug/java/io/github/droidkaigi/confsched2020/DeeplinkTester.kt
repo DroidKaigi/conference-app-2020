@@ -30,13 +30,11 @@ class DeepLinkPlugin : Plugin() {
     }
 }
 
-
 class DeepLinkDialog : DialogFragment() {
 
     companion object {
         val TAG = DeepLinkDialog::class.java.simpleName
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +63,6 @@ class DeepLinkDialog : DialogFragment() {
         dismiss()
         super.onPause()
     }
-
 
     private fun launchIntent(uri: String) {
         runCatching {
