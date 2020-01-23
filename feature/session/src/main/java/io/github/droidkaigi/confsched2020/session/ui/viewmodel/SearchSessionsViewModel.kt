@@ -6,12 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.squareup.inject.assisted.AssistedInject
-import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.ext.combine
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.SearchResult
 import io.github.droidkaigi.confsched2020.model.SessionContents
+import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 
 class SearchSessionsViewModel @AssistedInject constructor(
     private val sessionRepository: SessionRepository

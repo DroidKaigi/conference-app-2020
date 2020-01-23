@@ -11,7 +11,13 @@ enum class PageConfiguration(
     val hideToolbar: Boolean = false,
     val isTopLevel: Boolean = false
 ) {
-    MAIN(R.id.main, isIndigoBackground = true, hasTitle = false, isShowLogoImage = true, isTopLevel = true),
+    MAIN(
+        R.id.main,
+        isIndigoBackground = true,
+        hasTitle = false,
+        isShowLogoImage = true,
+        isTopLevel = true
+    ),
     DETAIL(R.id.session_detail, hasTitle = false, hideToolbar = true),
     SPEAKER(R.id.speaker, hasTitle = false),
     ANNOUNCEMENT(R.id.announcement, isTopLevel = true),

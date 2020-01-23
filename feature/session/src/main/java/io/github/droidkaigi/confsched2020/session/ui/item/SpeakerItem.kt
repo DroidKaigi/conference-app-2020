@@ -1,6 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
-import androidx.core.content.ContextCompat
+import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
@@ -19,6 +19,8 @@ import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSpeakerBinding
 import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragmentDirections.Companion.actionSessionToSpeaker
+import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
+import io.github.droidkaigi.confsched2020.util.lazyWithParam
 
 class SpeakerItem @AssistedInject constructor(
     @Assisted val speaker: Speaker,
@@ -27,6 +29,9 @@ class SpeakerItem @AssistedInject constructor(
     EqualableContentsProvider {
 
     private val imageRequestDisposables = mutableListOf<RequestDisposable>()
+    private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> { context ->
+        ProfilePlaceholderCreator.create(context)
+    }
 
     companion object {
         private const val TRANSITION_NAME_SUFFIX = "speaker"
@@ -43,28 +48,18 @@ class SpeakerItem @AssistedInject constructor(
                 .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX), extras)
         }
         viewBinding.name.text = speaker.name
-        viewBinding.image.transitionName = "${speaker.id}-${TRANSITION_NAME_SUFFIX}"
+        viewBinding.image.transitionName = "${speaker.id}-$TRANSITION_NAME_SUFFIX"
 
         imageRequestDisposables.clear()
         val imageUrl = speaker.imageUrl
         val context = viewBinding.name.context
-        val placeHolder = run {
-            VectorDrawableCompat.create(
-                context.resources,
-                R.drawable.ic_person_outline_black_32dp,
-                null
-            )?.apply {
-                setTint(
-                    ContextCompat.getColor(context, R.color.speaker_icon)
-                )
-            }
-        }?.also {
+        val placeholder = placeholder.get(context)?.also {
             viewBinding.image.setImageDrawable(it)
         }
 
         imageRequestDisposables += Coil.load(context, imageUrl) {
             crossfade(true)
-            placeholder(placeHolder)
+            placeholder(placeholder)
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
             target {
