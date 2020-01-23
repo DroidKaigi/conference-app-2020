@@ -40,7 +40,10 @@ sealed class Session(
     }
 
     // See https://github.com/DroidKaigi/conference-app-2020/issues/419
-    fun timeSummary(lang: Lang, timezoneOffset: Double) = timeSummary(lang, TimezoneOffset(timezoneOffset))
+    fun timeSummary(lang: Lang, timezoneOffset: Double) = timeSummary(
+        lang,
+        TimezoneOffset(timezoneOffset)
+    )
 
     fun summary(lang: Lang, timezoneOffset: TimezoneOffset) = buildString {
         append(timeSummary(lang, timezoneOffset))

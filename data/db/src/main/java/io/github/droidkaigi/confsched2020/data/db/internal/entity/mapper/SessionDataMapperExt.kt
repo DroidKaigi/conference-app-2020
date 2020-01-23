@@ -16,7 +16,8 @@ import io.github.droidkaigi.confsched2020.data.db.internal.entity.SessionSpeaker
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.SpeakerEntityImpl
 import io.github.droidkaigi.confsched2020.model.SessionFeedback
 
-internal fun List<SessionResponse>?.toSessionSpeakerJoinEntities(): List<SessionSpeakerJoinEntityImpl> {
+internal fun List<SessionResponse>?.toSessionSpeakerJoinEntities():
+    List<SessionSpeakerJoinEntityImpl> {
     val sessionSpeakerJoinEntity: MutableList<SessionSpeakerJoinEntityImpl> = arrayListOf()
     this?.forEach { responseSession ->
         responseSession.speakers.forEach { speakerId ->

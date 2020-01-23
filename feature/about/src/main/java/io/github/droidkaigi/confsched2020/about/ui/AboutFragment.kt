@@ -68,7 +68,9 @@ class AboutFragment : DaggerFragment() {
             adapter = groupAdapter
             doOnApplyWindowInsets { recyclerView, insets, initialState ->
                 // Set a bottom padding due to the system UI is enabled.
-                recyclerView.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+                recyclerView.updatePadding(
+                    bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+                )
             }
         }
 

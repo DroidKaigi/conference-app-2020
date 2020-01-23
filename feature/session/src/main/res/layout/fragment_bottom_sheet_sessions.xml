@@ -95,6 +95,17 @@
             app:layout_constraintTop_toBottomOf="@id/start_filter"
             />
 
+        <View
+            android:id="@+id/divider_shadow"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:background="@drawable/shape_drop_down_shadow"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/session_recycler"
             android:layout_width="0dp"
@@ -128,6 +139,7 @@
                 android:id="@+id/empty_icon"
                 android:layout_width="56dp"
                 android:layout_height="72dp"
+                android:contentDescription="@null"
                 android:scaleType="centerCrop"
                 android:tint="?colorSecondary"
                 app:layout_constraintVertical_chainStyle="packed"
@@ -136,7 +148,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_bookmark_black_24dp"
-                tools:ignore="ContentDescription"
                 />
 
             <TextView
