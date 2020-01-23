@@ -17,7 +17,7 @@ class SystemViewModel @Inject constructor() : ViewModel() {
         mutableErrorLiveData.value = error
     }
 
-    fun sendEventToGoogleCalendar(
+    fun sendEventToCalendar(
         context: Context,
         title: String,
         location: String,

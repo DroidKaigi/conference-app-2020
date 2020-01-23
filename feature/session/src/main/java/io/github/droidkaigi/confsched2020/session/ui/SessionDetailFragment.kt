@@ -46,6 +46,8 @@ import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToChrome
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
@@ -116,7 +118,8 @@ class SessionDetailFragment : DaggerFragment() {
                 }
                 R.id.session_calendar -> {
                     val session = binding.session ?: return@setOnMenuItemClickListener true
-                    systemViewModel.sendEventToGoogleCalendar(
+                    systemViewModel.sendEventToCalendar(
+                        context = requireContext(),
                         title = session.title.getByLang(defaultLang()),
                         location = session.room.name.getByLang(defaultLang()),
                         startUnixMillis = session.startTime.unixMillisLong,
