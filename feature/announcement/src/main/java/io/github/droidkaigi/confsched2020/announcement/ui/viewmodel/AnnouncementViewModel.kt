@@ -26,10 +26,11 @@ class AnnouncementViewModel @AssistedInject constructor(
         val isLoading: Boolean,
         val error: AppError?,
         val announcements: List<Announcement>,
-        val isEmpty: Boolean
+        val isEmpty: Boolean,
+        val expandedItemIds: Set<Long>
     ) {
         companion object {
-            val EMPTY = UiModel(false, null, listOf(), false)
+            val EMPTY = UiModel(false, null, listOf(), false, setOf())
         }
     }
 
@@ -51,6 +52,7 @@ class AnnouncementViewModel @AssistedInject constructor(
                 }
             }
         }
+    private val expandedItemIds = mutableSetOf<Long>()
 
     val uiModel = combine(
         initialValue = UiModel.EMPTY,
@@ -61,12 +63,17 @@ class AnnouncementViewModel @AssistedInject constructor(
             isLoading = loadState.isLoading,
             error = loadState.getErrorIfExists().toAppError(),
             announcements = announcements,
-            isEmpty = !loadState.isLoading && announcements.isEmpty()
+            isEmpty = !loadState.isLoading && announcements.isEmpty(),
+            expandedItemIds = expandedItemIds
         )
     }
 
     fun loadLanguageSetting() {
         languageLiveData.value = defaultLang()
+    }
+
+    fun expandItem(id: Long) {
+        expandedItemIds.add(id)
     }
 
     @AssistedInject.Factory
