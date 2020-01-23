@@ -9,7 +9,6 @@ import android.text.style.ClickableSpan
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import androidx.core.text.inSpans
@@ -21,6 +20,7 @@ import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.announcement.R
 import io.github.droidkaigi.confsched2020.announcement.databinding.ItemAnnouncementBinding
+import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Announcement
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
@@ -87,8 +87,7 @@ class AnnouncementItem @AssistedInject constructor(
                     width - ellipsisWidth,
                     TextUtils.TruncateAt.END
                 )
-                val ellipsisColor =
-                    ContextCompat.getColor(context, R.color.design_default_color_secondary)
+                val ellipsisColor = context.getThemeColor(R.attr.colorSecondary)
                 val onClickListener = {
                     TransitionManager.beginDelayedTransition(rootView as ViewGroup)
                     text = fullText
@@ -96,12 +95,15 @@ class AnnouncementItem @AssistedInject constructor(
                 }
                 val detailText = fullText.substring(0, lastLineStartPosition) + lastLineText
                 val text = buildSpannedString {
-                    clickableSpan(onClickListener, {
-                        append(detailText)
-                        color(ellipsisColor) {
-                            append(label)
+                    clickableSpan(
+                        onClickListener,
+                        {
+                            append(detailText)
+                            color(ellipsisColor) {
+                                append(label)
+                            }
                         }
-                    })
+                    )
                 }
                 setText(text, TextView.BufferType.SPANNABLE)
                 movementMethod = LinkMovementMethod.getInstance()
@@ -113,15 +115,18 @@ class AnnouncementItem @AssistedInject constructor(
         clickListener: () -> Unit,
         builderAction: SpannableStringBuilder.() -> Unit
     ) {
-        inSpans(object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                clickListener()
-            }
+        inSpans(
+            object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    clickListener()
+                }
 
-            override fun updateDrawState(ds: TextPaint) {
-                // NOP
-            }
-        }, builderAction)
+                override fun updateDrawState(ds: TextPaint) {
+                    // NOP
+                }
+            },
+            builderAction
+        )
     }
 
     @AssistedInject.Factory

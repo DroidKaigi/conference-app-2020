@@ -6,6 +6,7 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -60,10 +61,10 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.di.SponsorsAssistedInjectMo
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.PageConfiguration
 import io.github.droidkaigi.confsched2020.ui.widget.SystemUiManager
-import timber.log.Timber
-import timber.log.warn
 import javax.inject.Inject
 import javax.inject.Provider
+import timber.log.Timber
+import timber.log.warn
 
 class MainActivity : DaggerAppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
@@ -106,6 +107,8 @@ class MainActivity : DaggerAppCompatActivity() {
             view.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 topMargin = insets.systemWindowInsetTop + initialState.margins.top
             }
+            // Invalidate because option menu cannot be displayed after screen rotation
+            invalidateOptionsMenu()
         }
         binding.navView.doOnApplyWindowInsets { view, insets, initialState ->
             view.apply {
@@ -130,6 +133,14 @@ class MainActivity : DaggerAppCompatActivity() {
                     Snackbar.LENGTH_LONG
                 )
                 .show()
+        }
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
         }
     }
 

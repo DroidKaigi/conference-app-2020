@@ -25,6 +25,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.FragmentSpeakerBin
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerDetailItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerSessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SpeakerViewModel
+import io.github.droidkaigi.confsched2020.util.AndroidRTransition
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
@@ -47,7 +48,7 @@ class SpeakerFragment : DaggerFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = TransitionInflater.from(requireContext())
-            .inflateTransition(android.R.transition.move).apply {
+            .inflateTransition(AndroidRTransition.move).apply {
                 interpolator = AccelerateDecelerateInterpolator()
             }
     }
@@ -85,9 +86,11 @@ class SpeakerFragment : DaggerFragment() {
                 val sessions = uiModel.sessions.takeIf { it.isNotEmpty() } ?: return@observe
 
                 groupAdapter.update(
-                    listOf(speakerDetailItemFactory.create(speaker, navArgs.transitionNameSuffix) {
-                        startPostponedEnterTransition()
-                    }) + sessions.map { speakerSessionItemFactory.create(it) }
+                    listOf(
+                        speakerDetailItemFactory.create(speaker, navArgs.transitionNameSuffix) {
+                            startPostponedEnterTransition()
+                        }
+                    ) + sessions.map { speakerSessionItemFactory.create(it) }
                 )
             }
     }
@@ -98,7 +101,8 @@ abstract class SpeakerFragmentModule {
     @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
+        @JvmStatic @Provides
+        fun providesLifecycleOwnerLiveData(
             speakerFragment: SpeakerFragment
         ): LiveData<LifecycleOwner> {
             return speakerFragment.viewLifecycleOwnerLiveData

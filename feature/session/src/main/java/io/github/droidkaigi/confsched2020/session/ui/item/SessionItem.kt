@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.lifecycle.LifecycleOwner
@@ -34,6 +33,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionBinding
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.Companion.actionSessionToSessionDetail
 import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
+import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
 import io.github.droidkaigi.confsched2020.util.lazyWithParam
 import kotlin.math.max
 
@@ -50,6 +50,10 @@ class SessionItem @AssistedInject constructor(
         LayoutInflater.from(context)
     }
 
+    private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> { context ->
+        ProfilePlaceholderCreator.create(context)
+    }
+
     companion object {
         private const val TRANSITION_NAME_SUFFIX = "session"
     }
@@ -57,21 +61,22 @@ class SessionItem @AssistedInject constructor(
     override fun getLayout(): Int = R.layout.item_session
 
     override fun bind(viewBinding: ItemSessionBinding, position: Int) {
-        viewBinding.favorite.setOnClickListener {
-            sessionsViewModel
-                .favorite(session)
+        with(viewBinding) {
+            favorite.setOnClickListener {
+                favorite.isSelected = !favorite.isSelected
+                sessionsViewModel.favorite(session)
+            }
+            bindFavorite(session.isFavorited, favorite)
+            root.setOnClickListener {
+                root.findNavController().navigate(actionSessionToSessionDetail(session.id))
+            }
+            live.isVisible = session.isOnGoing
+            title.text = session.title.ja
+            room.text = session.room.name.getByLang(defaultLang())
+            survey.isEnabled = session.isFinished
+            imageRequestDisposables.clear()
+            speakers.bindSpeaker()
         }
-        bindFavorite(session.isFavorited, viewBinding.favorite)
-        viewBinding.root.setOnClickListener {
-            viewBinding.root.findNavController()
-                .navigate(actionSessionToSessionDetail(session.id))
-        }
-        viewBinding.live.isVisible = session.isOnGoing
-        viewBinding.title.text = session.title.ja
-        viewBinding.room.text = session.room.name.getByLang(defaultLang())
-        viewBinding.survey.isEnabled = session.isFinished
-        imageRequestDisposables.clear()
-        viewBinding.speakers.bindSpeaker()
     }
 
     override fun bind(
@@ -96,19 +101,15 @@ class SessionItem @AssistedInject constructor(
         isFavorited: Boolean,
         imageButton: ImageButton
     ) {
-        imageButton.setImageResource(
-            if (isFavorited) {
-                R.drawable.ic_bookmark_black_24dp
-            } else {
-                R.drawable.ic_bookmark_border_black_24dp
-            }
-        )
+        imageButton.isSelected = isFavorited
     }
 
     private fun ViewGroup.bindSpeaker() {
-        (0 until max(
-            size, (session as? SpeechSession)?.speakers.orEmpty().size
-        )).forEach { index ->
+        (
+            0 until max(
+                size, (session as? SpeechSession)?.speakers.orEmpty().size
+            )
+            ).forEach { index ->
             val existSpeakerView = getChildAt(index) as? ViewGroup
             val speaker: Speaker? = (session as? SpeechSession)?.speakers?.getOrNull(index)
             if (speaker == null) {
@@ -129,7 +130,7 @@ class SessionItem @AssistedInject constructor(
             }
             val speakerNameView = speakerView.findViewById<TextView>(R.id.speaker)
             val speakerImageView = speakerView.findViewById<ImageView>(R.id.speaker_image)
-            speakerImageView.transitionName = "${speaker.id}-${TRANSITION_NAME_SUFFIX}"
+            speakerImageView.transitionName = "${speaker.id}-$TRANSITION_NAME_SUFFIX"
             speakerView.setOnClickListener {
                 val extras = FragmentNavigatorExtras(
                     speakerImageView to speakerImageView.transitionName
@@ -150,23 +151,13 @@ class SessionItem @AssistedInject constructor(
 //        setHighlightText(textView, query)
         val imageUrl = speaker.imageUrl
         val context = speakerNameView.context
-        val placeHolder = run {
-            VectorDrawableCompat.create(
-                context.resources,
-                R.drawable.ic_person_outline_black_32dp,
-                null
-            )?.apply {
-                setTint(
-                    ContextCompat.getColor(context, R.color.speaker_icon)
-                )
-            }
-        }?.also {
+        val placeholder = placeholder.get(context)?.also {
             speakerImageView.setImageDrawable(it)
         }
 
         imageRequestDisposables += Coil.load(context, imageUrl) {
             crossfade(true)
-            placeholder(placeHolder)
+            placeholder(placeholder)
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
             target {

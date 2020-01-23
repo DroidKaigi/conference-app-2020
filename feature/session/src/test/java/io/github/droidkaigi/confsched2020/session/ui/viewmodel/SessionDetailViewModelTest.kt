@@ -18,7 +18,8 @@ import org.junit.Test
 class SessionDetailViewModelTest {
     @get:Rule val viewModelTestRule = ViewModelTestRule()
     @get:Rule val mockkRule = MockkRule(this)
-    @MockK(relaxed = true) lateinit var sessionRepository: SessionRepository
+    @MockK(relaxed = true)
+    lateinit var sessionRepository: SessionRepository
 
     @Test
     fun load() {

@@ -43,21 +43,20 @@ object Dep {
 
     object AndroidX {
         val jetifier = "com.android.tools.build.jetifier:jetifier-core:1.0.0-beta02"
-        val appCompat = "androidx.appcompat:appcompat:1.1.0-rc01"
-        val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
+        val appCompat = "androidx.appcompat:appcompat:1.1.0"
+        val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
         val constraint = "androidx.constraintlayout:constraintlayout:2.0.0-beta2"
         val emoji = "androidx.emoji:emoji-appcompat:1.0.0"
         val design = "com.google.android.material:material:1.1.0-rc01"
-        val coreKtx = "androidx.core:core-ktx:1.2.0-alpha03"
-        val preference = "androidx.preference:preference:1.1.0-rc01"
-        val browser = "androidx.browser:browser:1.0.0"
-        val activityKtx = "androidx.activity:activity-ktx:1.1.0-alpha03"
-        val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.0-alpha02"
+        val coreKtx = "androidx.core:core-ktx:1.2.0-rc01"
+        val preference = "androidx.preference:preference:1.1.0"
+        val browser = "androidx.browser:browser:1.2.0"
+        val activityKtx = "androidx.activity:activity-ktx:1.1.0"
+        val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.0"
 
-        val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
-        val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:2.2.0-rc03"
-        val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0-rc03"
-        val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc03"
+        val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:2.2.0"
+        val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0"
+        val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
 
         object Room {
             val version = "2.2.3"
@@ -67,14 +66,14 @@ object Dep {
         }
 
         object Navigation {
-            val version = "2.2.0-rc04"
+            val version = "2.2.0"
             val runtimeKtx = "androidx.navigation:navigation-runtime-ktx:$version"
             val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
         }
 
         object Work {
-            val version = "2.3.0-beta02"
+            val version = "2.3.0"
             val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
         }
     }
@@ -134,12 +133,12 @@ object Dep {
         val android = "com.google.dagger:dagger-android:$version"
         val androidProcessor = "com.google.dagger:dagger-android-processor:$version"
         val assistedInjectAnnotations =
-            "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.0"
-        val assistedInjectProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:0.5.0"
+            "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2"
+        val assistedInjectProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:0.5.2"
     }
 
     object Ktor {
-        val version = "1.3.0-beta-2"
+        val version = "1.3.0"
         val clientCommon = "io.ktor:ktor-client-core:$version"
         val clientAndroid = "io.ktor:ktor-client-okhttp:$version"
         val clientIos = "io.ktor:ktor-client-ios:$version"
@@ -220,5 +219,9 @@ object Dep {
 
     object Insetter {
         val insetter = "dev.chrisbanes:insetter-ktx:0.2.0"
+    }
+
+    object PhotoView {
+        val photoview =  "com.github.chrisbanes:PhotoView:2.3.0"
     }
 }

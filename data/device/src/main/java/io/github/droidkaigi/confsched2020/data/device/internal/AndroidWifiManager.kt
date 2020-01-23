@@ -1,22 +1,25 @@
 package io.github.droidkaigi.confsched2020.data.device.internal
 
 import android.content.Context
+import android.net.wifi.WifiConfiguration as SdkWifiConfiguration
+import android.net.wifi.WifiManager as SdkWifiManager
 import androidx.core.content.ContextCompat
 import io.github.droidkaigi.confsched2020.data.device.WifiManager
 import io.github.droidkaigi.confsched2020.model.WifiConfiguration
+import javax.inject.Inject
 import timber.log.Timber
 import timber.log.debug
-import javax.inject.Inject
-import android.net.wifi.WifiConfiguration as SdkWifiConfiguration
-import android.net.wifi.WifiManager as SdkWifiManager
 
 internal class AndroidWifiManager @Inject constructor(
     context: Context
 ) : WifiManager {
     private val wifiManager: SdkWifiManager =
-        requireNotNull(ContextCompat.getSystemService(context, SdkWifiManager::class.java), {
-            "WiFi manager is not available"
-        })
+        requireNotNull(
+            ContextCompat.getSystemService(context, SdkWifiManager::class.java),
+            {
+                "WiFi manager is not available"
+            }
+        )
 
     override fun createWifiConfiguration(wifiConfiguration: WifiConfiguration) {
         Timber.debug {

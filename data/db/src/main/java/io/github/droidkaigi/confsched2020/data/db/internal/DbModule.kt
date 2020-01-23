@@ -30,7 +30,8 @@ internal abstract class DbModule {
 
     @Module
     internal object Providers {
-        @Singleton @Provides fun cacheDatabase(
+        @Singleton @Provides
+        fun cacheDatabase(
             context: Context,
             filename: String?
         ): CacheDatabase {
@@ -43,7 +44,8 @@ internal abstract class DbModule {
                 .build()
         }
 
-        @Singleton @Provides fun sessionFeedbackDatabase(
+        @Singleton @Provides
+        fun sessionFeedbackDatabase(
             context: Context,
             filename: String?
         ): SessionFeedbackDatabase {

@@ -19,3 +19,41 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+## Extra
+
+# Generate merge config list
+-printconfiguration proguard-merged-config.txt
+
+## General
+
+# Do not remove annotations
+-keepattributes *Annotation*
+-keepattributes EnclosingMethod,Signature
+
+# Replace source file attributes by SourceFile to reduce the size
+# report system can de-obfuscate them
+-renamesourcefileattribute SourceFile
+# To see readable stacktraces
+-keepattributes SourceFile,LineNumberTable
+
+-dontwarn org.jetbrains.annotations.**
+
+
+# Most of volatile fields are updated with AFU and should not be mangled
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
+}
+
+# TODO: Works but needs to be obfuscated
+-keep class io.github.droidkaigi.confsched2020.staff.** { *; }
+-keep class io.github.droidkaigi.confsched2020.contributor.** { *; }
+
+# NOTE: staff and contributor settings
+# # reflect
+# -keep class kotlin.reflect.** { *; }
+# -keep class kotlin.jvm.internal.** { *; }
+# -keep class kotlin.jvm.functions.** { *; }
+# -keep class androidx.lifecycle.ViewModel
+# -keep class androidx.fragment.app.** { *; }
+# -keep class io.github.droidkaigi.confsched2020.util.** { *; }

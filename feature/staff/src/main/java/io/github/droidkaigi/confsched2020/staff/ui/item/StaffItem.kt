@@ -32,6 +32,6 @@ class StaffItem @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(staff:Staff): StaffItem
+        fun create(staff: Staff): StaffItem
     }
 }

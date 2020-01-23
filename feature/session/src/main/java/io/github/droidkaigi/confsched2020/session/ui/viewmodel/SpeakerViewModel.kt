@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.ext.combine
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
@@ -14,6 +13,7 @@ import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeakerId
 import io.github.droidkaigi.confsched2020.model.SpeechSession
+import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 
@@ -43,11 +43,16 @@ class SpeakerViewModel @AssistedInject constructor(
             }
     }
 
-    private val speakerSessionLoadingStateLiveData: LiveData<LoadState<List<SpeechSession>>> = liveData {
+    private val speakerSessionLoadingStateLiveData = liveData {
         sessionRepository.sessionContents()
-            .map { it.sessions
-                .filterIsInstance<SpeechSession>()
-                .filter { session -> session.speakers.firstOrNull { speaker -> speakerId == speaker.id } != null }
+            .map {
+                it.sessions
+                    .filterIsInstance<SpeechSession>()
+                    .filter { session ->
+                        session.speakers.firstOrNull { speaker ->
+                            speakerId == speaker.id
+                        } != null
+                    }
             }
             .toLoadingState()
             .collect { loadState: LoadState<List<SpeechSession>> ->
@@ -82,8 +87,10 @@ class SpeakerViewModel @AssistedInject constructor(
         }
         UiModel(
             isLoading = isLoading,
-            error = (speakerLoadState.getErrorIfExists()
-                ?: speakerSessionLoadState.getErrorIfExists()).toAppError(),
+            error = (
+                speakerLoadState.getErrorIfExists()
+                    ?: speakerSessionLoadState.getErrorIfExists()
+                ).toAppError(),
             speaker = speaker,
             sessions = speakerSessions
         )
