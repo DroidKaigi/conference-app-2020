@@ -5,7 +5,10 @@
     <string name="intended_audience_title">対象者</string>
     <string name="applicable_session">該当セッション: %1$d</string>
     <string name="filter_reset">リセット</string>
+    <string name="ellipsis_label">続きを読む</string>
     <string name="speaker">スピーカー</string>
     <string name="session">セッション</string>
     <string name="query_hint">検索する</string>
+    <string name="slide">スライド</string>
+    <string name="empty_favorite_session">お気に入りのセッションを登録すると\nあなた専用のプランを作ることが\nできます。</string>
 </resources>

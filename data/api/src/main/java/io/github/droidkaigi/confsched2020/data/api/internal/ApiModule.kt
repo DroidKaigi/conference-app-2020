@@ -25,7 +25,6 @@ internal abstract class ApiModule {
 
     @Module
     internal object Providers {
-        @JvmStatic
         @Provides
         fun httpClient(): HttpClient {
             return HttpClient(OkHttp) {
@@ -48,7 +47,6 @@ internal abstract class ApiModule {
             }
         }
 
-        @JvmStatic
         @Provides
         @Named("apiEndpoint")
         fun apiEndpoint(): String {

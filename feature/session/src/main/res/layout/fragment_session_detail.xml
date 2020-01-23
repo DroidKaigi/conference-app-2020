@@ -7,6 +7,8 @@
 
     <data>
 
+        <import type="io.github.droidkaigi.confsched2020.model.TimeZoneOffsetKt" />
+
         <variable
             name="session"
             type="io.github.droidkaigi.confsched2020.model.Session"
@@ -29,27 +31,25 @@
         tools:theme="@style/Theme.DroidKaigi"
         >
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/session_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:layout_marginBottom="18dp"
                 >
-
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline_start"
@@ -74,6 +74,7 @@
                     android:text="@{session.title.getByLang(lang)}"
                     android:textAppearance="?textAppearanceHeadline5"
                     android:textColor="@color/session_title"
+                    android:lineSpacingExtra="8sp"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toTopOf="parent"
@@ -96,6 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:text="@{session.timeSummary(lang, TimeZoneOffsetKt.defaultTimeZoneOffset())}"
                     android:textAppearance="?textAppearanceCaption"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintBottom_toBottomOf="@id/time_icon"
@@ -103,7 +105,6 @@
                     app:layout_constraintTop_toTopOf="@id/time_icon"
                     tools:text="2月20日 11:00-11:20"
                     />
-                <!--  FIXME: use android:text="@{session.timeSummary(lang, timeOffset)}"-->
 
                 <TextView
                     android:id="@+id/duration_room"
@@ -128,31 +129,6 @@
                     app:layout_constraintTop_toBottomOf="@id/duration_room"
                     />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/survey"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:minHeight="36dp"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="16dp"
-                    android:text="@string/session_survey_label"
-                    android:textAppearance="?attr/textAppearanceButton"
-                    android:textColor="@color/survey_button"
-                    app:icon="@drawable/ic_add_comment_24dp"
-                    app:iconPadding="8dp"
-                    app:iconSize="20dp"
-                    app:iconTint="@color/survey_button"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/tags"
-                    app:strokeColor="@color/survey_button"
-                    app:strokeWidth="1dp"
-                    tools:enabled="false"
-                    />
-
                 <View
                     android:id="@+id/divider_survey_and_text"
                     android:layout_width="0dp"
@@ -161,18 +137,18 @@
                     android:background="@color/black_alpha_12"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/survey"
+                    app:layout_constraintTop_toBottomOf="@id/tags"
                     />
 
                 <TextView
-                    android:id="@+id/text"
+                    android:id="@+id/session_description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="22dp"
                     android:autoLink="web"
-                    android:text="@{session.desc}"
                     android:textAppearance="?textAppearanceBody1"
                     android:textColor="?android:attr/textColorPrimary"
+                    android:lineSpacingExtra="8sp"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/divider_survey_and_text"
@@ -188,7 +164,7 @@
                     app:isVisible="@{session.hasIntendedAudience}"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/text"
+                    app:layout_constraintTop_toBottomOf="@id/session_description"
                     />
 
                 <TextView
@@ -212,6 +188,7 @@
                     android:text="@{speechSession.intendedAudience}"
                     android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
                     android:textColor="?android:attr/textColorPrimary"
+                    android:lineSpacingExtra="8sp"
                     app:isVisible="@{session.hasIntendedAudience}"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -250,12 +227,75 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
                     android:layout_marginBottom="32dp"
+                    android:divider="@drawable/session_item_speaker_divider"
                     android:orientation="vertical"
+                    android:showDividers="middle"
                     app:isVisible="@{session.hasSpeaker}"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/speaker_title"
+                    />
+
+                <View
+                    android:id="@+id/divider_speaker_and_material"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="28dp"
+                    android:background="@color/black_alpha_12"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/speakers"
+                    />
+
+                <TextView
+                    android:id="@+id/material_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:text="@string/material_label"
+                    android:textAppearance="?textAppearanceSubtitle2"
+                    android:textColor="@color/session_detail_label"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/divider_speaker_and_material"
+                    />
+
+                <TextView
+                    android:id="@+id/movie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingStart="16dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/movie"
+                    android:textAppearance="?textAppearanceCaption"
+                    android:textColor="?android:attr/textColorSecondary"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/material_title"
+                    tools:text="MOVIE"
+                    />
+
+                <TextView
+                    android:id="@+id/slide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="32dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/slide"
+                    android:textAppearance="?textAppearanceCaption"
+                    android:textColor="?android:attr/textColorSecondary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/movie"
+                    tools:text="SLIDE"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

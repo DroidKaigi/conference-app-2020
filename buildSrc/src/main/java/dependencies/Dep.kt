@@ -6,12 +6,12 @@ object Dep {
         val android = "com.android.tools.build:gradle:3.6.0-rc01"
         val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}"
-        val playServices = "com.google.gms:google-services:4.3.0"
+        val playServices = "com.google.gms:google-services:4.3.3"
         val safeArgs =
             "androidx.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.version}"
         val jetifier = "com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta05"
         val licensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.9.5"
-        val crashlytics = "io.fabric.tools:gradle:1.28.0"
+        val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.0.0-beta01"
         val iconRibbonPlugin = "com.akaita.android:easylauncher:1.3.1"
         val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.22.0"
     }
@@ -19,8 +19,10 @@ object Dep {
     object Test {
         val junit = "junit:junit:4.12"
         val testRunner = "androidx.test:runner:1.3.0-alpha02"
-        val testCore = "androidx.test:core:1.1.0"
-        val androidJunit4 = "androidx.test.ext.junit:1.1.0"
+        val testRules = "androidx.test:rules:1.3.0-alpha02"
+        val testCoreKtx = "androidx.test:core-ktx:1.2.1-alpha02"
+        val androidJunit4Ktx = "androidx.test.ext:junit-ktx:1.1.2-alpha02"
+        val orchestrator = "androidx.test:orchestrator:1.3.0-alpha02"
         val archCore = "androidx.arch.core:core-testing:2.1.0"
         val liveDataTestingKtx = "com.jraska.livedata:testing-ktx:1.1.0"
         val espressoCore = "androidx.test.espresso:espresso-core:3.3.0-alpha02"
@@ -65,11 +67,8 @@ object Dep {
         }
 
         object Navigation {
-            val version = "2.2.0-beta01"
-            val runtime = "androidx.navigation:navigation-runtime:$version"
+            val version = "2.2.0-rc04"
             val runtimeKtx = "androidx.navigation:navigation-runtime-ktx:$version"
-            val fragment = "androidx.navigation:navigation-fragment:$version"
-            val ui = "androidx.navigation:navigation-ui:$version"
             val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
         }
@@ -117,7 +116,8 @@ object Dep {
         val core = "com.google.firebase:firebase-core:16.0.4"
         val firestoreKtx = "com.google.firebase:firebase-firestore-ktx:20.2.0"
         val auth = "com.google.firebase:firebase-auth:18.1.0"
-        val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.9.8"
+        val crashlytics = "com.google.firebase:firebase-crashlytics:17.0.0-beta01"
+        val analytics = "com.google.firebase:firebase-analytics:17.2.2"
         val messaging = "com.google.firebase:firebase-messaging:17.3.3"
     }
 
@@ -134,12 +134,12 @@ object Dep {
         val android = "com.google.dagger:dagger-android:$version"
         val androidProcessor = "com.google.dagger:dagger-android-processor:$version"
         val assistedInjectAnnotations =
-            "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.0"
-        val assistedInjectProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:0.5.0"
+            "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2"
+        val assistedInjectProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:0.5.2"
     }
 
     object Ktor {
-        val version = "1.3.0-beta-2"
+        val version = "1.3.0"
         val clientCommon = "io.ktor:ktor-client-core:$version"
         val clientAndroid = "io.ktor:ktor-client-okhttp:$version"
         val clientIos = "io.ktor:ktor-client-ios:$version"

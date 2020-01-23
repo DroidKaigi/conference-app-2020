@@ -6,7 +6,7 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion Versions.androidCompileSdkVersion
@@ -17,6 +17,7 @@ android {
         versionCode Versions.androidVersionCode
         versionName Versions.androidVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
     signingConfigs {
         debug {
@@ -50,9 +51,9 @@ android {
             applicationIdSuffix Packages.debugNameSuffix
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             signingConfig signingConfigs.release
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     dataBinding {
@@ -68,6 +69,10 @@ android {
             ':feature:preference',
             ':feature:contributor'
     ]
+    testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        animationsDisabled = true
+    }
 }
 
 dependencies {
@@ -95,6 +100,7 @@ dependencies {
     implementation Dep.AndroidX.activityKtx
     implementation Dep.Firebase.firestoreKtx
     implementation Dep.Firebase.crashlytics
+    implementation Dep.Firebase.analytics
 
     implementation Dep.Dagger.core
     implementation Dep.Dagger.androidSupport
@@ -107,7 +113,11 @@ dependencies {
 
     testImplementation Dep.Test.junit
     androidTestImplementation Dep.Test.testRunner
+    androidTestImplementation Dep.Test.testRules
     androidTestImplementation Dep.Test.espressoCore
+    androidTestImplementation Dep.Test.testCoreKtx
+    androidTestImplementation Dep.Test.androidJunit4Ktx
+    androidTestUtil Dep.Test.orchestrator
 
     Dep.Hyperion.hyperionPlugins.forEach{
         debugImplementation it

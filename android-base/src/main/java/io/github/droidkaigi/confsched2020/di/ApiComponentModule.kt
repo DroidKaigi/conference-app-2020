@@ -10,7 +10,6 @@ import javax.inject.Singleton
 
 @Module
 object ApiComponentModule {
-    @JvmStatic
     @Provides
     @Singleton
     fun provideDroidKaigiApi(application: Application): DroidKaigiApi {
@@ -19,7 +18,6 @@ object ApiComponentModule {
             .DroidKaigiApi()
     }
 
-    @JvmStatic
     @Provides
     @Singleton
     fun provideGoogleFormApi(application: Application): GoogleFormApi {

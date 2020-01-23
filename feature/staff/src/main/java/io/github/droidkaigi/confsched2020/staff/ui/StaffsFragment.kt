@@ -19,28 +19,37 @@ import io.github.droidkaigi.confsched2020.App
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.staff.R
 import io.github.droidkaigi.confsched2020.staff.databinding.FragmentStaffsBinding
 import io.github.droidkaigi.confsched2020.staff.ui.di.StaffAssistedInjectModule
 import io.github.droidkaigi.confsched2020.staff.ui.item.StaffItem
 import io.github.droidkaigi.confsched2020.staff.ui.viewmodel.StaffsViewModel
+import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
+import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class StaffsFragment : Fragment() {
 
-    private lateinit var binding: FragmentStaffsBinding
+    private var binding: FragmentStaffsBinding by autoCleared()
 
-    @Inject lateinit var staffsFactory: Provider<StaffsViewModel>
+    @Inject
+    lateinit var staffsFactory: Provider<StaffsViewModel>
     private val staffsViewModel by assistedViewModels {
         staffsFactory.get()
     }
 
-    @Inject lateinit var staffItemFactory: StaffItem.Factory
+    @Inject
+    lateinit var systemViewModelFactory: Provider<SystemViewModel>
+    private val systemViewModel by assistedViewModels {
+        systemViewModelFactory.get()
+    }
 
-    private lateinit var progressTimeLatch: ProgressTimeLatch
+    @Inject
+    lateinit var staffItemFactory: StaffItem.Factory
+
+    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,18 +81,14 @@ class StaffsFragment : Fragment() {
         }.apply {
             loading = true
         }
-        staffsViewModel.staffContentsLoadState.observe(viewLifecycleOwner) { state ->
-            progressTimeLatch.loading = state.isLoading
-            when (state) {
-                is LoadState.Loaded -> {
-                    groupAdapter.update(state.value.staffs.map {
-                        staffItemFactory.create(it)
-                    })
-                }
-                LoadState.Loading -> Unit
-                is LoadState.Error -> {
-                    state.e.printStackTrace()
-                }
+        staffsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
+            progressTimeLatch.loading = uiModel.isLoading
+            groupAdapter.update(uiModel.staffContents.staffs.map {
+                staffItemFactory.create(it)
+            })
+
+            uiModel.error?.let {
+                systemViewModel.onError(it)
             }
         }
     }
@@ -91,7 +96,8 @@ class StaffsFragment : Fragment() {
 
 @Module
 class StaffModule(private val fragment: StaffsFragment) {
-    @PageScope @Provides
+    @PageScope
+    @Provides
     fun providesLifecycleOwnerLiveData(): LiveData<LifecycleOwner> {
         return fragment.viewLifecycleOwnerLiveData
     }

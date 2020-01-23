@@ -5,189 +5,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <data>
-        <variable
-            name="speaker"
-            type="io.github.droidkaigi.confsched2020.model.Speaker"
-            />
-
-        <variable
-            name="speechSession"
-            type="io.github.droidkaigi.confsched2020.model.SpeechSession"
-            />
-
-        <variable
-            name="lang"
-            type="io.github.droidkaigi.confsched2020.model.Lang"
-            />
-    </data>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:theme="@style/Theme.DroidKaigi"
         >
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/speaker_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            >
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
-                android:background="?colorSurface"
-                >
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_begin="24dp"
-                    />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_end="24dp"
-                    />
-
-                <ImageView
-                    android:id="@+id/speaker_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@tools:sample/avatars"
-                    />
-
-                <TextView
-                    android:id="@+id/speaker_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="@{speaker.name}"
-                    android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.DroidKaigi.Headline5"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/speaker_image"
-                    tools:text="SpeakerName"
-                    />
-
-                <TextView
-                    android:id="@+id/speaker_tag_line"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{speaker.tagLine}"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center_horizontal"
-                    android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/speaker_name"
-                    tools:text="DroidKaigi"
-                    />
-
-                <View
-                    android:id="@+id/divider_speaker_tag_line"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="24dp"
-                    android:background="?android:attr/listDivider"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/speaker_tag_line"
-                    />
-
-                <TextView
-                    android:id="@+id/speaker_description"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:autoLink="web"
-                    android:ellipsize="end"
-                    android:includeFontPadding="false"
-                    android:text="@{speaker.bio}"
-                    android:textAlignment="viewStart"
-                    android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/divider_speaker_tag_line"
-                    tools:text="Material is the metaphor A material metaphor is the unifying theory of a rationalized space and a system of motion. The material is grounded in tactile reality, inspired by the study of paper and ink, yet technologically advanced and open to imagination and magic."
-                    />
-
-                <View
-                    android:id="@+id/divider_speaker_description_and_speaker_session"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="24dp"
-                    android:background="?android:attr/listDivider"
-                    app:isVisible="@{speechSession.hasSpeaker}"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/speaker_description"
-                    />
-
-                <TextView
-                    android:id="@+id/speaker_session_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/session_label"
-                    android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
-                    app:isVisible="@{speechSession.hasSpeaker}"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/divider_speaker_description_and_speaker_session"
-                    />
-
-                <TextView
-                    android:id="@+id/speaker_session_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@{speechSession.title.getByLang(lang)}"
-                    android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
-                    app:isVisible="@{speechSession.hasSpeaker}"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/speaker_session_title"
-                    tools:text="DroidKaigi App Architecture"
-                    />
-
-                <ImageView
-                    android:id="@+id/time_icon"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginTop="8dp"
-                    app:isVisible="@{speechSession.hasSpeaker}"
-                    android:src="@drawable/ic_access_time_black_24dp"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/speaker_session_name"
-                    app:tint="?android:attr/textColorPrimary"
-                    />
-
-                <TextView
-                    android:id="@+id/time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    app:isVisible="@{speechSession.hasSpeaker}"
-                    android:textAppearance="@style/TextAppearance.DroidKaigi.Caption"
-                    app:layout_constraintBottom_toBottomOf="@id/time_icon"
-                    app:layout_constraintStart_toEndOf="@id/time_icon"
-                    app:layout_constraintTop_toTopOf="@id/time_icon"
-                    tools:text="2月20日 11:00-11:20"
-                    />
-                <!--  FIXME: use android:text="@{session.timeSummary(lang, timeOffset)}"-->
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_speaker_detail"
+            />
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -199,6 +30,5 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

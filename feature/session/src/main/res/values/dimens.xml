@@ -4,5 +4,7 @@
     <dimen name="session_time_space">76dp</dimen>
     <dimen name="session_time_text_margin_top">8dp</dimen>
     <dimen name="session_item_margin_bottom">16dp</dimen>
+    <dimen name="session_item_speaker_margin">8dp</dimen>
     <dimen name="session_filter_chip_vertical_margin">8dp</dimen>
+    <dimen name="gesture_navigation_bottom_space">48dp</dimen>
 </resources>

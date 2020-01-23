@@ -5,6 +5,8 @@ class SearchResult(
     val speakers: List<Speaker>,
     val query: String?
 ) {
+    fun isEmpty() = this == EMPTY
+
     companion object {
         val EMPTY = SearchResult(listOf(), listOf(), null)
     }
