@@ -29,7 +29,7 @@ class SessionsViewModelTest {
     @Test
     fun load() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
-        coEvery { sessionRepository.refresh()}
+        coEvery { sessionRepository.refresh() }
         val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
 
         val testObserver = sessionsViewModel
