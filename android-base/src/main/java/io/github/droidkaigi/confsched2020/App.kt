@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched2020
 
-import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -16,7 +15,6 @@ import timber.log.LogcatTree
 import timber.log.Timber
 
 open class App : DaggerApplication(), AppComponentHolder {
-
 
     override val appComponent: AppComponent by lazy {
         createAppComponent()
