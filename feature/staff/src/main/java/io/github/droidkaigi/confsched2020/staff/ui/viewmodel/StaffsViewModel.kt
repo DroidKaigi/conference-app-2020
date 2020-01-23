@@ -54,5 +54,4 @@ class StaffsViewModel @Inject constructor(
             staffContents = staffContents
         )
     }
-
 }

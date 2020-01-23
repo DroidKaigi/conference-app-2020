@@ -64,7 +64,9 @@ inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any> combine(
                 val liveData1Value = liveData1.value
                 val liveData2Value = liveData2.value
                 val liveData3Value = liveData3.value
-                if (currentValue != null && liveData1Value != null && liveData2Value != null && liveData3Value != null) {
+                if (currentValue != null && liveData1Value != null &&
+                    liveData2Value != null && liveData3Value != null
+                ) {
                     value = block(currentValue, liveData1Value, liveData2Value, liveData3Value)
                 }
             }
@@ -89,7 +91,10 @@ inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any, LIVE4 : Any> combine
                 val liveData2Value = liveData2.value
                 val liveData3Value = liveData3.value
                 val liveData4Value = liveData4.value
-                if (currentValue != null && liveData1Value != null && liveData2Value != null && liveData3Value != null && liveData4Value != null) {
+                if (currentValue != null && liveData1Value != null &&
+                    liveData2Value != null && liveData3Value != null &&
+                    liveData4Value != null
+                ) {
                     value = block(
                         currentValue,
                         liveData1Value,
