@@ -101,8 +101,8 @@
             android:layout_height="4dp"
             android:background="@drawable/shape_drop_down_shadow"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/guideline_end"
-            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider"
             />
 
