@@ -90,6 +90,7 @@ data class SpeechSession(
 
     val hasVideo: Boolean = videoUrl.isNullOrEmpty().not()
     val hasSlide: Boolean = slideUrl.isNullOrEmpty().not()
+    val hasMessage: Boolean get() = message?.getByLang(lang).isNullOrEmpty().not()
 }
 
 @AndroidParcelize
