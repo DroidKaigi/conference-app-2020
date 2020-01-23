@@ -431,12 +431,22 @@ class SessionsViewModelTest {
         valueHistory[0].apply {
             isLoading shouldBe true
             error shouldBe null
-            filters shouldBe Filters(audienceCategories = setOf(AudienceCategory.BEGINNERS, AudienceCategory.UNSPECIFIED))
+            filters shouldBe Filters(
+                audienceCategories = setOf(
+                    AudienceCategory.BEGINNERS,
+                    AudienceCategory.UNSPECIFIED
+                )
+            )
         }
         valueHistory[1].apply {
             isLoading shouldBe false
             error shouldBe null
-            filters shouldBe Filters(audienceCategories = setOf(AudienceCategory.BEGINNERS, AudienceCategory.UNSPECIFIED))
+            filters shouldBe Filters(
+                audienceCategories = setOf(
+                    AudienceCategory.BEGINNERS,
+                    AudienceCategory.UNSPECIFIED
+                )
+            )
         }
         valueHistory[2].apply {
             isLoading shouldBe false
