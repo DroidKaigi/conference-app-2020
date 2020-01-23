@@ -1,7 +1,15 @@
 package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 
 import com.jraska.livedata.test
-import io.github.droidkaigi.confsched2020.model.*
+import io.github.droidkaigi.confsched2020.model.AudienceCategory
+import io.github.droidkaigi.confsched2020.model.Category
+import io.github.droidkaigi.confsched2020.model.Filters
+import io.github.droidkaigi.confsched2020.model.Lang
+import io.github.droidkaigi.confsched2020.model.LangSupport
+import io.github.droidkaigi.confsched2020.model.LocaledString
+import io.github.droidkaigi.confsched2020.model.Room
+import io.github.droidkaigi.confsched2020.model.Session
+import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.widget.component.MockkRule
 import io.github.droidkaigi.confsched2020.widget.component.ViewModelTestRule
