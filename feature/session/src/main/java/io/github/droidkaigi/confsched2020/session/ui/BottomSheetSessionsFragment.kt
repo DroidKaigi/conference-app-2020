@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
@@ -85,6 +86,14 @@ class BottomSheetSessionsFragment : DaggerFragment() {
                 requireContext()
             )
         )
+        binding.sessionRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                binding.dividerShadow.isVisible =
+                    binding.sessionRecycler.canScrollVertically(-1)
+            }
+        })
         binding.startFilter.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
