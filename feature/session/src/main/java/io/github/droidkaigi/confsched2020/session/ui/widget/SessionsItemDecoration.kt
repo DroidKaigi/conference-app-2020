@@ -23,7 +23,7 @@ class SessionsItemDecoration(
     private val textPaint by lazy {
         Paint().apply {
             isAntiAlias = true
-            textAlign = Paint.Align.CENTER
+            textAlign = Paint.Align.LEFT
             textSize = sessionTimeTextSizeInPx
             color = context.getThemeColor(AndroidRAttr.textColorHint)
         }
@@ -36,6 +36,9 @@ class SessionsItemDecoration(
     }
     private val sessionTimeTextMarginTopInPx by lazy {
         res.getDimensionPixelSize(R.dimen.session_time_text_margin_top).toFloat()
+    }
+    private val sessionTimeTextMarginStartInPx by lazy {
+        res.getDimensionPixelSize(R.dimen.session_time_text_margin_start).toFloat()
     }
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
