@@ -6,6 +6,7 @@ import android.provider.CalendarContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.soywiz.klock.DateTime
 import io.github.droidkaigi.confsched2020.ext.toNonNullSingleEvent
 import io.github.droidkaigi.confsched2020.model.AppError
 import javax.inject.Inject
@@ -21,14 +22,13 @@ class SystemViewModel @Inject constructor() : ViewModel() {
         context: Context,
         title: String,
         location: String,
-        startUnixMillis: Long,
-        endUnixMillis: Long
+        startDateTime: DateTime,
+        endDateTime: DateTime
     ) {
         val intent = Intent(Intent.ACTION_INSERT)
             .setData(CalendarContract.Events.CONTENT_URI)
-            .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startUnixMillis)
-            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endUnixMillis)
-            .putExtra(CalendarContract.Events.TITLE, "DroidKaigi2020: $title")
+            .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startDateTime.unixMillisLong)
+            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDateTime.unixMillisLong)
             .putExtra(CalendarContract.Events.EVENT_LOCATION, location)
         context.startActivity(intent)
     }

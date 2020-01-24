@@ -146,8 +146,8 @@ class SessionDetailFragment : DaggerFragment() {
                         context = requireContext(),
                         title = session.title.getByLang(defaultLang()),
                         location = session.room.name.getByLang(defaultLang()),
-                        startUnixMillis = session.startTime.unixMillisLong,
-                        endUnixMillis = session.endTime.unixMillisLong
+                        startDateTime = session.startTime,
+                        endDateTime = session.endTime
                     )
                 }
                 else -> {
