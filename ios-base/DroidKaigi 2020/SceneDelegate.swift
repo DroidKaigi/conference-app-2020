@@ -1,5 +1,4 @@
 import UIKit
-import MaterialComponents
 
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
