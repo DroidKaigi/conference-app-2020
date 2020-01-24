@@ -143,7 +143,7 @@ class SessionDetailFragment : DaggerFragment() {
                 R.id.session_calendar -> {
                     val session = binding.session ?: return@setOnMenuItemClickListener true
                     systemViewModel.sendEventToCalendar(
-                        context = requireContext(),
+                        activity = requireActivity(),
                         title = session.title.getByLang(defaultLang()),
                         location = session.room.name.getByLang(defaultLang()),
                         startDateTime = session.startTime,

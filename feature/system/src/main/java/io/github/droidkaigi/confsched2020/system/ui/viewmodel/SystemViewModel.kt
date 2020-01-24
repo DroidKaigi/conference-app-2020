@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.system.ui.viewmodel
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
@@ -19,7 +20,7 @@ class SystemViewModel @Inject constructor() : ViewModel() {
     }
 
     fun sendEventToCalendar(
-        context: Context,
+        activity: Activity,
         title: String,
         location: String,
         startDateTime: DateTime,
@@ -31,6 +32,6 @@ class SystemViewModel @Inject constructor() : ViewModel() {
             .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDateTime.unixMillisLong)
             .putExtra(CalendarContract.Events.TITLE, "[$location] $title")
             .putExtra(CalendarContract.Events.EVENT_LOCATION, location)
-        context.startActivity(intent)
+            activity.startActivity(intent)
     }
 }
