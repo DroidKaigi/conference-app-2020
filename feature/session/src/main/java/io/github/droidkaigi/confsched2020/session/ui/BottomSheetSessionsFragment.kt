@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
@@ -159,7 +160,17 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             uiModel.error?.let {
                 systemViewModel.onError(it)
             }
+
+            val position = uiModel.shouldScrollSessionPosition[page]
+            if (position != null) {
+                binding.sessionRecycler.smoothScrollToPositionWithLayoutManager(position)
+                sessionsViewModel.onScrolled()
+            }
         }
+    }
+
+    private fun RecyclerView.smoothScrollToPositionWithLayoutManager(position: Int) {
+        (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(position, 0)
     }
 
     companion object {
