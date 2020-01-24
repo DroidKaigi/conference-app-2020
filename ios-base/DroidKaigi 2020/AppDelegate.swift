@@ -9,7 +9,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 13, *) {
         } else {
             let window = UIWindow(frame: UIScreen.main.bounds)
-            UINavigationBar.appearance().isTranslucent = false
+
+            let backButtonBackgroundImage = #imageLiteral(resourceName: "ic_back")
+            UINavigationBar.appearance().backIndicatorImage = backButtonBackgroundImage
+            UINavigationBar.appearance().backIndicatorTransitionMaskImage = backButtonBackgroundImage
+
             let vc = FilterViewController()
             let nvc = NavigationController(rootViewController: vc)
             let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc))

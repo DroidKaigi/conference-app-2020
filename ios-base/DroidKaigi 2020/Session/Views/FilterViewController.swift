@@ -46,6 +46,12 @@ final class FilterViewController: UIViewController {
         embeddedView?.frame = containerView.bounds
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
+    }
+
     private func frameForEmbeddedController() -> CGRect {
         var embeddedFrame = view.bounds
         var insetHeader = UIEdgeInsets()
@@ -81,6 +87,7 @@ final class FilterViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.primaryColor
         navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
         navigationController?.navigationBar.shadowImage = UIImage()
+        navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         edgesForExtendedLayout = []
 
         menuItem.rx.tap

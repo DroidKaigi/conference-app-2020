@@ -28,8 +28,7 @@ final class SpeakerViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationController?.navigationBar.barTintColor = .clear
-        //navigationController?.navigationBar.backItem?.backBarButtonItem.
+        navigationController?.navigationBar.tintColor = .black
     }
 
     override func viewWillDisappear(_ animated: Bool) {
