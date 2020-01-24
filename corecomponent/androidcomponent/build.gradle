@@ -35,7 +35,6 @@ dependencies {
     implementation Dep.Firebase.firestoreKtx
     implementation Dep.Firebase.auth
 
-    api Dep.AndroidX.lifecycleExtensions
     api Dep.AndroidX.activityKtx
     api Dep.AndroidX.fragmentKtx
     api Dep.AndroidX.coreKtx

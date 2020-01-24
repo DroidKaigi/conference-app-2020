@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
+import android.content.Context
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
@@ -13,11 +14,12 @@ import coil.transform.CircleCropTransformation
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
-import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailSpeakerBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment
+import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
+import io.github.droidkaigi.confsched2020.util.lazyWithParam
 
 /**
  * @param first For setting margin by SessionDetailItemDecoration
@@ -27,7 +29,12 @@ class SessionDetailSpeakerItem @AssistedInject constructor(
     @Assisted private val speaker: Speaker,
     @Assisted val first: Boolean,
     @Assisted private val onClick: (FragmentNavigator.Extras) -> Unit
-) : BindableItem<ItemSessionDetailSpeakerBinding>() {
+) : BindableItem<ItemSessionDetailSpeakerBinding>(speaker.id.hashCode().toLong()) {
+
+    private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> {
+        ProfilePlaceholderCreator.create(it)
+    }
+
     override fun getLayout() = R.layout.item_session_detail_speaker
 
     override fun bind(binding: ItemSessionDetailSpeakerBinding, position: Int) {
@@ -52,23 +59,13 @@ class SessionDetailSpeakerItem @AssistedInject constructor(
 //        setHighlightText(textView, query)
         val imageUrl = speaker.imageUrl
         val context = speakerNameView.context
-        val placeHolder = run {
-            VectorDrawableCompat.create(
-                context.resources,
-                R.drawable.ic_person_outline_black_32dp,
-                null
-            )?.apply {
-                setTint(
-                    context.getThemeColor(R.attr.colorOnBackground)
-                )
-            }
-        }?.also {
+        val placeholder = placeholder.get(context)?.also {
             speakerImageView.setImageDrawable(it)
         }
 
         Coil.load(context, imageUrl) {
             crossfade(true)
-            placeholder(placeHolder)
+            placeholder(placeholder)
             transformations(CircleCropTransformation())
             lifecycle(lifecycleOwnerLiveData.value)
             target {

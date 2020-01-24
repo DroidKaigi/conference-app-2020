@@ -10,6 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
@@ -32,7 +34,7 @@ import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
-class BottomSheetDaySessionsFragment : DaggerFragment() {
+class BottomSheetSessionsFragment : DaggerFragment() {
 
     private var binding: FragmentBottomSheetSessionsBinding by autoCleared()
 
@@ -44,7 +46,7 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
     @Inject
     lateinit var sessionTabViewModelProvider: Provider<SessionTabViewModel>
     private val sessionTabViewModel: SessionTabViewModel by assistedActivityViewModels({
-        SessionPage.dayOfNumber(args.day).title
+        args.page.title
     }) {
         sessionTabViewModelProvider.get()
     }
@@ -57,8 +59,8 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
 
     @Inject
     lateinit var sessionItemFactory: SessionItem.Factory
-    private val args: BottomSheetDaySessionsFragmentArgs by lazy {
-        BottomSheetDaySessionsFragmentArgs.fromBundle(arguments ?: Bundle())
+    private val args: BottomSheetSessionsFragmentArgs by lazy {
+        BottomSheetSessionsFragmentArgs.fromBundle(arguments ?: Bundle())
     }
 
     override fun onCreateView(
@@ -72,7 +74,7 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
             container,
             false
         )
-        return binding.root
+        return binding.apply { isEmptyFavoritePage = false }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,6 +87,17 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
                 requireContext()
             )
         )
+        binding.sessionRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val isVisibleShadow =
+                    binding.sessionRecycler.canScrollVertically(-1)
+
+                binding.divider.isVisible = !isVisibleShadow
+                binding.dividerShadow.isVisible = isVisibleShadow
+            }
+        })
         binding.startFilter.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
@@ -92,59 +105,79 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
             sessionTabViewModel.toggleExpand()
         }
         binding.sessionRecycler.doOnApplyWindowInsets { sessionRecycler, insets, initialState ->
-            sessionRecycler.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+            sessionRecycler.updatePadding(
+                bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+            )
         }
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
-            binding.sessionRecycler.isVisible = when (uiModel.expandFilterState) {
-                ExpandFilterState.EXPANDED, ExpandFilterState.CHANGING ->
-                    true
-                else ->
-                    false
-            }
-            binding.startFilter.visibility = when (uiModel.expandFilterState) {
-                ExpandFilterState.EXPANDED, ExpandFilterState.CHANGING ->
-                    View.VISIBLE
-                else ->
-                    View.INVISIBLE
-            }
-            binding.expandLess.isVisible = when (uiModel.expandFilterState) {
+            val shouldBeCollapsed = when (uiModel.expandFilterState) {
                 ExpandFilterState.COLLAPSED ->
                     true
                 else ->
                     false
             }
+            if (binding.isCollapsed != shouldBeCollapsed) {
+                TransitionManager.beginDelayedTransition(
+                    binding.sessionRecycler.parent as ViewGroup
+                )
+                binding.isCollapsed = shouldBeCollapsed
+            }
         }
 
-        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
-            // TODO: support favorite list
-            val page = SessionPage.dayOfNumber(args.day) as? SessionPage.Day ?: return@observe
-            val sessions = uiModel.dayToSessionsMap[page].orEmpty()
+        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
+            val page = args.page
+            val sessions = when (page) {
+                is SessionPage.Day -> uiModel.dayToSessionsMap[page].orEmpty()
+                SessionPage.Favorite -> uiModel.favoritedSessions
+            }
             val count = sessions.filter { it.shouldCountForFilter }.count()
+
+            if (page == SessionPage.Favorite) {
+                TransitionManager.beginDelayedTransition(
+                    binding.sessionRecycler.parent as ViewGroup
+                )
+                binding.isEmptyFavoritePage = sessions.isEmpty()
+            }
+
             // For Android Lint
             @Suppress("USELESS_CAST")
             binding.filteredSessionCount.text = getString(
                 R.string.applicable_session,
                 count as Int
             )
+            binding.isFiltered = uiModel.filters.isFiltered()
             binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()
-            groupAdapter.update(
-                sessions.map {
-                    sessionItemFactory.create(it, sessionsViewModel)
-                }
-            )
+            val startFilterTextRes = if (uiModel.filters.isFiltered()) {
+                R.string.filter_now
+            } else {
+                R.string.start_filter
+            }
+            binding.startFilter.text = getString(startFilterTextRes)
+            groupAdapter.update(sessions.map {
+                sessionItemFactory.create(it, sessionsViewModel)
+            })
             uiModel.error?.let {
                 systemViewModel.onError(it)
+            }
+
+            val position = uiModel.shouldScrollSessionPosition[page]
+            if (position != null) {
+                binding.sessionRecycler.smoothScrollToPositionWithLayoutManager(position)
+                sessionsViewModel.onScrolled()
             }
         }
     }
 
+    private fun RecyclerView.smoothScrollToPositionWithLayoutManager(position: Int) {
+        (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(position, 0)
+    }
+
     companion object {
         fun newInstance(
-            args: BottomSheetDaySessionsFragmentArgs
-        ): BottomSheetDaySessionsFragment {
-            return BottomSheetDaySessionsFragment().apply {
+            args: BottomSheetSessionsFragmentArgs
+        ): BottomSheetSessionsFragment {
+            return BottomSheetSessionsFragment().apply {
                 arguments = args.toBundle()
             }
         }
@@ -152,16 +185,16 @@ class BottomSheetDaySessionsFragment : DaggerFragment() {
 }
 
 @Module
-abstract class BottomSheetDaySessionsFragmentModule {
+abstract class BottomSheetSessionsFragmentModule {
     @Module
     companion object {
         @PageScope
         @JvmStatic
         @Provides
         fun providesLifecycleOwnerLiveData(
-            mainBottomSheetDaySessionsFragment: BottomSheetDaySessionsFragment
+            mainBottomSheetSessionsFragment: BottomSheetSessionsFragment
         ): LiveData<LifecycleOwner> {
-            return mainBottomSheetDaySessionsFragment.viewLifecycleOwnerLiveData
+            return mainBottomSheetSessionsFragment.viewLifecycleOwnerLiveData
         }
     }
 }

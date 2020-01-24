@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/deeplink_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deeplink_title"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/deeplink_fix_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="https://droidkaigi.jp/2020/announcement"
+        app:layout_constraintBottom_toBottomOf="@id/deeplink_fix_button"
+        app:layout_constraintEnd_toStartOf="@id/deeplink_fix_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/deeplink_fix_button" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/deeplink_fix_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/deeplink_action_publish"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/deeplink_title" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/deeplink_or"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deeplink_text_or"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/deeplink_fix_button" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/deeplink_free_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/deeplink_free_button"
+        app:layout_constraintEnd_toStartOf="@id/deeplink_free_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/deeplink_free_button" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/deeplink_free_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/deeplink_action_publish"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/deeplink_or" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,7 +18,8 @@ import timber.log.Timber
 import timber.log.debug
 
 @Navigator.Name("chrome")
-class ChromeCustomTabsNavigator(private val context: Context) : Navigator<ChromeCustomTabsNavigator.Destination>() {
+class ChromeCustomTabsNavigator(private val context: Context) :
+    Navigator<ChromeCustomTabsNavigator.Destination>() {
 
     override fun createDestination() = Destination(this)
 

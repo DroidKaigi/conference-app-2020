@@ -123,6 +123,7 @@ dependencies {
     }
     debugImplementation Dep.Stetho.stetho
     debugImplementation Dep.LeakCanary.leakCanary
+    kapt Dep.Google.autoservice
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -44,6 +44,12 @@ allprojects {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url "https://dl.bintray.com/kotlin/ktor" }
         maven { url "https://dl.bintray.com/kotlin/kotlinx" }
+        maven {
+            url "https://jitpack.io"
+            content {
+                excludeGroup("Kotlin/Native")
+            }
+        }
     }
     plugins.whenPluginAdded {
         if (it.isAndroidApp() || it.isAndroidLibrary() || it.isDynamicFeature()) {
@@ -64,12 +70,9 @@ allprojects {
             task ktlint(type: JavaExec, group: "verification") {
                 def parameters = [
                         "--android",
-                        "--reporter=checkstyle,output=${buildDir}/ktlint/checkstyle.xml"
+                        "--reporter=checkstyle,output=${buildDir}/ktlint/checkstyle.xml",
+                        "--reporter=html,output=${buildDir}/ktlint/checkstyle.html"
                 ]
-
-                if (!isCi) {
-                    parameters += "--reporter=html,output=${buildDir}/ktlint/checkstyle.html"
-                }
 
                 parameters += ['src/**/*.kt', '**/*.gradle.kts']
 

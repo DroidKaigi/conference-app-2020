@@ -12,7 +12,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -49,7 +48,7 @@ class SessionsFragment : DaggerFragment() {
     private var binding: FragmentSessionsBinding by autoCleared()
     private lateinit var overrideBackPressedCallback: OnBackPressedCallback
 
-    private val sessionSheetBehavior: BottomSheetBehavior<*>
+    private val sessionSheetBehavior: BottomSheetBehavior<View>
         get() {
             val layoutParams = binding.sessionsSheet.layoutParams as CoordinatorLayout.LayoutParams
             val behavior = layoutParams.behavior
@@ -114,32 +113,46 @@ class SessionsFragment : DaggerFragment() {
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight =
                 insets.systemWindowInsetBottom + initialPeekHeight + gestureNavigationBottomSpace
+            // This block is the workaround to bottomSheetBehavior bug fix.
+            // https://stackoverflow.com/questions/35685681/dynamically-change-height-of-bottomsheetbehavior
+            if (sessionSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
+                sessionSheetBehavior.onLayoutChild(
+                    binding.fragmentSessionsCoordinator,
+                    binding.sessionsSheet,
+                    View.LAYOUT_DIRECTION_LTR
+                )
         }
-        binding.fragmentSessionsScrollView.doOnApplyWindowInsets { scrollView, insets, initialState ->
+        binding.fragmentSessionsScrollView.doOnApplyWindowInsets { scrollView,
+            insets,
+            initialState ->
             // Set a bottom padding due to the system UI is enabled.
-            scrollView.updatePadding(bottom = insets.systemWindowInsetBottom + initialPeekHeight + initialState.paddings.bottom)
+            scrollView.updatePadding(
+                bottom = insets.systemWindowInsetBottom +
+                    initialPeekHeight +
+                    initialState.paddings.bottom
+            )
         }
         sessionSheetBehavior.addBottomSheetCallback(object :
-                BottomSheetBehavior.BottomSheetCallback() {
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                }
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
 
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    sessionTabViewModel.setExpand(
-                        when (newState) {
-                            BottomSheetBehavior.STATE_COLLAPSED -> {
-                                ExpandFilterState.COLLAPSED
-                            }
-                            BottomSheetBehavior.STATE_EXPANDED -> {
-                                ExpandFilterState.EXPANDED
-                            }
-                            else -> {
-                                ExpandFilterState.CHANGING
-                            }
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                sessionTabViewModel.setExpand(
+                    when (newState) {
+                        BottomSheetBehavior.STATE_COLLAPSED -> {
+                            ExpandFilterState.COLLAPSED
                         }
-                    )
-                }
-            })
+                        BottomSheetBehavior.STATE_EXPANDED -> {
+                            ExpandFilterState.EXPANDED
+                        }
+                        else -> {
+                            ExpandFilterState.CHANGING
+                        }
+                    }
+                )
+            }
+        })
         binding.filterReset.setOnClickListener {
             sessionsViewModel.resetFilter()
         }
@@ -157,7 +170,7 @@ class SessionsFragment : DaggerFragment() {
                 ExpandFilterState.CHANGING -> Unit
             }
         }
-        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
+        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             binding.roomFilters.setupFilter(
                 allFilterSet = uiModel.allFilters.rooms,
                 currentFilterSet = uiModel.filters.rooms,
@@ -286,16 +299,10 @@ class SessionsFragment : DaggerFragment() {
 
     private fun setupSessionsFragment() {
         val tab = SessionPage.pages[args.tabIndex]
-        val fragment: Fragment = when (tab) {
-            is SessionPage.Day -> {
-                BottomSheetDaySessionsFragment.newInstance(
-                    BottomSheetDaySessionsFragmentArgs(tab.day)
-                )
-            }
-            SessionPage.Favorite -> {
-                BottomSheetFavoriteSessionsFragment.newInstance()
-            }
-        }
+
+        val fragment = BottomSheetSessionsFragment.newInstance(
+            BottomSheetSessionsFragmentArgs(tab)
+        )
 
         childFragmentManager
             .beginTransaction()
@@ -343,12 +350,7 @@ abstract class SessionsFragmentModule {
     @ContributesAndroidInjector(
         modules = [SessionAssistedInjectModule::class]
     )
-    abstract fun contributeBottomSheetDaySessionsFragment(): BottomSheetDaySessionsFragment
-
-    @ContributesAndroidInjector(
-        modules = [SessionAssistedInjectModule::class]
-    )
-    abstract fun contributeBottomSheetFavoriteSessionsFragment(): BottomSheetFavoriteSessionsFragment
+    abstract fun contributeBottomSheetSessionsFragment(): BottomSheetSessionsFragment
 
     @Module
     companion object {

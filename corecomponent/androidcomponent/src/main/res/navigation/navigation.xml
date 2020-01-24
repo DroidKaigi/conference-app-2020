@@ -63,20 +63,15 @@
             />
     </fragment>
     <fragment
-        android:id="@+id/bottom_session_day"
-        android:name="io.github.droidkaigi.confsched2020.session.ui.BottomSheetDaySessionsFragment"
+        android:id="@+id/bottom_session"
+        android:name="io.github.droidkaigi.confsched2020.session.ui.BottomSheetSessionsFragment"
         android:label="@string/session_label"
         >
         <argument
-            android:name="day"
-            app:argType="integer"
+            android:name="page"
+            app:argType="io.github.droidkaigi.confsched2020.model.SessionPage"
             />
     </fragment>
-    <fragment
-        android:id="@+id/bottom_session_favorite"
-        android:name="io.github.droidkaigi.confsched2020.session.ui.BottomSheetFavoriteSessionsFragment"
-        android:label="@string/session_label"
-        />
     <fragment
         android:id="@+id/session_detail"
         android:name="io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragment"
@@ -163,7 +158,22 @@
         android:id="@+id/contributor"
         android:name="io.github.droidkaigi.confsched2020.contributor.ui.ContributorsFragment"
         android:label="@string/contributor_label"
-        />
+        >
+
+        <action
+            android:id="@+id/action_contributors_to_chrome"
+            app:destination="@id/chrome"
+            >
+
+            <argument
+                android:name="url"
+                app:argType="string"
+                app:nullable="false"
+                />
+
+        </action>
+
+    </fragment>
     <fragment
         android:id="@+id/announcement"
         android:name="io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment"

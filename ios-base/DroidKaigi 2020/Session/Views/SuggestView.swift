@@ -1,7 +1,6 @@
 import UIKit
 
 final class SuggestView: UIView {
-
     @IBOutlet weak var bookmarkImage: UIImageView! {
         didSet {
             bookmarkImage.image = bookmarkImage.image?.withRenderingMode(.alwaysTemplate)
@@ -12,15 +11,15 @@ final class SuggestView: UIView {
         super.init(frame: .zero)
         loadFromBundle()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         loadFromBundle()
     }
-    
+
     private func loadFromBundle() {
         let view = Bundle.main.loadNibNamed("SuggestView", owner: self, options: nil)!.first as! UIView
-        self.addSubview(view)
+        addSubview(view)
 
         view.translatesAutoresizingMaskIntoConstraints = false
         view.topAnchor.constraint(equalTo: topAnchor).isActive = true
