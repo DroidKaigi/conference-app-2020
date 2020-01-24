@@ -10,15 +10,24 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import com.dropbox.android.external.store4.MemoryPolicy
+import com.dropbox.android.external.store4.Store
+import com.dropbox.android.external.store4.StoreBuilder
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Component
 import dagger.Module
 import dagger.Provides
 import io.github.droidkaigi.confsched2020.App
+import io.github.droidkaigi.confsched2020.data.api.DroidKaigiApi
+import io.github.droidkaigi.confsched2020.data.api.response.StaffResponse
+import io.github.droidkaigi.confsched2020.data.db.StaffDatabase
+import io.github.droidkaigi.confsched2020.data.db.entity.StaffEntity
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.model.Staff
+import io.github.droidkaigi.confsched2020.model.StaffContents
 import io.github.droidkaigi.confsched2020.staff.R
 import io.github.droidkaigi.confsched2020.staff.databinding.FragmentStaffsBinding
 import io.github.droidkaigi.confsched2020.staff.ui.di.StaffAssistedInjectModule
@@ -28,8 +37,11 @@ import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import io.github.droidkaigi.confsched2020.util.autoCleared
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Provider
+import javax.inject.Singleton
 
 class StaffsFragment : Fragment() {
 
@@ -105,6 +117,29 @@ class StaffModule(private val fragment: StaffsFragment) {
     fun providesLifecycleOwnerLiveData(): LiveData<LifecycleOwner> {
         return fragment.viewLifecycleOwnerLiveData
     }
+
+    @FlowPreview
+    @Provides
+    fun provideStaffsContentsStore(
+        api: DroidKaigiApi,
+        staffDatabase: StaffDatabase
+    ): Store<Unit, StaffContents> {
+        return StoreBuilder.fromNonFlow<Unit, StaffResponse> { api.getStaffs() }
+            .persister(
+                reader = { readFromLocal(staffDatabase) },
+                writer = { _: Unit, output: StaffResponse -> staffDatabase.save(output) }
+            )
+            .cachePolicy(MemoryPolicy.builder().build())
+            .build()
+    }
+
+    private fun readFromLocal(staffDatabase: StaffDatabase): Flow<StaffContents> {
+        return staffDatabase
+            .staffs()
+            .map { StaffContents(it.map { staffEntity -> staffEntity.toStaff() }) }
+    }
+
+    private fun StaffEntity.toStaff(): Staff = Staff(id, name, iconUrl, profileUrl)
 }
 
 @PageScope

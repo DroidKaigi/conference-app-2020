@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.dropbox.android.external.store4.MemoryPolicy
+import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
 import com.dropbox.android.external.store4.StoreRequest
 import com.dropbox.android.external.store4.StoreResponse
@@ -23,8 +24,7 @@ import javax.inject.Inject
 
 @FlowPreview
 class StaffsViewModel @Inject constructor(
-    private val api: DroidKaigiApi,
-    private val staffDatabase: StaffDatabase
+    store: Store<Unit, StaffContents>
 ) : ViewModel() {
 
     data class UiModel(
@@ -37,16 +37,8 @@ class StaffsViewModel @Inject constructor(
         }
     }
 
-    private val store = StoreBuilder.fromNonFlow<String, StaffResponse> { api.getStaffs() }
-        .persister(
-            reader = { readFromLocal(staffDatabase) },
-            writer = { _: String, output: StaffResponse -> staffDatabase.save(output) }
-        )
-        .cachePolicy(MemoryPolicy.builder().build())
-        .build()
-
     private val staffContentsLoadState: LiveData<StoreResponse<StaffContents>> =
-        store.stream(StoreRequest.cached(key = "", refresh = true)).asLiveData()
+        store.stream(StoreRequest.cached(key = Unit, refresh = true)).asLiveData()
 
     val uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
@@ -66,12 +58,4 @@ class StaffsViewModel @Inject constructor(
             staffContents = staffContents
         )
     }
-
-    private fun readFromLocal(staffDatabase: StaffDatabase): Flow<StaffContents> {
-        return staffDatabase
-            .staffs()
-            .map { StaffContents(it.map { staffEntity -> staffEntity.toStaff() }) }
-    }
-
-    private fun StaffEntity.toStaff(): Staff = Staff(id, name, iconUrl, profileUrl)
 }

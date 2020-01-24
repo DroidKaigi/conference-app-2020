@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Singleton
 
 @Module
-object RepositoryComponentModule {
+class RepositoryComponentModule {
     @Provides @Singleton
     fun provideRepository(
         repositoryComponent: RepositoryComponent
@@ -65,28 +65,6 @@ object RepositoryComponentModule {
     ): ContributorRepository {
         return repositoryComponent.contributorRepository()
     }
-
-    @FlowPreview
-    @Provides @Singleton
-    fun provideStaffsContentsStore(
-        api: DroidKaigiApi,
-        staffDatabase: StaffDatabase): Store<Unit, StaffContents> {
-        return StoreBuilder.fromNonFlow<Unit, StaffResponse> { api.getStaffs() }
-            .persister(
-                reader = { readFromLocal(staffDatabase) },
-                writer = { _: Unit, output: StaffResponse -> staffDatabase.save(output) }
-            )
-            .cachePolicy(MemoryPolicy.builder().build())
-            .build()
-    }
-
-    private fun readFromLocal(staffDatabase: StaffDatabase): Flow<StaffContents> {
-        return staffDatabase
-            .staffs()
-            .map { StaffContents(it.map { staffEntity -> staffEntity.toStaff() }) }
-    }
-
-    private fun StaffEntity.toStaff(): Staff = Staff(id, name, iconUrl, profileUrl)
 
     @Provides @Singleton
     fun provideRepositoryComponent(
