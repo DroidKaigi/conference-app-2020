@@ -29,6 +29,7 @@ class SystemViewModel @Inject constructor() : ViewModel() {
             .setData(CalendarContract.Events.CONTENT_URI)
             .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startDateTime.unixMillisLong)
             .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDateTime.unixMillisLong)
+            .putExtra(CalendarContract.Events.TITLE, "[$location] $title")
             .putExtra(CalendarContract.Events.EVENT_LOCATION, location)
         context.startActivity(intent)
     }
