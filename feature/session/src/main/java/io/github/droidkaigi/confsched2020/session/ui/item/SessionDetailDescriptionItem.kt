@@ -26,7 +26,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailD
 class SessionDetailDescriptionItem @AssistedInject constructor(
     @Assisted private val session: Session,
     @Assisted private val isShowFullText: Boolean,
-    @Assisted onShowFullText: () -> Unit
+    @Assisted private val onShowFullText: () -> Unit
 ) :
     BindableItem<ItemSessionDetailDescriptionBinding>() {
 
