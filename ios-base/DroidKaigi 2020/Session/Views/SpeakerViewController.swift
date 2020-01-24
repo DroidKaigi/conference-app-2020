@@ -10,6 +10,8 @@ final class SpeakerViewController: UIViewController {
         }
     }
     @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var tagLabel: UILabel!
+    @IBOutlet weak var biographyLabel: UILabel!
 
     private var speaker: Speaker!
 
@@ -40,5 +42,7 @@ final class SpeakerViewController: UIViewController {
             userImageView.loadImage(url: URL(string: imageUrl))
         }
         userNameLabel.text = speaker.name
+        tagLabel.text = speaker.tagLine
+        biographyLabel.text = speaker.bio
     }
 }
