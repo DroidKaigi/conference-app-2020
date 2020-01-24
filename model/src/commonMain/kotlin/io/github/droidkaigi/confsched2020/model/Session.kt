@@ -14,7 +14,7 @@ sealed class Session(
     open val room: Room,
     open val isFavorited: Boolean
 ) {
-    val startDayText by lazy { startTime.toOffset(defaultTimeZoneOffset()).format("yyyy.M.d") }
+    val startDayText by lazy { startTime.toOffset(defaultTimeZoneOffset()).format("M/d") }
 
     val startTimeText by lazy { startTime.toOffset(defaultTimeZoneOffset()).format("HH:mm") }
 
