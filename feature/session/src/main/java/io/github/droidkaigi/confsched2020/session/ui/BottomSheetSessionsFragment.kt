@@ -161,8 +161,9 @@ class BottomSheetSessionsFragment : DaggerFragment() {
                 systemViewModel.onError(it)
             }
 
-            uiModel.shouldScrollSessionPosition?.let { (day, position) ->
-                if (day == page) {
+            uiModel.shouldScrollSessionPosition.let { map ->
+                val position = map[page]
+                if (position != null) {
                     binding.sessionRecycler.smoothScrollToPositionWithLayoutManager(position)
                     sessionsViewModel.onScrolled()
                 }

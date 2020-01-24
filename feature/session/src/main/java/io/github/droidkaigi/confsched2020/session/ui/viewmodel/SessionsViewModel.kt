@@ -21,12 +21,13 @@ import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Room
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
+import io.github.droidkaigi.confsched2020.model.SessionList
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
-import javax.inject.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.debug
+import javax.inject.Inject
 
 class SessionsViewModel @Inject constructor(
     private val sessionRepository: SessionRepository
@@ -35,14 +36,14 @@ class SessionsViewModel @Inject constructor(
     data class UiModel(
         val isLoading: Boolean,
         val error: AppError?,
-        val dayToSessionsMap: Map<SessionPage.Day, List<Session>>,
-        val shouldScrollSessionPosition: Pair<SessionPage.Day, Int>?,
-        val favoritedSessions: List<Session>,
+        val dayToSessionsMap: Map<SessionPage.Day, SessionList>,
+        val shouldScrollSessionPosition: Map<SessionPage, Int>,
+        val favoritedSessions: SessionList,
         val filters: Filters,
         val allFilters: Filters
     ) {
         companion object {
-            val EMPTY = UiModel(true, null, mapOf(), null, listOf(), Filters(), Filters())
+            val EMPTY = UiModel(true, null, mapOf(), mapOf(), SessionList.EMPTY, Filters(), Filters())
         }
     }
 
@@ -83,25 +84,11 @@ class SessionsViewModel @Inject constructor(
         val isLoading = sessionsLoadState.isLoading || favoriteState.isLoading
         val sessionContents = sessionsLoadState.getValueOrNull() ?: SessionContents.EMPTY
 
-        val filteredSessions = sessionContents
-            .sessions
-            .filter { filters.isPass(it) }
-        val dayToSessionMap = filteredSessions
-            .groupBy { it.dayNumber }
-        val shouldScrollSessionPosition = if (shouldScroll) {
-            dayToSessionMap.asSequence()
-                .mapNotNull { (day, sessions) ->
-                    val index = sessions.indexOfLast { it.isFinished }
-                    if (index == -1) {
-                        null
-                    } else {
-                        SessionPage.dayOfNumber(day) to index
-                    }
-                }
-                .firstOrNull()
-        } else {
-            null
-        }
+        val sessions = sessionContents.sessions
+        val filteredSessions = sessions.filtered(filters)
+        val dayToSessionMap = filteredSessions.dayToSessionMap
+        val shouldScrollSessionPosition = filteredSessions.toPageToScrollPositionMap()
+
         UiModel(
             isLoading = isLoading,
             error = sessionsLoadState
@@ -109,15 +96,9 @@ class SessionsViewModel @Inject constructor(
                 .toAppError() ?: favoriteState
                 .getErrorIfExists()
                 .toAppError(),
-            dayToSessionsMap = dayToSessionMap
-                .mapKeys {
-                    SessionPage.dayOfNumber(
-                        it.key
-                    )
-                },
+            dayToSessionsMap = dayToSessionMap,
             shouldScrollSessionPosition = shouldScrollSessionPosition,
-            favoritedSessions = filteredSessions
-                .filter { it.isFavorited },
+            favoritedSessions = filteredSessions.favorited,
             filters = filters,
             allFilters = Filters(
                 rooms = sessionContents.rooms.toSet(),

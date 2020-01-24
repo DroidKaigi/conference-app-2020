@@ -9,6 +9,7 @@ import io.github.droidkaigi.confsched2020.model.LangSupport
 import io.github.droidkaigi.confsched2020.model.LocaledString
 import io.github.droidkaigi.confsched2020.model.Room
 import io.github.droidkaigi.confsched2020.model.Session
+import io.github.droidkaigi.confsched2020.model.SessionList
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.widget.component.MockkRule
@@ -41,14 +42,16 @@ class SessionsViewModelTest {
             isLoading shouldBe false
             error shouldBe null
             dayToSessionsMap shouldBe mapOf(
-                SessionPage.dayOfNumber(1) to listOf<Session>(
-                    Dummies.serviceSession,
-                    Dummies.speachSession1
+                SessionPage.dayOfNumber(1) to SessionList(
+                    listOf(
+                        Dummies.serviceSession,
+                        Dummies.speachSession1
+                    )
                 )
             )
-            favoritedSessions shouldBe listOf<Session>(
+            favoritedSessions shouldBe SessionList(listOf<Session>(
                 Dummies.serviceSession
-            )
+            ))
             filters shouldBe Filters()
             allFilters shouldBe Filters(
                 rooms = Dummies.sessionContents.rooms.toSet(),
@@ -92,8 +95,10 @@ class SessionsViewModelTest {
         valueHistory[1].apply {
             isLoading shouldBe false
             error shouldBe null
-            favoritedSessions shouldBe listOf<Session>(
-                Dummies.serviceSession
+            favoritedSessions shouldBe SessionList(
+                listOf<Session>(
+                    Dummies.serviceSession
+                )
             )
             dayToSessionsMap shouldBe dayToSessionsMap
             filters shouldBe filters
@@ -102,9 +107,9 @@ class SessionsViewModelTest {
         valueHistory[2].apply {
             isLoading shouldBe true
             error shouldBe null
-            favoritedSessions shouldBe listOf<Session>(
+            favoritedSessions shouldBe SessionList(listOf<Session>(
                 Dummies.serviceSession
-            )
+            ))
             dayToSessionsMap shouldBe dayToSessionsMap
             filters shouldBe filters
             allFilters shouldBe allFilters
@@ -112,9 +117,9 @@ class SessionsViewModelTest {
         valueHistory[3].apply {
             isLoading shouldBe false
             error shouldBe null
-            favoritedSessions shouldBe listOf<Session>(
+            favoritedSessions shouldBe SessionList(listOf<Session>(
                 Dummies.serviceSession
-            )
+            ))
             dayToSessionsMap shouldBe dayToSessionsMap
             filters shouldBe filters
             allFilters shouldBe allFilters
@@ -122,9 +127,9 @@ class SessionsViewModelTest {
         valueHistory[4].apply {
             isLoading shouldBe true
             error shouldBe null
-            favoritedSessions shouldBe listOf<Session>(
+            favoritedSessions shouldBe SessionList(listOf<Session>(
                 Dummies.serviceSession
-            )
+            ))
             dayToSessionsMap shouldBe dayToSessionsMap
             filters shouldBe filters
             allFilters shouldBe allFilters
@@ -132,9 +137,9 @@ class SessionsViewModelTest {
         valueHistory[5].apply {
             isLoading shouldBe false
             error shouldBe null
-            favoritedSessions shouldBe listOf<Session>(
+            favoritedSessions shouldBe SessionList(listOf<Session>(
                 Dummies.serviceSession
-            )
+            ))
             dayToSessionsMap shouldBe dayToSessionsMap
             filters shouldBe filters
             allFilters shouldBe allFilters
@@ -200,6 +205,7 @@ class SessionsViewModelTest {
             filters shouldBe Filters(rooms = setOf(room1))
         }
     }
+
     @Test
     fun filterChanged_category_true() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
