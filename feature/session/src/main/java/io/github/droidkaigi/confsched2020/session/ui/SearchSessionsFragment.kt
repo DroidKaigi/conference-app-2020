@@ -109,29 +109,40 @@ class SearchSessionsFragment : DaggerFragment() {
                     getGroupId = { position ->
                         when (val item = groupAdapter.getItem(position)) {
                             is SpeakerItem -> item.speaker.name[0].toUpperCase().toLong()
-                            is SessionItem -> item.title().getByLang(defaultLang())[0].toUpperCase().toLong()
+                            is SessionItem -> {
+                                val title = item.title().getByLang(defaultLang())
+                                title[0].toUpperCase().toLong()
+                            }
                             else -> SearchItemDecoration.EMPTY_ID
                         }
                     },
                     getInitial = { position ->
                         when (val item = groupAdapter.getItem(position)) {
                             is SpeakerItem -> item.speaker.name[0].toUpperCase().toString()
-                            is SessionItem -> item.title().getByLang(defaultLang())[0].toUpperCase().toString()
+                            is SessionItem -> {
+                                val title = item.title().getByLang(defaultLang())
+                                title[0].toUpperCase().toString()
+                            }
                             else -> SearchItemDecoration.DEFAULT_INITIAL
                         }
                     }
                 )
             )
         }
-        binding.searchSessionRecycler.doOnApplyWindowInsets { searchSessionRecycler, insets, initialState ->
-            searchSessionRecycler.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+        binding.searchSessionRecycler.doOnApplyWindowInsets { searchSessionRecycler,
+            insets,
+            initialState ->
+            searchSessionRecycler.updatePadding(
+                bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+            )
         }
 
-        searchSessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SearchSessionsViewModel.UiModel ->
+        searchSessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             groupAdapter.clear()
 
             if (uiModel.searchResult.speakers.isNotEmpty()) {
-                groupAdapter.add(sectionHeaderItemFactory.create(resources.getString(R.string.speaker)))
+                val title = resources.getString(R.string.speaker)
+                groupAdapter.add(sectionHeaderItemFactory.create(title))
                 groupAdapter.addAll(
                     uiModel.searchResult.speakers.map {
                         speakerItemFactory.create(it)
@@ -142,7 +153,8 @@ class SearchSessionsFragment : DaggerFragment() {
             }
 
             if (uiModel.searchResult.sessions.isNotEmpty()) {
-                groupAdapter.add(sectionHeaderItemFactory.create(resources.getString(R.string.session)))
+                val title = resources.getString(R.string.session)
+                groupAdapter.add(sectionHeaderItemFactory.create(title))
                 groupAdapter.addAll(
                     uiModel.searchResult.sessions.map {
                         sessionItemFactory.create(it, sessionsViewModel)

@@ -1,5 +1,5 @@
-import UIKit
 import MaterialComponents
+import UIKit
 
 final class SessionCell: UICollectionViewCell {
     static let identifier = "SessionCell"
@@ -11,6 +11,7 @@ final class SessionCell: UICollectionViewCell {
             liveBadge.clipsToBounds = true
         }
     }
+
     @IBOutlet weak var bookmarkButton: UIButton! {
         didSet {
             let bookmarkImage = UIImage(named: "ic_bookmark")
@@ -22,6 +23,7 @@ final class SessionCell: UICollectionViewCell {
             bookmarkButton.tintColor = UIColor(hex: "00B5E2")
         }
     }
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var minutesAndRoomLabel: UILabel!
@@ -67,10 +69,10 @@ final class SessionCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        self.speakersStackView.subviews.forEach { subview in
+        speakersStackView.subviews.forEach { subview in
             subview.removeFromSuperview()
         }
-        self.speakersStackView.arrangedSubviews.forEach { subview in
+        speakersStackView.arrangedSubviews.forEach { subview in
             speakersStackView.removeArrangedSubview(subview)
         }
     }

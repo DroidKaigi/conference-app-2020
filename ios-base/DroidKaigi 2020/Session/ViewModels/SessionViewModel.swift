@@ -1,9 +1,8 @@
 import ios_combined
-import RxSwift
 import RxCocoa
+import RxSwift
 
 final class SessionViewModel {
-
     private let disposeBag = DisposeBag()
 
     // input
@@ -26,8 +25,8 @@ final class SessionViewModel {
         let isFocusedOnEmbeddedViewRelay = BehaviorRelay<Bool>(value: true)
         let sessionsRelay = BehaviorRelay<[Session]>(value: [])
 
-        self.isFocusedOnEmbeddedView = isFocusedOnEmbeddedViewRelay.asDriver()
-        self.sessions = sessionsRelay.asDriver()
+        isFocusedOnEmbeddedView = isFocusedOnEmbeddedViewRelay.asDriver()
+        sessions = sessionsRelay.asDriver()
 
         let dataProvider = SessionDataProvider()
 

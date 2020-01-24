@@ -17,6 +17,9 @@ targets:
               name: Build Kotlin Modules
             - path: scripts/lint.sh
               name: "Run Lint"
+        postBuildScripts:
+            - path: scripts/format.sh
+              name: "Run Format"
     DroidKaigi 2020Tests:
         type: bundle.unit-test
         platform: iOS

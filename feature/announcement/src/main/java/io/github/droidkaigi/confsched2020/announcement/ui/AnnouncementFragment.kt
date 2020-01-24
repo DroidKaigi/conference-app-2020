@@ -71,11 +71,14 @@ class AnnouncementFragment : DaggerFragment() {
 
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.announcementRecycler.run {
-            addItemDecoration(AnnouncementItemDecoration(resources.getDimension(R.dimen.announcement_item_offset)))
+            val offset = resources.getDimension(R.dimen.announcement_item_offset)
+            addItemDecoration(AnnouncementItemDecoration(offset))
             adapter = groupAdapter
             doOnApplyWindowInsets { recyclerView, insets, initialState ->
                 // Set a bottom padding due to the system UI is enabled.
-                recyclerView.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+                recyclerView.updatePadding(
+                    bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+                )
             }
         }
 
@@ -89,7 +92,9 @@ class AnnouncementFragment : DaggerFragment() {
             progressTimeLatch.loading = uiModel.isLoading
             binding.emptyMessage.isVisible = uiModel.isEmpty
             groupAdapter.update(
-                uiModel.announcements.map { announcement -> announcementItemFactory.create(announcement) }
+                uiModel.announcements.map { announcement ->
+                    announcementItemFactory.create(announcement)
+                }
             )
             uiModel.error?.let {
                 systemViewModel.onError(it)
