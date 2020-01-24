@@ -33,7 +33,7 @@ class StaffsViewModelTest {
     fun load() {
 
         coEvery { droidKaigiApi.getStaffs() } returns Dummies.staffResponse
-        coEvery { staffDatabase.save(any())}
+        coEvery { staffDatabase.save(any()) }
         coEvery { staffDatabase.staffs() } returns flowOf(listOf(Dummies.staffEntity))
         val store = StoreBuilder.fromNonFlow<Unit, StaffResponse> { droidKaigiApi.getStaffs() }
             .persister(

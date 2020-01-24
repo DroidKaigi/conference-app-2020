@@ -19,7 +19,7 @@ object Dummies {
     )
     val staffResponse = object : StaffResponse {
         override val staffs: List<StaffItemResponse>
-            get() = listOf(object: StaffItemResponse {
+            get() = listOf(object : StaffItemResponse {
                 override val id: String? = staffContents.staffs.first().id
                 override val name: String? = staffContents.staffs.first().name
                 override val iconUrl: String? = staffContents.staffs.first().iconUrl
