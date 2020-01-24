@@ -26,7 +26,7 @@ final class FilterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = ApplicationScheme.shared.colorScheme.surfaceColor
+        view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
         setUpAppBar()
         setUpTabBar()
         setUpContainerView()
@@ -71,12 +71,12 @@ final class FilterViewController: UIViewController {
                                          style: .plain,
                                          target: self,
                                          action: nil)
-        self.navigationItem.leftBarButtonItems = [menuItem, logoItem]
-        self.navigationItem.rightBarButtonItems = [searchItem]
-        self.navigationController?.navigationBar
+        navigationItem.leftBarButtonItems = [menuItem, logoItem]
+        navigationItem.rightBarButtonItems = [searchItem]
+        navigationController?.navigationBar
             .setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.edgesForExtendedLayout = []
+        navigationController?.navigationBar.shadowImage = UIImage()
+        edgesForExtendedLayout = []
     }
 
     private func setUpTabBar() {
