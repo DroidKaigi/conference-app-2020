@@ -124,9 +124,8 @@ class SessionsItemDecoration(
 
         // session time text
         var sessionTimeTextPositionY =
-            (view.top + sessionTimeTextMarginTop.toInt() - sessionTimeTextMarginTopInPx.toInt()).coerceAtLeast(
-                sessionTimeTextMarginTop.toInt()
-            ) +
+            (view.top + sessionTimeTextMarginTop.toInt() - sessionTimeTextMarginTopInPx.toInt())
+                .coerceAtLeast(sessionTimeTextMarginTop.toInt()) +
                     sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
 
         if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
