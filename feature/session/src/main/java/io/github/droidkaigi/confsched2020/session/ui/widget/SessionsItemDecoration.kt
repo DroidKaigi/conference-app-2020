@@ -101,13 +101,18 @@ class SessionsItemDecoration(
                         sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
 
             if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
-                sessionDateTextPositionY = sessionDateTextPositionY.coerceAtMost(view.bottom.toFloat())
+                sessionDateTextPositionY =
+                    sessionDateTextPositionY.coerceAtMost(view.bottom.toFloat())
             }
 
             DateText(
                 value = sessionItem.startSessionDate(),
                 positionX = sessionTimeTextMarginStartInPx,
-                positionY = sessionDateTextPositionY.coerceAtMost(view.bottom.toFloat() - sessionTimeTextMarginTopInPx - sessionTimeTextSizeInPx)
+                positionY = sessionDateTextPositionY.coerceAtMost(
+                    view.bottom.toFloat() -
+                            sessionTimeTextMarginTopInPx -
+                            sessionTimeTextSizeInPx
+                )
             )
         } else null
 
@@ -119,7 +124,9 @@ class SessionsItemDecoration(
 
         // session time text
         var sessionTimeTextPositionY =
-            (view.top + sessionTimeTextMarginTop.toInt() - sessionTimeTextMarginTopInPx.toInt()).coerceAtLeast(sessionTimeTextMarginTop.toInt()) +
+            (view.top + sessionTimeTextMarginTop.toInt() - sessionTimeTextMarginTopInPx.toInt()).coerceAtLeast(
+                sessionTimeTextMarginTop.toInt()
+            ) +
                     sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
 
         if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
