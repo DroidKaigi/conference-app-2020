@@ -1,7 +1,6 @@
 package io.github.droidkaigi.confsched2020.system.ui.viewmodel
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
 import androidx.lifecycle.LiveData
