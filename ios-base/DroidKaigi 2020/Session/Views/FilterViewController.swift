@@ -10,7 +10,6 @@ protocol FilterViewControllerDelegate: AnyObject {
 final class FilterViewController: UIViewController {
     private let disposeBag = DisposeBag()
 
-    private let appBar = MDCAppBar()
     private let tabBar = MDCTabBar()
 
     private var containerView: UIView = {
@@ -46,8 +45,7 @@ final class FilterViewController: UIViewController {
         var embeddedFrame = view.bounds
         var insetHeader = UIEdgeInsets()
         let bottomMargin: CGFloat = 24
-        insetHeader.top = appBar.headerViewController.view.frame.maxY
-            + tabBar.bounds.maxY + bottomMargin
+        insetHeader.top = tabBar.bounds.maxY + bottomMargin
         embeddedFrame = embeddedFrame.inset(by: insetHeader)
 
         if embeddedView == nil {
@@ -73,13 +71,12 @@ final class FilterViewController: UIViewController {
                                          style: .plain,
                                          target: self,
                                          action: nil)
-        navigationItem.leftBarButtonItems = [menuItem, logoItem]
-        navigationItem.rightBarButtonItems = [searchItem]
-
-        addChild(appBar.headerViewController)
-        appBar.addSubviewsToParent()
-        MDCAppBarColorThemer.applySemanticColorScheme(ApplicationScheme.shared.colorScheme, to: appBar)
-        appBar.navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        self.navigationItem.leftBarButtonItems = [menuItem, logoItem]
+        self.navigationItem.rightBarButtonItems = [searchItem]
+        self.navigationController?.navigationBar
+            .setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.edgesForExtendedLayout = []
     }
 
     private func setUpTabBar() {
@@ -97,7 +94,7 @@ final class FilterViewController: UIViewController {
         tabBar.sizeToFit()
         view.addSubview(tabBar)
         tabBar.translatesAutoresizingMaskIntoConstraints = false
-        tabBar.topAnchor.constraint(equalTo: appBar.headerViewController.view.bottomAnchor).isActive = true
+        tabBar.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tabBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tabBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
@@ -108,14 +105,6 @@ final class FilterViewController: UIViewController {
         let viewController = SessionPageViewController(viewModel: viewModel, transitionStyle: .scroll, navigationOrientation: .horizontal)
         viewController.filterViewControllerDelegate = self
         insert(viewController)
-
-        let height = UIScreen.main.bounds.height - 100
-        embeddedViewAnimator.addAnimations { [weak self] in
-            guard let self = self else { return }
-            self.containerView.frame.origin.y = height
-        }
-        embeddedViewAnimator.pausesOnCompletion = true
-        embeddedViewAnimator.isUserInteractionEnabled = true
 
         let panGesture = UIPanGestureRecognizer()
         panGesture.delegate = self
@@ -166,11 +155,11 @@ final class FilterViewController: UIViewController {
             .drive(Binder(self) { me, isFocusedOnEmbeddedView in
                 if isFocusedOnEmbeddedView {
                     UIView.animate(withDuration: 0.2) {
-                        me.containerView.frame.origin.y = 148
+                        me.containerView.frame.origin.y = me.view.frame.height - (me.embeddedView?.frame.height)!
                     }
                 } else {
                     UIView.animate(withDuration: 0.2) {
-                        me.containerView.frame.origin.y = UIScreen.main.bounds.height - 100
+                        me.containerView.frame.origin.y = me.view.frame.height - 100
                     }
                 }
             }).disposed(by: disposeBag)

@@ -1,4 +1,3 @@
-import MaterialComponents.MaterialAppBar
 import UIKit
 
 @available(iOS 13.0, *)
@@ -11,7 +10,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = FilterViewController()
+
+        UINavigationBar.appearance().tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
+        UINavigationBar.appearance().backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
+        let vc = FilterViewController()
+        let nvc = UINavigationController(rootViewController: vc)
+        nvc.view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
+        window.rootViewController = nvc
         self.window = window
         self.window?.makeKeyAndVisible()
     }
