@@ -18,7 +18,8 @@ data class SessionList(private val sessions: List<Session>) : List<Session> by s
     val currentSessionIndex by lazy {
         val lastFinished = indexOfLast { it.isFinished }
         if (size - 1 == lastFinished) {
-            lastFinished
+            // if it is last we don't use it
+            -1
         } else {
             lastFinished + 1
         }
