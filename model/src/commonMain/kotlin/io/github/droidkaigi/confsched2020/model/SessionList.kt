@@ -2,8 +2,7 @@ package io.github.droidkaigi.confsched2020.model
 
 data class SessionList(private val sessions: List<Session>) : List<Session> by sessions {
     val dayToSessionMap: Map<SessionPage.Day, SessionList> by lazy {
-        sessions
-            .groupBy { it.dayNumber }
+        groupBy { it.dayNumber }
             .mapKeys {
                 SessionPage.dayOfNumber(
                     it.key
@@ -13,11 +12,11 @@ data class SessionList(private val sessions: List<Session>) : List<Session> by s
     }
 
     val favorited: SessionList by lazy {
-        SessionList(sessions.filter { it.isFavorited })
+        SessionList(filter { it.isFavorited })
     }
 
     val currentSessionIndex by lazy {
-        val lastFinished = sessions.indexOfLast { it.isFinished }
+        val lastFinished = indexOfLast { it.isFinished }
         if (size - 1 == lastFinished) {
             lastFinished
         } else {
@@ -26,8 +25,7 @@ data class SessionList(private val sessions: List<Session>) : List<Session> by s
     }
 
     fun filtered(filters: Filters): SessionList {
-        return SessionList(sessions
-            .filter { filters.isPass(it) })
+        return SessionList(filter { filters.isPass(it) })
     }
 
     fun toPageToScrollPositionMap(): Map<SessionPage, Int> {
