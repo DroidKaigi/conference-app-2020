@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -110,6 +111,15 @@ class StaffsFragment : Fragment() {
     }
 }
 
+@VisibleForTesting
+fun readFromLocal(staffDatabase: StaffDatabase): Flow<StaffContents> {
+    return staffDatabase
+        .staffs()
+        .map { StaffContents(it.map { staffEntity -> staffEntity.toStaff() }) }
+}
+
+private fun StaffEntity.toStaff(): Staff = Staff(id, name, iconUrl, profileUrl)
+
 @Module
 class StaffModule(private val fragment: StaffsFragment) {
     @PageScope
@@ -132,14 +142,6 @@ class StaffModule(private val fragment: StaffsFragment) {
             .cachePolicy(MemoryPolicy.builder().build())
             .build()
     }
-
-    private fun readFromLocal(staffDatabase: StaffDatabase): Flow<StaffContents> {
-        return staffDatabase
-            .staffs()
-            .map { StaffContents(it.map { staffEntity -> staffEntity.toStaff() }) }
-    }
-
-    private fun StaffEntity.toStaff(): Staff = Staff(id, name, iconUrl, profileUrl)
 }
 
 @PageScope
