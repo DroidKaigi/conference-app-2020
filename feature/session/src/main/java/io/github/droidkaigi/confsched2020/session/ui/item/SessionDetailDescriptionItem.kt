@@ -11,6 +11,8 @@ import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import androidx.core.text.inSpans
 import androidx.core.view.doOnPreDraw
+import androidx.transition.AutoTransition
+import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -22,7 +24,9 @@ import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailDescriptionBinding
 
 class SessionDetailDescriptionItem @AssistedInject constructor(
-    @Assisted private val session: Session
+    @Assisted private val session: Session,
+    @Assisted private val isShowFullText: Boolean,
+    @Assisted onShowFullText: () -> Unit
 ) :
     BindableItem<ItemSessionDetailDescriptionBinding>() {
 
@@ -31,6 +35,28 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
     }
 
     private var showEllipsis = true
+
+    private val transition = AutoTransition()
+
+    init {
+        transition.addListener(object : Transition.TransitionListener {
+            override fun onTransitionEnd(transition: Transition) {
+                onShowFullText()
+            }
+
+            override fun onTransitionResume(transition: Transition) {
+            }
+
+            override fun onTransitionPause(transition: Transition) {
+            }
+
+            override fun onTransitionCancel(transition: Transition) {
+            }
+
+            override fun onTransitionStart(transition: Transition) {
+            }
+        })
+    }
 
     override fun getLayout() = R.layout.item_session_detail_description
 
@@ -42,7 +68,8 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
         textView.doOnPreDraw {
             textView.text = fullDescription
             // Return here if not more than the specified number of rows
-            if (!(textView.lineCount > ELLIPSIS_LINE_COUNT && showEllipsis)) return@doOnPreDraw
+            if (textView.lineCount <= ELLIPSIS_LINE_COUNT || !showEllipsis || isShowFullText)
+                return@doOnPreDraw
             val lastLineStartPosition = textView.layout.getLineStart(ELLIPSIS_LINE_COUNT - 1)
             val context = textView.context
             val ellipsis = context.getString(R.string.ellipsis_label)
@@ -54,7 +81,7 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
             )
             val ellipsisColor = context.getThemeColor(R.attr.colorSecondary)
             val onClickListener = {
-                TransitionManager.beginDelayedTransition(binding.itemRoot)
+                TransitionManager.beginDelayedTransition(binding.itemRoot, transition)
                 textView.text = fullDescription
                 showEllipsis = !showEllipsis
             }
@@ -96,7 +123,9 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            session: Session
+            session: Session,
+            isShowFullText: Boolean,
+            onShowFullText: () -> Unit
         ): SessionDetailDescriptionItem
     }
 }
