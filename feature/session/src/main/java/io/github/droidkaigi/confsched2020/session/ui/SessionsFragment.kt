@@ -12,7 +12,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -48,7 +48,7 @@ class SessionsFragment : DaggerFragment() {
     private var binding: FragmentSessionsBinding by autoCleared()
     private lateinit var overrideBackPressedCallback: OnBackPressedCallback
 
-    private val sessionSheetBehavior: BottomSheetBehavior<*>
+    private val sessionSheetBehavior: BottomSheetBehavior<View>
         get() {
             val layoutParams = binding.sessionsSheet.layoutParams as CoordinatorLayout.LayoutParams
             val behavior = layoutParams.behavior
@@ -113,10 +113,24 @@ class SessionsFragment : DaggerFragment() {
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight =
                 insets.systemWindowInsetBottom + initialPeekHeight + gestureNavigationBottomSpace
+            // This block is the workaround to bottomSheetBehavior bug fix.
+            // https://stackoverflow.com/questions/35685681/dynamically-change-height-of-bottomsheetbehavior
+            if (sessionSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
+                sessionSheetBehavior.onLayoutChild(
+                    binding.fragmentSessionsCoordinator,
+                    binding.sessionsSheet,
+                    View.LAYOUT_DIRECTION_LTR
+                )
         }
-        binding.fragmentSessionsScrollView.doOnApplyWindowInsets { scrollView, insets, initialState ->
+        binding.fragmentSessionsScrollView.doOnApplyWindowInsets { scrollView,
+            insets,
+            initialState ->
             // Set a bottom padding due to the system UI is enabled.
-            scrollView.updatePadding(bottom = insets.systemWindowInsetBottom + initialPeekHeight + initialState.paddings.bottom)
+            scrollView.updatePadding(
+                bottom = insets.systemWindowInsetBottom +
+                    initialPeekHeight +
+                    initialState.paddings.bottom
+            )
         }
         sessionSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
@@ -156,7 +170,7 @@ class SessionsFragment : DaggerFragment() {
                 ExpandFilterState.CHANGING -> Unit
             }
         }
-        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
+        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             binding.roomFilters.setupFilter(
                 allFilterSet = uiModel.allFilters.rooms,
                 currentFilterSet = uiModel.filters.rooms,
@@ -191,6 +205,22 @@ class SessionsFragment : DaggerFragment() {
                 filterName = { it.name }
             ) { checked, level ->
                 sessionsViewModel.filterChanged(level, checked)
+            }
+
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+                // This block is the workaround to fix issue #118 only for Android 5.
+                // See: https://github.com/DroidKaigi/conference-app-2020/issues/118
+                fun fragmentContainerView(view: View): FragmentContainerView? {
+                    var parent = view.parent
+                    while (parent != null && parent !is FragmentContainerView) {
+                        parent = parent.parent
+                    }
+                    return parent as? FragmentContainerView
+                }
+
+                // On Android 5, performing layout views containing ChipGroup is not invoked after binding construction.
+                // So, we have to request layout explicitly for FragmentContainerView (or the view placed upside of it).
+                fragmentContainerView(binding.root)?.requestLayout()
             }
         }
     }
@@ -269,16 +299,10 @@ class SessionsFragment : DaggerFragment() {
 
     private fun setupSessionsFragment() {
         val tab = SessionPage.pages[args.tabIndex]
-        val fragment: Fragment = when (tab) {
-            is SessionPage.Day -> {
-                BottomSheetDaySessionsFragment.newInstance(
-                    BottomSheetDaySessionsFragmentArgs(tab.day)
-                )
-            }
-            SessionPage.Favorite -> {
-                BottomSheetFavoriteSessionsFragment.newInstance()
-            }
-        }
+
+        val fragment = BottomSheetSessionsFragment.newInstance(
+            BottomSheetSessionsFragmentArgs(tab)
+        )
 
         childFragmentManager
             .beginTransaction()
@@ -326,12 +350,7 @@ abstract class SessionsFragmentModule {
     @ContributesAndroidInjector(
         modules = [SessionAssistedInjectModule::class]
     )
-    abstract fun contributeBottomSheetDaySessionsFragment(): BottomSheetDaySessionsFragment
-
-    @ContributesAndroidInjector(
-        modules = [SessionAssistedInjectModule::class]
-    )
-    abstract fun contributeBottomSheetFavoriteSessionsFragment(): BottomSheetFavoriteSessionsFragment
+    abstract fun contributeBottomSheetSessionsFragment(): BottomSheetSessionsFragment
 
     @Module
     companion object {
