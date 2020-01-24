@@ -86,6 +86,17 @@ class SessionsItemDecoration(
         )
     }
 
+    private data class StartDateTimeText(
+        val dateText: DateText?,
+        val startTimeText: StartTimeText
+    )
+
+    private data class DateText(
+        val value: String,
+        val positionX: Float,
+        val positionY: Float
+    )
+
     private data class StartTimeText(
         val value: String,
         val positionX: Float,
