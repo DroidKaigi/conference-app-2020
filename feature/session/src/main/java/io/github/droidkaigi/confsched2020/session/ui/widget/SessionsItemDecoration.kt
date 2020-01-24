@@ -15,7 +15,8 @@ import io.github.droidkaigi.confsched2020.util.AndroidRAttr
 
 class SessionsItemDecoration(
     private val adapter: GroupAdapter<*>,
-    private val context: Context
+    private val context: Context,
+    private val isShowDate: Boolean
 ) : RecyclerView.ItemDecoration() {
 
     private val res: Resources = context.resources

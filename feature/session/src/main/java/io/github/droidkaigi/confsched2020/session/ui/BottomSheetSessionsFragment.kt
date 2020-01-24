@@ -83,7 +83,8 @@ class BottomSheetSessionsFragment : DaggerFragment() {
         binding.sessionRecycler.addItemDecoration(
             SessionsItemDecoration(
                 groupAdapter,
-                requireContext()
+                requireContext(),
+                args.page == SessionPage.Favorite
             )
         )
         binding.sessionRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
