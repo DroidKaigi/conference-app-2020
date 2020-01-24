@@ -12,7 +12,6 @@ import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.updatePadding
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -37,14 +36,11 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.session.ui.widget.SearchItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.AppcompatRId
-import io.github.droidkaigi.confsched2020.util.autoCleared
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Provider
 
 class SearchSessionsFragment : DaggerFragment() {
-
-    private var binding: FragmentSearchSessionsBinding by autoCleared()
 
     @Inject lateinit var searchSessionsModelFactory: SearchSessionsViewModel.Factory
     private val searchSessionsViewModel by assistedViewModels {
@@ -80,13 +76,11 @@ class SearchSessionsFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
+        return inflater.inflate(
             R.layout.fragment_search_sessions,
             container,
             false
         )
-        return binding.root
     }
 
     override fun onDestroyView() {
@@ -100,6 +94,7 @@ class SearchSessionsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentSearchSessionsBinding.bind(view)
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.searchSessionRecycler.adapter = groupAdapter
         context?.let {
