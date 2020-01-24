@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="ShapeAppearanceOverlay.DroidKaigi.BottomSheet" parent="">
-        <item name="cornerFamilyTopLeft">rounded</item>
-        <item name="cornerSizeTopLeft">16dp</item>
-    </style>
-</resources>

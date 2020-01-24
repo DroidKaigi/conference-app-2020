@@ -1,0 +1,7 @@
+disabled_rules:
+  - line_length
+included:
+  - DroidKaigi 2020
+excluded:
+  - Carthage
+  - Pods

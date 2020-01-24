@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class ContributorItemResponseImpl(
     override val id: Int,
-    override val name: String,
+    override val username: String,
     override val iconUrl: String,
     override val profileUrl: String,
-    override val type: String
+    override val sort: Int
 ) : ContributorItemResponse

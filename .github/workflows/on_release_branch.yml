@@ -1,0 +1,174 @@
+name: On release branch
+
+on:
+  push:
+    branches:
+      # - "release-test/**"
+      - master
+      - release
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  build:
+    env:
+      RELEASE_BUILD: true
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '8'
+    - run: .github/android/setup_env.bash
+    - run: .github/android/decrypt-files.bash
+      env:
+        GPG_ENCRYPTION_PASSWORD: ${{ secrets.GPG_ENCRYPTION_PASSWORD }}
+    - uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-${{ hashFiles('buildSrc/**/*.kt') }}-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
+        restore-keys: |
+          ${{ runner.os }}-m2-${{ hashFiles('buildSrc/**/*.kt') }}-${{ hashFiles('**/*.gradle.kts') }}-
+          ${{ runner.os }}-m2-${{ hashFiles('buildSrc/**/*.kt') }}-
+          ${{ runner.os }}-m2-
+    - run: .github/android/create-aab.bash
+      id: create-aab
+      env:
+        RELEASE_KEYSTORE_KEY_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}
+        RELEASE_KEYSTORE_STORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_STORE_PASSWORD }}
+    - name: Store an aab to GitHub
+      uses: actions/upload-artifact@v1
+      with:
+        name: aab
+        path: ${{ steps.create-aab.outputs.path }}
+    - run: .github/android/create-universal-apk.bash ${{ steps.create-aab.outputs.path }}
+      id: create-apk
+      env:
+        RELEASE_KEYSTORE_KEY_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_KEY_PASSWORD }}
+        RELEASE_KEYSTORE_STORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_STORE_PASSWORD }}
+    - name: Store an apk to GitHub
+      uses: actions/upload-artifact@v1
+      with:
+        name: apk
+        path: ${{ steps.create-apk.outputs.path }}
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: Assembler
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: always()
+
+  deploy-deploygate:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: .github/android/setup_env.bash
+      - uses: actions/download-artifact@v1
+        with:
+          name: apk
+          path: download-artifacts
+      - run: .github/android/find-app-files.bash download-artifacts
+        id: find-app-files
+      - run: "echo ::set-output name=message::Release build of $(git rev-parse --short HEAD) at $(date)"
+        id: prep
+      - uses: jmatsu/dg-upload-app-action@master
+        id: dg
+        with:
+          app_owner_name: droidkaigi
+          api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
+          app_file_path: ${{ steps.find-app-files.outputs.apk_path }}
+          message: ${{ steps.prep.outputs.message }}
+          distribution_find_by: name
+          distribution_id: Production Build
+          ignore_api_failure: true
+
+  # deploy-internal-app-sharing:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   setps:
+  #     - TODO
+
+  attach-gh-release:
+    needs: build
+    if: github.ref != 'master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: .github/android/setup_env.bash
+        id: setup
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ steps.setup.outputs.ruby-version }}
+      - name: Download an aab file
+        uses: actions/download-artifact@v1
+        with:
+          name: aab
+          path: download-artifacts
+      - name: Download an apk file
+        uses: actions/download-artifact@v1
+        with:
+          name: apk
+          path: download-artifacts
+      - run: .github/android/find-app-files.bash download-artifacts
+        id: find-app-files
+      - run: .github/android/dump-version-name.bash
+        id: version-name
+      - run: .ci/scripts/github-release/update-draft.bash
+        env:
+          REPOSITORY_SLUG: ${{ env.GITHUB_REPOSITORY }}
+          RELEASE_TAG_NAME: ${{ steps.version-name.outputs.value }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: transart -f .ci/to_github.transart.yml transfer
+        env:
+          PATH: $HOME/.bin:$PATH
+
+  healthcheck:
+    env:
+      JUNIT_TEST_RESULT_DIR: test-results/junit
+      JUNIT_TEST_REPORT_DIR: test-reports/
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: .github/android/setup_env.bash
+    - run: .github/android/decrypt-files.bash
+      env:
+        GPG_ENCRYPTION_PASSWORD: ${{ secrets.GPG_ENCRYPTION_PASSWORD }}
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '8'
+    - uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-${{ hashFiles('buildSrc/**/*.kt') }}-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
+        restore-keys: |
+          ${{ runner.os }}-m2-${{ hashFiles('buildSrc/**/*.kt') }}-${{ hashFiles('**/*.gradle.kts') }}-
+          ${{ runner.os }}-m2-${{ hashFiles('buildSrc/**/*.kt') }}-
+          ${{ runner.os }}-m2-
+    - run: ./gradlew lintRelease testRelease ktlint --continue
+      shell: bash
+    - name: Collect test artifacts
+      if: always()
+      run: ./.ci/scripts/collect-test-artifacts.bash
+    - name: Store test reports to GitHub
+      uses: actions/upload-artifact@v1
+      if: always()
+      with:
+        name: test-reports
+        path: ${{ env.JUNIT_TEST_REPORT_DIR }}
+    - name: Store test results to GitHub
+      uses: actions/upload-artifact@v1
+      if: always()
+      with:
+        name: test-results
+        path: ${{ env.JUNIT_TEST_RESULT_DIR }}
+    - uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: Linter
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: failure()

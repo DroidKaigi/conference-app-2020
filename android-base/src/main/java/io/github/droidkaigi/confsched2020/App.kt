@@ -1,7 +1,6 @@
 package io.github.droidkaigi.confsched2020
 
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.BuildCompat
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
@@ -10,10 +9,13 @@ import dagger.android.DaggerApplication
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.AppComponentHolder
 import io.github.droidkaigi.confsched2020.di.createAppComponent
+import io.github.droidkaigi.confsched2020.image.CoilInitializer
+import io.github.droidkaigi.confsched2020.util.Prefs
 import timber.log.LogcatTree
 import timber.log.Timber
 
 open class App : DaggerApplication(), AppComponentHolder {
+
     override val appComponent: AppComponent by lazy {
         createAppComponent()
     }
@@ -27,6 +29,7 @@ open class App : DaggerApplication(), AppComponentHolder {
         setupTimber()
         setupFirestore()
         setupNightMode()
+        setupCoil()
     }
 
     private fun setupTimber() {
@@ -43,11 +46,10 @@ open class App : DaggerApplication(), AppComponentHolder {
     }
 
     private fun setupNightMode() {
-        val nightMode = if (BuildCompat.isAtLeastQ()) {
-            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        } else {
-            AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
-        }
-        AppCompatDelegate.setDefaultNightMode(nightMode)
+        AppCompatDelegate.setDefaultNightMode(Prefs(this).getNightMode())
+    }
+
+    private fun setupCoil() {
+        CoilInitializer.init(this)
     }
 }

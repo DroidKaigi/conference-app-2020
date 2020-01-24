@@ -32,7 +32,8 @@ fun generateDroidKaigiApi(): DroidKaigiApi {
         apiEndpoint(),
         MainLoopDispatcher + CoroutineExceptionHandler { coroutineContext, throwable ->
             throwable.printStackTrace()
-        })
+        }
+    )
 }
 
 fun generateGoogleFormApi(): GoogleFormApi {

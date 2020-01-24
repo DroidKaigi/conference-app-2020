@@ -1,8 +1,9 @@
 package io.github.droidkaigi.confsched2020.model.repository
 
-import io.github.droidkaigi.confsched2020.model.ContributorContents
+import io.github.droidkaigi.confsched2020.model.Contributor
+import kotlinx.coroutines.flow.Flow
 
 interface ContributorRepository {
-    suspend fun contributorContents(): ContributorContents
+    fun contributorContents(): Flow<List<Contributor>>
     suspend fun refresh(): Unit
 }
