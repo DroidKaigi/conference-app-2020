@@ -158,6 +158,11 @@ class SessionDetailFragment : DaggerFragment() {
                 })
                 binding.tags.tag = newTag
             }
+            binding.sessionMessage.isVisible = session.hasMessage
+            binding.sessionMessage.text = session.message?.getByLang(defaultLang())
+//            Test Code
+//            binding.sessionMessage.text = "セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
+//            binding.sessionMessage.isVisible = true
         }
         binding.speakers.bindSpeaker(session)
     }

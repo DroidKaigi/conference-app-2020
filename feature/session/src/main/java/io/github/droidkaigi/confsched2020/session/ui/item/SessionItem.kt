@@ -62,6 +62,7 @@ class SessionItem @AssistedInject constructor(
                 .navigate(actionSessionToSessionDetail(session.id))
         }
         viewBinding.live.isVisible = session.isOnGoing
+        bindSessionMessage(session, viewBinding)
         viewBinding.title.text = session.title.ja
         viewBinding.room.text = session.room.name.getByLang(defaultLang())
         viewBinding.survey.isEnabled = session.isFinished
@@ -98,6 +99,19 @@ class SessionItem @AssistedInject constructor(
                 R.drawable.ic_bookmark_border_black_24dp
             }
         )
+    }
+
+    private fun bindSessionMessage(
+        session: Session,
+        viewBinding: ItemSessionBinding
+    ) {
+        (session as? SpeechSession)?.let {
+            viewBinding.sessionMessage.text = it.message?.getByLang(defaultLang())
+            viewBinding.sessionMessage.isVisible = it.hasMessage
+        }
+//        Test Code
+//        viewBinding.sessionMessage.text = "セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
+//        viewBinding.sessionMessage.isVisible = true
     }
 
     private fun ViewGroup.bindSpeaker() {
