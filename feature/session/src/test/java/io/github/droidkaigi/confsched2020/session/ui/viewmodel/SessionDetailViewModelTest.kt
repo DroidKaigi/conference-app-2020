@@ -39,6 +39,7 @@ class SessionDetailViewModelTest {
             isLoading shouldBe false
             session shouldBe Dummies.speachSession1
             error shouldBe null
+            isDescriptionShowFullText shouldBe false
         }
     }
 
@@ -60,6 +61,7 @@ class SessionDetailViewModelTest {
             isLoading shouldBe false
             session shouldBe null
             error shouldNotBe null
+            isDescriptionShowFullText shouldBe false
         }
     }
 
@@ -84,16 +86,48 @@ class SessionDetailViewModelTest {
             isLoading shouldBe false
             session shouldBe Dummies.speachSession1
             error shouldBe null
+            isDescriptionShowFullText shouldBe false
         }
         valueHistory[2].apply {
             isLoading shouldBe true
             session shouldBe Dummies.speachSession1
             error shouldBe null
+            isDescriptionShowFullText shouldBe false
         }
         valueHistory[3].apply {
             isLoading shouldBe false
             session shouldBe Dummies.speachSession1
             error shouldBe null
+            isDescriptionShowFullText shouldBe false
+        }
+    }
+
+    @Test
+    fun onShowFullText() {
+        coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
+        val sessionDetailViewModel = SessionDetailViewModel(
+            sessionId = Dummies.speachSession1.id,
+            sessionRepository = sessionRepository
+        )
+
+        val testObserver = sessionDetailViewModel
+            .uiModel
+            .test()
+        sessionDetailViewModel.onShowFullText()
+
+        val valueHistory = testObserver.valueHistory()
+        valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true)
+        valueHistory[1].apply {
+            isLoading shouldBe false
+            session shouldBe Dummies.speachSession1
+            error shouldBe null
+            isDescriptionShowFullText shouldBe false
+        }
+        valueHistory[2].apply {
+            isLoading shouldBe false
+            session shouldBe Dummies.speachSession1
+            error shouldBe null
+            isDescriptionShowFullText shouldBe true
         }
     }
 }
