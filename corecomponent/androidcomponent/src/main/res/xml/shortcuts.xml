@@ -6,9 +6,7 @@
         android:shortcutShortLabel="@string/floor_map_shortcut_short_label1">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="io.github.droidkaigi.confsched2020"
-            android:targetClass="io.github.droidkaigi.confsched2020.MainActivity" />
-        <categories android:name="android.shortcut.conversation" />
+            android:data="https://droidkaigi.jp/2020/floormap" />
     </shortcut>
     <shortcut
         android:shortcutId="my_plan"

@@ -199,8 +199,11 @@
     <fragment
         android:id="@+id/floormap"
         android:name="io.github.droidkaigi.confsched2020.floormap.ui.FloorMapFragment"
-        android:label="@string/map_label"
-        />
+        android:label="@string/map_label">
+        <deepLink
+            android:id="@+id/deepLink_floormap"
+            app:uri="https://droidkaigi.jp/2020/floormap" />
+    </fragment>
     <fragment
         android:id="@+id/session_survey"
         android:name="io.github.droidkaigi.confsched2020.session_survey.ui.SessionSurveyFragment"
