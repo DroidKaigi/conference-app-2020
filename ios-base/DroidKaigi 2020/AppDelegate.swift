@@ -1,4 +1,5 @@
 import UIKit
+import MaterialComponents
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -8,7 +9,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 13, *) {
         } else {
             let window = UIWindow(frame: UIScreen.main.bounds)
-            window.rootViewController = FilterViewController()
+            UINavigationBar.appearance().tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
+            UINavigationBar.appearance().backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
+            let vc = FilterViewController()
+            let nvc = UINavigationController(rootViewController: vc)
+            nvc.view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
+            window.rootViewController = nvc
             self.window = window
             self.window?.makeKeyAndVisible()
         }
@@ -32,6 +38,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
-
 }
-
