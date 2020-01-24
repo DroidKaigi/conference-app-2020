@@ -7,7 +7,6 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import androidx.core.text.inSpans
@@ -17,6 +16,7 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
+import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailDescriptionBinding
@@ -52,8 +52,7 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
                 textView.width - textView.paint.measureText(ellipsis),
                 TextUtils.TruncateAt.END
             )
-            val ellipsisColor =
-                ContextCompat.getColor(context, R.color.design_default_color_secondary)
+            val ellipsisColor = context.getThemeColor(R.attr.colorSecondary)
             val onClickListener = {
                 TransitionManager.beginDelayedTransition(binding.itemRoot)
                 textView.text = fullDescription
