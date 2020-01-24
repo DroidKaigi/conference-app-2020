@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -42,13 +41,10 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailView
 import io.github.droidkaigi.confsched2020.session.ui.widget.SessionDetailItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
-import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class SessionDetailFragment : DaggerFragment() {
-
-    private var binding: FragmentSessionDetailBinding by autoCleared()
 
     @Inject lateinit var systemViewModelFactory: Provider<SystemViewModel>
     private val systemViewModel by assistedActivityViewModels {
@@ -62,13 +58,9 @@ class SessionDetailFragment : DaggerFragment() {
     private val navArgs: SessionDetailFragmentArgs by navArgs()
     @Inject lateinit var sessionItemFactory: SessionItem.Factory
 
-    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
-
     companion object {
         const val TRANSITION_NAME_SUFFIX = "detail"
     }
-
-    private var adapter: GroupAdapter<ViewHolder<*>> by autoCleared()
 
     @Inject
     lateinit var sessionDetailTitleItemFactory: SessionDetailTitleItem.Factory
@@ -93,18 +85,17 @@ class SessionDetailFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
+        return inflater.inflate(
             R.layout.fragment_session_detail,
             container,
             false
         )
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = GroupAdapter()
+        val binding = FragmentSessionDetailBinding.bind(view)
+        val adapter = GroupAdapter<ViewHolder<*>>()
         binding.sessionDetailRecycler.adapter = adapter
         binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(context)
         context?.let {
@@ -120,7 +111,7 @@ class SessionDetailFragment : DaggerFragment() {
             itemAnimator.supportsChangeAnimations = false
         }
 
-        progressTimeLatch = ProgressTimeLatch { showProgress ->
+        val progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
             loading = true
@@ -133,6 +124,8 @@ class SessionDetailFragment : DaggerFragment() {
                 uiModel.session
                     ?.let { session ->
                         setupSessionViews(
+                            binding,
+                            adapter,
                             session,
                             uiModel.isDescriptionShowFullText
                         )
@@ -162,7 +155,12 @@ class SessionDetailFragment : DaggerFragment() {
         }
     }
 
-    private fun setupSessionViews(session: Session, isShowDescriptionFullText: Boolean) {
+    private fun setupSessionViews(
+        binding: FragmentSessionDetailBinding,
+        adapter: GroupAdapter<ViewHolder<*>>,
+        session: Session,
+        isShowDescriptionFullText: Boolean
+    ) {
         val items = mutableListOf<Group>()
         items += sessionDetailTitleItemFactory.create(session)
         items += sessionDetailDescriptionItemFactory.create(session, isShowDescriptionFullText) {
