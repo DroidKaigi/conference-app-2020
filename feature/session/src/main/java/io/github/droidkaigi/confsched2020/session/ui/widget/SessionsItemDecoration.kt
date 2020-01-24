@@ -48,7 +48,14 @@ class SessionsItemDecoration(
             if (position == RecyclerView.NO_POSITION) return
 
             val sessionItem = adapter.getItem(position) as SessionItem
-            val startTimeText = calcTimeText(position, view)
+            val isShowDateText = if (position > 0) {
+                val lastSessionItem = adapter.getItem(position - 1) as SessionItem
+                sessionItem.startSessionDate() != lastSessionItem.startSessionDate()
+            } else {
+                true
+            }
+            val startDateTimeText =
+                calcDateTimeText(position, view, this.isShowDate && isShowDateText)
 
             // we need least first session's label, skip to check if time label is same as last item on first item.
             if (position > 0 && index > 0) {
@@ -58,32 +65,74 @@ class SessionsItemDecoration(
                 }
             }
 
+            if (startDateTimeText.dateText != null) {
+                c.drawText(
+                    startDateTimeText.dateText.value,
+                    startDateTimeText.dateText.positionX,
+                    startDateTimeText.dateText.positionY,
+                    textPaint
+                )
+            }
+
             c.drawText(
-                startTimeText.value,
-                startTimeText.positionX,
-                startTimeText.positionY,
+                startDateTimeText.startTimeText.value,
+                startDateTimeText.startTimeText.positionX,
+                startDateTimeText.startTimeText.positionY,
                 textPaint
             )
         }
     }
 
-    private fun calcTimeText(position: Int, view: View): StartTimeText {
+    private fun calcDateTimeText(
+        position: Int,
+        view: View,
+        isShowDate: Boolean
+    ): StartDateTimeText {
         val sessionItem = adapter.getItem(position) as SessionItem
         val nextSessionItem = if (position < adapter.itemCount - 1) {
             adapter.getItem(position + 1) as SessionItem
         } else null
 
-        var positionY =
-            view.top.coerceAtLeast(sessionTimeTextMarginTopInPx.toInt()) +
-                sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
-        if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
-            positionY = positionY.coerceAtMost(view.bottom.toFloat())
+        // session date text
+        val dateText = if (isShowDate) {
+
+            var sessionDateTextPositionY =
+                view.top.coerceAtLeast(sessionTimeTextMarginTopInPx.toInt()) +
+                        sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
+
+            if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
+                sessionDateTextPositionY = sessionDateTextPositionY.coerceAtMost(view.bottom.toFloat())
+            }
+
+            DateText(
+                value = sessionItem.startSessionDate(),
+                positionX = sessionTimeTextMarginStartInPx,
+                positionY = sessionDateTextPositionY.coerceAtMost(view.bottom.toFloat() - sessionTimeTextMarginTopInPx - sessionTimeTextSizeInPx)
+            )
+        } else null
+
+        val sessionTimeTextMarginTop = if (isShowDate) {
+            sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx + sessionTimeTextMarginTopInPx
+        } else {
+            sessionTimeTextMarginTopInPx
         }
-        return StartTimeText(
+
+        // session time text
+        var sessionTimeTextPositionY =
+            (view.top + sessionTimeTextMarginTop.toInt() - sessionTimeTextMarginTopInPx.toInt()).coerceAtLeast(sessionTimeTextMarginTop.toInt()) +
+                    sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
+
+        if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
+            sessionTimeTextPositionY = sessionTimeTextPositionY.coerceAtMost(view.bottom.toFloat())
+        }
+
+        val startTimeText = StartTimeText(
             value = sessionItem.startSessionTime(),
-            positionX = (sessionTimeSpaceInPx / 2).toFloat(),
-            positionY = positionY
+            positionX = sessionTimeTextMarginStartInPx,
+            positionY = sessionTimeTextPositionY
         )
+
+        return StartDateTimeText(dateText, startTimeText)
     }
 
     private data class StartDateTimeText(
