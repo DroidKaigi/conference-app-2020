@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModel
 import com.soywiz.klock.DateTime
 import io.github.droidkaigi.confsched2020.ext.toNonNullSingleEvent
 import io.github.droidkaigi.confsched2020.model.AppError
+import timber.log.Timber
+import timber.log.debug
 import javax.inject.Inject
 
 class SystemViewModel @Inject constructor() : ViewModel() {
@@ -32,6 +34,10 @@ class SystemViewModel @Inject constructor() : ViewModel() {
             .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDateTime.unixMillisLong)
             .putExtra(CalendarContract.Events.TITLE, "[$location] $title")
             .putExtra(CalendarContract.Events.EVENT_LOCATION, location)
+        try {
             activity.startActivity(intent)
+        } catch (e: Exception) {
+            Timber.debug(e) { "Fail startActivity" }
+        }
     }
 }
