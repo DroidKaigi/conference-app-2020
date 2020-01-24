@@ -171,6 +171,8 @@ class SessionItem @AssistedInject constructor(
         imageRequestDisposables.forEach { it.dispose() }
     }
 
+    fun startSessionDate(): String = session.startDayText
+
     fun startSessionTime(): String = session.startTimeText
 
     fun title(): LocaledString = session.title
