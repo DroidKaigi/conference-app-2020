@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2020.util
+package io.github.droidkaigi.confsched2020.session.util
 
 import android.app.AlarmManager
 import android.app.Application
@@ -18,6 +18,7 @@ import io.github.droidkaigi.confsched2020.widget.component.R
 import javax.inject.Inject
 
 class SessionAlarm @Inject constructor(private val app: Application) {
+
     fun toggleRegister(session: Session) {
         if (session.isFavorited) {
             unregister(session)
@@ -97,7 +98,8 @@ class SessionAlarm @Inject constructor(private val app: Application) {
             context,
             Class.forName(BROADCAST_RECEIVER_CLASS_NAME)
         ).apply {
-            action = ACTION_FAVORITED_SESSION_START
+            action =
+                ACTION_FAVORITED_SESSION_START
             putExtra(EXTRA_SESSION_ID, sessionId.id)
             putExtra(EXTRA_TITLE, title)
             putExtra(EXTRA_TEXT, text)
@@ -111,6 +113,6 @@ class SessionAlarm @Inject constructor(private val app: Application) {
         const val EXTRA_TITLE = "EXTRA_TITLE"
         const val EXTRA_TEXT = "EXTRA_TEXT"
         const val BROADCAST_RECEIVER_CLASS_NAME =
-            "io.github.droidkaigi.confsched2020.broadcastreceiver.NotificationBroadcastReceiver"
+            "io.github.droidkaigi.confsched2020.session.broadcastreceiver.NotificationBroadcastReceiver"
     }
 }
