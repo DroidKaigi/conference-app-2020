@@ -19,7 +19,10 @@ interface DroidKaigiApi {
 
     suspend fun getSponsors(): SponsorListResponse
 
-    fun getSponsors(callback: (response: SponsorListResponse) -> Unit, onError: (error: Exception) -> Unit)
+    fun getSponsors(
+        callback: (response: SponsorListResponse) -> Unit,
+        onError: (error: Exception) -> Unit
+    )
 
     suspend fun getAnnouncements(lang: LangParameter): AnnouncementListResponse
 
