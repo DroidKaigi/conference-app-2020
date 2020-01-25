@@ -28,8 +28,6 @@ dependencies {
     api Dep.AndroidX.Navigation.fragmentKtx
     api Dep.AndroidX.Navigation.uiKtx
 
-    implementation Dep.AndroidX.liveDataKtx
-
     implementation Dep.Ktor.clientAndroid
     implementation Dep.Firebase.firestoreKtx
     implementation Dep.Firebase.auth
