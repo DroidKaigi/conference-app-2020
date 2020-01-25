@@ -1,7 +1,13 @@
+GIT_REPO = $(shell git rev-parse --show-toplevel)
+GIT_DIR = $(shell git rev-parse --git-dir)
+
 init:
 	mint run xcodegen
 	bundle install --path vendor/bundle
 	bundle exec pod install
+
+hooks:
+	@cp $(GIT_REPO)/ios-base/scripts/git-hooks/* $(GIT_DIR)/hooks
 
 xcode:
 	mint run xcodegen
