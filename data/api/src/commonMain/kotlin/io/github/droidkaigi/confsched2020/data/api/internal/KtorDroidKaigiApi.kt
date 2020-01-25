@@ -85,6 +85,17 @@ internal open class KtorDroidKaigiApi constructor(
         return json.parse(SponsorResponseImpl.serializer().list, rawResponse)
     }
 
+    override fun getSponsors(callback: (response: SponsorListResponse) -> Unit, onError: (error: Exception) -> Unit) {
+        GlobalScope.launch(requireNotNull(coroutineDispatcherForCallback)) {
+            try {
+                val response = getSponsors()
+                callback(response)
+            } catch (ex: Exception) {
+                onError(ex)
+            }
+        }
+    }
+
     override suspend fun getStaffs(): StaffResponse {
         val rawResponse = httpClient.get<String> {
             url("$apiEndpoint/committee_members")
