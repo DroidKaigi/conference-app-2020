@@ -85,7 +85,10 @@ internal open class KtorDroidKaigiApi constructor(
         return json.parse(SponsorResponseImpl.serializer().list, rawResponse)
     }
 
-    override fun getSponsors(callback: (response: SponsorListResponse) -> Unit, onError: (error: Exception) -> Unit) {
+    override fun getSponsors(
+        callback: (response: SponsorListResponse) -> Unit,
+        onError: (error: Exception) -> Unit
+    ) {
         GlobalScope.launch(requireNotNull(coroutineDispatcherForCallback)) {
             try {
                 val response = getSponsors()
