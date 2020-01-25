@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +28,7 @@ import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToChrome
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToFloormap
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailDescriptionItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailMaterialItem
@@ -126,25 +126,25 @@ class SessionDetailFragment : DaggerFragment() {
             }
 
         binding.bottomAppBar.setOnMenuItemClickListener {
-            handleNavigation(it.itemId)
+            handleMenuItemNavigation(binding, it.itemId)
         }
     }
 
-    private fun handleNavigation(@IdRes itemId: Int): Boolean {
-        val navController = findNavController()
-        return try {
-            // ignore if current destination is selected
-            if (navController.currentDestination?.id == itemId) return false
-            val builder = NavOptions.Builder()
-                .setEnterAnim(R.anim.fade_in)
-                .setExitAnim(R.anim.fade_out)
-                .setPopEnterAnim(R.anim.fade_in)
-                .setPopExitAnim(R.anim.fade_out)
-            val options = builder.build()
-            navController.navigate(itemId, null, options)
-            true
-        } catch (e: IllegalArgumentException) {
-            false
+    private fun handleMenuItemNavigation(
+        binding: FragmentSessionDetailBinding,
+        @IdRes itemId: Int
+    ): Boolean {
+        return when (itemId) {
+            R.id.floormap -> {
+                val session = binding.session ?: return false
+                val directions = actionSessionToFloormap(session.room.id)
+                findNavController().navigate(directions)
+                true
+            }
+            R.id.session_share -> {
+                false // TODO handle share button click
+            }
+            else -> false
         }
     }
 
