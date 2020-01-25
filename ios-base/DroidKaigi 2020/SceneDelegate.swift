@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         UINavigationBar.appearance().backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
         let vc = FilterViewController()
         let nvc = UINavigationController(rootViewController: vc)
-        let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate())
+        let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc))
         nvc.view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
         window.rootViewController = root
         self.window = window

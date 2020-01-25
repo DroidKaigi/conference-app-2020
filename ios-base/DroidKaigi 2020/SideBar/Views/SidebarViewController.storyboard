@@ -66,7 +66,7 @@
                                             <outlet property="titleLabel" destination="wlM-D0-wmL" id="u1t-ME-PXu"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="lBL-3f-5ge" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" tag="1" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="lBL-3f-5ge" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="252" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lBL-3f-5ge" id="MsO-BE-1C1">
@@ -109,7 +109,7 @@
                                             <outlet property="titleLabel" destination="JtF-GG-evG" id="hMy-k2-0m2"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="u0U-RA-EX7" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" tag="2" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="u0U-RA-EX7" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="296" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="u0U-RA-EX7" id="Qel-vt-Xh4">
@@ -142,7 +142,7 @@
                                             <outlet property="titleLabel" destination="RMR-xd-cxl" id="kaw-xb-uj2"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Wgm-WX-p7y" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" tag="3" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Wgm-WX-p7y" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="340" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Wgm-WX-p7y" id="ZxG-IW-D0x">
@@ -175,7 +175,7 @@
                                             <outlet property="titleLabel" destination="CRA-KP-fCf" id="JMQ-RU-Pxw"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="HIc-vM-hK1" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" tag="4" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="HIc-vM-hK1" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="384" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HIc-vM-hK1" id="oyh-G6-KSd">
@@ -218,7 +218,7 @@
                                             <outlet property="titleLabel" destination="jsU-4x-J7y" id="xx9-NU-Tb9"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="dbw-8e-edi" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" tag="5" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="dbw-8e-edi" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="428" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dbw-8e-edi" id="R23-kl-TPJ">
@@ -251,7 +251,7 @@
                                             <outlet property="titleLabel" destination="urg-1V-e7f" id="Vnm-V6-45H"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zAm-EE-XpB" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" tag="6" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zAm-EE-XpB" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="472" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zAm-EE-XpB" id="4Hb-MJ-txg">
@@ -300,13 +300,13 @@
         </scene>
     </scenes>
     <resources>
-        <image name="android_24px" width="19" height="22"/>
-        <image name="domain_24px" width="19" height="17"/>
-        <image name="event_24px" width="17" height="19"/>
-        <image name="group_24px" width="19" height="13"/>
-        <image name="info_24px" width="19" height="19"/>
+        <image name="android_24px" width="20" height="24"/>
+        <image name="domain_24px" width="20" height="18"/>
+        <image name="event_24px" width="18" height="20"/>
+        <image name="group_24px" width="20" height="14"/>
+        <image name="info_24px" width="20" height="20"/>
         <image name="logo_title" width="230" height="61"/>
-        <image name="place_24px" width="13" height="19"/>
-        <image name="settings_24px" width="18" height="19"/>
+        <image name="place_24px" width="14" height="20"/>
+        <image name="settings_24px" width="20" height="20"/>
     </resources>
 </document>
