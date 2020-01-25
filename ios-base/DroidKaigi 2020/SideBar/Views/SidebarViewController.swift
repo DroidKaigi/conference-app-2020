@@ -1,17 +1,17 @@
 import Material
 import UIKit
 
-enum SwitchViewControllerType: Int {
-    case timeline
-    case about
-    case info
-    case map
-    case sponsor
-    case contributor
-    case setting
-}
-
 final class SidebarViewController: UITableViewController {
+    private enum SwitchViewControllerType: Int {
+        case timeline
+        case about
+        case info
+        case map
+        case sponsor
+        case contributor
+        case setting
+    }
+
     weak var rootViewController: UIViewController?
 
     static func instantiate(rootViewController: UIViewController) -> SidebarViewController {
