@@ -16,7 +16,6 @@ import io.github.droidkaigi.confsched2020.model.repository.AnnouncementRepositor
 import io.github.droidkaigi.confsched2020.model.repository.ContributorRepository
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.model.repository.SponsorRepository
-import io.github.droidkaigi.confsched2020.model.repository.StaffRepository
 import javax.inject.Singleton
 
 @Singleton
@@ -29,7 +28,6 @@ interface RepositoryComponent {
     fun sessionRepository(): SessionRepository
     fun sponsorRepository(): SponsorRepository
     fun announcementRepository(): AnnouncementRepository
-    fun staffRepository(): StaffRepository
     fun contributorRepository(): ContributorRepository
 
     @Component.Factory

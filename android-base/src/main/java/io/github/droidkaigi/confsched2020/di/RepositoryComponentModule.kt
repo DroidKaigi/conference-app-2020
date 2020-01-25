@@ -16,11 +16,10 @@ import io.github.droidkaigi.confsched2020.model.repository.AnnouncementRepositor
 import io.github.droidkaigi.confsched2020.model.repository.ContributorRepository
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.model.repository.SponsorRepository
-import io.github.droidkaigi.confsched2020.model.repository.StaffRepository
 import javax.inject.Singleton
 
 @Module
-class RepositoryComponentModule {
+object RepositoryComponentModule {
     @Provides @Singleton
     fun provideRepository(
         repositoryComponent: RepositoryComponent
@@ -40,13 +39,6 @@ class RepositoryComponentModule {
         repositoryComponent: RepositoryComponent
     ): AnnouncementRepository {
         return repositoryComponent.announcementRepository()
-    }
-
-    @Provides @Singleton
-    fun provideStaffRepository(
-        repositoryComponent: RepositoryComponent
-    ): StaffRepository {
-        return repositoryComponent.staffRepository()
     }
 
     @Provides @Singleton
