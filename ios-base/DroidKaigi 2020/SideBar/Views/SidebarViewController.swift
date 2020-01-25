@@ -31,7 +31,7 @@ final class SidebarViewController: UITableViewController {
         super.viewDidAppear(animated)
 
         // select default cell (timeline)
-        let indexPath = IndexPath(row: 0, section: 0)
+        let indexPath = IndexPath(row: SwitchViewControllerType.timeline.rawValue, section: 0)
         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
     }
 
