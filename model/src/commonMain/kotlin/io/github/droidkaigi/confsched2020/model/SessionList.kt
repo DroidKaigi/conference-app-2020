@@ -11,6 +11,10 @@ data class SessionList(private val sessions: List<Session>) : List<Session> by s
             .mapValues { (_, value) -> SessionList(value) }
     }
 
+    val events: SessionList by lazy {
+        SessionList(filter { it.room.name.ja == Room.EXHIBITION.name.ja })
+    }
+
     val favorited: SessionList by lazy {
         SessionList(filter { it.isFavorited })
     }
