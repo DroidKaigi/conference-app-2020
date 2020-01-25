@@ -22,7 +22,6 @@ dependencies {
     api Dep.Insetter.insetter
 
     implementation Dep.Dagger.androidSupport
-    implementation Dep.Kotlin.stdlibJvm
     api Dep.Kotlin.coroutines
 
     api Dep.AndroidX.Navigation.runtimeKtx
