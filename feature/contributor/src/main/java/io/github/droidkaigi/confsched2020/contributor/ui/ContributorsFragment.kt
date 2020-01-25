@@ -65,6 +65,10 @@ class ContributorsFragment : Fragment() {
 
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.contributorRecycler.adapter = groupAdapter
+        // Because custom RecyclerView's animation, set custom SimpleItemAnimator implementation.
+        //
+        // see https://developer.android.com/reference/androidx/recyclerview/widget/SimpleItemAnimator.html#animateAdd(androidx.recyclerview.widget.RecyclerView.ViewHolder)
+        // see https://github.com/android/animation-samples/blob/232709094f9c60e0ead9cf4873e0c1549a9a8505/Motion/app/src/main/java/com/example/android/motion/demo/stagger/StaggerActivity.kt#L61
         binding.contributorRecycler.itemAnimator = object : DefaultItemAnimator() {
             override fun animateAdd(holder: RecyclerView.ViewHolder?): Boolean {
                 dispatchAddFinished(holder)
