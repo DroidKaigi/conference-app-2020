@@ -1,4 +1,5 @@
 import MaterialComponents
+import Nuke
 import UIKit
 
 final class SessionCell: UICollectionViewCell {
@@ -38,7 +39,10 @@ final class SessionCell: UICollectionViewCell {
     func addSpeakerView(imageURL: URL?, speakerName: String) {
         let view = UIView()
         let speakerIconView = UIImageView()
-        speakerIconView.loadImage(url: imageURL)
+        if let imageURL = imageURL {
+            let options = ImageLoadingOptions(transition: .fadeIn(duration: 0.3))
+            Nuke.loadImage(with: imageURL, options: options, into: speakerIconView)
+        }
         view.addSubview(speakerIconView)
         speakerIconView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
