@@ -7,6 +7,7 @@ target 'DroidKaigi 2020' do
   inhibit_all_warnings!
 
   pod 'MaterialComponents'
+  pod 'Material'
   pod 'RxSwift'
   pod 'RxCocoa'
 
