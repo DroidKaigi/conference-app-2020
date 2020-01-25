@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         UINavigationBar.appearance().tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
         UINavigationBar.appearance().backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
         let vc = FilterViewController()
-        let nvc = UINavigationController(rootViewController: vc)
+        let nvc = NavigationController(rootViewController: vc)
         nvc.view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
         window.rootViewController = nvc
         self.window = window

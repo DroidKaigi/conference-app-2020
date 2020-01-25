@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
+import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -42,6 +43,12 @@ class SessionDetailTitleItem @AssistedInject constructor(
                 )
                 binding.tags.tag = newTag
             }
+
+            binding.sessionMessage.text = session.message?.getByLang(defaultLang())
+            binding.sessionMessage.isVisible = session.hasMessage
+//            Test Code
+//            binding.sessionMessage.text = "セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
+//            binding.sessionMessage.isVisible = true
         }
     }
 
