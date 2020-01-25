@@ -27,7 +27,8 @@ class SpeakerSessionItem @AssistedInject constructor(
     override fun getLayout(): Int = R.layout.item_speaker_session
 
     override fun bind(viewBinding: ItemSpeakerSessionBinding, position: Int) {
-        viewBinding.speakerSessionRoot.transitionName = "${speechSession.id}-$TRANSITION_NAME_SUFFIX"
+        viewBinding.speakerSessionRoot.transitionName =
+            "${speechSession.id}-$TRANSITION_NAME_SUFFIX"
         viewBinding.speechSession = speechSession
         viewBinding.lang = defaultLang()
 

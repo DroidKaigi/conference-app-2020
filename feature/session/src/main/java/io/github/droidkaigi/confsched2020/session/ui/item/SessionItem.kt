@@ -72,7 +72,10 @@ class SessionItem @AssistedInject constructor(
                     itemRoot to itemRoot.transitionName
                 )
                 root.findNavController()
-                    .navigate(actionSessionToSessionDetail(session.id, TRANSITION_NAME_SUFFIX), extra)
+                    .navigate(
+                        actionSessionToSessionDetail(session.id, TRANSITION_NAME_SUFFIX),
+                        extra
+                    )
             }
             itemRoot.transitionName = "${session.id}-$TRANSITION_NAME_SUFFIX"
             live.isVisible = session.isOnGoing

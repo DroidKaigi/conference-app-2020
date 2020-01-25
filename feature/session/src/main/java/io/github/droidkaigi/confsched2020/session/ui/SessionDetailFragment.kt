@@ -164,7 +164,8 @@ class SessionDetailFragment : DaggerFragment() {
         adapter: GroupAdapter<ViewHolder<*>>,
         session: Session
     ) {
-        binding.sessionDetailRecycler.transitionName = "${session.id}-${navArgs.transitionNameSuffix}"
+        binding.sessionDetailRecycler.transitionName =
+            "${session.id}-${navArgs.transitionNameSuffix}"
 
         val items = mutableListOf<Group>()
         items += sessionDetailTitleItemFactory.create(session)
