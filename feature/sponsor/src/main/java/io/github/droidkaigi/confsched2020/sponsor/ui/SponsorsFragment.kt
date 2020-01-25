@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -31,13 +30,10 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.item.SponsorItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.viewmodel.SponsorsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
-import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class SponsorsFragment : DaggerFragment() {
-
-    private var binding: FragmentSponsorsBinding by autoCleared()
 
     @Inject lateinit var sponsorsModelFactory: Provider<SponsorsViewModel>
     private val sponsorsViewModel by assistedViewModels {
@@ -54,24 +50,21 @@ class SponsorsFragment : DaggerFragment() {
 
     @Inject lateinit var categoryHeaderItemFactory: CategoryHeaderItem.Factory
 
-    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
+        return inflater.inflate(
             R.layout.fragment_sponsors,
             container,
             false
         )
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentSponsorsBinding.bind(view)
 
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         groupAdapter.spanCount = 2
@@ -84,7 +77,7 @@ class SponsorsFragment : DaggerFragment() {
         }
         binding.sponsorRecycler.adapter = groupAdapter
 
-        progressTimeLatch = ProgressTimeLatch { showProgress ->
+        val progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
             loading = true

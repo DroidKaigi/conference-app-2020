@@ -24,10 +24,14 @@ final class FilterViewController: UIViewController {
 
     private let embeddedViewAnimator = UIViewPropertyAnimator(duration: 0.8, curve: .easeInOut)
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = ApplicationScheme.shared.colorScheme.surfaceColor
+        view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
         setUpAppBar()
         setUpTabBar()
         setUpContainerView()

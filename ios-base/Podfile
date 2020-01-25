@@ -6,12 +6,12 @@ target 'DroidKaigi 2020' do
   use_frameworks!
   inhibit_all_warnings!
 
+  # Pods for DroidKaigi 2020
   pod 'MaterialComponents'
   pod 'Material'
+  pod 'Nuke'
   pod 'RxSwift'
   pod 'RxCocoa'
-
-  # Pods for DroidKaigi 2020
 
   target 'DroidKaigi 2020Tests' do
     inherit! :search_paths

@@ -11,6 +11,20 @@ object Dummies {
             content = "content",
             publishedAt = DateTime(2020, 2, 10, 10, 10, 10),
             type = Announcement.Type.NOTIFICATION
+        ),
+        Announcement(
+            id = 2,
+            title = "title",
+            content = "content",
+            publishedAt = DateTime(2020, 2, 10, 10, 10, 10),
+            type = Announcement.Type.NOTIFICATION
+        ),
+        Announcement(
+            id = 3,
+            title = "title",
+            content = "content",
+            publishedAt = DateTime(2020, 2, 10, 10, 10, 10),
+            type = Announcement.Type.NOTIFICATION
         )
     )
 }

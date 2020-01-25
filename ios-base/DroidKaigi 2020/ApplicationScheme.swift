@@ -36,7 +36,8 @@ final class ApplicationScheme: NSObject {
         scheme.primaryColor = UIColor(hex: "041E42")
         scheme.onPrimaryColor = .white
         scheme.secondaryColor = UIColor(hex: "041E42")
-        scheme.surfaceColor = .white
+        scheme.surfaceColor = UIColor(hex: "041E42")
+        scheme.onSurfaceColor = .black
         return scheme
     }()
 }

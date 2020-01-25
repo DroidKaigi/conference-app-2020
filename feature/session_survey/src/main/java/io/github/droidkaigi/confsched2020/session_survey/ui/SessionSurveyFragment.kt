@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.navArgs
@@ -20,7 +19,6 @@ import io.github.droidkaigi.confsched2020.session_survey.databinding.FragmentSes
 import io.github.droidkaigi.confsched2020.session_survey.ui.viewmodel.SessionSurveyViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
-import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -39,27 +37,23 @@ class SessionSurveyFragment : DaggerFragment() {
     }
 
     private val navArgs: SessionSurveyFragmentArgs by navArgs()
-    private var binding: FragmentSessionSurveyBinding by autoCleared()
-
-    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
+        return inflater.inflate(
             R.layout.fragment_session_survey,
             container,
             false
         )
-        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        progressTimeLatch = ProgressTimeLatch { showProgress ->
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentSessionSurveyBinding.bind(view)
+        val progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
             loading = true

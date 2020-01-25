@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -30,13 +29,10 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewMod
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.session.ui.widget.SessionsItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
-import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class BottomSheetSessionsFragment : DaggerFragment() {
-
-    private var binding: FragmentBottomSheetSessionsBinding by autoCleared()
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -68,17 +64,17 @@ class BottomSheetSessionsFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
+        return inflater.inflate(
             R.layout.fragment_bottom_sheet_sessions,
             container,
             false
         )
-        return binding.apply { isEmptyFavoritePage = false }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentBottomSheetSessionsBinding.bind(view)
+        binding.isEmptyFavoritePage = false
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
         binding.sessionRecycler.addItemDecoration(
@@ -129,6 +125,7 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             val page = args.page
             val sessions = when (page) {
                 is SessionPage.Day -> uiModel.dayToSessionsMap[page].orEmpty()
+                SessionPage.Event -> uiModel.events
                 SessionPage.Favorite -> uiModel.favoritedSessions
             }
             val count = sessions.filter { it.shouldCountForFilter }.count()
@@ -138,6 +135,10 @@ class BottomSheetSessionsFragment : DaggerFragment() {
                     binding.sessionRecycler.parent as ViewGroup
                 )
                 binding.isEmptyFavoritePage = sessions.isEmpty()
+            }
+
+            if (page == SessionPage.Event) {
+                binding.isEventPage = true
             }
 
             // For Android Lint

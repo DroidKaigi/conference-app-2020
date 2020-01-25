@@ -22,14 +22,11 @@ dependencies {
     api Dep.Insetter.insetter
 
     implementation Dep.Dagger.androidSupport
-    implementation Dep.Kotlin.stdlibJvm
     api Dep.Kotlin.coroutines
 
     api Dep.AndroidX.Navigation.runtimeKtx
     api Dep.AndroidX.Navigation.fragmentKtx
     api Dep.AndroidX.Navigation.uiKtx
-
-    implementation Dep.AndroidX.liveDataKtx
 
     implementation Dep.Ktor.clientAndroid
     implementation Dep.Firebase.firestoreKtx

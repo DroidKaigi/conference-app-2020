@@ -35,6 +35,33 @@ class AnnouncementViewModelTest {
             announcements shouldBe Dummies.announcements
             error shouldBe null
             isEmpty shouldBe false
+            expandedItemIds shouldBe setOf()
+        }
+    }
+
+    @Test
+    fun expandItem() {
+        coEvery { announcementRepository.announcements() } returns flowOf(Dummies.announcements)
+        val announcementViewModel = AnnouncementViewModel(announcementRepository)
+
+        val testObserver = announcementViewModel
+            .uiModel
+            .test()
+
+        announcementViewModel.expandItem(Dummies.announcements[0].id)
+        announcementViewModel.expandItem(Dummies.announcements[2].id)
+
+        val valueHistory = testObserver.valueHistory()
+        valueHistory[0] shouldBe AnnouncementViewModel.UiModel.EMPTY.copy(
+            isLoading = true,
+            expandedItemIds = setOf(Dummies.announcements[0].id, Dummies.announcements[2].id)
+        )
+        valueHistory[1].apply {
+            isLoading shouldBe false
+            announcements shouldBe Dummies.announcements
+            error shouldBe null
+            isEmpty shouldBe false
+            expandedItemIds shouldBe setOf(Dummies.announcements[0].id, Dummies.announcements[2].id)
         }
     }
 }
