@@ -8,6 +8,15 @@
         android:name="io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragment"
         android:label="@string/session_label"
         >
+        <deepLink
+            android:id="@+id/deepLink_sessions"
+            app:uri="https://droidkaigi.jp/2020/main/{tabIndex}"
+            />
+        <argument
+            android:name="tabIndex"
+            android:defaultValue="0"
+            app:argType="integer"
+            />
         <action
             android:id="@+id/action_session_to_session_detail"
             app:destination="@id/session_detail"
@@ -199,10 +208,12 @@
     <fragment
         android:id="@+id/floormap"
         android:name="io.github.droidkaigi.confsched2020.floormap.ui.FloorMapFragment"
-        android:label="@string/map_label">
+        android:label="@string/map_label"
+        >
         <deepLink
             android:id="@+id/deepLink_floormap"
-            app:uri="https://droidkaigi.jp/2020/floormap" />
+            app:uri="https://droidkaigi.jp/2020/floormap"
+            />
     </fragment>
     <fragment
         android:id="@+id/session_survey"
