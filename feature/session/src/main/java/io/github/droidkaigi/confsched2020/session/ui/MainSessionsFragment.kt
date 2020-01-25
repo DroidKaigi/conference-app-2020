@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -33,13 +32,10 @@ import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
-import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
 class MainSessionsFragment : DaggerFragment() {
-
-    private var binding: FragmentMainSessionsBinding by autoCleared()
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -55,29 +51,26 @@ class MainSessionsFragment : DaggerFragment() {
     @Inject
     lateinit var sessionItemFactory: SessionItem.Factory
 
-    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
+        setHasOptionsMenu(true)
+        return inflater.inflate(
             R.layout.fragment_main_sessions,
             container,
             false
         )
-        setHasOptionsMenu(true)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupSessionPager()
+        val binding = FragmentMainSessionsBinding.bind(view)
+        setupSessionPager(binding)
     }
 
-    private fun setupSessionPager() {
+    private fun setupSessionPager(binding: FragmentMainSessionsBinding) {
         val tabLayoutMediator = TabLayoutMediator(
             binding.sessionsTabLayout,
             binding.sessionsViewpager
@@ -87,7 +80,7 @@ class MainSessionsFragment : DaggerFragment() {
         // TODO: apply margin design
 //        binding.sessionsViewpager.pageMargin =
 //            resources.getDimensionPixelSize(R.dimen.session_pager_horizontal_padding)
-        progressTimeLatch = ProgressTimeLatch { showProgress ->
+        val progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.sessionsProgressBar.isVisible = showProgress
         }.apply {
             loading = true

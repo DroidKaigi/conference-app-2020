@@ -186,7 +186,8 @@ object Dep {
             "com.willowtreeapps.hyperion:hyperion-crash:$version",
             "com.willowtreeapps.hyperion:hyperion-shared-preferences:$version",
             "com.willowtreeapps.hyperion:hyperion-geiger-counter:$version",
-            "com.willowtreeapps.hyperion:hyperion-build-config:$version"
+            "com.willowtreeapps.hyperion:hyperion-build-config:$version",
+            "com.willowtreeapps.hyperion:hyperion-plugin:$version"
         )
     }
 
@@ -228,5 +229,9 @@ object Dep {
     object Store {
         val version = "4.0.0-alpha01"
         val store = "com.dropbox.mobile.store:store4:$version"
+    }
+
+    object Google {
+        val autoservice = "com.google.auto.service:auto-service:1.0-rc6"
     }
 }

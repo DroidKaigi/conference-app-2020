@@ -15,6 +15,7 @@ import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionFeedback
 import io.github.droidkaigi.confsched2020.model.SessionId
+import io.github.droidkaigi.confsched2020.model.SessionList
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import javax.inject.Inject
@@ -42,7 +43,7 @@ internal class DataSessionRepository @Inject constructor(
         return sessionsFlow.map { sessions ->
             val speechSessions = sessions.filterIsInstance<SpeechSession>()
             SessionContents(
-                sessions = sessions,
+                sessions = SessionList(sessions),
                 speakers = speechSessions.flatMap { it.speakers }.distinct(),
                 langs = Lang.values().toList(),
                 langSupports = LangSupport.values().toList(),

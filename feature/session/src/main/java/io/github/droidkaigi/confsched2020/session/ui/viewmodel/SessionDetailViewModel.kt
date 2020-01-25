@@ -11,6 +11,7 @@ import io.github.droidkaigi.confsched2020.ext.combine
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
+import io.github.droidkaigi.confsched2020.model.TextExpandState
 import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Session
@@ -28,10 +29,11 @@ class SessionDetailViewModel @AssistedInject constructor(
     data class UiModel(
         val isLoading: Boolean,
         val error: AppError?,
-        val session: Session?
+        val session: Session?,
+        val showEllipsis: Boolean
     ) {
         companion object {
-            val EMPTY = UiModel(false, null, null)
+            val EMPTY = UiModel(false, null, null, true)
         }
     }
 
@@ -48,14 +50,19 @@ class SessionDetailViewModel @AssistedInject constructor(
     private val favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
         MutableLiveData(LoadingState.Loaded)
 
+    private val descriptionTextExpandStateLiveData: MutableLiveData<TextExpandState> =
+        MutableLiveData(TextExpandState.COLLAPSED)
+
     // Produce UiModel
     val uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
         liveData1 = sessionLoadStateLiveData,
-        liveData2 = favoriteLoadingStateLiveData
+        liveData2 = favoriteLoadingStateLiveData,
+        liveData3 = descriptionTextExpandStateLiveData
     ) { current: UiModel,
         sessionLoadState: LoadState<Session>,
-        favoriteState: LoadingState ->
+        favoriteState: LoadingState,
+        descriptionTextExpandState: TextExpandState ->
         val isLoading =
             sessionLoadState.isLoading || favoriteState.isLoading
         val sessions = when (sessionLoadState) {
@@ -66,6 +73,8 @@ class SessionDetailViewModel @AssistedInject constructor(
                 current.session
             }
         }
+        val showEllipsis = descriptionTextExpandState == TextExpandState.COLLAPSED
+
         UiModel(
             isLoading = isLoading,
             error = sessionLoadState
@@ -74,7 +83,8 @@ class SessionDetailViewModel @AssistedInject constructor(
                 ?: favoriteState
                     .getErrorIfExists()
                     .toAppError(),
-            session = sessions
+            session = sessions,
+            showEllipsis = showEllipsis
         )
     }
 
@@ -88,6 +98,10 @@ class SessionDetailViewModel @AssistedInject constructor(
                 favoriteLoadingStateLiveData.value = LoadingState.Error(e)
             }
         }
+    }
+
+    fun expandDescription() {
+        descriptionTextExpandStateLiveData.value = TextExpandState.EXPANDED
     }
 
     @AssistedInject.Factory

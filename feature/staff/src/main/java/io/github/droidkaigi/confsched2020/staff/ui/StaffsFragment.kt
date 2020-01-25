@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -36,21 +35,17 @@ import io.github.droidkaigi.confsched2020.staff.ui.item.StaffItem
 import io.github.droidkaigi.confsched2020.staff.ui.viewmodel.StaffsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
-import io.github.droidkaigi.confsched2020.util.autoCleared
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Provider
 
+@FlowPreview
 class StaffsFragment : Fragment() {
 
-    private var binding: FragmentStaffsBinding by autoCleared()
-
-    @FlowPreview
     @Inject
     lateinit var staffsFactory: Provider<StaffsViewModel>
-    @FlowPreview
     private val staffsViewModel by assistedViewModels {
         staffsFactory.get()
     }
@@ -64,25 +59,21 @@ class StaffsFragment : Fragment() {
     @Inject
     lateinit var staffItemFactory: StaffItem.Factory
 
-    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
+        return inflater.inflate(
             R.layout.fragment_staffs,
             container,
             false
         )
-        return binding.root
     }
 
-    @FlowPreview
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentStaffsBinding.bind(view)
 
         val appComponent = (requireContext().applicationContext as App).appComponent
         val component = DaggerStaffComponent.factory()
@@ -92,7 +83,7 @@ class StaffsFragment : Fragment() {
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.staffRecycler.adapter = groupAdapter
 
-        progressTimeLatch = ProgressTimeLatch { showProgress ->
+        val progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
             loading = true
@@ -119,6 +110,7 @@ fun readFromLocal(staffDatabase: StaffDatabase): Flow<StaffContents> {
 
 private fun StaffEntity.toStaff(): Staff = Staff(id, name, iconUrl, profileUrl)
 
+@FlowPreview
 @Module
 class StaffModule(private val fragment: StaffsFragment) {
     @PageScope
@@ -127,7 +119,6 @@ class StaffModule(private val fragment: StaffsFragment) {
         return fragment.viewLifecycleOwnerLiveData
     }
 
-    @FlowPreview
     @Provides
     fun provideStaffsContentsStore(
         api: DroidKaigiApi,
@@ -143,6 +134,7 @@ class StaffModule(private val fragment: StaffsFragment) {
     }
 }
 
+@FlowPreview
 @PageScope
 @Component(
     modules = [

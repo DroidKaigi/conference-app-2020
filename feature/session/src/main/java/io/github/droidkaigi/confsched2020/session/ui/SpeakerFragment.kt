@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.distinctUntilChanged
@@ -27,12 +26,9 @@ import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerSessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SpeakerViewModel
 import io.github.droidkaigi.confsched2020.util.AndroidRTransition
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
-import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 
 class SpeakerFragment : DaggerFragment() {
-
-    private var binding: FragmentSpeakerBinding by autoCleared()
 
     @Inject lateinit var speakerViewModelFactory: SpeakerViewModel.Factory
     private val speakerViewModel by assistedViewModels {
@@ -43,7 +39,6 @@ class SpeakerFragment : DaggerFragment() {
     @Inject lateinit var speakerSessionItemFactory: SpeakerSessionItem.Factory
 
     private val navArgs: SpeakerFragmentArgs by navArgs()
-    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,19 +53,18 @@ class SpeakerFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
+        return inflater.inflate(
             R.layout.fragment_speaker,
             container,
             false
         )
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentSpeakerBinding.bind(view)
         postponeEnterTransition()
-        progressTimeLatch = ProgressTimeLatch { showProgress ->
+        val progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
             loading = true

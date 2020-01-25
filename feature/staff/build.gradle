@@ -14,7 +14,6 @@ dependencies {
     implementation project(':feature:system')
 
     implementation project(':corecomponent:androidcomponent')
-    implementation project(':corecomponent:androidtestcomponent')
     implementation project(":data:repository")
     implementation project(":data:api")
     implementation project(":data:db")
@@ -28,7 +27,6 @@ dependencies {
     implementation Dep.AndroidX.recyclerView
     implementation Dep.AndroidX.emoji
     implementation Dep.AndroidX.design
-
 
     implementation Dep.Dagger.core
     implementation Dep.Dagger.androidSupport
@@ -44,11 +42,11 @@ dependencies {
 
     implementation Dep.Store.store
 
+    testImplementation project(':corecomponent:androidtestcomponent')
     testImplementation Dep.Test.junit
     testImplementation Dep.Test.kotlinTestAssertions
     testImplementation Dep.MockK.jvm
     androidTestImplementation Dep.Test.testRunner
     androidTestImplementation Dep.Test.espressoCore
 }
-
 

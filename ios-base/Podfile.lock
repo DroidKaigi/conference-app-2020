@@ -542,6 +542,7 @@ PODS:
   - MotionAnimator (2.8.1):
     - MotionInterchange (~> 1.6)
   - MotionInterchange (1.6.0)
+  - Nuke (8.4.0)
   - RxCocoa (5.0.1):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
@@ -551,6 +552,7 @@ PODS:
 
 DEPENDENCIES:
   - MaterialComponents
+  - Nuke
   - RxCocoa
   - RxSwift
 
@@ -561,6 +563,7 @@ SPEC REPOS:
     - MDFTextAccessibility
     - MotionAnimator
     - MotionInterchange
+    - Nuke
     - RxCocoa
     - RxRelay
     - RxSwift
@@ -571,10 +574,11 @@ SPEC CHECKSUMS:
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
   MotionAnimator: ee16aa30567c5bae0fb2750c132915829cfaaf8a
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
+  Nuke: fa6f784c4f7e1c0f9313668510186c68b7af2509
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
 
-PODFILE CHECKSUM: 947df7506d7b65359e035f0f3a4440ba9c41a84f
+PODFILE CHECKSUM: cdc108501256ef64e833c70a2ca7384bedcbc67e
 
 COCOAPODS: 1.8.4
