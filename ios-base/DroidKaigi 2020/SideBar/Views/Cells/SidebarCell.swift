@@ -5,8 +5,9 @@ final class SidebarCell: UITableViewCell {
 
     @IBOutlet weak var iconImageView: UIImageView! {
         didSet {
-            iconImageView.image?.withRenderingMode(.alwaysTemplate)
-            iconImageView.image = iconImageView.image?.tint(with: notSelectedColor)
+            iconImageView.image = iconImageView.image?
+                .withRenderingMode(.alwaysTemplate)
+                .tint(with: notSelectedColor)
         }
     }
 
