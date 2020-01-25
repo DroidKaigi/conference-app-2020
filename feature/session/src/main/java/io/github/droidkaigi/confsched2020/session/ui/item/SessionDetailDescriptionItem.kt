@@ -51,13 +51,7 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
             )
             @Suppress("DEPRECATION") val ellipsisColor = context.resources.getColor(R.color.transparent)
             val detailText = fullDescription.substring(0, lastLineStartPosition) + lastLineText
-            val text = buildSpannedString {
-                append(detailText)
-                color(ellipsisColor) {
-                    append(ellipsis)
-                }
-            }
-            textView.setText(text, TextView.BufferType.SPANNABLE)
+            textView.setText(detailText, TextView.BufferType.SPANNABLE)
             textView.movementMethod = LinkMovementMethod.getInstance()
 
             moreTextView.visibility = View.VISIBLE
