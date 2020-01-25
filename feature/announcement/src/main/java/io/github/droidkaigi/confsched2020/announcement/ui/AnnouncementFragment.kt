@@ -86,7 +86,11 @@ class AnnouncementFragment : DaggerFragment() {
             binding.emptyMessage.isVisible = uiModel.isEmpty
             groupAdapter.update(
                 uiModel.announcements.map { announcement ->
-                    announcementItemFactory.create(announcement)
+                    val showEllipsis = !uiModel.expandedItemIds.contains(announcement.id)
+                    announcementItemFactory.create(
+                        announcement,
+                        showEllipsis
+                    ) { announcementViewModel.expandItem(announcement.id) }
                 }
             )
             uiModel.error?.let {
