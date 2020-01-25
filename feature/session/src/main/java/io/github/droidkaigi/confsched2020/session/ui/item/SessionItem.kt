@@ -71,9 +71,9 @@ class SessionItem @AssistedInject constructor(
                 root.findNavController().navigate(actionSessionToSessionDetail(session.id))
             }
             live.isVisible = session.isOnGoing
+            bindSessionMessage(session, viewBinding)
             title.text = session.title.ja
-            room.text = session.room.name.getByLang(defaultLang())
-            survey.isEnabled = session.isFinished
+            room.text = session.minutesRoom(defaultLang())
             imageRequestDisposables.clear()
             speakers.bindSpeaker()
         }
@@ -102,6 +102,19 @@ class SessionItem @AssistedInject constructor(
         imageButton: ImageButton
     ) {
         imageButton.isSelected = isFavorited
+    }
+
+    private fun bindSessionMessage(
+        session: Session,
+        viewBinding: ItemSessionBinding
+    ) {
+        (session as? SpeechSession)?.let {
+            viewBinding.sessionMessage.text = it.message?.getByLang(defaultLang())
+            viewBinding.sessionMessage.isVisible = it.hasMessage
+        }
+//        Test Code
+//        viewBinding.sessionMessage.text = "セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
+//        viewBinding.sessionMessage.isVisible = true
     }
 
     private fun ViewGroup.bindSpeaker() {

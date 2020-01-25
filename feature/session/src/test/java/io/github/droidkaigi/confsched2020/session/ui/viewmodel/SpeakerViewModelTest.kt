@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 import com.jraska.livedata.test
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionId
+import io.github.droidkaigi.confsched2020.model.SessionList
 import io.github.droidkaigi.confsched2020.model.SpeakerId
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.widget.component.MockkRule
@@ -53,11 +54,11 @@ class SpeakerViewModelTest {
 
         coEvery { sessionRepository.sessionContents() } returns flowOf(
             Dummies.sessionContents.copy(
-                sessions = listOf(
+                sessions = SessionList(listOf(
                     Dummies.serviceSession,
                     Dummies.speachSession1,
                     speachSession2
-                )
+                ))
             )
         )
         val speakerViewModel = SpeakerViewModel(

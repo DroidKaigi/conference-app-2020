@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.Navigation
@@ -24,7 +23,6 @@ import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
-import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -42,37 +40,34 @@ class AboutFragment : DaggerFragment() {
         systemViewModelProvider.get()
     }
 
-    private var binding: FragmentAboutBinding by autoCleared()
-
-    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
+        return inflater.inflate(
             R.layout.fragment_about,
             container,
             false
         )
-        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentAboutBinding.bind(view)
 
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.aboutRecycler.run {
             adapter = groupAdapter
             doOnApplyWindowInsets { recyclerView, insets, initialState ->
                 // Set a bottom padding due to the system UI is enabled.
-                recyclerView.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+                recyclerView.updatePadding(
+                    bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+                )
             }
         }
 
-        progressTimeLatch = ProgressTimeLatch { showProgress ->
+        ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
             loading = true

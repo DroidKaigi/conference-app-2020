@@ -1,17 +1,15 @@
-import UIKit
-import RxSwift
-import RxCocoa
 import MaterialComponents
+import RxCocoa
+import RxSwift
+import UIKit
 
-protocol FilterViewControllerDelegate: class {
+protocol FilterViewControllerDelegate: AnyObject {
     func shouldChangeTab(index: Int)
 }
 
 final class FilterViewController: UIViewController {
-
     private let disposeBag = DisposeBag()
 
-    private let appBar = MDCAppBar()
     private let tabBar = MDCTabBar()
 
     private var containerView: UIView = {
@@ -25,10 +23,14 @@ final class FilterViewController: UIViewController {
 
     private let embeddedViewAnimator = UIViewPropertyAnimator(duration: 0.8, curve: .easeInOut)
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = ApplicationScheme.shared.colorScheme.surfaceColor
+        view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
         setUpAppBar()
         setUpTabBar()
         setUpContainerView()
@@ -38,21 +40,20 @@ final class FilterViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        let embeddedFrame = self.frameForEmbeddedController()
-        self.containerView.frame = embeddedFrame
-        self.embeddedView?.frame = self.containerView.bounds
+        let embeddedFrame = frameForEmbeddedController()
+        containerView.frame = embeddedFrame
+        embeddedView?.frame = containerView.bounds
     }
 
     private func frameForEmbeddedController() -> CGRect {
-        var embeddedFrame = self.view.bounds
+        var embeddedFrame = view.bounds
         var insetHeader = UIEdgeInsets()
         let bottomMargin: CGFloat = 24
-        insetHeader.top = self.appBar.headerViewController.view.frame.maxY
-            + tabBar.bounds.maxY + bottomMargin
+        insetHeader.top = tabBar.bounds.maxY + bottomMargin
         embeddedFrame = embeddedFrame.inset(by: insetHeader)
 
-        if (embeddedView == nil) {
-            embeddedFrame.origin.y = self.view.bounds.maxY
+        if embeddedView == nil {
+            embeddedFrame.origin.y = view.bounds.maxY
         }
 
         return embeddedFrame
@@ -74,13 +75,12 @@ final class FilterViewController: UIViewController {
                                          style: .plain,
                                          target: self,
                                          action: nil)
-        self.navigationItem.leftBarButtonItems = [menuItem, logoItem]
-        self.navigationItem.rightBarButtonItems = [searchItem]
-
-        self.addChild(appBar.headerViewController)
-        appBar.addSubviewsToParent()
-        MDCAppBarColorThemer.applySemanticColorScheme(ApplicationScheme.shared.colorScheme, to: appBar)
-        appBar.navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        navigationItem.leftBarButtonItems = [menuItem, logoItem]
+        navigationItem.rightBarButtonItems = [searchItem]
+        navigationController?.navigationBar
+            .setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        edgesForExtendedLayout = []
     }
 
     private func setUpTabBar() {
@@ -98,25 +98,17 @@ final class FilterViewController: UIViewController {
         tabBar.sizeToFit()
         view.addSubview(tabBar)
         tabBar.translatesAutoresizingMaskIntoConstraints = false
-        tabBar.topAnchor.constraint(equalTo: appBar.headerViewController.view.bottomAnchor).isActive = true
+        tabBar.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tabBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tabBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
 
     private func setUpContainerView() {
-        self.view.addSubview(containerView)
+        view.addSubview(containerView)
 
         let viewController = SessionPageViewController(viewModel: viewModel, transitionStyle: .scroll, navigationOrientation: .horizontal)
         viewController.filterViewControllerDelegate = self
-        self.insert(viewController)
-
-        let height = UIScreen.main.bounds.height - 100
-        embeddedViewAnimator.addAnimations { [weak self] in
-            guard let self = self else { return }
-            self.containerView.frame.origin.y = height
-        }
-        embeddedViewAnimator.pausesOnCompletion = true
-        embeddedViewAnimator.isUserInteractionEnabled = true
+        insert(viewController)
 
         let panGesture = UIPanGestureRecognizer()
         panGesture.delegate = self
@@ -146,7 +138,7 @@ final class FilterViewController: UIViewController {
                     let movePercentage = moved.y / containerView.frame.height
                     let currentY = containerView.frame.origin.y
                     if (currentY <= baseY && isFocused)
-                    || (currentY >= baseY && !isFocused) {
+                        || (currentY >= baseY && !isFocused) {
                         break
                     }
                     if abs(movePercentage) > thresholdPercentage {
@@ -167,11 +159,11 @@ final class FilterViewController: UIViewController {
             .drive(Binder(self) { me, isFocusedOnEmbeddedView in
                 if isFocusedOnEmbeddedView {
                     UIView.animate(withDuration: 0.2) {
-                        me.containerView.frame.origin.y = 148
+                        me.containerView.frame.origin.y = me.view.frame.height - (me.embeddedView?.frame.height)!
                     }
                 } else {
                     UIView.animate(withDuration: 0.2) {
-                        me.containerView.frame.origin.y = UIScreen.main.bounds.height - 100
+                        me.containerView.frame.origin.y = me.view.frame.height - 100
                     }
                 }
             }).disposed(by: disposeBag)
@@ -180,28 +172,27 @@ final class FilterViewController: UIViewController {
 
 extension FilterViewController {
     func insert(_ controller: SessionPageViewController) {
-        if let controller = self.embeddedViewController,
-            let view = self.embeddedView {
+        if let controller = embeddedViewController,
+            let view = embeddedView {
             controller.willMove(toParent: nil)
             controller.removeFromParent()
-            self.embeddedViewController = nil
+            embeddedViewController = nil
 
             view.removeFromSuperview()
-            self.embeddedView = nil
+            embeddedView = nil
         }
         controller.willMove(toParent: self)
-        self.addChild(controller)
-        self.embeddedViewController = controller
+        addChild(controller)
+        embeddedViewController = controller
 
-        self.containerView.addSubview(controller.view)
-        self.embeddedView = controller.view
-        self.embeddedView?.backgroundColor = .white
+        containerView.addSubview(controller.view)
+        embeddedView = controller.view
+        embeddedView?.backgroundColor = .white
     }
 }
 
 extension FilterViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-
         if let panGesture = gestureRecognizer as? UIPanGestureRecognizer {
             let translation = panGesture.translation(in: gestureRecognizer.view)
             return abs(translation.x) < abs(translation.y)
