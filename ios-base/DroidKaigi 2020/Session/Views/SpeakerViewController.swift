@@ -1,5 +1,6 @@
 import Foundation
 import ios_combined
+import Nuke
 import UIKit
 
 final class SpeakerViewController: UIViewController {
@@ -9,6 +10,7 @@ final class SpeakerViewController: UIViewController {
             userImageView.layer.cornerRadius = userImageView.bounds.width / 2
         }
     }
+
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var tagLabel: UILabel!
     @IBOutlet weak var biographyLabel: UILabel!
@@ -16,7 +18,7 @@ final class SpeakerViewController: UIViewController {
     private var speaker: Speaker!
 
     static func instantiate(speaker: Speaker) -> SpeakerViewController {
-        let viewController =  UIStoryboard(name: "SpeakerViewController", bundle: .main).instantiateInitialViewController() as! SpeakerViewController
+        guard let viewController = UIStoryboard(name: "SpeakerViewController", bundle: .main).instantiateInitialViewController() as? SpeakerViewController else { fatalError() }
         viewController.speaker = speaker
         return viewController
     }
@@ -38,8 +40,10 @@ final class SpeakerViewController: UIViewController {
     }
 
     private func setupUI() {
-        if let imageUrl = speaker.imageUrl {
-            userImageView.loadImage(url: URL(string: imageUrl))
+        if
+            let imageUrl = speaker.imageUrl,
+            let url = URL(string: imageUrl) {
+            Nuke.loadImage(with: url, into: userImageView)
         }
         userNameLabel.text = speaker.name
         tagLabel.text = speaker.tagLine
