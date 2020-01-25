@@ -137,6 +137,10 @@ class BottomSheetSessionsFragment : DaggerFragment() {
                 binding.isEmptyFavoritePage = sessions.isEmpty()
             }
 
+            if (page == SessionPage.Event) {
+                binding.isEventPage = true
+            }
+
             // For Android Lint
             @Suppress("USELESS_CAST")
             binding.filteredSessionCount.text = getString(
