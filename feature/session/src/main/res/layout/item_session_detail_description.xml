@@ -50,5 +50,18 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text."
             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/session_description_more"
+            app:layout_constraintBaseline_toBaselineOf="@+id/session_description"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            android:padding="16dp"
+            android:text="@string/ellipsis_label"
+            android:textAppearance="?textAppearanceBody1"
+            android:textColor="?attr/colorSecondary"
+            android:background="?attr/selectableItemBackground"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
