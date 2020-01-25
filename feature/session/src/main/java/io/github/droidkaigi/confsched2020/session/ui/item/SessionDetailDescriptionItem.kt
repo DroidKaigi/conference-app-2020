@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import androidx.core.view.doOnPreDraw
+import androidx.core.view.isVisible
 import androidx.transition.TransitionManager
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -35,7 +36,7 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
         val fullDescription = session.desc
         val textView = binding.sessionDescription
         val moreTextView = binding.sessionDescriptionMore
-        moreTextView.visibility = View.GONE
+        moreTextView.isVisible = false
         textView.doOnPreDraw {
             textView.text = fullDescription
             // Return here if not more than the specified number of rows
@@ -54,8 +55,9 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
             textView.text = detailText
             textView.movementMethod = LinkMovementMethod.getInstance()
 
-            moreTextView.visibility = View.VISIBLE
+            moreTextView.isVisible = true
             moreTextView.setOnClickListener {
+                moreTextView.isVisible = false
                 TransitionManager.beginDelayedTransition(binding.itemRoot)
                 textView.text = fullDescription
                 showEllipsis = !showEllipsis
