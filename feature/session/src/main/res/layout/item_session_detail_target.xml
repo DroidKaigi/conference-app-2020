@@ -45,7 +45,6 @@
             android:id="@+id/divider_text_and_target"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="28dp"
             android:background="@color/black_alpha_12"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"

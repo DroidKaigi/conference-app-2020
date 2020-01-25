@@ -42,12 +42,14 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:layout_marginTop="22dp"
+            android:layout_marginBottom="28dp"
             android:lineSpacingExtra="8sp"
             android:textAppearance="?textAppearanceBody1"
             android:textColor="?android:attr/textColorPrimary"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text.This app use long text."
             />
 
