@@ -5,8 +5,6 @@ init:
 	mint run xcodegen
 	bundle install --path vendor/bundle
 	bundle exec pod install
-
-hooks:
 	@cp $(GIT_REPO)/ios-base/scripts/git-hooks/* $(GIT_DIR)/hooks
 
 xcode:
