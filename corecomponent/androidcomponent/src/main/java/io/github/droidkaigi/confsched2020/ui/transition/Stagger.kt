@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.droidkaigi.confsched2020.ui.animation
+package io.github.droidkaigi.confsched2020.ui.transition
 
 import android.animation.Animator
 import android.animation.AnimatorSet
@@ -25,6 +25,8 @@ import android.view.ViewGroup
 import androidx.transition.Fade
 import androidx.transition.SidePropagation
 import androidx.transition.TransitionValues
+import io.github.droidkaigi.confsched2020.ui.animation.LARGE_EXPAND_DURATION
+import io.github.droidkaigi.confsched2020.ui.animation.LINEAR_OUT_SLOW_IN
 
 /**
  * Transition for stagger effect.

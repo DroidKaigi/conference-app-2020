@@ -68,8 +68,13 @@ class SessionItem @AssistedInject constructor(
             }
             bindFavorite(session.isFavorited, favorite)
             root.setOnClickListener {
-                root.findNavController().navigate(actionSessionToSessionDetail(session.id))
+                val extra = FragmentNavigatorExtras(
+                    itemRoot to itemRoot.transitionName
+                )
+                root.findNavController()
+                    .navigate(actionSessionToSessionDetail(session.id, TRANSITION_NAME_SUFFIX), extra)
             }
+            itemRoot.transitionName = "${session.id}-$TRANSITION_NAME_SUFFIX"
             live.isVisible = session.isOnGoing
             title.text = session.title.ja
             room.text = session.minutesRoom(defaultLang())

@@ -27,7 +27,7 @@ import io.github.droidkaigi.confsched2020.staff.ui.di.StaffAssistedInjectModule
 import io.github.droidkaigi.confsched2020.staff.ui.item.StaffItem
 import io.github.droidkaigi.confsched2020.staff.ui.viewmodel.StaffsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
-import io.github.droidkaigi.confsched2020.ui.animation.Stagger
+import io.github.droidkaigi.confsched2020.ui.transition.Stagger
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
