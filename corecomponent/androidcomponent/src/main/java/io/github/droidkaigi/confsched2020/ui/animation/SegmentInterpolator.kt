@@ -18,6 +18,9 @@ package io.github.droidkaigi.confsched2020.ui.animation
 
 import android.animation.TimeInterpolator
 
+// This file is copied from https://github.com/android/animation-samples/tree/master/Motion
+// See https://github.com/android/animation-samples/blob/a42746572ca99fc2c4da437cb062109661e9fc92/Motion/app/src/main/java/com/example/android/motion/demo/SegmentInterpolator.kt
+
 /**
  * Takes a [base] interpolator and extracts out a segment from it as a new [TimeInterpolator].
  *

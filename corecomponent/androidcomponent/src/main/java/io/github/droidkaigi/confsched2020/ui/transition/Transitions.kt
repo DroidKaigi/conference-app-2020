@@ -22,6 +22,9 @@ import androidx.transition.Transition
 import androidx.transition.TransitionSet
 import io.github.droidkaigi.confsched2020.ui.animation.FAST_OUT_SLOW_IN
 
+// This file is copied from https://github.com/android/animation-samples/tree/master/Motion
+// See https://github.com/android/animation-samples/blob/a42746572ca99fc2c4da437cb062109661e9fc92/Motion/app/src/main/java/com/example/android/motion/demo/Transitions.kt
+
 /**
  * Creates a transition like [androidx.transition.AutoTransition], but customized to be more
  * true to Material Design.
