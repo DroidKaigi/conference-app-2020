@@ -38,6 +38,7 @@ class SessionsViewModel @Inject constructor(
         val error: AppError?,
         val dayToSessionsMap: Map<SessionPage.Day, SessionList>,
         val shouldScrollSessionPosition: Map<SessionPage, Int>,
+        val events: SessionList,
         val favoritedSessions: SessionList,
         val filters: Filters,
         val allFilters: Filters
@@ -48,6 +49,7 @@ class SessionsViewModel @Inject constructor(
                 null,
                 mapOf(),
                 mapOf(),
+                SessionList.EMPTY,
                 SessionList.EMPTY,
                 Filters(),
                 Filters()
@@ -106,6 +108,7 @@ class SessionsViewModel @Inject constructor(
                 .toAppError(),
             dayToSessionsMap = dayToSessionMap,
             shouldScrollSessionPosition = shouldScrollSessionPosition,
+            events = sessions.events,
             favoritedSessions = filteredSessions.favorited,
             filters = filters,
             allFilters = Filters(

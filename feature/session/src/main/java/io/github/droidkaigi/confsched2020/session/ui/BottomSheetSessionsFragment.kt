@@ -125,7 +125,7 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             val page = args.page
             val sessions = when (page) {
                 is SessionPage.Day -> uiModel.dayToSessionsMap[page].orEmpty()
-                SessionPage.Event -> listOf()
+                SessionPage.Event -> uiModel.events
                 SessionPage.Favorite -> uiModel.favoritedSessions
             }
             val count = sessions.filter { it.shouldCountForFilter }.count()
