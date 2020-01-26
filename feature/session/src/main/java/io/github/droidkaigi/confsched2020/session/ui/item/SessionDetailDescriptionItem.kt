@@ -14,15 +14,15 @@ import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailDescriptionBinding
 
 class SessionDetailDescriptionItem @AssistedInject constructor(
-    @Assisted private val session: Session
+    @Assisted private val session: Session,
+    @Assisted private var showEllipsis: Boolean,
+    @Assisted private val expandClickListener: () -> Unit
 ) :
     BindableItem<ItemSessionDetailDescriptionBinding>() {
 
     companion object {
         private const val ELLIPSIS_LINE_COUNT = 6
     }
-
-    private var showEllipsis = true
 
     override fun getLayout() = R.layout.item_session_detail_description
 
@@ -46,7 +46,6 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
                 textView.width - textView.paint.measureText(ellipsis),
                 TextUtils.TruncateAt.END
             )
-            @Suppress("DEPRECATION") val ellipsisColor = context.resources.getColor(R.color.transparent)
             val detailText = fullDescription.substring(0, lastLineStartPosition) + lastLineText
             textView.text = detailText
             textView.movementMethod = LinkMovementMethod.getInstance()
@@ -57,6 +56,7 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
                 TransitionManager.beginDelayedTransition(binding.itemRoot)
                 textView.text = fullDescription
                 showEllipsis = !showEllipsis
+                expandClickListener()
             }
             // Calculate and set coordinates to more button
             val dp = context.resources.displayMetrics.density
@@ -73,7 +73,9 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            session: Session
+            session: Session,
+            showEllipsis: Boolean,
+            expandClickListener: () -> Unit
         ): SessionDetailDescriptionItem
     }
 }

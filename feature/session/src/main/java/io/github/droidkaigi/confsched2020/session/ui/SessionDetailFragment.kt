@@ -122,7 +122,14 @@ class SessionDetailFragment : DaggerFragment() {
                 uiModel.error?.let { systemViewModel.onError(it) }
                 progressTimeLatch.loading = uiModel.isLoading
                 uiModel.session
-                    ?.let { session -> setupSessionViews(binding, adapter, session) }
+                    ?.let { session ->
+                        setupSessionViews(
+                            binding,
+                            adapter,
+                            session,
+                            uiModel.showEllipsis
+                        )
+                    }
             }
 
         binding.bottomAppBar.setOnMenuItemClickListener {
@@ -151,11 +158,15 @@ class SessionDetailFragment : DaggerFragment() {
     private fun setupSessionViews(
         binding: FragmentSessionDetailBinding,
         adapter: GroupAdapter<ViewHolder<*>>,
-        session: Session
+        session: Session,
+        showEllipsis: Boolean
     ) {
         val items = mutableListOf<Group>()
         items += sessionDetailTitleItemFactory.create(session)
-        items += sessionDetailDescriptionItemFactory.create(session)
+        items += sessionDetailDescriptionItemFactory.create(
+            session,
+            showEllipsis
+        ) { sessionDetailViewModel.expandDescription() }
         if (session.hasIntendedAudience)
             items += sessionDetailTargetItemFactory.create(session)
         if (session.hasSpeaker) {
