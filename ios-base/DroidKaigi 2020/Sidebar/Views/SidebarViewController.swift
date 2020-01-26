@@ -2,7 +2,7 @@ import Material
 import UIKit
 
 final class SidebarViewController: UITableViewController {
-    private enum SwitchViewControllerType: Int {
+    enum SwitchViewControllerType: Int {
         case timeline
         case about
         case info
@@ -14,8 +14,19 @@ final class SidebarViewController: UITableViewController {
 
     weak var rootViewController: UIViewController?
 
-    static func instantiate(rootViewController: UIViewController) -> SidebarViewController {
+    var switchType: SwitchViewControllerType?
+
+    struct Dependency {
+        let switchType: SwitchViewControllerType
+    }
+
+    func inject(with dependency: Dependency) {
+        switchType = dependency.switchType
+    }
+
+    static func instantiate(rootViewController: UIViewController, dependency: Dependency = .init(switchType: .timeline)) -> SidebarViewController {
         guard let viewController = UIStoryboard(name: "SidebarViewController", bundle: .main).instantiateInitialViewController() as? SidebarViewController else { fatalError() }
+        viewController.inject(with: dependency)
         viewController.rootViewController = rootViewController
         return viewController
     }
@@ -31,7 +42,7 @@ final class SidebarViewController: UITableViewController {
         super.viewDidAppear(animated)
 
         // select default cell (timeline)
-        let indexPath = IndexPath(row: SwitchViewControllerType.timeline.rawValue, section: 0)
+        let indexPath = IndexPath(row: switchType?.rawValue ?? SwitchViewControllerType.timeline.rawValue, section: 0)
         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
     }
 
@@ -48,7 +59,7 @@ final class SidebarViewController: UITableViewController {
             } else {
                 let vc = FilterViewController()
                 let nvc = NavigationController(rootViewController: vc)
-                let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc))
+                let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc, dependency: .init(switchType: switchType)))
                 navigationDrawerController?.transition(to: root, completion: { _ in
                     self.navigationDrawerController?.toggleLeftView()
                     })
@@ -64,7 +75,7 @@ final class SidebarViewController: UITableViewController {
             } else {
                 let vc = FloorMapViewController.instantiate()
                 let nvc = NavigationController(rootViewController: vc)
-                let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc))
+                let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc, dependency: .init(switchType: switchType)))
                 navigationDrawerController?.transition(to: root, completion: { _ in
                     self.navigationDrawerController?.toggleLeftView()
                })
