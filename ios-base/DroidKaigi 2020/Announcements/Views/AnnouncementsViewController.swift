@@ -14,10 +14,12 @@ final class AnnouncementsViewController: UIViewController {
         }
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     private let refreshControl = UIRefreshControl()
-
     private let viewModel: AnnouncementsViewModel
-
     private let disposeBag = DisposeBag()
 
     required init?(coder: NSCoder) {
@@ -32,6 +34,9 @@ final class AnnouncementsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationItem.title = "お知らせ"
 
         let dataSource = AnnouncementsDataSource()
 
