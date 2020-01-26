@@ -8,6 +8,7 @@ target 'DroidKaigi 2020' do
 
   # Pods for DroidKaigi 2020
   pod 'MaterialComponents'
+  pod 'Material'
   pod 'Nuke'
   pod 'RxSwift'
   pod 'RxCocoa'

@@ -1,4 +1,8 @@
 PODS:
+  - Material (3.1.8):
+    - Material/Core (= 3.1.8)
+  - Material/Core (3.1.8):
+    - Motion (~> 3.1.1)
   - MaterialComponents (101.0.1):
     - MaterialComponents/ActionSheet (= 101.0.1)
     - "MaterialComponents/ActionSheet+Theming (= 101.0.1)"
@@ -539,6 +543,9 @@ PODS:
     - MaterialComponents/private/Math
   - MDFInternationalization (2.0.0)
   - MDFTextAccessibility (2.0.0)
+  - Motion (3.1.3):
+    - Motion/Core (= 3.1.3)
+  - Motion/Core (3.1.3)
   - MotionAnimator (2.8.1):
     - MotionInterchange (~> 1.6)
   - MotionInterchange (1.6.0)
@@ -551,6 +558,7 @@ PODS:
   - RxSwift (5.0.1)
 
 DEPENDENCIES:
+  - Material
   - MaterialComponents
   - Nuke
   - RxCocoa
@@ -558,9 +566,11 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Material
     - MaterialComponents
     - MDFInternationalization
     - MDFTextAccessibility
+    - Motion
     - MotionAnimator
     - MotionInterchange
     - Nuke
@@ -569,9 +579,11 @@ SPEC REPOS:
     - RxSwift
 
 SPEC CHECKSUMS:
+  Material: a2a3f400a3b549d53ef89e56c58c4535b29db387
   MaterialComponents: 24aa776d7c9d680dbfaa1398f92b68a9a72538fa
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
+  Motion: cf1e060e489f6661126374d5c60dbd2ed991605c
   MotionAnimator: ee16aa30567c5bae0fb2750c132915829cfaaf8a
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   Nuke: fa6f784c4f7e1c0f9313668510186c68b7af2509
@@ -579,6 +591,6 @@ SPEC CHECKSUMS:
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
 
-PODFILE CHECKSUM: cdc108501256ef64e833c70a2ca7384bedcbc67e
+PODFILE CHECKSUM: 731e0ca3bf1842c9079478753e6e74074b52cfd7
 
 COCOAPODS: 1.8.4
