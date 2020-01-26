@@ -1,3 +1,4 @@
+import Material
 import UIKit
 
 @available(iOS 13.0, *)
@@ -15,8 +16,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         UINavigationBar.appearance().backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
         let vc = FilterViewController()
         let nvc = NavigationController(rootViewController: vc)
+        let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc))
         nvc.view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
-        window.rootViewController = nvc
+        window.rootViewController = root
         self.window = window
         self.window?.makeKeyAndVisible()
     }

@@ -1,3 +1,4 @@
+import Material
 import MaterialComponents
 import RxCocoa
 import RxSwift
@@ -81,6 +82,11 @@ final class FilterViewController: UIViewController {
             .setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         edgesForExtendedLayout = []
+
+        menuItem.rx.tap
+            .bind(to: Binder(self) { me, _ in
+                me.navigationDrawerController?.toggleLeftView()
+            }).disposed(by: disposeBag)
     }
 
     private func setUpTabBar() {
