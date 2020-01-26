@@ -14,15 +14,31 @@ final class SponsorViewDataSource: NSObject, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader,
-            let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SponsorCategoryHeaderView.identifier, for: indexPath) as? SponsorCategoryHeaderView {
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            guard let view = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: SponsorCategoryHeaderView.identifier,
+                for: indexPath
+            ) as? SponsorCategoryHeaderView else {
+                preconditionFailure()
+            }
             view.titleLabel.text = items[indexPath.section].category.title.uppercased()
             return view
-        } else if kind == UICollectionView.elementKindSectionFooter,
-            let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SponsorDividerView.identifier, for: indexPath) as? SponsorDividerView {
+
+        case UICollectionView.elementKindSectionFooter:
+            guard let view = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: SponsorDividerView.identifier,
+                for: indexPath
+            ) as? SponsorDividerView else {
+                preconditionFailure()
+            }
+            view.isLastSection = (indexPath.section == (items.count - 1))
             return view
-        } else {
-            return UICollectionReusableView()
+
+        default:
+            preconditionFailure()
         }
     }
 
@@ -32,7 +48,7 @@ final class SponsorViewDataSource: NSObject, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SponsorCell.identifier, for: indexPath) as? SponsorCell else {
-            return SponsorCell()
+            preconditionFailure()
         }
 
         let sponsor = items[indexPath.section].sponsors[indexPath.item]
@@ -40,9 +56,13 @@ final class SponsorViewDataSource: NSObject, UICollectionViewDataSource {
         cell.cornerRadius = 8
         cell.setShadowElevation(.cardResting, for: .normal)
 
-        let url = URL(string: sponsor.company.logoUrl)!
-        let options = ImageLoadingOptions(transition: .fadeIn(duration: 0.3))
-        Nuke.loadImage(with: url, options: options, into: cell.imageView)
+        if let url = URL(string: sponsor.company.logoUrl) {
+            let options = ImageLoadingOptions(transition: .fadeIn(duration: 0.3))
+            Nuke.loadImage(with: url, options: options, into: cell.imageView)
+        } else {
+            cell.imageView.image = nil
+        }
+        cell.imageView.layer.cornerRadius = cell.cornerRadius
 
         return cell
     }
@@ -57,14 +77,14 @@ extension SponsorViewDataSource: RxCollectionViewDataSourceType, SectionedViewDa
     }
 
     func model(at indexPath: IndexPath) throws -> Any {
-        items[indexPath.section].sponsors[indexPath.item]
+        return items[indexPath.section].sponsors[indexPath.item]
     }
 }
 
 extension SponsorViewDataSource: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
-            return .zero
+            preconditionFailure()
         }
 
         let width: CGFloat
@@ -77,7 +97,8 @@ extension SponsorViewDataSource: UICollectionViewDelegateFlowLayout {
                 - flowLayout.sectionInset.left
                 - flowLayout.sectionInset.right
             height = 112
-        default: // .gold, .supporter, .committeeSupport
+
+        case .gold, .supporter, .committeeSupport:
             width = collectionView.frame.width / 2
                 - flowLayout.sectionInset.left
                 - flowLayout.minimumInteritemSpacing / 2
@@ -86,6 +107,9 @@ extension SponsorViewDataSource: UICollectionViewDelegateFlowLayout {
             } else {
                 height = 72
             }
+
+        default:
+            preconditionFailure()
         }
 
         return CGSize(width: width, height: height)

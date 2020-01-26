@@ -78,7 +78,10 @@ final class SponsorViewController: UIViewController {
     }
 
     private func showCompanyWebSite(for sponsor: Sponsor) {
-        let url = URL(string: sponsor.company.url)!
+        guard let url = URL(string: sponsor.company.url) else {
+            // Do nothing if the URL is invalid.
+            return
+        }
         let vc = SFSafariViewController(url: url)
         present(vc, animated: true, completion: nil)
     }
