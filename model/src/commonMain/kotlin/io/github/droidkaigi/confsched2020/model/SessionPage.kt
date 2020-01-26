@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched2020.model
 
-@AndroidParcelize
 sealed class SessionPage : AndroidParcel {
 
     @AndroidParcelize
@@ -13,6 +12,7 @@ sealed class SessionPage : AndroidParcel {
         override val title = "My Plan"
     }
 
+    @AndroidParcelize
     open class Day(
         override val title: String,
         val day: Int
