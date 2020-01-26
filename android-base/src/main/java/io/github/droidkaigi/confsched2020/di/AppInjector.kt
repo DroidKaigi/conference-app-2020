@@ -58,7 +58,7 @@ object AppInjector {
                         f: Fragment,
                         context: Context
                     ) {
-                        if (f is Injectable) {
+                        if (f is Injectable || f is HasAndroidInjector) {
                             AndroidSupportInjection.inject(f)
                         }
                     }

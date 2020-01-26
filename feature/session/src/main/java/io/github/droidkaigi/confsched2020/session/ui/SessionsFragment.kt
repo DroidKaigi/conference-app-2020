@@ -10,6 +10,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.core.view.children
 import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -22,8 +23,10 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.Module
 import dagger.Provides
+import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
-import dagger.android.support.DaggerFragment
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
@@ -41,7 +44,7 @@ import io.github.droidkaigi.confsched2020.ui.widget.onCheckedChanged
 import javax.inject.Inject
 import javax.inject.Provider
 
-class SessionsFragment : DaggerFragment() {
+class SessionsFragment : Fragment(), HasAndroidInjector {
 
     private lateinit var overrideBackPressedCallback: OnBackPressedCallback
 
@@ -64,6 +67,11 @@ class SessionsFragment : DaggerFragment() {
     private val args: SessionsFragmentArgs by lazy {
         SessionsFragmentArgs.fromBundle(arguments ?: Bundle())
     }
+
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

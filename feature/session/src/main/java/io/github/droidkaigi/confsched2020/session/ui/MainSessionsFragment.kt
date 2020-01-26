@@ -19,8 +19,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.soywiz.klock.DateTime
 import dagger.Module
 import dagger.Provides
+import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
-import dagger.android.support.DaggerFragment
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.model.SessionPage
@@ -35,7 +37,7 @@ import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
-class MainSessionsFragment : DaggerFragment() {
+class MainSessionsFragment : Fragment(), HasAndroidInjector {
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -50,6 +52,11 @@ class MainSessionsFragment : DaggerFragment() {
 
     @Inject
     lateinit var sessionItemFactory: SessionItem.Factory
+
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     override fun onCreateView(
         inflater: LayoutInflater,
