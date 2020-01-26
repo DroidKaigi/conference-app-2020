@@ -70,7 +70,7 @@ kotlin {
             implementation Dep.Test.KotlinMultiPlatform.commonModuleTestAnnotations
             implementation Dep.MockK.common
         }
-        jvmTest {
+        test {
             dependsOn jvmMain
             dependencies {
                 implementation Dep.Test.KotlinMultiPlatform.jvmModuleTest

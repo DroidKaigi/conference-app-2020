@@ -14,8 +14,8 @@ import org.junit.runners.Parameterized
 class FiltersTest {
 
     private companion object {
-        val room1 = Room(10, "room1")
-        val room2 = Room(11, "room2")
+        val room1 = Room(10, LocaledString("room1", "room1"), 1)
+        val room2 = Room(11, LocaledString("room2", "room2"), 2)
         val category1 = Category(10, LocaledString("ツール1", "Tool1"))
         val category2 = Category(11, LocaledString("ツール2", "Tool2"))
     }
@@ -237,7 +237,7 @@ data class Param<T>(
             title = title,
             filters = Filters(audienceCategories = filterItem),
             sessionSetup = {
-                every { forBeginners } returns isForBeginners
+                every { isForBeginners } returns isForBeginners
             },
             expected = expected
         )
