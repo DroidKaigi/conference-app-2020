@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -28,7 +27,6 @@ import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.model.Contributor
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
-import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -44,32 +42,27 @@ class ContributorsFragment : Fragment() {
     }
     @Inject lateinit var contributorItemFactory: ContributorItem.Factory
 
-    private var binding: FragmentContributorsBinding by autoCleared()
-    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
-    private var groupAdapter: GroupAdapter<ViewHolder<*>> by autoCleared()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
+        return inflater.inflate(
             R.layout.fragment_contributors,
             container,
             false
         )
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         inject()
+        val binding = FragmentContributorsBinding.bind(view)
 
-        groupAdapter = GroupAdapter()
+        val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.contributorRecycler.adapter = groupAdapter
 
-        progressTimeLatch = ProgressTimeLatch { showProgress ->
+        val progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
             loading = true

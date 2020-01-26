@@ -48,6 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:textColor="?colorOnBackground"
+            android:textColorLink="@color/design_default_color_secondary"
+            android:autoLink="web"
             app:layout_constraintEnd_toEndOf="@+id/guideline_end"
             app:layout_constraintStart_toStartOf="@+id/announcement_title"
             app:layout_constraintTop_toBottomOf="@+id/announcement_title"

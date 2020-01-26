@@ -10,6 +10,7 @@ executors:
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.daemon=false -Dorg.gradle.parallel=false'
       JUNIT_TEST_RESULT_DIR: test-results/junit
       JUNIT_TEST_REPORT_DIR: test-reports/
+      KTLINT_REPORT_DIR: ktlint-repots/
 
 commands:
   restore_and_save_gradle_cache:
@@ -65,10 +66,13 @@ jobs:
       - restore_and_save_gradle_cache
       - run: ./gradlew lintDebug testDebugUnitTest ktlint --continue --offline || true
       - run: .ci/scripts/collect-test-artifacts.bash
+      - run: .ci/scripts/collect-ktlint-artifacts.bash
       - store_test_results:
           path: test-results/junit
       - store_artifacts:
           path: test-reports
+      - store_artifacts:
+          path: ktlint-reports
       - restore_and_save_bundler_cache
       - run: .circleci/android/danger.bash
 

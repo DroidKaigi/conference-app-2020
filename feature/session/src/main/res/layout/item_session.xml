@@ -72,6 +72,19 @@
             />
 
         <TextView
+            android:id="@+id/session_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            android:textAppearance="@style/TextAppearance.DroidKaigi.SessionMessage"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/room"
+            tools:text="セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
+            />
+
+        <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -83,7 +96,7 @@
             android:lineSpacingExtra="8sp"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/room"
+            app:layout_constraintTop_toBottomOf="@id/session_message"
             tools:text="マルチモジュールなプロジェクトでテストはどう変わる？"
             />
 
@@ -101,28 +114,5 @@
             app:layout_constraintTop_toBottomOf="@id/title"
             />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/survey"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:minHeight="24dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:text="@string/session_survey_label"
-            android:textAppearance="?attr/textAppearanceCaption"
-            android:textColor="@color/survey_button"
-            android:textSize="10sp"
-            app:icon="@drawable/ic_add_comment_24dp"
-            app:iconPadding="8dp"
-            app:iconSize="14dp"
-            app:iconTint="@color/survey_button"
-            app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/speakers"
-            app:strokeColor="@color/survey_button"
-            app:strokeWidth="1dp"
-            tools:enabled="false"
-            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

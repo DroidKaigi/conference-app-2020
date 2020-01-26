@@ -20,11 +20,18 @@ targets:
         postBuildScripts:
             - path: scripts/format.sh
               name: "Run Format"
+        testTargets:
+            - DroidKaigi 2020Tests
     DroidKaigi 2020Tests:
         type: bundle.unit-test
         platform: iOS
         deploymentTarget: "12.0"
         sources: DroidKaigi 2020Tests
+        dependencies:
+            - target: DroidKaigi 2020
+        settings:
+            INFOPLIST_FILE: DroidKaigi 2020Tests/info.plist
+            TEST_HOST: $(BUILT_PRODUCTS_DIR)/DroidKaigi 2020.app/DroidKaigi 2020
     DroidKaigi 2020UITests:
         type: bundle.ui-testing
         platform: iOS
