@@ -47,7 +47,7 @@ final class SidebarViewController: UITableViewController {
         case .about:
             break
         case .info:
-            let controller = AnnouncementsViewController(viewModel: AnnouncementsViewModel())
+            let controller = AnnouncementsViewController.instantiate()
             rootViewController?.pushViewController(controller, animated: true)
             rootViewController?.navigationDrawerController?.toggleLeftView()
         case .map:

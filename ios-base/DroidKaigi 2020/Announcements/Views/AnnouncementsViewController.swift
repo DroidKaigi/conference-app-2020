@@ -10,6 +10,7 @@ final class AnnouncementsViewController: UIViewController {
             tableView.separatorStyle = .none
             tableView.allowsSelection = false
             tableView.refreshControl = refreshControl
+            tableView.register(UINib(nibName: String(describing: AnnouncementCell.self), bundle: .none), forCellReuseIdentifier: String(describing: AnnouncementCell.self))
         }
     }
 
@@ -41,7 +42,8 @@ final class AnnouncementsViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
-        viewModel.announcements.map { _ in }
+        viewModel.announcements
+            .map { _ in }
             .drive(Binder(self) { target, _ in
                 target.refreshControl.endRefreshing()
             })
@@ -52,5 +54,11 @@ final class AnnouncementsViewController: UIViewController {
             .disposed(by: disposeBag)
 
         viewModel.viewDidLoad()
+    }
+}
+
+extension AnnouncementsViewController {
+    static func instantiate() -> AnnouncementsViewController {
+        AnnouncementsViewController(viewModel: AnnouncementsViewModel())
     }
 }

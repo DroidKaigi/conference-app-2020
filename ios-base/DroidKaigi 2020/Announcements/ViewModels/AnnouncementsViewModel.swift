@@ -1,10 +1,9 @@
 import Foundation
 import ios_combined
-import RxSwift
 import RxCocoa
+import RxSwift
 
 final class AnnouncementsViewModel {
-
     let announcements: Driver<[Announcement]>
     let error: Driver<KotlinError?>
 
@@ -17,8 +16,8 @@ final class AnnouncementsViewModel {
         let announcementsRelay = BehaviorRelay<[Announcement]>(value: [])
         let errorRelay = BehaviorRelay<KotlinError?>(value: nil)
 
-        self.announcements = announcementsRelay.asDriver()
-        self.error = errorRelay.asDriver()
+        announcements = announcementsRelay.asDriver()
+        error = errorRelay.asDriver()
 
         let provider = AnnouncementsDataProvider()
 
@@ -26,7 +25,8 @@ final class AnnouncementsViewModel {
             .flatMap { provider.fetch().asObservable().materialize() }
             .share()
 
-        fetchResult.map { $0.element ?? [] }
+        fetchResult.map { $0.element }
+            .filterNil()
             .bind(to: announcementsRelay)
             .disposed(by: disposeBag)
         fetchResult.map { $0.error as? KotlinError }

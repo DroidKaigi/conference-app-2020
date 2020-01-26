@@ -1,7 +1,7 @@
-import UIKit
-import RxSwift
-import RxCocoa
 import ios_combined
+import RxCocoa
+import RxSwift
+import UIKit
 
 final class AnnouncementsDataSource: NSObject, RxTableViewDataSourceType, UITableViewDataSource {
     typealias Element = [Announcement]
@@ -21,6 +21,8 @@ final class AnnouncementsDataSource: NSObject, RxTableViewDataSourceType, UITabl
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AnnouncementCell.self), for: indexPath) as! AnnouncementCell // swiftlint:disable:this force_cast
+        cell.configura(items[indexPath.item])
+        return cell
     }
 }

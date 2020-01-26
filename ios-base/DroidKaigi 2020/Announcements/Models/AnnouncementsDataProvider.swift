@@ -35,7 +35,8 @@ final class AnnouncementsDataProvider {
                 title: response.title,
                 content: response.content,
                 publishedAt: publishedAt,
-                type: type)
+                type: type
+            )
         }
     }
 
@@ -48,7 +49,8 @@ final class AnnouncementsDataProvider {
                 },
                 onError: { exception in
                     observer(.error(KotlinError(localizedDescription: exception.description())))
-                })
+                }
+            )
 
             return Disposables.create()
         }
