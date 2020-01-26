@@ -83,6 +83,11 @@ final class SessionViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+        dataSource.onTapSpeaker
+            .emit(onNext: { [weak self] speaker in
+                self?.navigationController?.pushViewController(SpeakerViewController.instantiate(speaker: speaker), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 
     func showSuggestView() {
