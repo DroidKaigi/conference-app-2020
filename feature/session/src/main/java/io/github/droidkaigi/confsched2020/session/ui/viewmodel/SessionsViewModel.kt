@@ -97,7 +97,8 @@ class SessionsViewModel @Inject constructor(
         val sessions = sessionContents.sessions
         val filteredSessions = sessions.filtered(filters)
         val dayToSessionMap = filteredSessions.dayToSessionMap
-        val shouldScrollSessionPosition = if(shouldScroll) filteredSessions.toPageToScrollPositionMap() else emptyMap()
+        val shouldScrollSessionPosition =
+            if (shouldScroll) filteredSessions.toPageToScrollPositionMap() else emptyMap()
 
         UiModel(
             isLoading = isLoading,
