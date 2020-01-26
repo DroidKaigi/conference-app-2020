@@ -1,9 +1,7 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -29,7 +27,7 @@ import io.github.droidkaigi.confsched2020.util.AndroidRTransition
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 
-class SpeakerFragment : Fragment(), Injectable {
+class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
 
     @Inject lateinit var speakerViewModelFactory: SpeakerViewModel.Factory
     private val speakerViewModel by assistedViewModels {
@@ -47,18 +45,6 @@ class SpeakerFragment : Fragment(), Injectable {
             .inflateTransition(AndroidRTransition.move).apply {
                 interpolator = AccelerateDecelerateInterpolator()
             }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(
-            R.layout.fragment_speaker,
-            container,
-            false
-        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

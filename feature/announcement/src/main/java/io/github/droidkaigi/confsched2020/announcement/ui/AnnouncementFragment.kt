@@ -2,9 +2,7 @@ package io.github.droidkaigi.confsched2020.announcement.ui
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
@@ -16,7 +14,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
-import dagger.android.support.DaggerFragment
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.announcement.R
 import io.github.droidkaigi.confsched2020.announcement.databinding.FragmentAnnouncementBinding
@@ -31,7 +28,7 @@ import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
-class AnnouncementFragment : Fragment(), Injectable {
+class AnnouncementFragment : Fragment(R.layout.fragment_announcement), Injectable {
 
     @Inject
     lateinit var announcementModelFactory: AnnouncementViewModel.Factory
@@ -47,18 +44,6 @@ class AnnouncementFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var announcementItemFactory: AnnouncementItem.Factory
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(
-            R.layout.fragment_announcement,
-            container,
-            false
-        )
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

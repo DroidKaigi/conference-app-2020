@@ -3,9 +3,7 @@ package io.github.droidkaigi.confsched2020.session.ui
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.core.view.children
@@ -44,7 +42,7 @@ import io.github.droidkaigi.confsched2020.ui.widget.onCheckedChanged
 import javax.inject.Inject
 import javax.inject.Provider
 
-class SessionsFragment : Fragment(), HasAndroidInjector {
+class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjector {
 
     private lateinit var overrideBackPressedCallback: OnBackPressedCallback
 
@@ -84,21 +82,9 @@ class SessionsFragment : Fragment(), HasAndroidInjector {
             }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        setHasOptionsMenu(true)
-        return inflater.inflate(
-            R.layout.fragment_sessions,
-            container,
-            false
-        )
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         val binding = FragmentSessionsBinding.bind(view)
         val sessionSheetBehavior = BottomSheetBehavior.from(binding.sessionsSheet)
 

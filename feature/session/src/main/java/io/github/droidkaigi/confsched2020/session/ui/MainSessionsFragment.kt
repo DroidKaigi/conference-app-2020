@@ -1,12 +1,10 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -37,7 +35,7 @@ import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
-class MainSessionsFragment : Fragment(), HasAndroidInjector {
+class MainSessionsFragment : Fragment(R.layout.fragment_main_sessions), HasAndroidInjector {
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -58,21 +56,9 @@ class MainSessionsFragment : Fragment(), HasAndroidInjector {
 
     override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        setHasOptionsMenu(true)
-        return inflater.inflate(
-            R.layout.fragment_main_sessions,
-            container,
-            false
-        )
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         val binding = FragmentMainSessionsBinding.bind(view)
         setupSessionPager(binding)
     }

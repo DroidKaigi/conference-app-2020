@@ -1,7 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -33,7 +32,7 @@ import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import javax.inject.Inject
 import javax.inject.Provider
 
-class BottomSheetSessionsFragment : Fragment(), Injectable {
+class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sessions), Injectable {
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -58,18 +57,6 @@ class BottomSheetSessionsFragment : Fragment(), Injectable {
     lateinit var sessionItemFactory: SessionItem.Factory
     private val args: BottomSheetSessionsFragmentArgs by lazy {
         BottomSheetSessionsFragmentArgs.fromBundle(arguments ?: Bundle())
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(
-            R.layout.fragment_bottom_sheet_sessions,
-            container,
-            false
-        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
