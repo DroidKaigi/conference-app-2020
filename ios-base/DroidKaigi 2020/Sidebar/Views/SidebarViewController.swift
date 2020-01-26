@@ -43,13 +43,33 @@ final class SidebarViewController: UITableViewController {
 
         switch switchType {
         case .timeline:
-            rootViewController?.navigationDrawerController?.toggleLeftView()
+            if let _ = UIApplication.topViewController() as? FilterViewController {
+                navigationDrawerController?.toggleLeftView()
+            } else {
+                let vc = FilterViewController()
+                let nvc = NavigationController(rootViewController: vc)
+                let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc))
+                navigationDrawerController?.transition(to: root, completion: { _ in
+                    self.navigationDrawerController?.toggleLeftView()
+                    })
+            }
+
         case .about:
             break
         case .info:
             break
         case .map:
-            break
+            if let _ = UIApplication.topViewController() as? FloorMapViewController {
+                navigationDrawerController?.toggleLeftView()
+            } else {
+                let vc = FloorMapViewController.instantiate()
+                let nvc = NavigationController(rootViewController: vc)
+                let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc))
+                navigationDrawerController?.transition(to: root, completion: { _ in
+                    self.navigationDrawerController?.toggleLeftView()
+               })
+            }
+
         case .sponsor:
             break
         case .contributor:
