@@ -26,6 +26,9 @@
                 <constraint firstItem="E1t-nx-CRA" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="QfY-Fv-JWg"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
+            <connections>
+                <outlet property="dividerView" destination="E1t-nx-CRA" id="plc-s7-RUk"/>
+            </connections>
             <point key="canvasLocation" x="132" y="139"/>
         </collectionReusableView>
     </objects>

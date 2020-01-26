@@ -14,18 +14,20 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="53"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIs-Lh-wCl">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIs-Lh-wCl">
                     <rect key="frame" x="16" y="24" width="288" height="29"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="29" id="lXo-a4-dx2"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <constraints>
-                <constraint firstItem="NIs-Lh-wCl" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" constant="16" id="CwA-LQ-1GF"/>
-                <constraint firstItem="NIs-Lh-wCl" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="24" id="DSD-dI-QTe"/>
-                <constraint firstItem="VXr-Tz-HHm" firstAttribute="bottom" secondItem="NIs-Lh-wCl" secondAttribute="bottom" id="ewK-Pw-KNC"/>
-                <constraint firstAttribute="trailing" secondItem="NIs-Lh-wCl" secondAttribute="trailing" constant="16" id="fwC-yk-30W"/>
+                <constraint firstItem="NIs-Lh-wCl" firstAttribute="bottom" secondItem="VXr-Tz-HHm" secondAttribute="bottom" id="1ma-aT-FGL"/>
+                <constraint firstItem="NIs-Lh-wCl" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" constant="16" id="eWi-Wx-RDR"/>
+                <constraint firstItem="VXr-Tz-HHm" firstAttribute="trailing" secondItem="NIs-Lh-wCl" secondAttribute="trailing" constant="16" id="pVR-61-Bka"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
             <connections>

@@ -63,7 +63,11 @@ final class SponsorViewController: UIViewController {
                                        target: self,
                                        action: nil)
         navigationItem.leftBarButtonItems = [menuItem]
-        navigationItem.title = "スポンサー"
+        if LangKt.defaultLang() == .ja {
+            navigationItem.title = "スポンサー"
+        } else {
+            navigationItem.title = "Sponsor"
+        }
         navigationController?.view.backgroundColor = ApplicationScheme.shared.colorScheme.surfaceColor
         navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onSurfaceColor
         navigationController?.navigationBar.backgroundColor = ApplicationScheme.shared.colorScheme.surfaceColor
