@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -21,6 +22,7 @@ import io.github.droidkaigi.confsched2020.announcement.R
 import io.github.droidkaigi.confsched2020.announcement.databinding.FragmentAnnouncementBinding
 import io.github.droidkaigi.confsched2020.announcement.ui.item.AnnouncementItem
 import io.github.droidkaigi.confsched2020.announcement.ui.viewmodel.AnnouncementViewModel
+import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
@@ -29,7 +31,7 @@ import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
-class AnnouncementFragment : DaggerFragment() {
+class AnnouncementFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var announcementModelFactory: AnnouncementViewModel.Factory
