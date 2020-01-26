@@ -8,6 +8,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
@@ -107,6 +108,8 @@ class MainActivity : DaggerAppCompatActivity() {
             view.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 topMargin = insets.systemWindowInsetTop + initialState.margins.top
             }
+        }
+        binding.toolbar.doOnLayout {
             // Invalidate because option menu cannot be displayed after screen rotation
             invalidateOptionsMenu()
         }
