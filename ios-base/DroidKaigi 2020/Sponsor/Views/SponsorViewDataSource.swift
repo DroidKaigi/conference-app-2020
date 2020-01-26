@@ -1,5 +1,4 @@
 import ios_combined
-import MaterialComponents
 import Nuke
 import RxCocoa
 import RxSwift
