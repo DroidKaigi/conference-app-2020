@@ -55,6 +55,14 @@ final class SponsorViewController: UIViewController {
         viewModel.viewDidLoad()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.surfaceColor
+        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onSurfaceColor
+        navigationController?.navigationBar.shadowImage = UIImage()
+    }
+
     private func setUpAppBar() {
         let menuImage = UIImage(named: "ic_menu")
         let templateMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
@@ -63,18 +71,17 @@ final class SponsorViewController: UIViewController {
                                        target: self,
                                        action: nil)
         navigationItem.leftBarButtonItems = [menuItem]
+
         if LangKt.defaultLang() == .ja {
             navigationItem.title = "スポンサー"
         } else {
             navigationItem.title = "Sponsors"
         }
-        navigationController?.view.backgroundColor = ApplicationScheme.shared.colorScheme.surfaceColor
-        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onSurfaceColor
-        navigationController?.navigationBar.backgroundColor = ApplicationScheme.shared.colorScheme.surfaceColor
-        navigationController?.navigationBar
-            .setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        edgesForExtendedLayout = []
+
+        menuItem.rx.tap
+            .bind(to: Binder(self) { me, _ in
+                me.navigationDrawerController?.toggleLeftView()
+            }).disposed(by: disposeBag)
     }
 
     private func showCompanyWebSite(for sponsor: Sponsor) {
