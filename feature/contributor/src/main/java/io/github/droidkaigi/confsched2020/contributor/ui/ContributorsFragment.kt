@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Component
@@ -22,10 +23,10 @@ import io.github.droidkaigi.confsched2020.contributor.ui.item.ContributorItem
 import io.github.droidkaigi.confsched2020.contributor.ui.viewmodel.ContributorsViewModel
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
-import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.stringRes
+import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.model.Contributor
-import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
@@ -35,10 +36,6 @@ class ContributorsFragment : Fragment() {
     @Inject lateinit var contributorsFactory: Provider<ContributorsViewModel>
     private val contributorsViewModel by assistedViewModels {
         contributorsFactory.get()
-    }
-    @Inject lateinit var systemViewModelProvider: Provider<SystemViewModel>
-    private val systemViewModel: SystemViewModel by assistedActivityViewModels {
-        systemViewModelProvider.get()
     }
     @Inject lateinit var contributorItemFactory: ContributorItem.Factory
 
@@ -68,11 +65,25 @@ class ContributorsFragment : Fragment() {
             loading = true
         }
 
+        binding.retryButton.setOnClickListener {
+            contributorsViewModel.onRetry()
+        }
+
         contributorsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             progressTimeLatch.loading = uiModel.isLoading
             groupAdapter.update(uiModel.contributors.toItems())
+            binding.retryButton.visibility =
+                if (uiModel.error != null && uiModel.contributors.isEmpty()) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
             uiModel.error?.let {
-                systemViewModel.onError(it)
+                showErrorSnackbar(
+                    binding.contributor,
+                    it,
+                    binding.retryButton.visibility != View.VISIBLE
+                )
             }
         }
     }
@@ -81,6 +92,20 @@ class ContributorsFragment : Fragment() {
         map {
             contributorItemFactory.create(it)
         }
+
+    private fun showErrorSnackbar(view: View, appError: AppError, showRetryAction: Boolean) {
+        Snackbar.make(
+            view,
+            appError.stringRes(),
+            Snackbar.LENGTH_LONG
+        ).apply {
+            if (showRetryAction) {
+                setAction(R.string.retry_label) {
+                    contributorsViewModel.onRetry()
+                }
+            }
+        }.show()
+    }
 
     private fun inject() {
         val appComponent = (requireContext().applicationContext as App).appComponent
