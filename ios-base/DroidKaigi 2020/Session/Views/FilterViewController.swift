@@ -78,8 +78,8 @@ final class FilterViewController: UIViewController {
                                          action: nil)
         navigationItem.leftBarButtonItems = [menuItem, logoItem]
         navigationItem.rightBarButtonItems = [searchItem]
-        navigationController?.navigationBar
-            .setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.primaryColor
+        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
         navigationController?.navigationBar.shadowImage = UIImage()
         edgesForExtendedLayout = []
 

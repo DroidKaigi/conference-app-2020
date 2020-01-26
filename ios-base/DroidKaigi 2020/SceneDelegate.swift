@@ -11,13 +11,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-
-        UINavigationBar.appearance().tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
-        UINavigationBar.appearance().backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
+        UINavigationBar.appearance().isTranslucent = false
         let vc = FilterViewController()
         let nvc = NavigationController(rootViewController: vc)
         let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc))
-        nvc.view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
         window.rootViewController = root
         self.window = window
         self.window?.makeKeyAndVisible()
