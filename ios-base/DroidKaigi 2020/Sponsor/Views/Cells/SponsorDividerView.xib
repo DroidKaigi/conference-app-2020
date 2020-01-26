@@ -15,14 +15,14 @@
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E1t-nx-CRA">
-                    <rect key="frame" x="8" y="0.0" width="304" height="1"/>
+                    <rect key="frame" x="16" y="0.0" width="288" height="1"/>
                     <color key="backgroundColor" systemColor="systemFillColor" red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
             </subviews>
             <constraints>
-                <constraint firstItem="E1t-nx-CRA" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" constant="8" id="5NF-aF-AT6"/>
+                <constraint firstItem="E1t-nx-CRA" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" constant="16" id="5NF-aF-AT6"/>
                 <constraint firstAttribute="bottom" secondItem="E1t-nx-CRA" secondAttribute="bottom" id="9b8-o1-Wro"/>
-                <constraint firstItem="VXr-Tz-HHm" firstAttribute="trailing" secondItem="E1t-nx-CRA" secondAttribute="trailing" constant="8" id="CGI-fd-smo"/>
+                <constraint firstItem="VXr-Tz-HHm" firstAttribute="trailing" secondItem="E1t-nx-CRA" secondAttribute="trailing" constant="16" id="CGI-fd-smo"/>
                 <constraint firstItem="E1t-nx-CRA" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="QfY-Fv-JWg"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>

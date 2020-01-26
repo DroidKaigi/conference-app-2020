@@ -66,7 +66,7 @@ final class SponsorViewController: UIViewController {
         if LangKt.defaultLang() == .ja {
             navigationItem.title = "スポンサー"
         } else {
-            navigationItem.title = "Sponsor"
+            navigationItem.title = "Sponsors"
         }
         navigationController?.view.backgroundColor = ApplicationScheme.shared.colorScheme.surfaceColor
         navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onSurfaceColor
