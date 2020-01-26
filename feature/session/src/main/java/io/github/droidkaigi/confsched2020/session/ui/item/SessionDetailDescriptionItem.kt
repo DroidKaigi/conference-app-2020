@@ -60,7 +60,9 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
             }
             // Calculate and set coordinates to more button
             val dp = context.resources.displayMetrics.density
-            val lastLineOffset = textView.layout.getLineForOffset(lastLineStartPosition + lastLineText.length)
+            val lastLineOffset = textView.layout.getLineForOffset(
+                lastLineStartPosition + lastLineText.length
+            )
             val x =
                 textView.layout.getPrimaryHorizontal(lastLineStartPosition + lastLineText.length)
             val firstLineBaseLine = textView.layout.getLineBaseline(0)
