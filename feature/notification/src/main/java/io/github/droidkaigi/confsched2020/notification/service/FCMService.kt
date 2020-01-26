@@ -4,10 +4,8 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
 import androidx.core.os.bundleOf
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import io.github.droidkaigi.confsched2020.ext.queryIntentAllActivities
 import io.github.droidkaigi.confsched2020.notification.NotificationChannelInfo
 import io.github.droidkaigi.confsched2020.notification.NotificationUtil
 import io.github.droidkaigi.confsched2020.notification.createDefaultNotificationChannel
@@ -24,7 +22,8 @@ class FCMService : FirebaseMessagingService() {
             }
         }
 
-        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(ACTION_TOKEN_PUBLISHED))
+        //:TODO add sendBroadcast
+        //LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(ACTION_TOKEN_PUBLISHED))
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -76,9 +75,10 @@ class FCMService : FirebaseMessagingService() {
         if (notification.link != null) {
             val intent = Intent(Intent.ACTION_VIEW).setData(notification.link)
 
-            if (packageManager.queryIntentAllActivities(intent).isNotEmpty()) {
-                return PendingIntent.getActivity(this, 0, intent, 0, options)
-            }
+            // :TODO add queryIntentAllActivities
+//            if (packageManager.queryIntentAllActivities(intent).isNotEmpty()) {
+//                return PendingIntent.getActivity(this, 0, intent, 0, options)
+//            }
         }
 
         return null
