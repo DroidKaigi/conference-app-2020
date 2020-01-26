@@ -1,7 +1,7 @@
-import UIKit
-import RxSwift
-import RxCocoa
 import ios_combined
+import RxCocoa
+import RxSwift
+import UIKit
 
 final class AnnouncementsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView! {
@@ -9,7 +9,7 @@ final class AnnouncementsViewController: UIViewController {
             tableView.tableFooterView = UIView()
             tableView.separatorStyle = .none
             tableView.allowsSelection = false
-            tableView.refreshControl = self.refreshControl
+            tableView.refreshControl = refreshControl
         }
     }
 
