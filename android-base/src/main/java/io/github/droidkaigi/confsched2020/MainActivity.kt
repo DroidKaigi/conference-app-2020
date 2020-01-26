@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
@@ -25,8 +26,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.Binds
 import dagger.Module
+import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.about.ui.AboutFragment
 import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentModule
@@ -66,7 +69,7 @@ import javax.inject.Provider
 import timber.log.Timber
 import timber.log.warn
 
-class MainActivity : DaggerAppCompatActivity() {
+class MainActivity : AppCompatActivity(), HasAndroidInjector {
     private val binding: ActivityMainBinding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(
             this,
@@ -87,6 +90,11 @@ class MainActivity : DaggerAppCompatActivity() {
     private val statusBarColors: SystemUiManager by lazy {
         SystemUiManager(this)
     }
+
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
