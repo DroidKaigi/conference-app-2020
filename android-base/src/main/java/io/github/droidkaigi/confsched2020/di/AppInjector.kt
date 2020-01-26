@@ -67,5 +67,3 @@ object AppInjector {
         }
     }
 }
-
-
