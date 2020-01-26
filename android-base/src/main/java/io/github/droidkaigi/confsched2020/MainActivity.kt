@@ -193,7 +193,7 @@ class MainActivity : DaggerAppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun setRippleColor(view : View, isIndigoBackground: Boolean) {
+    private fun setRippleColor(view: View, isIndigoBackground: Boolean) {
         (view.background as? RippleDrawable)?.setColor(
             ColorStateList.valueOf(this.getThemeColor(
                 if (isIndigoBackground) {
