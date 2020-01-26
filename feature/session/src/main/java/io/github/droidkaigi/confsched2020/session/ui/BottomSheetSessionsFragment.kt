@@ -156,7 +156,7 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             }
             binding.startFilter.text = getString(startFilterTextRes)
             groupAdapter.update(sessions.map {
-                sessionItemFactory.create(it, sessionsViewModel)
+                sessionItemFactory.create(it, sessionsViewModel, null)
             })
             uiModel.error?.let {
                 systemViewModel.onError(it)
