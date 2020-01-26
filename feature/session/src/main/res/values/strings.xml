@@ -5,6 +5,7 @@
     <string name="filter_now">Filtering</string>
     <string name="intended_audience_title">Intended audience</string>
     <string name="session_share" translatable="false">Share</string>
+    <string name="save_event_to_calendar" translatable="false">Save to Calendar</string>
     <string name="applicable_session">Applicable session: %1$d</string>
     <string name="filter_title" translatable="false">Filter</string>
     <string name="filter_reset">Reset</string>

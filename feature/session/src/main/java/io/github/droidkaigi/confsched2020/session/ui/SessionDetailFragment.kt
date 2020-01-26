@@ -26,6 +26,7 @@ import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
+import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToChrome
@@ -132,8 +133,26 @@ class SessionDetailFragment : DaggerFragment() {
                     }
             }
 
-        binding.bottomAppBar.setOnMenuItemClickListener {
-            handleNavigation(it.itemId)
+        binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.session_share -> {
+                    // do something
+                }
+                R.id.session_calendar -> {
+                    val session = binding.session ?: return@setOnMenuItemClickListener true
+                    systemViewModel.sendEventToCalendar(
+                        activity = requireActivity(),
+                        title = session.title.getByLang(defaultLang()),
+                        location = session.room.name.getByLang(defaultLang()),
+                        startDateTime = session.startTime,
+                        endDateTime = session.endTime
+                    )
+                }
+                else -> {
+                    handleNavigation(menuItem.itemId)
+                }
+            }
+            return@setOnMenuItemClickListener true
         }
     }
 
