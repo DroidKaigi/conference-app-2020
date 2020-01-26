@@ -32,12 +32,14 @@ class SessionDetailTitleItem @AssistedInject constructor(
                 binding.tags.addView(
                     Chip(context).apply {
                         text = categoryLabel
+                        setChipBackgroundColorResource(R.color.indigo_50)
                         isClickable = false
                     }
                 )
                 binding.tags.addView(
                     Chip(context).apply {
                         text = langLabel
+                        setChipBackgroundColorResource(R.color.light_blue_50)
                         isClickable = false
                     }
                 )
