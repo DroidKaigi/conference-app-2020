@@ -2,12 +2,12 @@
 
 We are currently working on the event. We are looking for contributors!
 
-DroidKaigi 2020 is a conference tailored for developers on 20th and 21st February 2020.
+DroidKaigi 2020 is a conference tailored for developers on 20th and 21st February 2020.  
 
 You can install the production app via Get it on Google Play.
 // TODO: Add link to Google Play
 
-And also, you can try the binary under development built on master branch through Try it on your device via DeployGate
+And also, you can try the binary under development built on master branch through Try it on your device via DeployGate  
 
 [<img src="https://dply.me/qo28h3/button/large" alt="Try it on your device via DeployGate">](https://dply.me/qo28h3#install)
 
@@ -19,9 +19,9 @@ And also, you can try the binary under development built on master branch throug
 
 # Contributing
 
-We always welcome any and all contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for more information
+We always welcome any and all contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for more information  
 
-For Japanese speakers, please see [CONTRIBUTING.ja.md](CONTRIBUTING.ja.md)
+For Japanese speakers, please see [CONTRIBUTING.ja.md](CONTRIBUTING.ja.md)  
 
 ## Requirements
 
@@ -76,7 +76,7 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 <img src="arts/viewmodel1.png" width="400px" />
 
-The [LiveData Kotlin Coroutines builder](https://developer.android.com/topic/libraries/architecture/coroutines#livedata) runs when LiveData becomes active.
+The [LiveData Kotlin Coroutines builder](https://developer.android.com/topic/libraries/architecture/coroutines#livedata) runs when LiveData becomes active.   
 And observe the data of the Coroutiens Flow of the repository.
 
 The LiveData becomes LoadState.Loading before the Coroutiens Flow is executed by Flow.toLoadingState(), and becomes LoadState.Loaded when finished.
@@ -99,8 +99,8 @@ class SessionsViewModel @Inject constructor(
 
 <img src="arts/viewmodel2.png" width="400px" />
 
-Construct UiModel LiveData from some such LiveData.
-The `combine` method works like RxJava's combineLatest.
+Construct UiModel LiveData from some such LiveData.  
+The `combine` method works like RxJava's combineLatest.  
 You can make the loading state of the screen from multiple LiveData states like `sessionLoadState.isLoading || favoriteState.isLoading`.
 
 ```kotlin
