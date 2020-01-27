@@ -126,6 +126,11 @@
             android:name="transitionNameSuffix"
             app:argType="string"
             />
+        <argument
+            android:name="searchQuery"
+            app:argType="string"
+            app:nullable="true"
+            />
 
         <action
             android:id="@+id/action_speaker_to_session_detail"

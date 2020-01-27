@@ -194,8 +194,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                             .navigate(
                                 actionSessionToSpeaker(
                                     speaker.id,
-                                    TRANSITION_NAME_SUFFIX
-                                ),
+                                    TRANSITION_NAME_SUFFIX,
+                                    searchQuery),
                                 extras
                             )
                     }

@@ -52,7 +52,7 @@ class SpeakerItem @AssistedInject constructor(
                 viewBinding.image to viewBinding.image.transitionName
             )
             viewBinding.root.findNavController()
-                .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX), extras)
+                .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX, searchQuery), extras)
         }
         viewBinding.name.text = speaker.name
         viewBinding.name.setSearchHighlight()

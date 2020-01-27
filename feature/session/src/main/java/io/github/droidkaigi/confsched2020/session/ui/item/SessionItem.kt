@@ -157,7 +157,7 @@ class SessionItem @AssistedInject constructor(
                     speakerImageView to speakerImageView.transitionName
                 )
                 it.findNavController()
-                    .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX), extras)
+                    .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX, null), extras)
             }
             bindSpeakerData(speaker, speakerNameView, speakerImageView)
         }
