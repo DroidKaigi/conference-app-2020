@@ -74,7 +74,12 @@ class SessionItem @AssistedInject constructor(
             }
             bindFavorite(session.isFavorited, favorite)
             root.setOnClickListener {
-                root.findNavController().navigate(actionSessionToSessionDetail(session.id, searchQuery))
+                root.findNavController().navigate(
+                    actionSessionToSessionDetail(
+                        session.id,
+                        searchQuery
+                    )
+                )
             }
             live.isVisible = session.isOnGoing
             bindSessionMessage(session, viewBinding)
@@ -156,8 +161,13 @@ class SessionItem @AssistedInject constructor(
                 val extras = FragmentNavigatorExtras(
                     speakerImageView to speakerImageView.transitionName
                 )
-                it.findNavController()
-                    .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX, null), extras)
+                it.findNavController().navigate(
+                    actionSessionToSpeaker(
+                        speaker.id,
+                        TRANSITION_NAME_SUFFIX,
+                        null),
+                    extras
+                )
             }
             bindSpeakerData(speaker, speakerNameView, speakerImageView)
         }
