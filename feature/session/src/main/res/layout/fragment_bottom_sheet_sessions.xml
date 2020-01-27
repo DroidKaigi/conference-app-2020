@@ -66,7 +66,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/start_filter"
+            android:text="@{isFiltered ? @string/filter_now : @string/start_filter}"
             android:textAppearance="@style/TextAppearance.DroidKaigi.Body2"
             app:icon="@drawable/ic_filter_list_black_24dp"
             app:isInvisible="@{(isEmptyFavoritePage &amp;&amp; !isFiltered) || isCollapsed || isEventPage}"
