@@ -45,10 +45,10 @@ class SpeakerDetailItem @AssistedInject constructor(
     override fun bind(viewBinding: ItemSpeakerDetailBinding, position: Int) {
         viewBinding.speaker = speaker
 
+        viewBinding.speakerName.setSearchHighlight()
+        viewBinding.speakerTagLine.setSearchHighlight()
         viewBinding.speakerDescription.movementMethod = LinkMovementMethod.getInstance()
-        viewBinding.speakerDescription.doOnPreDraw {
-            viewBinding.speakerDescription.setSearchHighlight()
-        }
+        viewBinding.speakerDescription.setSearchHighlight()
         viewBinding.speakerImage.transitionName = "${speaker.id}-$transitionNameSuffix"
 
         speaker.imageUrl ?: onImageLoadedCallback()
@@ -88,19 +88,22 @@ class SpeakerDetailItem @AssistedInject constructor(
     }
 
     private fun TextView.setSearchHighlight() {
-        if (searchQuery.isNullOrEmpty()) return
-        val highlightColor = context.getThemeColor(R.attr.colorSecondary)
-        val pattern = Pattern.compile(searchQuery, Pattern.CASE_INSENSITIVE)
-        val matcher = pattern.matcher(text)
-        val spannableStringBuilder = SpannableStringBuilder(text)
-        while (matcher.find()) {
-            spannableStringBuilder.setSpan(
-                BackgroundColorSpan(highlightColor),
-                matcher.start(),
-                matcher.end(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        doOnPreDraw {
+            if (searchQuery.isNullOrEmpty()) return@doOnPreDraw
+            val highlightColor = context.getThemeColor(R.attr.colorSecondary)
+            val pattern = Pattern.compile(searchQuery, Pattern.CASE_INSENSITIVE)
+            val matcher = pattern.matcher(text)
+            val spannableStringBuilder = SpannableStringBuilder(text)
+            while (matcher.find()) {
+                spannableStringBuilder.setSpan(
+                    BackgroundColorSpan(highlightColor),
+                    matcher.start(),
+                    matcher.end(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+            text = spannableStringBuilder
         }
-        text = spannableStringBuilder
     }
 
     @AssistedInject.Factory
