@@ -27,7 +27,7 @@ class AnnouncementsViewControllerTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func test_キャプチャ() {
+    func test_表示確認() {
         assertSnapshot(matching: controller, as: .image(on: .iPhoneSe))
         assertSnapshot(matching: controller, as: .image(on: .iPhoneX))
     }
