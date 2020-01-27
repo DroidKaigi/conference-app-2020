@@ -26,7 +26,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
         val pendingIntent = NavDeepLinkBuilder(context)
             .setGraph(R.navigation.navigation)
             .setDestination(R.id.session_detail)
-            .setArguments(SessionDetailFragmentArgs(SessionId(sessionId)).toBundle())
+            .setArguments(SessionDetailFragmentArgs(SessionId(sessionId), "").toBundle())
             .createTaskStackBuilder()
             .getPendingIntent(sessionId.hashCode(), PendingIntent.FLAG_UPDATE_CURRENT) ?: return
         showNotification(context, title, text, pendingIntent, channelId)
