@@ -1,7 +1,11 @@
 import ios_combined
 import RxSwift
 
-final class AnnouncementsDataProvider {
+protocol AnnouncementsDataProviderProtocol {
+    func fetch() -> Single<[Announcement]>
+}
+
+final class AnnouncementsDataProvider: AnnouncementsDataProviderProtocol {
     enum Transformer {
         static let dateFormatter: DateFormatter = {
             let formatter = DateFormatter()

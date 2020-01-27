@@ -3,7 +3,17 @@ import ios_combined
 import RxCocoa
 import RxSwift
 
-final class AnnouncementsViewModel {
+protocol AnnouncementsViewModelType {
+    // Output
+    var announcements: Driver<[Announcement]> { get }
+    var error: Driver<KotlinError?> { get }
+
+    // Input
+    func viewDidLoad()
+    func pullToRefresh()
+}
+
+final class AnnouncementsViewModel: AnnouncementsViewModelType {
     let announcements: Driver<[Announcement]>
     let error: Driver<KotlinError?>
 
@@ -12,14 +22,14 @@ final class AnnouncementsViewModel {
 
     private let disposeBag = DisposeBag()
 
-    init() {
+    init(
+        provider: AnnouncementsDataProviderProtocol
+    ) {
         let announcementsRelay = BehaviorRelay<[Announcement]>(value: [])
         let errorRelay = BehaviorRelay<KotlinError?>(value: nil)
 
         announcements = announcementsRelay.asDriver()
         error = errorRelay.asDriver()
-
-        let provider = AnnouncementsDataProvider()
 
         let fetchResult = Observable.merge(viewDidLoadReplay.asObservable(), pullToRefreshRelay.asObservable())
             .flatMap { provider.fetch().asObservable().materialize() }

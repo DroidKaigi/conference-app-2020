@@ -19,14 +19,14 @@ final class AnnouncementsViewController: UIViewController {
     }
 
     private let refreshControl = UIRefreshControl()
-    private let viewModel: AnnouncementsViewModel
+    private let viewModel: AnnouncementsViewModelType
     private let disposeBag = DisposeBag()
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(viewModel: AnnouncementsViewModel) {
+    init(viewModel: AnnouncementsViewModelType) {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
@@ -64,6 +64,6 @@ final class AnnouncementsViewController: UIViewController {
 
 extension AnnouncementsViewController {
     static func instantiate() -> AnnouncementsViewController {
-        AnnouncementsViewController(viewModel: AnnouncementsViewModel())
+        AnnouncementsViewController(viewModel: AnnouncementsViewModel(provider: AnnouncementsDataProvider()))
     }
 }
