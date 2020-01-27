@@ -97,7 +97,7 @@ class MainSessionsFragment : Fragment(R.layout.fragment_main_sessions), HasAndro
             object : TabLayout.OnTabSelectedListener {
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                     tab?.let {
-                        //                        sessionPagesActionCreator.reselectTab(SessionPage.pages[it.position])
+                        sessionsViewModel.onTabReselected()
                     }
                 }
 

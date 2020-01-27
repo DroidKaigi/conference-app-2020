@@ -97,7 +97,8 @@ class SessionsViewModel @Inject constructor(
         val sessions = sessionContents.sessions
         val filteredSessions = sessions.filtered(filters)
         val dayToSessionMap = filteredSessions.dayToSessionMap
-        val shouldScrollSessionPosition = filteredSessions.toPageToScrollPositionMap()
+        val shouldScrollSessionPosition =
+            if (shouldScroll) filteredSessions.toPageToScrollPositionMap() else emptyMap()
 
         UiModel(
             isLoading = isLoading,
@@ -191,5 +192,9 @@ class SessionsViewModel @Inject constructor(
 
     fun onScrolled() {
         shouldScrollCurrentSessionLiveData.value = false
+    }
+
+    fun onTabReselected() {
+        shouldScrollCurrentSessionLiveData.value = true
     }
 }
