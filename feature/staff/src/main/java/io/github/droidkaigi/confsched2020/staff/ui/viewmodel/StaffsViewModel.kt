@@ -14,9 +14,7 @@ import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
 
 @FlowPreview
-class StaffsViewModel @Inject constructor(
-    store: Store<Unit, StaffContents>
-) : ViewModel() {
+class StaffsViewModel @Inject constructor(store: Store<Unit, StaffContents>) : ViewModel() {
 
     data class UiModel(
         val isLoading: Boolean,
@@ -30,9 +28,9 @@ class StaffsViewModel @Inject constructor(
 
     // "stream" returns data along with the loading status.
     private val staffContentsLoadState: LiveData<StoreResponse<StaffContents>> =
-        store.stream(StoreRequest.cached(key = Unit, refresh = true)).asLiveData()
+        store.stream(StoreRequest.cached(key = Unit, refresh = false)).asLiveData()
 
-    //"get" get data directly, so you need to express the loading state yourself.
+    //"get" / "fetch" gets data directly, so you need to express the loading state yourself.
 //    private val staffContents: LiveData<StaffContents> = liveData { store.get(Unit) }
 
     val uiModel: LiveData<UiModel> = combine(
