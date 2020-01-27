@@ -197,20 +197,15 @@ class SessionItem @AssistedInject constructor(
         val highlightColor = context.getThemeColor(R.attr.colorSecondary)
         val pattern = Pattern.compile(searchQuery, Pattern.CASE_INSENSITIVE)
         val matcher = pattern.matcher(text)
-        var start = 0
-        var end = 0
-        while(matcher.find()) {
-            start = matcher.start()
-            end = matcher.end()
-        }
-        text = SpannableStringBuilder(text).apply {
-            setSpan(
+        val spannableStringBuilder = SpannableStringBuilder(text)
+        while (matcher.find()) {
+            spannableStringBuilder.setSpan(
                 BackgroundColorSpan(highlightColor),
-                start,
-                end,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
+                matcher.start(),
+                matcher.end(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
+        text = spannableStringBuilder
     }
 
     fun startSessionTime(): String = session.startTimeText
