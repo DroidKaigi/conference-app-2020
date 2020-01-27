@@ -29,7 +29,7 @@ class SessionDetailTitleItem @AssistedInject constructor(
     override fun bind(binding: ItemSessionDetailTitleBinding, position: Int) {
         binding.session = session
         binding.lang = defaultLang()
-        binding.title.doOnPreDraw { binding.title.setSearchHighlight() }
+        binding.title.setSearchHighlight()
         if (session is SpeechSession) {
             val langLabel = session.lang.text.getByLang(defaultLang())
             val categoryLabel = session.category.name.getByLang(defaultLang())
@@ -65,19 +65,22 @@ class SessionDetailTitleItem @AssistedInject constructor(
     override fun isSameAs(other: Item<*>?) = other is SessionDetailTitleItem
 
     private fun TextView.setSearchHighlight() {
-        if (searchQuery.isNullOrEmpty()) return
-        val highlightColor = context.getThemeColor(R.attr.colorSecondary)
-        val pattern = Pattern.compile(searchQuery, Pattern.CASE_INSENSITIVE)
-        val matcher = pattern.matcher(text)
-        val spannableStringBuilder = SpannableStringBuilder(text)
-        while (matcher.find()) {
-            spannableStringBuilder.setSpan(
-                BackgroundColorSpan(highlightColor),
-                matcher.start(),
-                matcher.end(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        doOnPreDraw {
+            if (searchQuery.isNullOrEmpty()) return@doOnPreDraw
+            val highlightColor = context.getThemeColor(R.attr.colorSecondary)
+            val pattern = Pattern.compile(searchQuery, Pattern.CASE_INSENSITIVE)
+            val matcher = pattern.matcher(text)
+            val spannableStringBuilder = SpannableStringBuilder(text)
+            while (matcher.find()) {
+                spannableStringBuilder.setSpan(
+                    BackgroundColorSpan(highlightColor),
+                    matcher.start(),
+                    matcher.end(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+            text = spannableStringBuilder
         }
-        text = spannableStringBuilder
     }
 
     @AssistedInject.Factory
