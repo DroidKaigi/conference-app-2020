@@ -1,9 +1,7 @@
 package io.github.droidkaigi.confsched2020.staff.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -28,7 +26,7 @@ import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
-class StaffsFragment : Fragment() {
+class StaffsFragment : Fragment(R.layout.fragment_staffs) {
 
     @Inject
     lateinit var staffsFactory: Provider<StaffsViewModel>
@@ -44,18 +42,6 @@ class StaffsFragment : Fragment() {
 
     @Inject
     lateinit var staffItemFactory: StaffItem.Factory
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(
-            R.layout.fragment_staffs,
-            container,
-            false
-        )
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

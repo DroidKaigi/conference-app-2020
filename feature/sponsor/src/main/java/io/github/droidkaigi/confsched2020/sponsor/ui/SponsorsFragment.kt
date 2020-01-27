@@ -1,10 +1,9 @@
 package io.github.droidkaigi.confsched2020.sponsor.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -15,7 +14,7 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
-import dagger.android.support.DaggerFragment
+import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
@@ -33,7 +32,7 @@ import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
-class SponsorsFragment : DaggerFragment() {
+class SponsorsFragment : Fragment(R.layout.fragment_sponsors), Injectable {
 
     @Inject lateinit var sponsorsModelFactory: Provider<SponsorsViewModel>
     private val sponsorsViewModel by assistedViewModels {
@@ -49,18 +48,6 @@ class SponsorsFragment : DaggerFragment() {
     @Inject lateinit var sponsorItemFactory: SponsorItem.Factory
 
     @Inject lateinit var categoryHeaderItemFactory: CategoryHeaderItem.Factory
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(
-            R.layout.fragment_sponsors,
-            container,
-            false
-        )
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

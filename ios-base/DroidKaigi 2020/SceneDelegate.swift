@@ -12,7 +12,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         UINavigationBar.appearance().isTranslucent = false
+
+        let backButtonBackgroundImage = #imageLiteral(resourceName: "ic_back")
+        UINavigationBar.appearance().backIndicatorImage = backButtonBackgroundImage
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = backButtonBackgroundImage
+        
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
+
         let vc = FilterViewController()
         let nvc = NavigationController(rootViewController: vc)
         let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc))

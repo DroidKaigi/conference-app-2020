@@ -1,11 +1,10 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -19,7 +18,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
-import dagger.android.support.DaggerFragment
+import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
@@ -45,7 +44,7 @@ import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
-class SessionDetailFragment : DaggerFragment() {
+class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Injectable {
 
     @Inject lateinit var systemViewModelFactory: Provider<SystemViewModel>
     private val systemViewModel by assistedActivityViewModels {
@@ -80,18 +79,6 @@ class SessionDetailFragment : DaggerFragment() {
 
     @Inject
     lateinit var sessionDetailMaterialItemFactory: SessionDetailMaterialItem.Factory
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(
-            R.layout.fragment_session_detail,
-            container,
-            false
-        )
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
