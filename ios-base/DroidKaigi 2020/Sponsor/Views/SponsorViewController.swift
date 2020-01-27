@@ -7,7 +7,7 @@ import UIKit
 final class SponsorViewController: UIViewController {
     private let disposeBag = DisposeBag()
 
-    @IBOutlet weak var collectionView: UICollectionView! {
+    @IBOutlet private var collectionView: UICollectionView! {
         didSet {
             collectionView.register(
                 UINib(nibName: "SponsorCell", bundle: nil),
@@ -26,6 +26,27 @@ final class SponsorViewController: UIViewController {
         }
     }
 
+    private lazy var loadingIndicatorView: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .gray)
+        return indicator
+    }()
+
+    private lazy var retryButton: UIButton = {
+        let button = UIButton()
+        if LangKt.defaultLang() == .ja {
+            button.setTitle("リトライ", for: .normal)
+        } else {
+            button.setTitle("Retry", for: .normal)
+        }
+        button.sizeToFit()
+        button.rx.tap
+            .bind(to: Binder(self) { me, _ in
+                me.viewModel.retry()
+            })
+            .disposed(by: disposeBag)
+        return button
+    }()
+
     private let viewModel = SponsorViewModel()
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -38,6 +59,7 @@ final class SponsorViewController: UIViewController {
         setUpAppBar()
 
         let dataSource = SponsorViewDataSource()
+
         viewModel.sponsorCategories.asObservable()
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
@@ -46,12 +68,17 @@ final class SponsorViewController: UIViewController {
             .disposed(by: disposeBag)
 
         collectionView.rx.modelSelected(Sponsor.self)
-            .subscribe(onNext: { [weak self] sponsor in
-                self?.showCompanyWebSite(for: sponsor)
+            .bind(to: Binder(self) { me, sponsor in
+                me.showCompanyWebSite(for: sponsor)
             })
             .disposed(by: disposeBag)
 
-        // rx
+        Driver.combineLatest(viewModel.isLoading, viewModel.error)
+            .drive(Binder(self) { me, element in
+                me.updateBackgroudView(isLoading: element.0, error: element.1)
+            })
+            .disposed(by: disposeBag)
+
         viewModel.viewDidLoad()
     }
 
@@ -81,7 +108,21 @@ final class SponsorViewController: UIViewController {
         menuItem.rx.tap
             .bind(to: Binder(self) { me, _ in
                 me.navigationDrawerController?.toggleLeftView()
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
+    }
+
+    private func updateBackgroudView(isLoading: Bool, error: KotlinError?) {
+        if isLoading {
+            collectionView.backgroundView = loadingIndicatorView
+            loadingIndicatorView.startAnimating()
+        } else {
+            if error != nil {
+                collectionView.backgroundView = retryButton
+            } else {
+                collectionView.backgroundView = nil
+            }
+        }
     }
 
     private func showCompanyWebSite(for sponsor: Sponsor) {
