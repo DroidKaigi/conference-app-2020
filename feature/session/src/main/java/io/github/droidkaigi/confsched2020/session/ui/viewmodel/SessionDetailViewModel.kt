@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 
 class SessionDetailViewModel @AssistedInject constructor(
     @Assisted private val sessionId: SessionId,
+    @Assisted private val searchQuery: String?,
     private val sessionRepository: SessionRepository
 ) : ViewModel() {
     // UiModel definition
@@ -30,10 +31,11 @@ class SessionDetailViewModel @AssistedInject constructor(
         val isLoading: Boolean,
         val error: AppError?,
         val session: Session?,
-        val showEllipsis: Boolean
+        val showEllipsis: Boolean,
+        val searchQuery: String?
     ) {
         companion object {
-            val EMPTY = UiModel(false, null, null, true)
+            val EMPTY = UiModel(false, null, null, true, null)
         }
     }
 
@@ -84,7 +86,8 @@ class SessionDetailViewModel @AssistedInject constructor(
                     .getErrorIfExists()
                     .toAppError(),
             session = sessions,
-            showEllipsis = showEllipsis
+            showEllipsis = showEllipsis,
+            searchQuery = searchQuery
         )
     }
 
@@ -107,7 +110,8 @@ class SessionDetailViewModel @AssistedInject constructor(
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            sessionId: SessionId
+            sessionId: SessionId,
+            searchQuery: String?
         ): SessionDetailViewModel
     }
 }

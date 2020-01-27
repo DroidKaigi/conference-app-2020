@@ -81,6 +81,11 @@
             android:name="sessionId"
             app:argType="io.github.droidkaigi.confsched2020.model.SessionId"
             />
+        <argument
+            android:name="searchQuery"
+            app:argType="string"
+            app:nullable="true"
+            />
         <action
             android:id="@+id/action_session_to_speaker"
             app:destination="@id/speaker"

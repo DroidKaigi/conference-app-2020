@@ -74,7 +74,7 @@ class SessionItem @AssistedInject constructor(
             }
             bindFavorite(session.isFavorited, favorite)
             root.setOnClickListener {
-                root.findNavController().navigate(actionSessionToSessionDetail(session.id))
+                root.findNavController().navigate(actionSessionToSessionDetail(session.id, searchQuery))
             }
             live.isVisible = session.isOnGoing
             bindSessionMessage(session, viewBinding)
