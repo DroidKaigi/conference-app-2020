@@ -40,6 +40,8 @@ import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionDetailViewModel
 import io.github.droidkaigi.confsched2020.session.ui.widget.SessionDetailItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
+import io.github.droidkaigi.confsched2020.ui.animation.MEDIUM_EXPAND_DURATION
+import io.github.droidkaigi.confsched2020.ui.transition.fadeThrough
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
@@ -80,8 +82,17 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
     @Inject
     lateinit var sessionDetailMaterialItemFactory: SessionDetailMaterialItem.Factory
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = fadeThrough().apply {
+            duration = MEDIUM_EXPAND_DURATION
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+
         val binding = FragmentSessionDetailBinding.bind(view)
         val adapter = GroupAdapter<ViewHolder<*>>()
         binding.sessionDetailRecycler.adapter = adapter
@@ -167,6 +178,9 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         session: Session,
         showEllipsis: Boolean
     ) {
+        binding.sessionDetailRecycler.transitionName =
+            "${session.id}-${navArgs.transitionNameSuffix}"
+
         val items = mutableListOf<Group>()
         items += sessionDetailTitleItemFactory.create(session)
         items += sessionDetailDescriptionItemFactory.create(
@@ -212,6 +226,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
             }
         )
         adapter.update(items)
+        startPostponedEnterTransition()
+
         binding.sessionFavorite.setOnClickListener {
             sessionDetailViewModel.favorite(session)
         }
