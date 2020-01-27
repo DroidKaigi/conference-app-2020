@@ -1,6 +1,21 @@
 import ios_combined
 import UIKit
 
+private extension Announcement.Type_ {
+    var iconImage: UIImage? {
+        switch self {
+        case .alert:
+            return #imageLiteral(resourceName: "warning_amber_24px")
+        case .feedback:
+            return #imageLiteral(resourceName: "assignment_24px")
+        case .notification:
+            return #imageLiteral(resourceName: "error_outline_24px")
+        default:
+            return nil
+        }
+    }
+}
+
 final class AnnouncementCell: UITableViewCell {
     enum Constant {
         static let dateFormatter: DateFormatter = {
@@ -18,7 +33,7 @@ final class AnnouncementCell: UITableViewCell {
     @IBOutlet weak var contentLabel: UILabel!
 
     func configura(_ announcement: Announcement) {
-        // TODO: Set icon image
+        iconImageView.image = announcement.type.iconImage
         publishedAtLabel.text = Constant.dateFormatter.string(from: Date(timeIntervalSince1970: announcement.publishedAt))
         titleLabel.text = announcement.title
         contentLabel.text = announcement.content

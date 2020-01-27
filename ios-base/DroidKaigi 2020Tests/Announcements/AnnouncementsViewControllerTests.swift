@@ -9,7 +9,9 @@ class AnnouncementsViewControllerTests: XCTestCase {
     class AnnouncementsDataProviderMock: AnnouncementsDataProviderProtocol {
         func fetch() -> Single<[Announcement]> {
             Single.just([
+                Announcement(id: 0, title: "フィードバックのお願い", content: "セッションやDroidKaigi 2020へのフィードバックを受け付けております。", publishedAt: 1_582_167_600, type: .alert),
                 Announcement(id: 0, title: "フィードバックのお願い", content: "セッションやDroidKaigi 2020へのフィードバックを受け付けております。未回答の方はご協力ください。DroidKaigi 2020にご来場いただき、ありがとうございました。", publishedAt: 1_582_167_600, type: .feedback),
+                Announcement(id: 0, title: "フィードバックのお願い", content: "セッションやDroidKaigi 2020へのフィードバックを受け付けております。未回答の方はご協力ください。DroidKaigi 2020にご来場いただき、ありがとうございました。", publishedAt: 1_582_167_600, type: .notification),
             ])
         }
     }
