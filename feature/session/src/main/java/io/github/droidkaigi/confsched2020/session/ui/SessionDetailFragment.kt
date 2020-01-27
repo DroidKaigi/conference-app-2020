@@ -1,11 +1,10 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -19,13 +18,14 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
-import dagger.android.support.DaggerFragment
+import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
+import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToChrome
@@ -46,7 +46,7 @@ import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
-class SessionDetailFragment : DaggerFragment() {
+class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Injectable {
 
     @Inject lateinit var systemViewModelFactory: Provider<SystemViewModel>
     private val systemViewModel by assistedActivityViewModels {
@@ -89,18 +89,6 @@ class SessionDetailFragment : DaggerFragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(
-            R.layout.fragment_session_detail,
-            container,
-            false
-        )
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
@@ -133,11 +121,36 @@ class SessionDetailFragment : DaggerFragment() {
                 uiModel.error?.let { systemViewModel.onError(it) }
                 progressTimeLatch.loading = uiModel.isLoading
                 uiModel.session
-                    ?.let { session -> setupSessionViews(binding, adapter, session) }
+                    ?.let { session ->
+                        setupSessionViews(
+                            binding,
+                            adapter,
+                            session,
+                            uiModel.showEllipsis
+                        )
+                    }
             }
 
-        binding.bottomAppBar.setOnMenuItemClickListener {
-            handleNavigation(it.itemId)
+        binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.session_share -> {
+                    // do something
+                }
+                R.id.session_calendar -> {
+                    val session = binding.session ?: return@setOnMenuItemClickListener true
+                    systemViewModel.sendEventToCalendar(
+                        activity = requireActivity(),
+                        title = session.title.getByLang(defaultLang()),
+                        location = session.room.name.getByLang(defaultLang()),
+                        startDateTime = session.startTime,
+                        endDateTime = session.endTime
+                    )
+                }
+                else -> {
+                    handleNavigation(menuItem.itemId)
+                }
+            }
+            return@setOnMenuItemClickListener true
         }
     }
 
@@ -162,14 +175,18 @@ class SessionDetailFragment : DaggerFragment() {
     private fun setupSessionViews(
         binding: FragmentSessionDetailBinding,
         adapter: GroupAdapter<ViewHolder<*>>,
-        session: Session
+        session: Session,
+        showEllipsis: Boolean
     ) {
         binding.sessionDetailRecycler.transitionName =
             "${session.id}-${navArgs.transitionNameSuffix}"
 
         val items = mutableListOf<Group>()
         items += sessionDetailTitleItemFactory.create(session)
-        items += sessionDetailDescriptionItemFactory.create(session)
+        items += sessionDetailDescriptionItemFactory.create(
+            session,
+            showEllipsis
+        ) { sessionDetailViewModel.expandDescription() }
         if (session.hasIntendedAudience)
             items += sessionDetailTargetItemFactory.create(session)
         if (session.hasSpeaker) {

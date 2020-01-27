@@ -239,3 +239,5 @@ This project uses some modern Android libraries and source codes.
 * [material-components-ios](https://github.com/material-components/material-components-ios)
 * [RxSwift](https://github.com/ReactiveX/RxSwift)
 * [GNU Make](https://www.gnu.org/software/make/)
+* [Material](https://github.com/CosmicMind/Material)
+* [Nuke](https://github.com/kean/Nuke)
