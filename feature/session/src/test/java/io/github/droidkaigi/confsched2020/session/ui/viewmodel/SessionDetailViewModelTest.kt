@@ -26,7 +26,8 @@ class SessionDetailViewModelTest {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
         val sessionDetailViewModel = SessionDetailViewModel(
             sessionId = Dummies.speachSession1.id,
-            sessionRepository = sessionRepository
+            sessionRepository = sessionRepository,
+            searchQuery = null
         )
 
         val testObserver = sessionDetailViewModel
@@ -40,6 +41,7 @@ class SessionDetailViewModelTest {
             session shouldBe Dummies.speachSession1
             error shouldBe null
             showEllipsis shouldBe true
+            searchQuery shouldBe null
         }
     }
 
@@ -48,7 +50,8 @@ class SessionDetailViewModelTest {
         coEvery { sessionRepository.sessionContents() } returns flowOf(SessionContents.EMPTY)
         val sessionDetailViewModel = SessionDetailViewModel(
             sessionId = SessionId("1"),
-            sessionRepository = sessionRepository
+            sessionRepository = sessionRepository,
+            searchQuery = null
         )
 
         val testObserver = sessionDetailViewModel
@@ -62,6 +65,7 @@ class SessionDetailViewModelTest {
             session shouldBe null
             error shouldNotBe null
             showEllipsis shouldBe true
+            searchQuery shouldBe null
         }
     }
 
@@ -71,7 +75,8 @@ class SessionDetailViewModelTest {
         coEvery { sessionRepository.toggleFavorite(Dummies.speachSession1.id) } returns Unit
         val sessionDetailViewModel = SessionDetailViewModel(
             sessionId = Dummies.speachSession1.id,
-            sessionRepository = sessionRepository
+            sessionRepository = sessionRepository,
+            searchQuery = null
         )
 
         val testObserver = sessionDetailViewModel
@@ -87,18 +92,21 @@ class SessionDetailViewModelTest {
             session shouldBe Dummies.speachSession1
             error shouldBe null
             showEllipsis shouldBe true
+            searchQuery shouldBe null
         }
         valueHistory[2].apply {
             isLoading shouldBe true
             session shouldBe Dummies.speachSession1
             error shouldBe null
             showEllipsis shouldBe true
+            searchQuery shouldBe null
         }
         valueHistory[3].apply {
             isLoading shouldBe false
             session shouldBe Dummies.speachSession1
             error shouldBe null
             showEllipsis shouldBe true
+            searchQuery shouldBe null
         }
     }
 
@@ -106,7 +114,8 @@ class SessionDetailViewModelTest {
     fun expandDescription() {
         val sessionDetailViewModel = SessionDetailViewModel(
             sessionId = Dummies.speachSession1.id,
-            sessionRepository = sessionRepository
+            sessionRepository = sessionRepository,
+            searchQuery = null
         )
         val testObserver = sessionDetailViewModel
             .uiModel
@@ -120,6 +129,31 @@ class SessionDetailViewModelTest {
             session shouldBe null
             error shouldBe null
             showEllipsis shouldBe false
+            searchQuery shouldBe null
+        }
+    }
+
+    @Test
+    fun fromSearch() {
+        coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
+        val sessionDetailViewModel = SessionDetailViewModel(
+            sessionId = Dummies.speachSession1.id,
+            sessionRepository = sessionRepository,
+            searchQuery = "query"
+        )
+
+        val testObserver = sessionDetailViewModel
+            .uiModel
+            .test()
+
+        val valueHistory = testObserver.valueHistory()
+        valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true, searchQuery = "query")
+        valueHistory[1].apply {
+            isLoading shouldBe false
+            session shouldBe Dummies.speachSession1
+            error shouldBe null
+            showEllipsis shouldBe true
+            searchQuery shouldBe "query"
         }
     }
 }
