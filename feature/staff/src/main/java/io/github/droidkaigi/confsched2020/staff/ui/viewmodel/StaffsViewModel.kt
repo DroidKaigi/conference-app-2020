@@ -28,7 +28,7 @@ class StaffsViewModel @Inject constructor(store: Store<Unit, StaffContents>) : V
 
     // "stream" returns data along with the loading status.
     private val staffContentsLoadState: LiveData<StoreResponse<StaffContents>> =
-        store.stream(StoreRequest.cached(key = Unit, refresh = false)).asLiveData()
+        store.stream(StoreRequest.cached(key = Unit, refresh = true)).asLiveData()
 
     //"get" / "fetch" gets data directly, so you need to express the loading state yourself.
 //    private val staffContents: LiveData<StaffContents> = liveData { store.get(Unit) }
