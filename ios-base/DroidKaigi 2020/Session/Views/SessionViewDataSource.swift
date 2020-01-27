@@ -38,13 +38,7 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
                 guard let self = self else { return }
                 let sessions: [Session] = self.items.filter { session in
                     if let speechSession = session as? SpeechSession {
-                        if speechSession.speakers.contains(where: {
-                            $0.id == speaker.id
-                        }) {
-                            return true
-                        } else {
-                            return false
-                        }
+                        return speechSession.speakers.contains { $0.id == speaker.id }
                     } else {
                         return false
                     }
