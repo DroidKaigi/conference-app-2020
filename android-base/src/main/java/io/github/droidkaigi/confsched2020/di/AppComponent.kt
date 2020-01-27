@@ -3,8 +3,8 @@ package io.github.droidkaigi.confsched2020.di
 import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
-import dagger.android.support.AndroidSupportInjectionModule
 import io.github.droidkaigi.confsched2020.App
 import io.github.droidkaigi.confsched2020.MainActivityModule
 import io.github.droidkaigi.confsched2020.model.repository.ContributorRepository
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AppModule::class,
-        AndroidSupportInjectionModule::class,
+        AndroidInjectionModule::class,
         MainActivityModule.MainActivityBuilder::class,
         DbComponentModule::class,
         RepositoryComponentModule::class,
