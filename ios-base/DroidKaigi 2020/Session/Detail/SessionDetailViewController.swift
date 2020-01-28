@@ -35,6 +35,7 @@ final class SessionDetailViewController: UIViewController {
     }
 }
 
+// MARK: - Private functions
 private extension SessionDetailViewController {
     func loadSession(_ session: Session) {
         titleLabel.text = session.title.ja
@@ -65,7 +66,10 @@ private extension SessionDetailViewController {
         descriptionSection.isHidden = true
         audienceSection.isHidden = true
     }
+}
 
+// MARK: Bind
+private extension SessionDetailViewController {
     func bind() {
         disposeBag.insert(
             readMoreButton.rx.tap
