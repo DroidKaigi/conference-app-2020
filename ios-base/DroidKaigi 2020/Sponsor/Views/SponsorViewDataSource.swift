@@ -6,7 +6,7 @@ import UIKit
 
 final class SponsorViewDataSource: NSObject, UICollectionViewDataSource {
     typealias Element = [SponsorCategory]
-    var items: Element = []
+    private var items: Element = []
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return items.count
