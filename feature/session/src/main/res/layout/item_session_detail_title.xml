@@ -76,6 +76,7 @@
             android:text="@{session.timeSummary(lang, TimeZoneOffsetKt.defaultTimeZoneOffset())}"
             android:textAppearance="?textAppearanceCaption"
             android:textColor="?android:attr/textColorPrimary"
+            android:textIsSelectable="true"
             app:layout_constraintBottom_toBottomOf="@id/time_icon"
             app:layout_constraintStart_toEndOf="@id/time_icon"
             app:layout_constraintTop_toTopOf="@id/time_icon"
