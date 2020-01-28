@@ -88,8 +88,7 @@ final class SessionViewController: UIViewController {
                 self?.navigationController?.pushViewController(SpeakerViewController.instantiate(speaker: speaker), animated: true)
             })
             .disposed(by: disposeBag)
-        collectionView.rx.itemSelected
-            .compactMap { try dataSource.model(at: $0) as? Session }
+        collectionView.rx.modelSelected(Session.self)
             .bind(onNext: { [unowned self] in self.showDetail(forSession: $0) })
             .disposed(by: disposeBag)
     }
