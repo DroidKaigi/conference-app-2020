@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ofz-cs-San">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="706"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EYG-Ag-hTt">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="890.5"/>
@@ -314,12 +314,42 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="ydg-lL-tG9"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="Zet-7q-Dpl"/>
                             </scrollView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Ra-aD-SKU">
+                                <rect key="frame" x="0.0" y="806" width="414" height="56"/>
+                                <subviews>
+                                    <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HHC-UQ-af1">
+                                        <rect key="frame" x="0.0" y="6" width="414" height="44"/>
+                                        <items>
+                                            <barButtonItem image="ic_share_white" id="uNt-c5-Hzs">
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </barButtonItem>
+                                            <barButtonItem image="ic_place_white" id="Bjn-bG-HAT">
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </barButtonItem>
+                                            <barButtonItem image="ic_event_white" id="po3-6g-hkR">
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </barButtonItem>
+                                        </items>
+                                        <color key="barTintColor" red="0.015686274510000001" green="0.1176470588" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </toolbar>
+                                </subviews>
+                                <color key="backgroundColor" red="0.015686274510000001" green="0.1176470588" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="HHC-UQ-af1" firstAttribute="leading" secondItem="2Ra-aD-SKU" secondAttribute="leading" id="6Z2-ub-H1i"/>
+                                    <constraint firstAttribute="trailing" secondItem="HHC-UQ-af1" secondAttribute="trailing" id="PRj-be-2Jv"/>
+                                    <constraint firstItem="HHC-UQ-af1" firstAttribute="centerY" secondItem="2Ra-aD-SKU" secondAttribute="centerY" id="SrS-33-Axy"/>
+                                    <constraint firstAttribute="height" constant="56" id="dUX-hm-bT1"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Ofz-cs-San" firstAttribute="top" secondItem="bAc-1j-ue1" secondAttribute="top" id="54H-vs-qg0"/>
-                            <constraint firstItem="bAc-1j-ue1" firstAttribute="bottom" secondItem="Ofz-cs-San" secondAttribute="bottom" id="6xL-ge-EPS"/>
+                            <constraint firstItem="bAc-1j-ue1" firstAttribute="trailing" secondItem="2Ra-aD-SKU" secondAttribute="trailing" id="QTO-1j-YlE"/>
+                            <constraint firstItem="2Ra-aD-SKU" firstAttribute="top" secondItem="Ofz-cs-San" secondAttribute="bottom" constant="56" id="Rht-HZ-BiG"/>
+                            <constraint firstItem="2Ra-aD-SKU" firstAttribute="leading" secondItem="bAc-1j-ue1" secondAttribute="leading" id="YDV-fX-awv"/>
                             <constraint firstItem="Ofz-cs-San" firstAttribute="leading" secondItem="bAc-1j-ue1" secondAttribute="leading" id="f5Y-8Z-R7d"/>
+                            <constraint firstItem="2Ra-aD-SKU" firstAttribute="bottom" secondItem="bAc-1j-ue1" secondAttribute="bottom" id="vfT-pV-9aS"/>
                             <constraint firstItem="bAc-1j-ue1" firstAttribute="trailing" secondItem="Ofz-cs-San" secondAttribute="trailing" id="xU8-4S-VIL"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bAc-1j-ue1"/>
@@ -332,10 +362,13 @@
                         <outlet property="descriptionLabel" destination="8HO-iY-XHu" id="lEi-3G-8Or"/>
                         <outlet property="descriptionSection" destination="L2a-yx-suA" id="fmW-XI-4qh"/>
                         <outlet property="docsSection" destination="hyh-UQ-Hdl" id="Cex-gi-eKT"/>
+                        <outlet property="eventButton" destination="po3-6g-hkR" id="VDb-Tc-7gp"/>
                         <outlet property="headerSection" destination="Eg1-32-hGi" id="vUn-0F-AdI"/>
                         <outlet property="intendedAudienceLabel" destination="ViU-Js-ptJ" id="FTx-ww-3t4"/>
                         <outlet property="langLabel" destination="Z3x-av-Idp" id="WH4-7d-xJW"/>
+                        <outlet property="placeButton" destination="Bjn-bG-HAT" id="uHd-yL-fbd"/>
                         <outlet property="readMoreButton" destination="pSL-hh-BU4" id="rRl-4U-K7m"/>
+                        <outlet property="shareButton" destination="uNt-c5-Hzs" id="wQW-s1-nL7"/>
                         <outlet property="slideButton" destination="FP2-yF-dGx" id="QTc-EN-lQX"/>
                         <outlet property="speakersContainer" destination="1bm-31-Jz8" id="ljE-tl-zGP"/>
                         <outlet property="speakersSection" destination="5Ey-yd-GyL" id="N2V-Lf-vvV"/>
@@ -350,9 +383,12 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ic_event_white" width="18" height="20"/>
         <image name="ic_photo_library" width="20" height="20"/>
         <image name="ic_photo_library_disabled" width="20" height="20"/>
+        <image name="ic_place_white" width="14" height="20"/>
         <image name="ic_schedule" width="14" height="14"/>
+        <image name="ic_share_white" width="24" height="24"/>
         <image name="ic_videocam" width="18" height="12"/>
         <image name="ic_videocam_disabled" width="18" height="12"/>
     </resources>

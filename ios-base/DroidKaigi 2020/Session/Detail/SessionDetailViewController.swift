@@ -35,6 +35,10 @@ final class SessionDetailViewController: UIViewController {
     @IBOutlet private weak var videoButton: UIButton!
     @IBOutlet private weak var slideButton: UIButton!
 
+    @IBOutlet private weak var shareButton: UIBarButtonItem!
+    @IBOutlet private weak var placeButton: UIBarButtonItem!
+    @IBOutlet private weak var eventButton: UIBarButtonItem!
+
     // MARK: Life cycles
 
     override func viewDidLoad() {
@@ -172,10 +176,16 @@ private extension SessionDetailViewController {
     func bind() {
         disposeBag.insert(
             readMoreButton.rx.tap
-                .bind(onNext: { [readMoreButton, descriptionLabel] in
+                .bind { [readMoreButton, descriptionLabel] in
                     descriptionLabel?.numberOfLines = 0
                     readMoreButton?.isHidden = true
-                })
+                },
+            shareButton.rx.tap
+                .bind { print("share") }, // TODO: Not implemented
+            placeButton.rx.tap
+                .bind { print("place") }, // TODO: Not implemented
+            eventButton.rx.tap
+                .bind { print("event") } // TODO: Not implemented
         )
     }
 }
