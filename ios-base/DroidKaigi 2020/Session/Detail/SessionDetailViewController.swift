@@ -76,7 +76,6 @@ private extension SessionDetailViewController {
             loadServiceSession(service)
         default: break
         }
-        print(session)
     }
 
     func loadSpeechSession(_ session: SpeechSession) {
