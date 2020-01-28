@@ -89,8 +89,7 @@ final class SessionViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         collectionView.rx.itemSelected
-            .map { try dataSource.model(at: $0) as? Session }
-            .filterNil()
+            .compactMap { try dataSource.model(at: $0) as? Session }
             .bind(onNext: { [unowned self] in self.showDetail(forSession: $0) })
             .disposed(by: disposeBag)
     }
