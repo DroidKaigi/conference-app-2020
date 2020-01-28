@@ -15,6 +15,7 @@ final class SessionDetailViewController: UIViewController {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var dateLabel: UILabel!
     @IBOutlet private weak var timeRoomLabel: UILabel!
+    @IBOutlet private weak var categoryContainer: UIStackView!
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var readMoreButton: UIButton!
 
@@ -34,6 +35,7 @@ private extension SessionDetailViewController {
         dateLabel.text = session.startDayText
         timeRoomLabel.text = session.timeRoomText
         descriptionLabel.text = session.desc
+        readMoreButton.isHidden = !descriptionLabel.isTruncated
         print(session)
     }
 
