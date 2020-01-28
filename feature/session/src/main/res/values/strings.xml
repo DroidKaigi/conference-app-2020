@@ -21,4 +21,5 @@
     <string name="movie" translatable="false">MOVIE</string>
     <string name="slide">SLIDE</string>
     <string name="empty_favorite_session">You choose your favorite sessions, then you can make a plan for you.</string>
+    <string name="session_share_url">https://droidkaigi.jp/2020/en/timetable/%d</string>
 </resources>
