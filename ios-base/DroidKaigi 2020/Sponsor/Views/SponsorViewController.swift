@@ -26,26 +26,23 @@ final class SponsorViewController: UIViewController {
         }
     }
 
-    private lazy var loadingIndicatorView: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(style: .gray)
-        return indicator
-    }()
+    @IBOutlet private weak var loadingIndicatorView: UIActivityIndicatorView!
 
-    private lazy var retryButton: UIButton = {
-        let button = UIButton()
-        if LangKt.defaultLang() == .ja {
-            button.setTitle("リトライ", for: .normal)
-        } else {
-            button.setTitle("Retry", for: .normal)
+    @IBOutlet private weak var retryButton: UIButton! {
+        didSet {
+            if LangKt.defaultLang() == .ja {
+                retryButton.setTitle("リトライ", for: .normal)
+            } else {
+                retryButton.setTitle("Retry", for: .normal)
+            }
+
+            retryButton.rx.tap
+                .bind(to: Binder(self) { me, _ in
+                    me.viewModel.retry()
+                })
+                .disposed(by: disposeBag)
         }
-        button.sizeToFit()
-        button.rx.tap
-            .bind(to: Binder(self) { me, _ in
-                me.viewModel.retry()
-            })
-            .disposed(by: disposeBag)
-        return button
-    }()
+    }
 
     private let viewModel = SponsorViewModel()
 
@@ -114,13 +111,14 @@ final class SponsorViewController: UIViewController {
 
     private func updateBackgroudView(isLoading: Bool, error: KotlinError?) {
         if isLoading {
-            collectionView.backgroundView = loadingIndicatorView
             loadingIndicatorView.startAnimating()
         } else {
+            loadingIndicatorView.stopAnimating()
+
             if error != nil {
-                collectionView.backgroundView = retryButton
+                retryButton.isHidden = false
             } else {
-                collectionView.backgroundView = nil
+                retryButton.isHidden = true
             }
         }
     }
