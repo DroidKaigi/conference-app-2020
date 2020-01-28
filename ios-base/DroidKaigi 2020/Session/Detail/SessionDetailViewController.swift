@@ -1,4 +1,5 @@
 import ios_combined
+import Nuke
 import RxCocoa
 import RxSwift
 import UIKit
@@ -25,6 +26,9 @@ final class SessionDetailViewController: UIViewController {
     @IBOutlet private weak var audienceSection: UIView!
     @IBOutlet private weak var intendedAudienceLabel: UILabel!
 
+    @IBOutlet weak var speakersSection: UIView!
+    @IBOutlet weak var speakersContainer: UIStackView!
+
     // MARK: Life cycles
 
     override func viewDidLoad() {
@@ -36,6 +40,7 @@ final class SessionDetailViewController: UIViewController {
 }
 
 // MARK: - Private functions
+
 private extension SessionDetailViewController {
     func loadSession(_ session: Session) {
         titleLabel.text = session.title.ja
@@ -60,15 +65,50 @@ private extension SessionDetailViewController {
         } else {
             audienceSection.isHidden = true
         }
+        if session.speakers.isEmpty {
+            speakersSection.isHidden = true
+        } else {
+            session.speakers.forEach(addSpeaker(_:))
+        }
     }
 
     func loadServiceSession(_ session: ServiceSession) {
-        descriptionSection.isHidden = true
-        audienceSection.isHidden = true
+        [
+            descriptionSection,
+            audienceSection,
+            speakersSection,
+        ]
+        .compactMap { $0 }
+        .forEach { $0?.isHidden = true }
+    }
+
+    func addSpeaker(_ speaker: Speaker) {
+        let iconImageView = SpeakerIconImageView()
+        if let imageUrl = speaker.imageUrl.flatMap(URL.init) {
+            let options = ImageLoadingOptions(transition: .fadeIn(duration: 0.3))
+            Nuke.loadImage(with: imageUrl, options: options, into: iconImageView)
+        }
+
+        let nameLabel = UILabel()
+        nameLabel.font = .systemFont(ofSize: 14, weight: .light)
+        nameLabel.textColor = UIColor(hex: "00B5E2")
+        nameLabel.text = speaker.name
+        let speakerContainer = UIStackView(arrangedSubviews: [iconImageView, nameLabel])
+        speakerContainer.spacing = 16.0
+        [iconImageView, nameLabel, speakerContainer].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+
+        speakersContainer.addArrangedSubview(speakerContainer)
+
+        NSLayoutConstraint.activate(
+            iconImageView.heightAnchor.constraint(equalToConstant: 60)
+        )
     }
 }
 
 // MARK: Bind
+
 private extension SessionDetailViewController {
     func bind() {
         disposeBag.insert(
