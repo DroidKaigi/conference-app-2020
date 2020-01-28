@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2020.sponsor.ui
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -14,6 +15,7 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
@@ -78,6 +80,17 @@ class SponsorsFragment : Fragment(R.layout.fragment_sponsors), Injectable {
             )
             uiModel.error?.let {
                 systemViewModel.onError(it)
+            }
+        }
+
+        // Set a bottom padding due to the system UI is enabled.
+        binding.sponsorRecycler.run {
+            adapter = groupAdapter
+            doOnApplyWindowInsets { recyclerView, insets, initialState ->
+                // Set a bottom padding due to the system UI is enabled.
+                recyclerView.updatePadding(
+                    bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+                )
             }
         }
     }
