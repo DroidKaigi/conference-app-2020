@@ -53,7 +53,7 @@ final class SponsorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setUpAppBar()
+        setupNavigationBar()
 
         let dataSource = SponsorViewDataSource()
 
@@ -87,26 +87,12 @@ final class SponsorViewController: UIViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
     }
 
-    private func setUpAppBar() {
-        let menuImage = UIImage(named: "ic_menu")
-        let templateMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
-        let menuItem = UIBarButtonItem(image: templateMenuImage,
-                                       style: .plain,
-                                       target: self,
-                                       action: nil)
-        navigationItem.leftBarButtonItems = [menuItem]
-
+    private func setupNavigationBar() {
         if LangKt.defaultLang() == .ja {
             navigationItem.title = "スポンサー"
         } else {
             navigationItem.title = "Sponsors"
         }
-
-        menuItem.rx.tap
-            .bind(to: Binder(self) { me, _ in
-                me.navigationDrawerController?.toggleLeftView()
-            })
-            .disposed(by: disposeBag)
     }
 
     private func updateBackgroudView(isLoading: Bool, error: KotlinError?) {

@@ -38,6 +38,14 @@ final class FilterViewController: UIViewController {
         bindToViewModel()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.primaryColor
+        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
+        navigationController?.navigationBar.shadowImage = UIImage()
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -78,9 +86,6 @@ final class FilterViewController: UIViewController {
                                          action: nil)
         navigationItem.leftBarButtonItems = [menuItem, logoItem]
         navigationItem.rightBarButtonItems = [searchItem]
-        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.primaryColor
-        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
-        navigationController?.navigationBar.shadowImage = UIImage()
         edgesForExtendedLayout = []
 
         menuItem.rx.tap

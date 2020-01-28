@@ -43,8 +43,6 @@ final class SidebarViewController: UITableViewController {
 
         switch switchType {
         case .timeline:
-            let vc = FilterViewController()
-            rootViewController?.setViewControllers([vc], animated: false)
             rootViewController?.navigationDrawerController?.toggleLeftView()
         case .about:
             break
@@ -54,7 +52,7 @@ final class SidebarViewController: UITableViewController {
             break
         case .sponsor:
             let vc = SponsorViewController()
-            rootViewController?.setViewControllers([vc], animated: false)
+            rootViewController?.pushViewController(vc, animated: true)
             rootViewController?.navigationDrawerController?.toggleLeftView()
         case .contributor:
             break
