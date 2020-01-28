@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
 import com.squareup.inject.assisted.Assisted
@@ -32,15 +33,17 @@ class SessionDetailTitleItem @AssistedInject constructor(
                 binding.tags.addView(
                     Chip(context).apply {
                         text = categoryLabel
-                        setChipBackgroundColorResource(R.color.indigo_50)
                         isClickable = false
+                        setTextColor(AppCompatResources.getColorStateList(context, R.color.session_detail_label))
+                        setChipBackgroundColorResource(R.color.session_detail_chip_category)
                     }
                 )
                 binding.tags.addView(
                     Chip(context).apply {
                         text = langLabel
-                        setChipBackgroundColorResource(R.color.light_blue_50)
                         isClickable = false
+                        setTextColor(AppCompatResources.getColorStateList(context, R.color.session_detail_label))
+                        setChipBackgroundColorResource(R.color.session_detail_chip_level)
                     }
                 )
                 binding.tags.tag = newTag
