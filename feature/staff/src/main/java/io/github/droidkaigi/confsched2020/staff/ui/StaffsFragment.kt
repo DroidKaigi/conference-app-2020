@@ -94,7 +94,6 @@ class StaffsFragment : Fragment(R.layout.fragment_staffs) {
             }
         }
 
-        // Set a bottom padding due to the system UI is enabled.
         binding.staffRecycler.run {
             adapter = groupAdapter
             doOnApplyWindowInsets { recyclerView, insets, initialState ->

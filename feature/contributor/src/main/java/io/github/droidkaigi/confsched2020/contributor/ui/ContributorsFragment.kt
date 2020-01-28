@@ -94,7 +94,6 @@ class ContributorsFragment : Fragment(R.layout.fragment_contributors) {
             }
         }
 
-        // Set a bottom padding due to the system UI is enabled.
         binding.contributorRecycler.run {
             adapter = groupAdapter
             doOnApplyWindowInsets { recyclerView, insets, initialState ->
