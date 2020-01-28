@@ -34,7 +34,12 @@ class SessionDetailTitleItem @AssistedInject constructor(
                     Chip(context).apply {
                         text = categoryLabel
                         isClickable = false
-                        setTextColor(AppCompatResources.getColorStateList(context, R.color.session_detail_label))
+                        setTextColor(
+                            AppCompatResources.getColorStateList(
+                                context,
+                                R.color.session_detail_label
+                            )
+                        )
                         setChipBackgroundColorResource(R.color.session_detail_chip_category)
                     }
                 )
@@ -42,7 +47,12 @@ class SessionDetailTitleItem @AssistedInject constructor(
                     Chip(context).apply {
                         text = langLabel
                         isClickable = false
-                        setTextColor(AppCompatResources.getColorStateList(context, R.color.session_detail_label))
+                        setTextColor(
+                            AppCompatResources.getColorStateList(
+                                context,
+                                R.color.session_detail_label
+                            )
+                        )
                         setChipBackgroundColorResource(R.color.session_detail_chip_level)
                     }
                 )
