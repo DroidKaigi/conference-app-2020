@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Component
@@ -22,6 +25,7 @@ import io.github.droidkaigi.confsched2020.staff.ui.di.StaffAssistedInjectModule
 import io.github.droidkaigi.confsched2020.staff.ui.item.StaffItem
 import io.github.droidkaigi.confsched2020.staff.ui.viewmodel.StaffsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
+import io.github.droidkaigi.confsched2020.ui.transition.Stagger
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
@@ -54,14 +58,31 @@ class StaffsFragment : Fragment(R.layout.fragment_staffs) {
 
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.staffRecycler.adapter = groupAdapter
+        // Because custom RecyclerView's animation, set custom SimpleItemAnimator implementation.
+        //
+        // see https://developer.android.com/reference/androidx/recyclerview/widget/SimpleItemAnimator.html#animateAdd(androidx.recyclerview.widget.RecyclerView.ViewHolder)
+        // see https://github.com/android/animation-samples/blob/232709094f9c60e0ead9cf4873e0c1549a9a8505/Motion/app/src/main/java/com/example/android/motion/demo/stagger/StaggerActivity.kt#L61
+        binding.staffRecycler.itemAnimator = object : DefaultItemAnimator() {
+            override fun animateAdd(holder: RecyclerView.ViewHolder?): Boolean {
+                dispatchAddFinished(holder)
+                dispatchAddStarting(holder)
+                return false
+            }
+        }
 
         val progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
         }.apply {
             loading = true
         }
+
+        // This is the transition for the stagger effect.
+        val stagger = Stagger()
         staffsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             progressTimeLatch.loading = uiModel.isLoading
+
+            // Delay the stagger effect until the list is updated.
+            TransitionManager.beginDelayedTransition(binding.staffRecycler, stagger)
             groupAdapter.update(uiModel.staffContents.staffs.map {
                 staffItemFactory.create(it)
             })

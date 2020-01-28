@@ -73,6 +73,7 @@
             android:text="@{speechSession.intendedAudience}"
             android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
             android:textColor="?android:attr/textColorPrimary"
+            android:textIsSelectable="true"
             android:lineSpacingExtra="8sp"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
