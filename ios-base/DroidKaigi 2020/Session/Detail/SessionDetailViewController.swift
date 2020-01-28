@@ -26,8 +26,12 @@ final class SessionDetailViewController: UIViewController {
     @IBOutlet private weak var audienceSection: UIView!
     @IBOutlet private weak var intendedAudienceLabel: UILabel!
 
-    @IBOutlet weak var speakersSection: UIView!
-    @IBOutlet weak var speakersContainer: UIStackView!
+    @IBOutlet private weak var speakersSection: UIView!
+    @IBOutlet private weak var speakersContainer: UIStackView!
+
+    @IBOutlet private weak var docsSection: UIView!
+    @IBOutlet private weak var videoButton: UIButton!
+    @IBOutlet private weak var slideButton: UIButton!
 
     // MARK: Life cycles
 
@@ -72,6 +76,24 @@ private extension SessionDetailViewController {
         } else {
             session.speakers.forEach(addSpeaker(_:))
         }
+        if let videoUrl = session.videoUrl.flatMap(URL.init) {
+            videoButton.isEnabled = true
+            disposeBag.insert(
+                videoButton.rx.tap
+                    .bind(onNext: { [unowned self] in self.openURL(videoUrl) })
+            )
+        } else {
+            videoButton.isEnabled = false
+        }
+        if let slideUrl = session.slideUrl.flatMap(URL.init) {
+            slideButton.isEnabled = true
+            disposeBag.insert(
+                videoButton.rx.tap
+                    .bind(onNext: { [unowned self] in self.openURL(slideUrl) })
+            )
+        } else {
+            slideButton.isEnabled = false
+        }
     }
 
     func loadServiceSession(_ session: ServiceSession) {
@@ -79,6 +101,7 @@ private extension SessionDetailViewController {
             descriptionSection,
             audienceSection,
             speakersSection,
+            docsSection,
         ]
         .compactMap { $0 }
         .forEach { $0?.isHidden = true }
@@ -147,5 +170,9 @@ private extension SessionDetailViewController {
     func showSpeakerView(_ speaker: Speaker) {
         let speakerView = SpeakerViewController.instantiate(speaker: speaker)
         navigationController?.pushViewController(speakerView, animated: true)
+    }
+
+    func openURL(_ url: URL) {
+        UIApplication.shared.open(url)
     }
 }

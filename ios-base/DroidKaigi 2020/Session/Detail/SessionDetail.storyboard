@@ -20,13 +20,13 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EYG-Ag-hTt">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="644"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="814"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S3N-NN-vIE">
-                                                <rect key="frame" x="24" y="0.0" width="366" height="644"/>
+                                                <rect key="frame" x="24" y="0.0" width="366" height="814"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="NcE-zj-8fK">
-                                                        <rect key="frame" x="0.0" y="0.0" width="366" height="644"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="366" height="814"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eg1-32-hGi">
                                                                 <rect key="frame" x="0.0" y="0.0" width="366" height="189"/>
@@ -190,6 +190,59 @@
                                                                     <constraint firstItem="ZhZ-sN-aAH" firstAttribute="centerY" secondItem="5Ey-yd-GyL" secondAttribute="centerY" id="PRd-CM-N3J"/>
                                                                 </constraints>
                                                             </view>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hyh-UQ-Hdl">
+                                                                <rect key="frame" x="0.0" y="645" width="366" height="169"/>
+                                                                <subviews>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="34" translatesAutoresizingMaskIntoConstraints="NO" id="4iU-1t-fQJ">
+                                                                        <rect key="frame" x="0.0" y="24" width="366" height="121"/>
+                                                                        <subviews>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="資料" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="izb-W0-KXx">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="366" height="17"/>
+                                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                                <nil key="textColor"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="28" translatesAutoresizingMaskIntoConstraints="NO" id="rZg-dv-5TY">
+                                                                                <rect key="frame" x="0.0" y="51" width="366" height="70"/>
+                                                                                <subviews>
+                                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CBY-jo-yAK">
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="366" height="22"/>
+                                                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                                        <inset key="titleEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                                                        <inset key="imageEdgeInsets" minX="7" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                                                        <state key="normal" title="MOVIE" image="ic_videocam">
+                                                                                            <color key="titleColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                        </state>
+                                                                                        <state key="disabled" image="ic_videocam_disabled">
+                                                                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                        </state>
+                                                                                    </button>
+                                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FP2-yF-dGx">
+                                                                                        <rect key="frame" x="0.0" y="50" width="366" height="20"/>
+                                                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                                        <inset key="titleEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                                                        <inset key="imageEdgeInsets" minX="7" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                                                        <state key="normal" title="スライド" image="ic_photo_library">
+                                                                                            <color key="titleColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                        </state>
+                                                                                        <state key="disabled" image="ic_photo_library_disabled">
+                                                                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                        </state>
+                                                                                    </button>
+                                                                                </subviews>
+                                                                            </stackView>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                </subviews>
+                                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                                <constraints>
+                                                                    <constraint firstItem="4iU-1t-fQJ" firstAttribute="leading" secondItem="hyh-UQ-Hdl" secondAttribute="leading" id="9Rk-pq-a75"/>
+                                                                    <constraint firstItem="4iU-1t-fQJ" firstAttribute="centerX" secondItem="hyh-UQ-Hdl" secondAttribute="centerX" id="KJe-Y5-AnA"/>
+                                                                    <constraint firstItem="4iU-1t-fQJ" firstAttribute="centerY" secondItem="hyh-UQ-Hdl" secondAttribute="centerY" id="Sl0-k8-d6o"/>
+                                                                    <constraint firstItem="4iU-1t-fQJ" firstAttribute="top" secondItem="hyh-UQ-Hdl" secondAttribute="top" constant="24" id="VS7-X9-EoU"/>
+                                                                </constraints>
+                                                            </view>
                                                         </subviews>
                                                         <constraints>
                                                             <constraint firstAttribute="height" priority="250" id="NyZ-wE-Rnm"/>
@@ -240,13 +293,16 @@
                         <outlet property="dateLabel" destination="UGz-y2-eLz" id="p8X-dW-QSM"/>
                         <outlet property="descriptionLabel" destination="8HO-iY-XHu" id="lEi-3G-8Or"/>
                         <outlet property="descriptionSection" destination="L2a-yx-suA" id="fmW-XI-4qh"/>
+                        <outlet property="docsSection" destination="hyh-UQ-Hdl" id="Cex-gi-eKT"/>
                         <outlet property="headerSection" destination="Eg1-32-hGi" id="vUn-0F-AdI"/>
                         <outlet property="intendedAudienceLabel" destination="ViU-Js-ptJ" id="FTx-ww-3t4"/>
                         <outlet property="readMoreButton" destination="pSL-hh-BU4" id="rRl-4U-K7m"/>
+                        <outlet property="slideButton" destination="FP2-yF-dGx" id="QTc-EN-lQX"/>
                         <outlet property="speakersContainer" destination="1bm-31-Jz8" id="ljE-tl-zGP"/>
                         <outlet property="speakersSection" destination="5Ey-yd-GyL" id="N2V-Lf-vvV"/>
                         <outlet property="timeRoomLabel" destination="Jof-t7-sNR" id="gEh-BD-eIk"/>
                         <outlet property="titleLabel" destination="U8X-MJ-3dC" id="5el-Uo-ejJ"/>
+                        <outlet property="videoButton" destination="CBY-jo-yAK" id="Ka6-Uy-hCg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Ew-0z-R7G" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -255,6 +311,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ic_photo_library" width="20" height="20"/>
+        <image name="ic_photo_library_disabled" width="20" height="20"/>
         <image name="ic_schedule" width="14" height="14"/>
+        <image name="ic_videocam" width="18" height="12"/>
+        <image name="ic_videocam_disabled" width="18" height="12"/>
     </resources>
 </document>
