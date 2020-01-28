@@ -31,7 +31,7 @@ class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
 
     @Inject lateinit var speakerViewModelFactory: SpeakerViewModel.Factory
     private val speakerViewModel by assistedViewModels {
-        speakerViewModelFactory.create(navArgs.speakerId)
+        speakerViewModelFactory.create(navArgs.speakerId, navArgs.searchQuery)
     }
 
     @Inject lateinit var speakerDetailItemFactory: SpeakerDetailItem.Factory
@@ -68,7 +68,10 @@ class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
 
                 groupAdapter.update(
                     listOf(
-                        speakerDetailItemFactory.create(speaker, navArgs.transitionNameSuffix) {
+                        speakerDetailItemFactory.create(
+                            speaker,
+                            navArgs.transitionNameSuffix,
+                            navArgs.searchQuery) {
                             startPostponedEnterTransition()
                         }
                     ) + sessions.map { speakerSessionItemFactory.create(it) }

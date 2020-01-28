@@ -127,7 +127,7 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
                 groupAdapter.add(sectionHeaderItemFactory.create(title))
                 groupAdapter.addAll(
                     uiModel.searchResult.speakers.map {
-                        speakerItemFactory.create(it)
+                        speakerItemFactory.create(it, uiModel.searchResult.query)
                     }.sortedBy {
                         it.speaker.name.toUpperCase(Locale.getDefault())
                     }
@@ -139,7 +139,7 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
                 groupAdapter.add(sectionHeaderItemFactory.create(title))
                 groupAdapter.addAll(
                     uiModel.searchResult.sessions.map {
-                        sessionItemFactory.create(it, sessionsViewModel)
+                        sessionItemFactory.create(it, sessionsViewModel, uiModel.searchResult.query)
                     }.sortedBy {
                         it.title().getByLang(defaultLang())
                     }
