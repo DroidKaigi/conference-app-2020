@@ -43,6 +43,13 @@ final class SessionDetailViewController: UIViewController {
         bind()
         loadSession(session)
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.tintColor = .black
+    }
 }
 
 // MARK: - Private functions
