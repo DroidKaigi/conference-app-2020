@@ -41,6 +41,8 @@ final class SessionDetailViewController: UIViewController {
 
 // MARK: - Private functions
 
+// MARK: Create view
+
 private extension SessionDetailViewController {
     func loadSession(_ session: Session) {
         titleLabel.text = session.title.ja
@@ -93,16 +95,34 @@ private extension SessionDetailViewController {
         nameLabel.font = .systemFont(ofSize: 14, weight: .light)
         nameLabel.textColor = UIColor(hex: "00B5E2")
         nameLabel.text = speaker.name
-        let speakerContainer = UIStackView(arrangedSubviews: [iconImageView, nameLabel])
-        speakerContainer.spacing = 16.0
-        [iconImageView, nameLabel, speakerContainer].forEach {
+        let speakerViewContainer = UIView()
+        let speakerView = UIStackView(arrangedSubviews: [iconImageView, nameLabel])
+        speakerView.spacing = 16.0
+        let speakerButton: UIButton = {
+            let button = UIButton()
+            button.setTitle(nil, for: .normal)
+            return button
+        }()
+        [iconImageView, nameLabel, speakerView, speakerViewContainer, speakerButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
-
-        speakersContainer.addArrangedSubview(speakerContainer)
+        [speakerView, speakerButton].forEach(speakerViewContainer.addSubview(_:))
+        speakersContainer.addArrangedSubview(speakerViewContainer)
 
         NSLayoutConstraint.activate(
-            iconImageView.heightAnchor.constraint(equalToConstant: 60)
+            iconImageView.heightAnchor.constraint(equalToConstant: 60),
+            speakerView.topAnchor.constraint(equalTo: speakerViewContainer.topAnchor),
+            speakerView.bottomAnchor.constraint(equalTo: speakerViewContainer.bottomAnchor),
+            speakerView.leadingAnchor.constraint(equalTo: speakerViewContainer.leadingAnchor),
+            speakerView.trailingAnchor.constraint(equalTo: speakerViewContainer.trailingAnchor),
+            speakerView.topAnchor.constraint(equalTo: speakerButton.topAnchor),
+            speakerView.bottomAnchor.constraint(equalTo: speakerButton.bottomAnchor),
+            speakerView.leadingAnchor.constraint(equalTo: speakerButton.leadingAnchor),
+            speakerView.trailingAnchor.constraint(equalTo: speakerButton.trailingAnchor)
+        )
+        disposeBag.insert(
+            speakerButton.rx.tap
+                .bind { [unowned self, speaker] in self.showSpeakerView(speaker) }
         )
     }
 }
@@ -118,5 +138,14 @@ private extension SessionDetailViewController {
                     readMoreButton?.isHidden = true
                 })
         )
+    }
+}
+
+// MARK: Transition
+
+private extension SessionDetailViewController {
+    func showSpeakerView(_ speaker: Speaker) {
+        let speakerView = SpeakerViewController.instantiate(speaker: speaker)
+        navigationController?.pushViewController(speakerView, animated: true)
     }
 }
