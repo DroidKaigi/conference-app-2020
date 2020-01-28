@@ -60,6 +60,12 @@ class StaffsFragment : Fragment(R.layout.fragment_staffs) {
 
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.staffRecycler.adapter = groupAdapter
+        binding.staffRecycler.doOnApplyWindowInsets { recyclerView, insets, initialState ->
+            // Set a bottom padding due to the system UI is enabled.
+            recyclerView.updatePadding(
+                bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+            )
+        }
         // Because custom RecyclerView's animation, set custom SimpleItemAnimator implementation.
         //
         // see https://developer.android.com/reference/androidx/recyclerview/widget/SimpleItemAnimator.html#animateAdd(androidx.recyclerview.widget.RecyclerView.ViewHolder)
@@ -91,15 +97,6 @@ class StaffsFragment : Fragment(R.layout.fragment_staffs) {
 
             uiModel.error?.let {
                 systemViewModel.onError(it)
-            }
-        }
-
-        binding.staffRecycler.run {
-            doOnApplyWindowInsets { recyclerView, insets, initialState ->
-                // Set a bottom padding due to the system UI is enabled.
-                recyclerView.updatePadding(
-                    bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
-                )
             }
         }
     }

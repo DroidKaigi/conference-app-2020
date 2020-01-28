@@ -65,6 +65,12 @@ class SponsorsFragment : Fragment(R.layout.fragment_sponsors), Injectable {
             spanSizeLookup = groupAdapter.spanSizeLookup
         }
         binding.sponsorRecycler.adapter = groupAdapter
+        binding.sponsorRecycler.doOnApplyWindowInsets { recyclerView, insets, initialState ->
+            // Set a bottom padding due to the system UI is enabled.
+            recyclerView.updatePadding(
+                bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+            )
+        }
 
         val progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
@@ -80,15 +86,6 @@ class SponsorsFragment : Fragment(R.layout.fragment_sponsors), Injectable {
             )
             uiModel.error?.let {
                 systemViewModel.onError(it)
-            }
-        }
-
-        binding.sponsorRecycler.run {
-            doOnApplyWindowInsets { recyclerView, insets, initialState ->
-                // Set a bottom padding due to the system UI is enabled.
-                recyclerView.updatePadding(
-                    bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
-                )
             }
         }
     }

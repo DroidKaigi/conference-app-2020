@@ -50,6 +50,12 @@ class ContributorsFragment : Fragment(R.layout.fragment_contributors) {
 
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.contributorRecycler.adapter = groupAdapter
+        binding.contributorRecycler.doOnApplyWindowInsets { recyclerView, insets, initialState ->
+            // Set a bottom padding due to the system UI is enabled.
+            recyclerView.updatePadding(
+                bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+            )
+        }
         // Because custom RecyclerView's animation, set custom SimpleItemAnimator implementation.
         //
         // see https://developer.android.com/reference/androidx/recyclerview/widget/SimpleItemAnimator.html#animateAdd(androidx.recyclerview.widget.RecyclerView.ViewHolder)
@@ -90,15 +96,6 @@ class ContributorsFragment : Fragment(R.layout.fragment_contributors) {
                     binding.contributor,
                     it,
                     binding.retryButton.visibility != View.VISIBLE
-                )
-            }
-        }
-
-        binding.contributorRecycler.run {
-            doOnApplyWindowInsets { recyclerView, insets, initialState ->
-                // Set a bottom padding due to the system UI is enabled.
-                recyclerView.updatePadding(
-                    bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
                 )
             }
         }
