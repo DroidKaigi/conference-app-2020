@@ -7,7 +7,7 @@ import UIKit
 final class SponsorViewController: UIViewController {
     private let disposeBag = DisposeBag()
 
-    @IBOutlet private var collectionView: UICollectionView! {
+    @IBOutlet private weak var collectionView: UICollectionView! {
         didSet {
             collectionView.register(
                 UINib(nibName: "SponsorCell", bundle: nil),

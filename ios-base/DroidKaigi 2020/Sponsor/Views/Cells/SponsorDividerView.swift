@@ -3,7 +3,7 @@ import UIKit
 final class SponsorDividerView: UICollectionReusableView {
     static let identifier = "SponsorDividerView"
 
-    @IBOutlet private var dividerView: UIView!
+    @IBOutlet private weak var dividerView: UIView!
 
     var isLastSection: Bool = false {
         didSet {
