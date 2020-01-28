@@ -21,6 +21,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/speaker_session_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >

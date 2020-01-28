@@ -4,6 +4,7 @@ import Nuke
 import UIKit
 
 final class SpeakerViewController: UIViewController {
+    @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var userImageView: UIImageView! {
         didSet {
             userImageView.clipsToBounds = true
@@ -16,10 +17,12 @@ final class SpeakerViewController: UIViewController {
     @IBOutlet weak var biographyLabel: UILabel!
 
     private var speaker: Speaker!
+    private var sessions: [Session]!
 
-    static func instantiate(speaker: Speaker) -> SpeakerViewController {
+    static func instantiate(speaker: Speaker, sessions: [Session]) -> SpeakerViewController {
         guard let viewController = UIStoryboard(name: "SpeakerViewController", bundle: .main).instantiateInitialViewController() as? SpeakerViewController else { fatalError() }
         viewController.speaker = speaker
+        viewController.sessions = sessions
         return viewController
     }
 
@@ -45,5 +48,12 @@ final class SpeakerViewController: UIViewController {
         userNameLabel.text = speaker.name
         tagLabel.text = speaker.tagLine
         biographyLabel.text = speaker.bio
+
+        sessions.forEach { session in
+            let sessionView = SpeakerSessionView.instantiate()
+            sessionView.sessionTitleLabel.text = session.title.ja
+            sessionView.sessionDateLabel.text = session.timeSummary(lang: Lang.ja, timezoneOffset: TimeZoneOffsetKt.defaultTimeZoneOffset())
+            stackView.insertArrangedSubview(sessionView, at: stackView.arrangedSubviews.count)
+        }
     }
 }
