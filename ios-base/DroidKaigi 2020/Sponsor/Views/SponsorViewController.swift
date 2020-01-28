@@ -84,7 +84,6 @@ final class SponsorViewController: UIViewController {
 
         navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.surfaceColor
         navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onSurfaceColor
-        navigationController?.navigationBar.shadowImage = UIImage()
     }
 
     private func setupNavigationBar() {
@@ -93,6 +92,8 @@ final class SponsorViewController: UIViewController {
         } else {
             navigationItem.title = "Sponsors"
         }
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
 
     private func updateBackgroudView(isLoading: Bool, error: KotlinError?) {
