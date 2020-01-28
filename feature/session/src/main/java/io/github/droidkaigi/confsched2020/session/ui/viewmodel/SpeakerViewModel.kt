@@ -103,7 +103,7 @@ class SpeakerViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             speakerId: SpeakerId,
-            searchQuery: String?
+            searchQuery: String? = null
         ): SpeakerViewModel
     }
 }

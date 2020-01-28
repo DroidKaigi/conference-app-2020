@@ -111,7 +111,7 @@ class SessionDetailViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             sessionId: SessionId,
-            searchQuery: String?
+            searchQuery: String? = null
         ): SessionDetailViewModel
     }
 }

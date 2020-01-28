@@ -87,7 +87,7 @@ class SessionDetailTitleItem @AssistedInject constructor(
     interface Factory {
         fun create(
             session: Session,
-            searchQuery: String?
+            searchQuery: String? = null
         ): SessionDetailTitleItem
     }
 }

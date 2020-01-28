@@ -261,7 +261,7 @@ class SessionItem @AssistedInject constructor(
         fun create(
             session: Session,
             sessionsViewModel: SessionsViewModel,
-            searchQuery: String?
+            searchQuery: String? = null
         ): SessionItem
     }
 }

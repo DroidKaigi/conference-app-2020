@@ -39,8 +39,7 @@ class SpeakerSessionItem @AssistedInject constructor(
             viewBinding.root.findNavController().navigate(
                 SpeakerFragmentDirections.actionSpeakerToSessionDetail(
                     speechSession.id,
-                    TRANSITION_NAME_SUFFIX,
-                    null
+                    TRANSITION_NAME_SUFFIX
                 ),
                 extra
             )

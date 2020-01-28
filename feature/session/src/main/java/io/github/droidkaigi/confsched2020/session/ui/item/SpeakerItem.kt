@@ -118,7 +118,7 @@ class SpeakerItem @AssistedInject constructor(
     interface Factory {
         fun create(
             speaker: Speaker,
-            searchQuery: String?
+            searchQuery: String? = null
         ): SpeakerItem
     }
 }

@@ -111,7 +111,7 @@ class SpeakerDetailItem @AssistedInject constructor(
         fun create(
             speaker: Speaker,
             @Named("transitionNameSuffix") transitionNameSuffix: String,
-            searchQuery: String?,
+            searchQuery: String? = null,
             onImageLoadedCallback: () -> Unit
         ): SpeakerDetailItem
     }

@@ -121,7 +121,7 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
         fun create(
             session: Session,
             showEllipsis: Boolean,
-            searchQuery: String?,
+            searchQuery: String? = null,
             expandClickListener: () -> Unit
         ): SessionDetailDescriptionItem
     }
