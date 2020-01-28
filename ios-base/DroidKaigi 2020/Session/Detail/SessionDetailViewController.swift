@@ -18,6 +18,8 @@ final class SessionDetailViewController: UIViewController {
     @IBOutlet private weak var dateLabel: UILabel!
     @IBOutlet private weak var timeRoomLabel: UILabel!
     @IBOutlet private weak var categoryContainer: UIStackView!
+    @IBOutlet private weak var categoryLabel: CategoryLabel!
+    @IBOutlet private weak var langLabel: CategoryLabel!
 
     @IBOutlet private weak var descriptionSection: UIView!
     @IBOutlet private weak var descriptionLabel: UILabel!
@@ -66,6 +68,9 @@ private extension SessionDetailViewController {
     }
 
     func loadSpeechSession(_ session: SpeechSession) {
+        categoryLabel.text = session.category.name.ja
+        langLabel.text = session.lang.text.ja
+
         if let intendedAudience = session.intendedAudience {
             intendedAudienceLabel.text = intendedAudience
         } else {
@@ -98,13 +103,15 @@ private extension SessionDetailViewController {
 
     func loadServiceSession(_ session: ServiceSession) {
         [
+            categoryLabel,
+            langLabel,
             descriptionSection,
             audienceSection,
             speakersSection,
             docsSection,
         ]
         .compactMap { $0 }
-        .forEach { $0?.isHidden = true }
+        .forEach { $0.isHidden = true }
     }
 
     func addSpeaker(_ speaker: Speaker) {
