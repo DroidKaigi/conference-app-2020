@@ -51,6 +51,7 @@ final class SessionDetailViewController: UIViewController {
 
 private extension SessionDetailViewController {
     func loadSession(_ session: Session) {
+        // FIXME: How to detect current lang?
         titleLabel.text = session.title.ja
         dateLabel.text = "\(session.startDayText) \(session.startTimeText)-"
         timeRoomLabel.text = session.timeRoomText
@@ -68,6 +69,7 @@ private extension SessionDetailViewController {
     }
 
     func loadSpeechSession(_ session: SpeechSession) {
+        // FIXME: How to detect current lang?
         categoryLabel.text = session.category.name.ja
         langLabel.text = session.lang.text.ja
 
