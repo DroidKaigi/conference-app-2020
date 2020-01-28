@@ -50,7 +50,7 @@ final class SessionDetailViewController: UIViewController {
 private extension SessionDetailViewController {
     func loadSession(_ session: Session) {
         titleLabel.text = session.title.ja
-        dateLabel.text = session.startDayText
+        dateLabel.text = "\(session.startDayText) \(session.startTimeText)-"
         timeRoomLabel.text = session.timeRoomText
         descriptionLabel.text = session.desc
         readMoreButton.isHidden = !descriptionLabel.isTruncated
