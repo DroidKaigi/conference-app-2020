@@ -68,9 +68,18 @@ class SessionItem @AssistedInject constructor(
             }
             bindFavorite(session.isFavorited, favorite)
             root.setOnClickListener {
-                root.findNavController().navigate(actionSessionToSessionDetail(session.id))
+                val extra = FragmentNavigatorExtras(
+                    itemRoot to itemRoot.transitionName
+                )
+                root.findNavController()
+                    .navigate(
+                        actionSessionToSessionDetail(session.id, TRANSITION_NAME_SUFFIX),
+                        extra
+                    )
             }
+            itemRoot.transitionName = "${session.id}-$TRANSITION_NAME_SUFFIX"
             live.isVisible = session.isOnGoing
+            bindSessionMessage(session, viewBinding)
             title.text = session.title.ja
             room.text = session.minutesRoom(defaultLang())
             imageRequestDisposables.clear()
@@ -101,6 +110,19 @@ class SessionItem @AssistedInject constructor(
         imageButton: ImageButton
     ) {
         imageButton.isSelected = isFavorited
+    }
+
+    private fun bindSessionMessage(
+        session: Session,
+        viewBinding: ItemSessionBinding
+    ) {
+        (session as? SpeechSession)?.let {
+            viewBinding.sessionMessage.text = it.message?.getByLang(defaultLang())
+            viewBinding.sessionMessage.isVisible = it.hasMessage
+        }
+//        Test Code
+//        viewBinding.sessionMessage.text = "セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
+//        viewBinding.sessionMessage.isVisible = true
     }
 
     private fun ViewGroup.bindSpeaker() {

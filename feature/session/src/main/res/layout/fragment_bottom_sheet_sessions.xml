@@ -17,12 +17,18 @@
         <variable
             name="isEmptyFavoritePage"
             type="Boolean" />
+
+        <variable
+            name="isEventPage"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/session"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
         tools:context="io.github.droidkaigi.confsched2020.session.ui.SessionPagesFragment"
         >
 
@@ -60,10 +66,10 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/start_filter"
+            android:text="@{isFiltered ? @string/filter_now : @string/start_filter}"
             android:textAppearance="@style/TextAppearance.DroidKaigi.Body2"
             app:icon="@drawable/ic_filter_list_black_24dp"
-            app:isInvisible="@{(isEmptyFavoritePage &amp;&amp; !isFiltered) || isCollapsed}"
+            app:isInvisible="@{(isEmptyFavoritePage &amp;&amp; !isFiltered) || isCollapsed || isEventPage}"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toTopOf="parent"
             />
