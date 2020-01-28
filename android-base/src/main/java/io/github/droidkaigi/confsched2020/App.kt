@@ -8,6 +8,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.AppComponentHolder
+import io.github.droidkaigi.confsched2020.di.AppInjector
 import io.github.droidkaigi.confsched2020.di.createAppComponent
 import io.github.droidkaigi.confsched2020.image.CoilInitializer
 import io.github.droidkaigi.confsched2020.util.Prefs
@@ -26,10 +27,15 @@ open class App : DaggerApplication(), AppComponentHolder {
 
     override fun onCreate() {
         super.onCreate()
+        setupAppInjector()
         setupTimber()
         setupFirestore()
         setupNightMode()
         setupCoil()
+    }
+
+    private fun setupAppInjector() {
+        AppInjector.initialize(this)
     }
 
     private fun setupTimber() {

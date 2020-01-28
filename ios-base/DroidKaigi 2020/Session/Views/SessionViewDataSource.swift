@@ -8,7 +8,13 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
     typealias Element = [Session]
     var items: Element = []
 
+    var onTapSpeaker: Signal<Speaker> {
+        return onTapSpeakerRelay.asSignal()
+    }
+
     private var previousTimeString = ""
+    private let disposeBag = DisposeBag()
+    private let onTapSpeakerRelay = PublishRelay<Speaker>()
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
@@ -28,7 +34,9 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
             speakers = speechSession.speakers
         }
         speakers.forEach { speaker in
-            cell.addSpeakerView(imageURL: URL(string: speaker.imageUrl ?? ""), speakerName: speaker.name)
+            cell.addSpeakerView(imageURL: URL(string: speaker.imageUrl ?? ""), speakerName: speaker.name) { [weak self] in
+                self?.onTapSpeakerRelay.accept(speaker)
+            }
         }
 
         if previousTimeString != session.startTimeText {

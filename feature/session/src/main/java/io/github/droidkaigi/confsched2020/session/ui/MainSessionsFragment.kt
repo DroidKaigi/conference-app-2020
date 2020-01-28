@@ -1,12 +1,10 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -19,8 +17,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.soywiz.klock.DateTime
 import dagger.Module
 import dagger.Provides
+import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
-import dagger.android.support.DaggerFragment
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.model.SessionPage
@@ -35,7 +35,7 @@ import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
-class MainSessionsFragment : DaggerFragment() {
+class MainSessionsFragment : Fragment(R.layout.fragment_main_sessions), HasAndroidInjector {
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -51,21 +51,14 @@ class MainSessionsFragment : DaggerFragment() {
     @Inject
     lateinit var sessionItemFactory: SessionItem.Factory
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        setHasOptionsMenu(true)
-        return inflater.inflate(
-            R.layout.fragment_main_sessions,
-            container,
-            false
-        )
-    }
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         val binding = FragmentMainSessionsBinding.bind(view)
         setupSessionPager(binding)
     }
@@ -104,7 +97,7 @@ class MainSessionsFragment : DaggerFragment() {
             object : TabLayout.OnTabSelectedListener {
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                     tab?.let {
-                        //                        sessionPagesActionCreator.reselectTab(SessionPage.pages[it.position])
+                        sessionsViewModel.onTabReselected()
                     }
                 }
 
