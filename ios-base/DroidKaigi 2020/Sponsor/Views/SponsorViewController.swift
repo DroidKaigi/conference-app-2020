@@ -92,7 +92,7 @@ final class SponsorViewController: UIViewController {
         } else {
             navigationItem.title = "Sponsors"
         }
-        
+
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
 

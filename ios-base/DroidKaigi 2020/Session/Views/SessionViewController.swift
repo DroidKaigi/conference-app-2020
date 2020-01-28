@@ -69,6 +69,7 @@ final class SessionViewController: UIViewController {
                 sessions.filter { Int($0.dayNumber) == self.type.rawValue }
             }
             .share(replay: 1, scope: .whileConnected)
+
         filteredSessions
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
