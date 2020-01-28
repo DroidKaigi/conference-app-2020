@@ -20,17 +20,55 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EYG-Ag-hTt">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="185"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="NcE-zj-8fK">
-                                                <rect key="frame" x="24" y="20" width="366" height="48"/>
+                                                <rect key="frame" x="24" y="20" width="366" height="145"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Understanding Kotlin Coroutines" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U8X-MJ-3dC">
-                                                        <rect key="frame" x="0.0" y="0.0" width="366" height="48"/>
-                                                        <fontDescription key="fontDescription" name="HiraginoSans-W3" family="Hiragino Sans" pointSize="24"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="366" height="29"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RPG-9r-EI6">
+                                                        <rect key="frame" x="0.0" y="29" width="366" height="116"/>
+                                                        <subviews>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_schedule" translatesAutoresizingMaskIntoConstraints="NO" id="kPd-2Q-I98">
+                                                                <rect key="frame" x="0.0" y="20" width="16" height="16"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" secondItem="kPd-2Q-I98" secondAttribute="height" multiplier="1:1" id="gI3-Ih-su0"/>
+                                                                </constraints>
+                                                            </imageView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2月20日 11:00-11:20" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UGz-y2-eLz">
+                                                                <rect key="frame" x="26" y="20" width="320" height="16"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="16" id="Xaz-Eq-CbX"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="40min / Hall" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jof-t7-sNR">
+                                                                <rect key="frame" x="0.0" y="44" width="68.5" height="52"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                        <constraints>
+                                                            <constraint firstItem="kPd-2Q-I98" firstAttribute="top" secondItem="RPG-9r-EI6" secondAttribute="top" constant="20" symbolic="YES" id="7YG-eZ-MMt"/>
+                                                            <constraint firstItem="kPd-2Q-I98" firstAttribute="leading" secondItem="RPG-9r-EI6" secondAttribute="leading" id="Jt6-gX-YB9"/>
+                                                            <constraint firstItem="UGz-y2-eLz" firstAttribute="top" secondItem="kPd-2Q-I98" secondAttribute="top" id="LSH-0H-VRD"/>
+                                                            <constraint firstAttribute="trailing" secondItem="UGz-y2-eLz" secondAttribute="trailing" constant="20" symbolic="YES" id="g4g-MH-kfi"/>
+                                                            <constraint firstItem="Jof-t7-sNR" firstAttribute="leading" secondItem="kPd-2Q-I98" secondAttribute="leading" id="maZ-Hx-Mg9"/>
+                                                            <constraint firstItem="Jof-t7-sNR" firstAttribute="top" secondItem="UGz-y2-eLz" secondAttribute="bottom" constant="8" id="qC4-NN-A34"/>
+                                                            <constraint firstItem="UGz-y2-eLz" firstAttribute="leading" secondItem="kPd-2Q-I98" secondAttribute="trailing" constant="10" id="tkq-FV-7Py"/>
+                                                            <constraint firstAttribute="bottom" secondItem="Jof-t7-sNR" secondAttribute="bottom" constant="20" symbolic="YES" id="y5U-vU-T8Y"/>
+                                                            <constraint firstItem="UGz-y2-eLz" firstAttribute="bottom" secondItem="kPd-2Q-I98" secondAttribute="bottom" id="zWJ-54-urP"/>
+                                                        </constraints>
+                                                    </view>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstAttribute="height" priority="250" id="NyZ-wE-Rnm"/>
@@ -67,6 +105,8 @@
                         <viewLayoutGuide key="safeArea" id="bAc-1j-ue1"/>
                     </view>
                     <connections>
+                        <outlet property="dateLabel" destination="UGz-y2-eLz" id="p8X-dW-QSM"/>
+                        <outlet property="timeRoomLabel" destination="Jof-t7-sNR" id="gEh-BD-eIk"/>
                         <outlet property="titleLabel" destination="U8X-MJ-3dC" id="5el-Uo-ejJ"/>
                     </connections>
                 </viewController>
@@ -75,4 +115,7 @@
             <point key="canvasLocation" x="-42.028985507246382" y="60.9375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ic_schedule" width="14" height="14"/>
+    </resources>
 </document>
