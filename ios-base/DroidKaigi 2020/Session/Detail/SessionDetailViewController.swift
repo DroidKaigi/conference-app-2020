@@ -12,12 +12,18 @@ final class SessionDetailViewController: UIViewController {
 
     // MARK: Outlets
 
+    @IBOutlet private weak var headerSection: UIView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var dateLabel: UILabel!
     @IBOutlet private weak var timeRoomLabel: UILabel!
     @IBOutlet private weak var categoryContainer: UIStackView!
+
+    @IBOutlet private weak var descriptionSection: UIView!
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var readMoreButton: UIButton!
+
+    @IBOutlet private weak var audienceSection: UIView!
+    @IBOutlet private weak var intendedAudienceLabel: UILabel!
 
     // MARK: Life cycles
 
@@ -36,7 +42,28 @@ private extension SessionDetailViewController {
         timeRoomLabel.text = session.timeRoomText
         descriptionLabel.text = session.desc
         readMoreButton.isHidden = !descriptionLabel.isTruncated
+
+        switch session {
+        case let speech as SpeechSession:
+            loadSpeechSession(speech)
+        case let service as ServiceSession:
+            loadServiceSession(service)
+        default: break
+        }
         print(session)
+    }
+
+    func loadSpeechSession(_ session: SpeechSession) {
+        if let intendedAudience = session.intendedAudience {
+            intendedAudienceLabel.text = intendedAudience
+        } else {
+            audienceSection.isHidden = true
+        }
+    }
+
+    func loadServiceSession(_ session: ServiceSession) {
+        descriptionSection.isHidden = true
+        audienceSection.isHidden = true
     }
 
     func bind() {
