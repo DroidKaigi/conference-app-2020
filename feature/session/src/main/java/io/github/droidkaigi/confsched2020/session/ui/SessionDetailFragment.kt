@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2020.session.ui
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
+import androidx.core.app.ShareCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -134,7 +135,12 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.session_share -> {
-                    // do something
+                    val session = binding.session ?: return@setOnMenuItemClickListener true
+                    val url = resources.getString(R.string.session_share_url).format(session.id.id.toInt())
+                    systemViewModel.shareURL(
+                        activity = requireActivity(),
+                        url = url
+                    )
                 }
                 R.id.session_calendar -> {
                     val session = binding.session ?: return@setOnMenuItemClickListener true
