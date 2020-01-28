@@ -17,7 +17,7 @@ fun SponsorListResponse.toModel(): List<SponsorCategory> {
                 sponsors.map { sponsor ->
                     Sponsor(
                         id = sponsor.id,
-                        plan = plan,
+                        plan = sponsor.plan,
                         planDetail = sponsor.planDetail,
                         company = Company(
                             name = LocaledString(
