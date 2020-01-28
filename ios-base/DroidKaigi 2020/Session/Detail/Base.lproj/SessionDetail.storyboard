@@ -20,13 +20,13 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EYG-Ag-hTt">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="868.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="890.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S3N-NN-vIE">
-                                                <rect key="frame" x="24" y="0.0" width="366" height="868.5"/>
+                                                <rect key="frame" x="24" y="0.0" width="366" height="890.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="NcE-zj-8fK">
-                                                        <rect key="frame" x="0.0" y="0.0" width="366" height="868.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="366" height="890.5"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eg1-32-hGi">
                                                                 <rect key="frame" x="0.0" y="0.0" width="366" height="243.5"/>
@@ -84,7 +84,7 @@
                                                                                 <rect key="frame" x="0.0" y="169.5" width="366" height="26"/>
                                                                                 <subviews>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gLt-H8-4Tf">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="222" height="26"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="199.5" height="26"/>
                                                                                         <subviews>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Application Architecture" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1xL-eT-i9z" customClass="CategoryLabel" customModule="DroidKaigi_2020" customModuleProvider="target">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="157" height="26"/>
@@ -96,8 +96,8 @@
                                                                                                 <color key="textColor" red="0.015686274509803921" green="0.11764705882352941" blue="0.25882352941176467" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="日本語" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z3x-av-Idp" customClass="CategoryLabel" customModule="DroidKaigi_2020" customModuleProvider="target">
-                                                                                                <rect key="frame" x="165" y="0.0" width="57" height="26"/>
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="JA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z3x-av-Idp" customClass="CategoryLabel" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                                                                                <rect key="frame" x="165" y="0.0" width="34.5" height="26"/>
                                                                                                 <color key="backgroundColor" red="0.86274509803921573" green="0.95294117647058818" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                                 <constraints>
                                                                                                     <constraint firstAttribute="height" constant="26" id="rZX-eo-Tky"/>
@@ -228,10 +228,10 @@
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hyh-UQ-Hdl">
-                                                                <rect key="frame" x="0.0" y="699.5" width="366" height="169"/>
+                                                                <rect key="frame" x="0.0" y="699.5" width="366" height="191"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="34" translatesAutoresizingMaskIntoConstraints="NO" id="4iU-1t-fQJ">
-                                                                        <rect key="frame" x="0.0" y="24" width="366" height="121"/>
+                                                                        <rect key="frame" x="0.0" y="24" width="366" height="143"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Documents" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="izb-W0-KXx">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="366" height="17"/>
@@ -241,10 +241,10 @@
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="28" translatesAutoresizingMaskIntoConstraints="NO" id="rZg-dv-5TY">
-                                                                                <rect key="frame" x="0.0" y="51" width="366" height="70"/>
+                                                                                <rect key="frame" x="0.0" y="51" width="366" height="92"/>
                                                                                 <subviews>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CBY-jo-yAK">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="366" height="22"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="366" height="44"/>
                                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                                         <inset key="titleEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                                                         <inset key="imageEdgeInsets" minX="7" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -256,7 +256,7 @@
                                                                                         </state>
                                                                                     </button>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FP2-yF-dGx">
-                                                                                        <rect key="frame" x="0.0" y="50" width="366" height="20"/>
+                                                                                        <rect key="frame" x="0.0" y="72" width="366" height="20"/>
                                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                                         <inset key="titleEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                                                         <inset key="imageEdgeInsets" minX="7" minY="0.0" maxX="0.0" maxY="0.0"/>
