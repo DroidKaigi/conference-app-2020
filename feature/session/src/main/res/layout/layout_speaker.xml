@@ -7,12 +7,17 @@
     android:layout_height="wrap_content"
     >
 
+    <ImageView
+        android:id="@+id/speaker_image"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/ic_person_outline_black_32dp"/>
+
     <TextView
         android:id="@+id/speaker"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
-        android:drawableStart="@drawable/ic_person_outline_black_32dp"
-        android:drawablePadding="8dp"
+        android:paddingStart="8dp"
         android:paddingEnd="16dp"
         android:gravity="center_vertical"
         android:textAppearance="?attr/textAppearanceCaption"

@@ -15,8 +15,10 @@ import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionFeedback
 import io.github.droidkaigi.confsched2020.model.SessionId
+import io.github.droidkaigi.confsched2020.model.SessionList
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -24,7 +26,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import timber.log.debug
-import javax.inject.Inject
 
 internal class DataSessionRepository @Inject constructor(
     private val droidKaigiApi: DroidKaigiApi,
@@ -42,7 +43,7 @@ internal class DataSessionRepository @Inject constructor(
         return sessionsFlow.map { sessions ->
             val speechSessions = sessions.filterIsInstance<SpeechSession>()
             SessionContents(
-                sessions = sessions,
+                sessions = SessionList(sessions),
                 speakers = speechSessions.flatMap { it.speakers }.distinct(),
                 langs = Lang.values().toList(),
                 langSupports = LangSupport.values().toList(),
@@ -70,10 +71,12 @@ internal class DataSessionRepository @Inject constructor(
             val firstDay = DateTime(sessionEntities.first().session.stime)
             val sessions: List<Session> = sessionEntities
                 .map { it.toSession(speakerEntities, fabSessionIds, firstDay) }
-                .sortedWith(compareBy(
-                    { it.startTime.unixMillisLong },
-                    { it.room.id }
-                ))
+                .sortedWith(
+                    compareBy(
+                        { it.startTime.unixMillisLong },
+                        { it.room.id }
+                    )
+                )
             sessions
         }
     }

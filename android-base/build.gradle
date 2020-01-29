@@ -17,6 +17,7 @@ android {
         versionCode Versions.androidVersionCode
         versionName Versions.androidVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
     signingConfigs {
         debug {
@@ -32,7 +33,6 @@ android {
         if (isReleaseBuild) {
             assert releaseKeystore.exists()
             assert System.getenv("RELEASE_KEYSTORE_STORE_PASSWORD")
-            assert System.getenv("RELEASE_KEYSTORE_KEY_ALIAS")
             assert System.getenv("RELEASE_KEYSTORE_KEY_PASSWORD")
         }
 
@@ -40,7 +40,7 @@ android {
             release {
                 storeFile releaseKeystore
                 storePassword System.getenv("RELEASE_KEYSTORE_STORE_PASSWORD")
-                keyAlias System.getenv("RELEASE_KEYSTORE_KEY_ALIAS")
+                keyAlias "droidkaigi"
                 keyPassword System.getenv("RELEASE_KEYSTORE_KEY_PASSWORD")
             }
         }
@@ -50,9 +50,9 @@ android {
             applicationIdSuffix Packages.debugNameSuffix
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             signingConfig signingConfigs.release
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     dataBinding {
@@ -68,6 +68,10 @@ android {
             ':feature:preference',
             ':feature:contributor'
     ]
+    testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        animationsDisabled = true
+    }
 }
 
 dependencies {
@@ -108,13 +112,18 @@ dependencies {
 
     testImplementation Dep.Test.junit
     androidTestImplementation Dep.Test.testRunner
+    androidTestImplementation Dep.Test.testRules
     androidTestImplementation Dep.Test.espressoCore
+    androidTestImplementation Dep.Test.testCoreKtx
+    androidTestImplementation Dep.Test.androidJunit4Ktx
+    androidTestUtil Dep.Test.orchestrator
 
     Dep.Hyperion.hyperionPlugins.forEach{
         debugImplementation it
     }
     debugImplementation Dep.Stetho.stetho
     debugImplementation Dep.LeakCanary.leakCanary
+    kapt Dep.Google.autoservice
 }
 
 apply plugin: 'com.google.gms.google-services'

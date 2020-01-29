@@ -1,14 +1,11 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -18,29 +15,27 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.soywiz.klock.DateTime
-import com.soywiz.klock.hours
 import dagger.Module
 import dagger.Provides
+import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
-import dagger.android.support.DaggerFragment
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentMainSessionsBinding
-import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.actionSessionToSearchSessions
+import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirections.Companion.actionSessionToSearchSessions
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
-import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
-class MainSessionsFragment : DaggerFragment() {
-
-    private var binding: FragmentMainSessionsBinding by autoCleared()
+class MainSessionsFragment : Fragment(R.layout.fragment_main_sessions), HasAndroidInjector {
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -56,29 +51,19 @@ class MainSessionsFragment : DaggerFragment() {
     @Inject
     lateinit var sessionItemFactory: SessionItem.Factory
 
-    private var progressTimeLatch: ProgressTimeLatch by autoCleared()
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_main_sessions,
-            container,
-            false
-        )
-        setHasOptionsMenu(true)
-        return binding.root
-    }
+    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupSessionPager()
+        setHasOptionsMenu(true)
+        val binding = FragmentMainSessionsBinding.bind(view)
+        setupSessionPager(binding)
     }
 
-    private fun setupSessionPager() {
+    private fun setupSessionPager(binding: FragmentMainSessionsBinding) {
         val tabLayoutMediator = TabLayoutMediator(
             binding.sessionsTabLayout,
             binding.sessionsViewpager
@@ -88,12 +73,12 @@ class MainSessionsFragment : DaggerFragment() {
         // TODO: apply margin design
 //        binding.sessionsViewpager.pageMargin =
 //            resources.getDimensionPixelSize(R.dimen.session_pager_horizontal_padding)
-        progressTimeLatch = ProgressTimeLatch { showProgress ->
+        val progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.sessionsProgressBar.isVisible = showProgress
         }.apply {
             loading = true
         }
-        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
+        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             progressTimeLatch.loading = uiModel.isLoading
         }
         binding.sessionsViewpager.adapter = object : FragmentStateAdapter(
@@ -102,10 +87,8 @@ class MainSessionsFragment : DaggerFragment() {
             override fun getItemCount(): Int = SessionPage.pages.size
 
             override fun createFragment(position: Int): Fragment {
-               return SessionsFragment.newInstance(
-                    SessionsFragmentArgs
-                        .Builder(position)
-                        .build()
+                return SessionsFragment.newInstance(
+                    SessionsFragmentArgs(position)
                 )
             }
         }
@@ -114,7 +97,7 @@ class MainSessionsFragment : DaggerFragment() {
             object : TabLayout.OnTabSelectedListener {
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                     tab?.let {
-                        //                        sessionPagesActionCreator.reselectTab(SessionPage.pages[it.position])
+                        sessionsViewModel.onTabReselected()
                     }
                 }
 
@@ -139,7 +122,7 @@ class MainSessionsFragment : DaggerFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.session_search -> {
                 findNavController().navigate(actionSessionToSearchSessions())
                 return false

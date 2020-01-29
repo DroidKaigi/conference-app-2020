@@ -48,6 +48,7 @@
                 app:titleTextColor="@{ContextsKt.getThemeColor(context, isIndigoBackground ? R.attr.colorOnPrimarySurface : R.attr.colorOnSurface)}"
                 />
 
+            <!-- Ignore because FragmentContainerView bug. See https://github.com/DroidKaigi/conference-app-2020/issues/378 -->
             <fragment
                 android:id="@+id/root_nav_host_fragment"
                 android:name="io.github.droidkaigi.confsched2020.ui.CustomNavHostFragment"
@@ -59,6 +60,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
                 app:navGraph="@navigation/navigation"
+                tools:ignore="FragmentTagUsage"
                 tools:layout="@layout/fragment_sessions"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -73,6 +75,7 @@
             app:itemBackground="@android:color/transparent"
             app:itemIconTint="@color/nav_drawer_item_selector"
             app:itemTextColor="@color/nav_drawer_item_selector"
+            app:itemIconPadding="34dp"
             app:menu="@menu/menu_nav_drawer"
             />
     </androidx.drawerlayout.widget.DrawerLayout>
