@@ -26,7 +26,7 @@ import io.github.droidkaigi.confsched2020.contributor.ui.viewmodel.ContributorsV
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.ext.showHide
+import io.github.droidkaigi.confsched2020.ext.isShow
 import io.github.droidkaigi.confsched2020.ext.stringRes
 import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.model.Contributor
@@ -75,7 +75,7 @@ class ContributorsFragment : Fragment(R.layout.fragment_contributors) {
         // This is the transition for the stagger effect.
         val stagger = Stagger()
         contributorsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            binding.progressBar.showHide(uiModel.isLoading)
+            binding.progressBar.isShow = uiModel.isLoading
 
             // Delay the stagger effect until the list is updated.
             TransitionManager.beginDelayedTransition(binding.contributorRecycler, stagger)

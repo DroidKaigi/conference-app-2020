@@ -21,7 +21,7 @@ import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.ext.showHide
+import io.github.droidkaigi.confsched2020.ext.isShow
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
@@ -114,7 +114,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         sessionDetailViewModel.uiModel
             .observe(viewLifecycleOwner) { uiModel: SessionDetailViewModel.UiModel ->
                 uiModel.error?.let { systemViewModel.onError(it) }
-                binding.progressBar.showHide(uiModel.isLoading)
+                binding.progressBar.isShow = uiModel.isLoading
                 uiModel.session
                     ?.let { session ->
                         setupSessionViews(

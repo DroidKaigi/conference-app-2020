@@ -23,7 +23,7 @@ import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
-import io.github.droidkaigi.confsched2020.ext.showHide
+import io.github.droidkaigi.confsched2020.ext.isShow
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import javax.inject.Inject
 import javax.inject.Provider
@@ -65,7 +65,7 @@ class AnnouncementFragment : Fragment(R.layout.fragment_announcement), Injectabl
         binding.progressBar.show()
         announcementViewModel.loadLanguageSetting()
         announcementViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            binding.progressBar.showHide(uiModel.isLoading)
+            binding.progressBar.isShow = uiModel.isLoading
             binding.emptyMessage.isVisible = uiModel.isEmpty
             groupAdapter.update(
                 uiModel.announcements.map { announcement ->
