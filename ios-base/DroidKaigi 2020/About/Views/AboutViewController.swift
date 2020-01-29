@@ -61,6 +61,8 @@ extension AboutViewController {
         case .version:
             return dequeueReusableCell(withIdentifier: AboutCell.Identifier.detail, for: indexPath) { cell in
                 cell.titleLabel.text = "アプリバージョン"
+                cell.detailLabel?.text =
+                    Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
             }
         }
     }
