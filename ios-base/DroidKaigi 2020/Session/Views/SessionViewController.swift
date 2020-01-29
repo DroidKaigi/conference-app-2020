@@ -89,6 +89,9 @@ final class SessionViewController: UIViewController {
                 self?.navigationController?.pushViewController(SpeakerViewController.instantiate(speaker: speaker, sessions: sessions), animated: true)
             })
             .disposed(by: disposeBag)
+        collectionView.rx.modelSelected(Session.self)
+            .bind(onNext: { [unowned self] in self.showDetail(forSession: $0) })
+            .disposed(by: disposeBag)
     }
 
     func showSuggestView() {
@@ -101,5 +104,19 @@ final class SessionViewController: UIViewController {
             suggestView.rightAnchor.constraint(equalTo: view.rightAnchor),
             suggestView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+    }
+}
+
+// MARK: -
+
+private extension SessionViewController {
+    func showDetail(forSession session: Session) {
+        // FIXME: Use coordinator?
+        guard let vc = UIStoryboard(name: "SessionDetail", bundle: nil)
+            .instantiateInitialViewController() as? SessionDetailViewController else {
+            return
+        }
+        vc.session = session
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
