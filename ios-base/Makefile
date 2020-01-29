@@ -1,7 +1,7 @@
 GIT_REPO = $(shell git rev-parse --show-toplevel)
 GIT_DIR = $(shell git rev-parse --git-dir)
 
-init:
+init: swiftgen
 	mint run xcodegen
 	bundle install --path vendor/bundle
 	bundle exec pod install
@@ -10,6 +10,10 @@ init:
 xcode:
 	mint run xcodegen
 	bundle exec pod install
+
+swiftgen:
+	mkdir -p $(GIT_REPO)/ios-base/DroidKaigi\ 2020/Generated
+	mint run swiftgen swiftgen
 
 test: xcode
 	set -o pipefail && \
