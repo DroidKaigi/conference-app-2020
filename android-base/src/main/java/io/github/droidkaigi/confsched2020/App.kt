@@ -1,6 +1,9 @@
 package io.github.droidkaigi.confsched2020
 
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.provider.FontRequest
+import androidx.emoji.text.EmojiCompat
+import androidx.emoji.text.FontRequestEmojiCompatConfig
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
@@ -32,6 +35,7 @@ open class App : DaggerApplication(), AppComponentHolder {
         setupFirestore()
         setupNightMode()
         setupCoil()
+        setupEmoji()
     }
 
     private fun setupAppInjector() {
@@ -57,5 +61,16 @@ open class App : DaggerApplication(), AppComponentHolder {
 
     private fun setupCoil() {
         CoilInitializer.init(this)
+    }
+
+    private fun setupEmoji() {
+        val fontRequest = FontRequest(
+            "com.google.android.gms.fonts",
+            "com.google.android.gms",
+            "Noto Color Emoji Compat",
+            R.array.com_google_android_gms_fonts_certs
+        )
+        val config = FontRequestEmojiCompatConfig(applicationContext, fontRequest)
+        EmojiCompat.init(config)
     }
 }
