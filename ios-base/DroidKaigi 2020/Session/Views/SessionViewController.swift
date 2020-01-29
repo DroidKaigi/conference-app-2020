@@ -69,6 +69,7 @@ final class SessionViewController: UIViewController {
                 sessions.filter { Int($0.dayNumber) == self.type.rawValue }
             }
             .share(replay: 1, scope: .whileConnected)
+
         filteredSessions
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
@@ -83,6 +84,14 @@ final class SessionViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+        dataSource.onTapSpeaker
+            .emit(onNext: { [weak self] speaker, sessions in
+                self?.navigationController?.pushViewController(SpeakerViewController.instantiate(speaker: speaker, sessions: sessions), animated: true)
+            })
+            .disposed(by: disposeBag)
+        collectionView.rx.modelSelected(Session.self)
+            .bind(onNext: { [unowned self] in self.showDetail(forSession: $0) })
+            .disposed(by: disposeBag)
     }
 
     func showSuggestView() {
@@ -95,5 +104,19 @@ final class SessionViewController: UIViewController {
             suggestView.rightAnchor.constraint(equalTo: view.rightAnchor),
             suggestView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+    }
+}
+
+// MARK: -
+
+private extension SessionViewController {
+    func showDetail(forSession session: Session) {
+        // FIXME: Use coordinator?
+        guard let vc = UIStoryboard(name: "SessionDetail", bundle: nil)
+            .instantiateInitialViewController() as? SessionDetailViewController else {
+            return
+        }
+        vc.session = session
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

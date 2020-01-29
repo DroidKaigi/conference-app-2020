@@ -1,3 +1,4 @@
+import Material
 import MaterialComponents
 import RxCocoa
 import RxSwift
@@ -23,10 +24,14 @@ final class FilterViewController: UIViewController {
 
     private let embeddedViewAnimator = UIViewPropertyAnimator(duration: 0.8, curve: .easeInOut)
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = ApplicationScheme.shared.colorScheme.surfaceColor
+        view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
         setUpAppBar()
         setUpTabBar()
         setUpContainerView()
@@ -39,6 +44,13 @@ final class FilterViewController: UIViewController {
         let embeddedFrame = frameForEmbeddedController()
         containerView.frame = embeddedFrame
         embeddedView?.frame = containerView.bounds
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.primaryColor
+        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
     }
 
     private func frameForEmbeddedController() -> CGRect {
@@ -71,12 +83,16 @@ final class FilterViewController: UIViewController {
                                          style: .plain,
                                          target: self,
                                          action: nil)
-        self.navigationItem.leftBarButtonItems = [menuItem, logoItem]
-        self.navigationItem.rightBarButtonItems = [searchItem]
-        self.navigationController?.navigationBar
-            .setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.edgesForExtendedLayout = []
+        navigationItem.leftBarButtonItems = [menuItem, logoItem]
+        navigationItem.rightBarButtonItems = [searchItem]
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        edgesForExtendedLayout = []
+
+        menuItem.rx.tap
+            .bind(to: Binder(self) { me, _ in
+                me.navigationDrawerController?.toggleLeftView()
+            }).disposed(by: disposeBag)
     }
 
     private func setUpTabBar() {

@@ -1,6 +1,10 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
 import android.content.Context
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.BackgroundColorSpan
+import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
@@ -14,6 +18,7 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
 import com.xwray.groupie.databinding.ViewHolder
+import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
@@ -21,9 +26,11 @@ import io.github.droidkaigi.confsched2020.session.databinding.ItemSpeakerBinding
 import io.github.droidkaigi.confsched2020.session.ui.SearchSessionsFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
 import io.github.droidkaigi.confsched2020.util.lazyWithParam
+import java.util.regex.Pattern
 
 class SpeakerItem @AssistedInject constructor(
     @Assisted val speaker: Speaker,
+    @Assisted val searchQuery: String?,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
 ) : BindableItem<ItemSpeakerBinding>(speaker.id.hashCode().toLong()),
     EqualableContentsProvider {
@@ -44,10 +51,16 @@ class SpeakerItem @AssistedInject constructor(
             val extras = FragmentNavigatorExtras(
                 viewBinding.image to viewBinding.image.transitionName
             )
-            viewBinding.root.findNavController()
-                .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX), extras)
+            viewBinding.root.findNavController().navigate(
+                actionSessionToSpeaker(
+                    speaker.id,
+                    TRANSITION_NAME_SUFFIX,
+                    searchQuery),
+                extras
+            )
         }
         viewBinding.name.text = speaker.name
+        viewBinding.name.setSearchHighlight()
         viewBinding.image.transitionName = "${speaker.id}-$TRANSITION_NAME_SUFFIX"
 
         imageRequestDisposables.clear()
@@ -73,6 +86,22 @@ class SpeakerItem @AssistedInject constructor(
         imageRequestDisposables.forEach { it.dispose() }
     }
 
+    private fun TextView.setSearchHighlight() {
+        if (searchQuery.isNullOrEmpty()) return
+        val highlightColor = context.getThemeColor(R.attr.colorSecondary)
+        val pattern = Pattern.compile(searchQuery, Pattern.CASE_INSENSITIVE)
+        val matcher = pattern.matcher(text)
+        val spannableStringBuilder = SpannableStringBuilder(text)
+        while (matcher.find()) {
+            spannableStringBuilder.setSpan(
+                BackgroundColorSpan(highlightColor),
+                matcher.start(),
+                matcher.end(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        text = spannableStringBuilder
+    }
+
     override fun providerEqualableContents(): Array<*> {
         return arrayOf(speaker)
     }
@@ -88,7 +117,8 @@ class SpeakerItem @AssistedInject constructor(
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            speaker: Speaker
+            speaker: Speaker,
+            searchQuery: String? = null
         ): SpeakerItem
     }
 }

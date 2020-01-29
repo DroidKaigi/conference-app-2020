@@ -24,13 +24,15 @@ import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionList
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
+import io.github.droidkaigi.confsched2020.session.util.SessionAlarm
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
 
 class SessionsViewModel @Inject constructor(
-    private val sessionRepository: SessionRepository
+    private val sessionRepository: SessionRepository,
+    private val sessionAlarm: SessionAlarm
 ) : ViewModel() {
     // UiModel definition
     data class UiModel(
@@ -38,6 +40,7 @@ class SessionsViewModel @Inject constructor(
         val error: AppError?,
         val dayToSessionsMap: Map<SessionPage.Day, SessionList>,
         val shouldScrollSessionPosition: Map<SessionPage, Int>,
+        val events: SessionList,
         val favoritedSessions: SessionList,
         val filters: Filters,
         val allFilters: Filters
@@ -48,6 +51,7 @@ class SessionsViewModel @Inject constructor(
                 null,
                 mapOf(),
                 mapOf(),
+                SessionList.EMPTY,
                 SessionList.EMPTY,
                 Filters(),
                 Filters()
@@ -95,7 +99,8 @@ class SessionsViewModel @Inject constructor(
         val sessions = sessionContents.sessions
         val filteredSessions = sessions.filtered(filters)
         val dayToSessionMap = filteredSessions.dayToSessionMap
-        val shouldScrollSessionPosition = filteredSessions.toPageToScrollPositionMap()
+        val shouldScrollSessionPosition =
+            if (shouldScroll) filteredSessions.toPageToScrollPositionMap() else emptyMap()
 
         UiModel(
             isLoading = isLoading,
@@ -106,6 +111,7 @@ class SessionsViewModel @Inject constructor(
                 .toAppError(),
             dayToSessionsMap = dayToSessionMap,
             shouldScrollSessionPosition = shouldScrollSessionPosition,
+            events = sessions.events,
             favoritedSessions = filteredSessions.favorited,
             filters = filters,
             allFilters = Filters(
@@ -124,6 +130,7 @@ class SessionsViewModel @Inject constructor(
             favoriteLoadingStateLiveData.value = LoadingState.Loading
             try {
                 sessionRepository.toggleFavoriteWithWorker(session.id)
+                sessionAlarm.toggleRegister(session)
                 favoriteLoadingStateLiveData.value = LoadingState.Loaded
             } catch (e: Exception) {
                 favoriteLoadingStateLiveData.value = LoadingState.Error(e)
@@ -188,5 +195,9 @@ class SessionsViewModel @Inject constructor(
 
     fun onScrolled() {
         shouldScrollCurrentSessionLiveData.value = false
+    }
+
+    fun onTabReselected() {
+        shouldScrollCurrentSessionLiveData.value = true
     }
 }
