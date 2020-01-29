@@ -1,7 +1,12 @@
 disabled_rules:
   - line_length
+opt_in_rules:
+  - file_header
 included:
   - DroidKaigi 2020
 excluded:
   - Carthage
   - Pods
+file_header:
+  severity: error
+  forbidden_pattern: .

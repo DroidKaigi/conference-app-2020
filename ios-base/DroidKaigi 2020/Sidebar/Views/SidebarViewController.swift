@@ -12,9 +12,9 @@ final class SidebarViewController: UITableViewController {
         case setting
     }
 
-    weak var rootViewController: UIViewController?
+    weak var rootViewController: UINavigationController?
 
-    static func instantiate(rootViewController: UIViewController) -> SidebarViewController {
+    static func instantiate(rootViewController: UINavigationController) -> SidebarViewController {
         guard let viewController = UIStoryboard(name: "SidebarViewController", bundle: .main).instantiateInitialViewController() as? SidebarViewController else { fatalError() }
         viewController.rootViewController = rootViewController
         return viewController
@@ -51,7 +51,9 @@ final class SidebarViewController: UITableViewController {
         case .map:
             break
         case .sponsor:
-            break
+            let vc = SponsorViewController()
+            rootViewController?.pushViewController(vc, animated: true)
+            rootViewController?.navigationDrawerController?.toggleLeftView()
         case .contributor:
             break
         case .setting:

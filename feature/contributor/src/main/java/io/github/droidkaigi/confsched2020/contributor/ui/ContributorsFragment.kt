@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2020.contributor.ui
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -16,6 +17,7 @@ import com.xwray.groupie.databinding.ViewHolder
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.App
 import io.github.droidkaigi.confsched2020.contributor.R
 import io.github.droidkaigi.confsched2020.contributor.databinding.FragmentContributorsBinding
@@ -48,6 +50,12 @@ class ContributorsFragment : Fragment(R.layout.fragment_contributors) {
 
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.contributorRecycler.adapter = groupAdapter
+        binding.contributorRecycler.doOnApplyWindowInsets { recyclerView, insets, initialState ->
+            // Set a bottom padding due to the system UI is enabled.
+            recyclerView.updatePadding(
+                bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+            )
+        }
         // Because custom RecyclerView's animation, set custom SimpleItemAnimator implementation.
         //
         // see https://developer.android.com/reference/androidx/recyclerview/widget/SimpleItemAnimator.html#animateAdd(androidx.recyclerview.widget.RecyclerView.ViewHolder)
