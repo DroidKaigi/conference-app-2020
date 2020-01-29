@@ -26,15 +26,15 @@ import io.github.droidkaigi.confsched2020.model.Announcement
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 
 class AnnouncementItem @AssistedInject constructor(
-    @Assisted val announcement: Announcement
+    @Assisted val announcement: Announcement,
+    @Assisted var showEllipsis: Boolean,
+    @Assisted val expandListener: () -> Unit
 ) : BindableItem<ItemAnnouncementBinding>(announcement.id), EqualableContentsProvider {
 
     companion object {
         private const val ELLIPSIS_LINE_COUNT = 4
         private val dateFormatter = DateFormat("MM.dd HH:mm")
     }
-
-    private var showEllipsis: Boolean = true
 
     override fun getLayout(): Int = R.layout.item_announcement
 
@@ -92,6 +92,7 @@ class AnnouncementItem @AssistedInject constructor(
                     TransitionManager.beginDelayedTransition(rootView as ViewGroup)
                     text = fullText
                     showEllipsis = !showEllipsis
+                    expandListener()
                 }
                 val detailText = fullText.substring(0, lastLineStartPosition) + lastLineText
                 val text = buildSpannedString {
@@ -132,7 +133,9 @@ class AnnouncementItem @AssistedInject constructor(
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            announcement: Announcement
+            announcement: Announcement,
+            showEllipsis: Boolean,
+            expandListener: () -> Unit
         ): AnnouncementItem
     }
 }

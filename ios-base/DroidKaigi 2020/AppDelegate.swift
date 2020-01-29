@@ -1,3 +1,4 @@
+import Material
 import UIKit
 
 @UIApplicationMain
@@ -8,12 +9,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 13, *) {
         } else {
             let window = UIWindow(frame: UIScreen.main.bounds)
-            UINavigationBar.appearance().tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
-            UINavigationBar.appearance().backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
+            UINavigationBar.appearance().isTranslucent = false
+
+            let backButtonBackgroundImage = #imageLiteral(resourceName: "ic_back")
+            UINavigationBar.appearance().backIndicatorImage = backButtonBackgroundImage
+            UINavigationBar.appearance().backIndicatorTransitionMaskImage = backButtonBackgroundImage
+
             let vc = FilterViewController()
             let nvc = NavigationController(rootViewController: vc)
-            nvc.view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
-            window.rootViewController = nvc
+            let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc))
+            window.rootViewController = root
             self.window = window
             self.window?.makeKeyAndVisible()
         }

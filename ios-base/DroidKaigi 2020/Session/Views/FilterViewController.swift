@@ -1,3 +1,4 @@
+import Material
 import MaterialComponents
 import RxCocoa
 import RxSwift
@@ -45,6 +46,13 @@ final class FilterViewController: UIViewController {
         embeddedView?.frame = containerView.bounds
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.primaryColor
+        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
+    }
+
     private func frameForEmbeddedController() -> CGRect {
         var embeddedFrame = view.bounds
         var insetHeader = UIEdgeInsets()
@@ -77,10 +85,14 @@ final class FilterViewController: UIViewController {
                                          action: nil)
         navigationItem.leftBarButtonItems = [menuItem, logoItem]
         navigationItem.rightBarButtonItems = [searchItem]
-        navigationController?.navigationBar
-            .setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         edgesForExtendedLayout = []
+
+        menuItem.rx.tap
+            .bind(to: Binder(self) { me, _ in
+                me.navigationDrawerController?.toggleLeftView()
+            }).disposed(by: disposeBag)
     }
 
     private func setUpTabBar() {

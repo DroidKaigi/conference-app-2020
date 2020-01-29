@@ -230,6 +230,8 @@ This project uses some modern Android libraries and source codes.
 * [TimetableLayout](https://github.com/MoyuruAizawa/TimetableLayout) (MoyuruAizawa)
 * [Android Architecture Components samples](https://github.com/android/architecture-components-samples) (Google)
   * [AutoClearedValue](https://github.com/android/architecture-components-samples/blob/9826b59956eb93c9e627bdf16a19a1c8bc28ce14/GithubBrowserSample/app/src/main/java/com/android/example/github/util/AutoClearedValue.kt)
+* [Android Animation Samples Repository](https://github.com/android/animation-samples) (Google)
+  * [Motion](https://github.com/android/animation-samples/tree/master/Motion)
 
 ### iOS
 * [Mint](https://github.com/yonaskolb/Mint)
@@ -237,4 +239,5 @@ This project uses some modern Android libraries and source codes.
 * [material-components-ios](https://github.com/material-components/material-components-ios)
 * [RxSwift](https://github.com/ReactiveX/RxSwift)
 * [GNU Make](https://www.gnu.org/software/make/)
+* [Material](https://github.com/CosmicMind/Material)
 * [Nuke](https://github.com/kean/Nuke)

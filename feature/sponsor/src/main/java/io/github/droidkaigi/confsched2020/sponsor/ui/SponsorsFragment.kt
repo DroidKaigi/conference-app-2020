@@ -1,10 +1,10 @@
 package io.github.droidkaigi.confsched2020.sponsor.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -15,7 +15,8 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
 import dagger.Provides
-import dagger.android.support.DaggerFragment
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
+import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
@@ -33,7 +34,7 @@ import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
-class SponsorsFragment : DaggerFragment() {
+class SponsorsFragment : Fragment(R.layout.fragment_sponsors), Injectable {
 
     @Inject lateinit var sponsorsModelFactory: Provider<SponsorsViewModel>
     private val sponsorsViewModel by assistedViewModels {
@@ -50,18 +51,6 @@ class SponsorsFragment : DaggerFragment() {
 
     @Inject lateinit var categoryHeaderItemFactory: CategoryHeaderItem.Factory
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(
-            R.layout.fragment_sponsors,
-            container,
-            false
-        )
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentSponsorsBinding.bind(view)
@@ -76,6 +65,12 @@ class SponsorsFragment : DaggerFragment() {
             spanSizeLookup = groupAdapter.spanSizeLookup
         }
         binding.sponsorRecycler.adapter = groupAdapter
+        binding.sponsorRecycler.doOnApplyWindowInsets { recyclerView, insets, initialState ->
+            // Set a bottom padding due to the system UI is enabled.
+            recyclerView.updatePadding(
+                bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+            )
+        }
 
         val progressTimeLatch = ProgressTimeLatch { showProgress ->
             binding.progressBar.isVisible = showProgress
