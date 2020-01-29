@@ -1,5 +1,11 @@
 input_dir: DroidKaigi 2020/
 output_dir: DroidKaigi 2020/Generated/
+strings:
+    inputs: en.lproj
+    filter: .+\.strings$
+    outputs:
+        - templateName: structured-swift4
+          output: Strings.swift
 xcassets:
     inputs: Assets.xcassets
     outputs: 
