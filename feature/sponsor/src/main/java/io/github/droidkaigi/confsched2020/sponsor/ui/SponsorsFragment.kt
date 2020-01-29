@@ -19,6 +19,7 @@ import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.showHide
 import io.github.droidkaigi.confsched2020.model.Sponsor
 import io.github.droidkaigi.confsched2020.model.SponsorCategory
 import io.github.droidkaigi.confsched2020.sponsor.R
@@ -72,7 +73,7 @@ class SponsorsFragment : Fragment(R.layout.fragment_sponsors), Injectable {
 
         binding.progressBar.show()
         sponsorsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            with(binding.progressBar) { if (uiModel.isLoading) show() else hide() }
+            binding.progressBar.showHide(uiModel.isLoading)
             groupAdapter.update(
                 uiModel.sponsorCategories.map {
                     it.toSection()

@@ -20,6 +20,7 @@ import io.github.droidkaigi.confsched2020.App
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.showHide
 import io.github.droidkaigi.confsched2020.staff.R
 import io.github.droidkaigi.confsched2020.staff.databinding.FragmentStaffsBinding
 import io.github.droidkaigi.confsched2020.staff.ui.di.StaffAssistedInjectModule
@@ -81,7 +82,7 @@ class StaffsFragment : Fragment(R.layout.fragment_staffs) {
         // This is the transition for the stagger effect.
         val stagger = Stagger()
         staffsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            with(binding.progressBar) { if (uiModel.isLoading) show() else hide() }
+            binding.progressBar.showHide(uiModel.isLoading)
 
             // Delay the stagger effect until the list is updated.
             TransitionManager.beginDelayedTransition(binding.staffRecycler, stagger)

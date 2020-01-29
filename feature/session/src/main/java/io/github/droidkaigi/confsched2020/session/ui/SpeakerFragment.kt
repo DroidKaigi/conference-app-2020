@@ -17,6 +17,7 @@ import dagger.Provides
 import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.showHide
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSpeakerBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerDetailItem
@@ -56,7 +57,7 @@ class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
 
         speakerViewModel.uiModel.distinctUntilChanged()
             .observe(viewLifecycleOwner) { uiModel: SpeakerViewModel.UiModel ->
-                with(binding.progressBar) { if (uiModel.isLoading) show() else hide() }
+                binding.progressBar.showHide(uiModel.isLoading)
                 val speaker = uiModel.speaker ?: return@observe
                 val sessions = uiModel.sessions.takeIf { it.isNotEmpty() } ?: return@observe
 
