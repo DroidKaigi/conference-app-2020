@@ -68,7 +68,7 @@ final class SidebarViewController: UITableViewController {
         case .info:
             break
         case .map:
-            if let _ = UIApplication.topViewController() as? FilterViewController {
+            if let _ = UIApplication.topViewController() as? FloorMapViewController {
                 navigationDrawerController?.toggleLeftView()
             } else {
                 let vc = FloorMapViewController.instantiate()

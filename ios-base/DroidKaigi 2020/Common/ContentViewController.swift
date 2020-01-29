@@ -11,7 +11,7 @@ class ContentViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpAppBar() 
+        setUpAppBar()
     }
 
     private func setUpAppBar() {
@@ -21,11 +21,8 @@ class ContentViewController: UIViewController {
                                        style: .plain,
                                        target: self,
                                        action: nil)
-        let logoImage = UIImage(named: "logo")
-        let templateLogoImage = logoImage?.withRenderingMode(.alwaysOriginal)
-        let logoItem = UIBarButtonItem(image: templateLogoImage, style: .plain, target: nil, action: nil)
 
-        navigationItem.leftBarButtonItems = [menuItem, logoItem]
+        navigationItem.leftBarButtonItems = [menuItem]
         navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.primaryColor
         navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
         navigationController?.navigationBar.titleTextAttributes = [
