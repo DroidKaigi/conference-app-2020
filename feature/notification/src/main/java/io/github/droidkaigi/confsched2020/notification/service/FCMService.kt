@@ -22,8 +22,7 @@ class FCMService : FirebaseMessagingService() {
             }
         }
 
-        //:TODO add sendBroadcast
-        //LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(ACTION_TOKEN_PUBLISHED))
+        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(ACTION_TOKEN_PUBLISHED))
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
