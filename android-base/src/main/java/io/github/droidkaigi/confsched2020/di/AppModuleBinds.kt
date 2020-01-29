@@ -7,7 +7,7 @@ import io.github.droidkaigi.confsched2020.initializer.AppInitializer
 import io.github.droidkaigi.confsched2020.initializer.AppInjector
 import io.github.droidkaigi.confsched2020.initializer.CoilInitializer
 import io.github.droidkaigi.confsched2020.initializer.EmojiInitializer
-import io.github.droidkaigi.confsched2020.initializer.FirebaseFirestoreInitializer
+import io.github.droidkaigi.confsched2020.initializer.FirestoreInitializer
 import io.github.droidkaigi.confsched2020.initializer.ThemeInitializer
 import io.github.droidkaigi.confsched2020.initializer.TimberInitializer
 
@@ -27,7 +27,7 @@ abstract class AppModuleBinds {
 
     @Binds
     @IntoSet
-    abstract fun provideFirebaseFirestoreInitializer(bind: FirebaseFirestoreInitializer): AppInitializer
+    abstract fun provideFirestoreInitializer(bind: FirestoreInitializer): AppInitializer
 
     @Binds
     @IntoSet

@@ -6,7 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import javax.inject.Inject
 
-class FirebaseFirestoreInitializer @Inject constructor() : AppInitializer {
+class FirestoreInitializer @Inject constructor() : AppInitializer {
     override fun initialize(application: Application) {
         FirebaseApp.initializeApp(application)
         val firestore = FirebaseFirestore.getInstance()
