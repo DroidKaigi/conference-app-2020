@@ -14,19 +14,18 @@ import com.google.firebase.firestore.Source
 import io.github.droidkaigi.confsched2020.data.firestore.Firestore
 import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.Shard
-import io.github.droidkaigi.confsched2020.model.ThumbsUpCounter
-import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import timber.log.debug
+import javax.inject.Inject
 import kotlin.math.floor
-import kotlin.math.sin
 
 internal class FirestoreImpl @Inject constructor() : Firestore {
     companion object {
@@ -73,13 +72,36 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
         Timber.debug { "toggleFavorite: end" }
     }
 
-    override fun thumbsUp(sessionId: SessionId): Flow<Int> {
-        return flow {
+    override fun getThumbsUpCount(sessionId: SessionId): Flow<Int> {
+        val setupThumbsUp = flow {
             signInIfNeeded()
-            val counterRef = createThumbsUpCounterIfNeeded(sessionId = sessionId, numShards = NUM_SHARDS)
-            incrementThumbsUpCount(counterRef)
-            emit(getThumbsUpCount(counterRef))
+            val counterRef = getThumbsUpCounterRef(sessionId)
+            createShardsIfNeeded(counterRef)
+            emit(counterRef)
         }
+
+        val thumbsUpSnapshot = setupThumbsUp.flatMapLatest {
+            it.toFlow()
+        }
+
+        return thumbsUpSnapshot.map { shards ->
+            var count = 0
+            shards.forEach { snap ->
+                val shard = snap.toObject(Shard::class.java)
+                count += shard.count
+            }
+            count
+        }
+    }
+
+    override suspend fun incrementThumbsUpCount(sessionId: SessionId) {
+        signInIfNeeded()
+        val counterRef = getThumbsUpCounterRef(sessionId)
+        val shardId = floor(Math.random() * NUM_SHARDS).toInt()
+        counterRef
+            .document(shardId.toString())
+            .update("count", FieldValue.increment(1))
+            .await()
     }
 
     private fun getFavoritesRef(): CollectionReference {
@@ -103,60 +125,28 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
         Timber.debug { "signInIfNeeded end" }
     }
 
-    private suspend fun createThumbsUpCounterIfNeeded(sessionId: SessionId, numShards: Int): DocumentReference {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val firebaseUserId = firebaseAuth.currentUser?.uid ?: throw RuntimeException(
-            "RuntimeException"
-        )
-        val counterDocumentRef = FirebaseFirestore
+    private fun getThumbsUpCounterRef(sessionId: SessionId): CollectionReference {
+        return FirebaseFirestore
             .getInstance()
-            .collection("confsched/2020/sessions/$sessionId/thumbsup_counters")
-            .document(firebaseUserId)
-
-        if (counterDocumentRef.fastGet().exists()) {
-            Timber.debug { "createThumbsUpCounterIfNeeded counter already exists" }
-            return counterDocumentRef
-        }
-
-        counterDocumentRef.set(ThumbsUpCounter(numShards))
-            .continueWithTask { task ->
-                if (!task.isSuccessful) {
-                    throw task.exception!!
-                }
-
-                val tasks = arrayListOf<Task<Void>>()
-
-                // Initialize each shard with count=0
-                for (i in 0 until numShards) {
-                    val makeShard = counterDocumentRef.collection("shards")
-                        .document(i.toString())
-                        .set(Shard(count = 0))
-
-                    tasks.add(makeShard)
-                }
-
-                Tasks.whenAll(tasks)
-            }.await()
-
-        Timber.debug { "createThumbsUpCounterIfNeeded creating counter completed" }
-        return counterDocumentRef
+            .collection("confsched/2020/sessions/$sessionId/thumbsup_counter")
     }
 
-    private fun incrementThumbsUpCount(counterRef: DocumentReference) {
-        val shardId = floor(Math.random() * NUM_SHARDS).toInt()
-        counterRef.collection("shards")
-            .document(shardId.toString())
-            .update("count", FieldValue.increment(1))
-    }
-
-    private suspend fun getThumbsUpCount(counterRef: DocumentReference): Int {
-        val shards = counterRef.collection("shards").fastGet()
-        var count = 0
-        shards.forEach { snap ->
-            val shard = snap.toObject(Shard::class.java)
-            count += shard.count
+    private suspend fun createShardsIfNeeded(counterRef: CollectionReference) {
+        if (counterRef.fastGet().isEmpty) {
+            Timber.debug { "createShardsIfNeeded shards already exist" }
+            return
         }
-        return count
+
+        val tasks = arrayListOf<Task<Void>>()
+        (0 until NUM_SHARDS).forEach {
+            val makeShard = counterRef
+                .document(it.toString())
+                .set(Shard(count = 0))
+            tasks.add(makeShard)
+        }
+
+        Tasks.whenAll(tasks).await()
+        Timber.debug { "createShardsIfNeeded creating shards completed" }
     }
 }
 
