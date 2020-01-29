@@ -193,7 +193,8 @@ private extension SessionDetailViewController {
 
 private extension SessionDetailViewController {
     func showSpeakerView(_ speaker: Speaker) {
-        let speakerView = SpeakerViewController.instantiate(speaker: speaker)
+        // FIXME: Sessions should be all fetched
+        let speakerView = SpeakerViewController.instantiate(speaker: speaker, sessions: [session])
         navigationController?.pushViewController(speakerView, animated: true)
     }
 
