@@ -151,7 +151,7 @@ private extension SessionDetailViewController {
         [speakerView, speakerButton].forEach(speakerViewContainer.addSubview(_:))
         speakersContainer.addArrangedSubview(speakerViewContainer)
 
-        NSLayoutConstraint.activate(
+        NSLayoutConstraint.activate([
             iconImageView.heightAnchor.constraint(equalToConstant: 60),
             speakerView.topAnchor.constraint(equalTo: speakerViewContainer.topAnchor),
             speakerView.bottomAnchor.constraint(equalTo: speakerViewContainer.bottomAnchor),
@@ -160,8 +160,8 @@ private extension SessionDetailViewController {
             speakerView.topAnchor.constraint(equalTo: speakerButton.topAnchor),
             speakerView.bottomAnchor.constraint(equalTo: speakerButton.bottomAnchor),
             speakerView.leadingAnchor.constraint(equalTo: speakerButton.leadingAnchor),
-            speakerView.trailingAnchor.constraint(equalTo: speakerButton.trailingAnchor)
-        )
+            speakerView.trailingAnchor.constraint(equalTo: speakerButton.trailingAnchor),
+        ])
         disposeBag.insert(
             speakerButton.rx.tap
                 .bind { [unowned self, speaker] in self.showSpeakerView(speaker) }
