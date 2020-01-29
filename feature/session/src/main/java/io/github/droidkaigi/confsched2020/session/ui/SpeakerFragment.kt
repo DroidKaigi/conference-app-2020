@@ -3,7 +3,6 @@ package io.github.droidkaigi.confsched2020.session.ui
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -24,7 +23,6 @@ import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerDetailItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerSessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SpeakerViewModel
 import io.github.droidkaigi.confsched2020.util.AndroidRTransition
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 
 class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
@@ -51,18 +49,14 @@ class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentSpeakerBinding.bind(view)
         postponeEnterTransition()
-        val progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
-        }.apply {
-            loading = true
-        }
+        binding.progressBar.show()
 
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.speakerRecycler.adapter = groupAdapter
 
         speakerViewModel.uiModel.distinctUntilChanged()
             .observe(viewLifecycleOwner) { uiModel: SpeakerViewModel.UiModel ->
-                progressTimeLatch.loading = uiModel.isLoading
+                with(binding.progressBar) { if (uiModel.isLoading) show() else hide() }
                 val speaker = uiModel.speaker ?: return@observe
                 val sessions = uiModel.sessions.takeIf { it.isNotEmpty() } ?: return@observe
 

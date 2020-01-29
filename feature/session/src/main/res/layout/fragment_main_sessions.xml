@@ -25,7 +25,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tabGravity="fill"
             app:tabIndicatorGravity="bottom"
-            app:tabUnboundedRipple="false" />
+            app:tabUnboundedRipple="false"
+            />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/sessions_viewpager"
@@ -38,8 +39,9 @@
             app:layout_constraintTop_toBottomOf="@id/sessions_tab_layout"
             />
 
-        <ProgressBar
+        <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/sessions_progress_bar"
+            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"

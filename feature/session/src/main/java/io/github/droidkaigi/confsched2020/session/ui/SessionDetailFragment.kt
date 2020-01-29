@@ -3,7 +3,6 @@ package io.github.droidkaigi.confsched2020.session.ui
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -42,7 +41,6 @@ import io.github.droidkaigi.confsched2020.session.ui.widget.SessionDetailItemDec
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.animation.MEDIUM_EXPAND_DURATION
 import io.github.droidkaigi.confsched2020.ui.transition.fadeThrough
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -110,16 +108,12 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
             itemAnimator.supportsChangeAnimations = false
         }
 
-        val progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
-        }.apply {
-            loading = true
-        }
+        binding.progressBar.show()
 
         sessionDetailViewModel.uiModel
             .observe(viewLifecycleOwner) { uiModel: SessionDetailViewModel.UiModel ->
                 uiModel.error?.let { systemViewModel.onError(it) }
-                progressTimeLatch.loading = uiModel.isLoading
+                with(binding.progressBar) { if (uiModel.isLoading) show() else hide() }
                 uiModel.session
                     ?.let { session ->
                         setupSessionViews(
@@ -209,7 +203,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                                 actionSessionToSpeaker(
                                     speaker.id,
                                     TRANSITION_NAME_SUFFIX,
-                                    searchQuery),
+                                    searchQuery
+                                ),
                                 extras
                             )
                     }

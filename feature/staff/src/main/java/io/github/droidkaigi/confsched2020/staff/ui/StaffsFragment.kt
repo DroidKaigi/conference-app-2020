@@ -28,7 +28,6 @@ import io.github.droidkaigi.confsched2020.staff.ui.item.StaffItem
 import io.github.droidkaigi.confsched2020.staff.ui.viewmodel.StaffsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.transition.Stagger
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -78,16 +77,12 @@ class StaffsFragment : Fragment(R.layout.fragment_staffs) {
             }
         }
 
-        val progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
-        }.apply {
-            loading = true
-        }
+        binding.progressBar.show()
 
         // This is the transition for the stagger effect.
         val stagger = Stagger()
         staffsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            progressTimeLatch.loading = uiModel.isLoading
+            with(binding.progressBar) { if (uiModel.isLoading) show() else hide() }
 
             // Delay the stagger effect until the list is updated.
             TransitionManager.beginDelayedTransition(binding.staffRecycler, stagger)

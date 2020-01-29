@@ -2,7 +2,6 @@ package io.github.droidkaigi.confsched2020.sponsor.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -30,7 +29,6 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.item.LargeSponsorItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.SponsorItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.viewmodel.SponsorsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -72,13 +70,9 @@ class SponsorsFragment : Fragment(R.layout.fragment_sponsors), Injectable {
             )
         }
 
-        val progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
-        }.apply {
-            loading = true
-        }
+        binding.progressBar.show()
         sponsorsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            progressTimeLatch.loading = uiModel.isLoading
+            with(binding.progressBar) { if (uiModel.isLoading) show() else hide() }
             groupAdapter.update(
                 uiModel.sponsorCategories.map {
                     it.toSection()
