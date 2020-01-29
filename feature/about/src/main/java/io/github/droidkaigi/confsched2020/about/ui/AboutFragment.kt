@@ -2,7 +2,6 @@ package io.github.droidkaigi.confsched2020.about.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -21,7 +20,6 @@ import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -54,11 +52,7 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
             }
         }
 
-        ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
-        }.apply {
-            loading = true
-        }
+        binding.progressBar.show()
         binding.staffs.setOnClickListener(
             Navigation.createNavigateOnClickListener(AboutFragmentDirections.actionAboutToStaffs())
         )

@@ -23,8 +23,8 @@ import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.isShow
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -62,14 +62,10 @@ class AnnouncementFragment : Fragment(R.layout.fragment_announcement), Injectabl
             }
         }
 
-        val progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
-        }.apply {
-            loading = true
-        }
+        binding.progressBar.show()
         announcementViewModel.loadLanguageSetting()
         announcementViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            progressTimeLatch.loading = uiModel.isLoading
+            binding.progressBar.isShow = uiModel.isLoading
             binding.emptyMessage.isVisible = uiModel.isEmpty
             groupAdapter.update(
                 uiModel.announcements.map { announcement ->
