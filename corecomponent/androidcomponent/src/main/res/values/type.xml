@@ -51,7 +51,7 @@
     </style>
 
     <!-- Notosans Regular 16sp -->
-    <style name="TextAppearance.DroidKaigi.SessionMessage" parent="TextAppearance.MaterialComponents.Body1">
+    <style name="TextAppearance.DroidKaigi.Notice" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:fontFamily">@font/notosans_regular</item>
         <item name="fontFamily">@font/notosans_regular</item>
         <item name="android:textColor">@color/red</item>
