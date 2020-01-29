@@ -12,7 +12,7 @@ final class SidebarViewController: UITableViewController {
         case setting
     }
 
-    weak var rootViewController: UIViewController?
+    weak var rootViewController: UINavigationController?
 
     var switchType: SwitchViewControllerType?
 
@@ -24,7 +24,7 @@ final class SidebarViewController: UITableViewController {
         switchType = dependency.switchType
     }
 
-    static func instantiate(rootViewController: UIViewController, dependency: Dependency = .init(switchType: .timeline)) -> SidebarViewController {
+    static func instantiate(rootViewController: UINavigationController, dependency: Dependency = .init(switchType: .timeline)) -> SidebarViewController {
         guard let viewController = UIStoryboard(name: "SidebarViewController", bundle: .main).instantiateInitialViewController() as? SidebarViewController else { fatalError() }
         viewController.inject(with: dependency)
         viewController.rootViewController = rootViewController
@@ -58,27 +58,22 @@ final class SidebarViewController: UITableViewController {
                 navigationDrawerController?.toggleLeftView()
             } else {
                 let vc = FilterViewController()
-                let nvc = NavigationController(rootViewController: vc)
-                let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc, dependency: .init(switchType: switchType)))
-                navigationDrawerController?.transition(to: root, completion: { _ in
-                    self.navigationDrawerController?.toggleLeftView()
-                    })
+                rootViewController?.pushViewController(vc, animated: true)
+                rootViewController?.navigationDrawerController?.toggleLeftView()
             }
+
 
         case .about:
             break
         case .info:
             break
         case .map:
-            if let _ = UIApplication.topViewController() as? FloorMapViewController {
+            if let _ = UIApplication.topViewController() as? FilterViewController {
                 navigationDrawerController?.toggleLeftView()
             } else {
                 let vc = FloorMapViewController.instantiate()
-                let nvc = NavigationController(rootViewController: vc)
-                let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc, dependency: .init(switchType: switchType)))
-                navigationDrawerController?.transition(to: root, completion: { _ in
-                    self.navigationDrawerController?.toggleLeftView()
-               })
+                rootViewController?.pushViewController(vc, animated: true)
+                rootViewController?.navigationDrawerController?.toggleLeftView()
             }
 
         case .sponsor:
