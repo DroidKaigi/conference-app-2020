@@ -94,8 +94,7 @@ extension SessionPageViewController: UIPageViewControllerDataSource {
 
 extension SessionPageViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        guard let changedVC = pageViewController.viewControllers?.first,
-            let changedIndex = sessionViewControllers.firstIndex(of: changedVC) else {
+        guard let changedVC = pageViewController.viewControllers?.first, let changedIndex = sessionViewControllers.firstIndex(of: changedVC) else {
             return
         }
         filterViewControllerDelegate?.shouldChangeTab(index: changedIndex)

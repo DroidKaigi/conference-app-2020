@@ -51,6 +51,7 @@
             android:text="@{session.title.getByLang(lang)}"
             android:textAppearance="?textAppearanceHeadline5"
             android:textColor="@color/session_title"
+            android:textIsSelectable="true"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toTopOf="parent"

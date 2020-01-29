@@ -1,8 +1,8 @@
 import MaterialComponents
 import Nuke
-import UIKit
 import RxCocoa
 import RxSwift
+import UIKit
 
 final class SessionCell: UICollectionViewCell {
     static let identifier = "SessionCell"
@@ -40,7 +40,7 @@ final class SessionCell: UICollectionViewCell {
         widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
     }
 
-    func addSpeakerView(imageURL: URL?, speakerName: String, speakerTapHandler: @escaping () -> ()) {
+    func addSpeakerView(imageURL: URL?, speakerName: String, speakerTapHandler: @escaping () -> Void) {
         let view = UIControl()
         let speakerIconView = UIImageView()
         if let imageURL = imageURL {

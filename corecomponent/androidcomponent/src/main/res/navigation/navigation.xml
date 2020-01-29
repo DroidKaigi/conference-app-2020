@@ -85,6 +85,12 @@
             android:name="transitionNameSuffix"
             app:argType="string"
             />
+        <argument
+            android:name="searchQuery"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"
+            />
         <action
             android:id="@+id/action_session_to_speaker"
             app:destination="@id/speaker"
@@ -130,6 +136,11 @@
         <argument
             android:name="transitionNameSuffix"
             app:argType="string"
+            />
+        <argument
+            android:name="searchQuery"
+            app:argType="string"
+            app:nullable="true"
             />
 
         <action

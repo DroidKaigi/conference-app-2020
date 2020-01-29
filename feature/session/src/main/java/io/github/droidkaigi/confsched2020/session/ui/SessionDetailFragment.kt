@@ -55,7 +55,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
     }
     @Inject lateinit var sessionDetailViewModelFactory: SessionDetailViewModel.Factory
     private val sessionDetailViewModel by assistedViewModels {
-        sessionDetailViewModelFactory.create(navArgs.sessionId)
+        sessionDetailViewModelFactory.create(navArgs.sessionId, navArgs.searchQuery)
     }
 
     private val navArgs: SessionDetailFragmentArgs by navArgs()
@@ -127,7 +127,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                             binding,
                             adapter,
                             session,
-                            uiModel.showEllipsis
+                            uiModel.showEllipsis,
+                            uiModel.searchQuery
                         )
                     }
             }
@@ -181,16 +182,18 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         binding: FragmentSessionDetailBinding,
         adapter: GroupAdapter<ViewHolder<*>>,
         session: Session,
-        showEllipsis: Boolean
+        showEllipsis: Boolean,
+        searchQuery: String?
     ) {
         binding.sessionDetailRecycler.transitionName =
             "${session.id}-${navArgs.transitionNameSuffix}"
 
         val items = mutableListOf<Group>()
-        items += sessionDetailTitleItemFactory.create(session)
+        items += sessionDetailTitleItemFactory.create(session, searchQuery)
         items += sessionDetailDescriptionItemFactory.create(
             session,
-            showEllipsis
+            showEllipsis,
+            searchQuery
         ) { sessionDetailViewModel.expandDescription() }
         if (session.hasIntendedAudience)
             items += sessionDetailTargetItemFactory.create(session)
@@ -210,8 +213,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                             .navigate(
                                 actionSessionToSpeaker(
                                     speaker.id,
-                                    TRANSITION_NAME_SUFFIX
-                                ),
+                                    TRANSITION_NAME_SUFFIX,
+                                    searchQuery),
                                 extras
                             )
                     }
