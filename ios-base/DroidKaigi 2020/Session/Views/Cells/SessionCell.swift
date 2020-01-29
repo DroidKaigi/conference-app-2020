@@ -17,11 +17,11 @@ final class SessionCell: UICollectionViewCell {
 
     @IBOutlet weak var bookmarkButton: UIButton! {
         didSet {
-            let bookmarkImage = UIImage(named: "ic_bookmark")
-            let templatedBookmarkImage = bookmarkImage?.withRenderingMode(.alwaysTemplate)
+            let bookmarkImage = Asset.icBookmark.image
+            let templatedBookmarkImage = bookmarkImage.withRenderingMode(.alwaysTemplate)
             bookmarkButton.setImage(templatedBookmarkImage, for: .selected)
-            let bookmarkBorderImage = UIImage(named: "ic_bookmark_border")
-            let templatedBookmarkBorderImage = bookmarkBorderImage?.withRenderingMode(.alwaysTemplate)
+            let bookmarkBorderImage = Asset.icBookmarkBorder.image
+            let templatedBookmarkBorderImage = bookmarkBorderImage.withRenderingMode(.alwaysTemplate)
             bookmarkButton.setImage(templatedBookmarkBorderImage, for: .normal)
             bookmarkButton.tintColor = UIColor(hex: "00B5E2")
         }
