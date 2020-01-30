@@ -126,7 +126,7 @@ object Dep {
     }
 
     object Dagger {
-        val version = "2.25.4"
+        val version = "2.26"
         val core = "com.google.dagger:dagger:$version"
         val compiler = "com.google.dagger:dagger-compiler:$version"
         val androidSupport = "com.google.dagger:dagger-android-support:$version"

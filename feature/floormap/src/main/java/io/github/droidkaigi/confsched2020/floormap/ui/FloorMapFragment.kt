@@ -15,11 +15,9 @@ class FloorMapFragment : Fragment(R.layout.fragment_floormap), Injectable {
     @Module
     abstract class FloorMapFragmentModule {
 
-        @Module
         companion object {
 
             @PageScope
-            @JvmStatic
             @Provides
             fun providesLifecycleOwnerLiveData(
                 floorMapFragment: FloorMapFragment
