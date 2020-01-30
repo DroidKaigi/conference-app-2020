@@ -21,6 +21,9 @@ final class SessionViewModel {
     let isFocusedOnEmbeddedView: Driver<Bool>
     let sessions: Driver<[Session]>
 
+    // dependencies
+    private let bookingSessionProvider: BookingSessionProvider = .init()
+
     init() {
         let isFocusedOnEmbeddedViewRelay = BehaviorRelay<Bool>(value: true)
         let sessionsRelay = BehaviorRelay<[Session]>(value: [])
@@ -40,5 +43,15 @@ final class SessionViewModel {
             .map { !$0 }
             .bind(to: isFocusedOnEmbeddedViewRelay)
             .disposed(by: disposeBag)
+    }
+
+    func bookSession(_ session: Session) {
+        let feedback = UINotificationFeedbackGenerator()
+        feedback.prepare()
+        bookingSessionProvider.bookSession(session: session).subscribe(onCompleted: {
+            feedback.notificationOccurred(.success)
+		}) { _ in
+            feedback.notificationOccurred(.error)
+        }.disposed(by: disposeBag)
     }
 }
