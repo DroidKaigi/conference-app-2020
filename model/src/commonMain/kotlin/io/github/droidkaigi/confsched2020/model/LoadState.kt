@@ -7,6 +7,7 @@ sealed class LoadState<out T> {
 
     val isLoading get() = this is Loading
     fun getErrorIfExists() = if (this is Error) e else null
+    fun getValueOrNull(): T? = if (this is Loaded<T>) value else null
 }
 
 sealed class LoadingState {

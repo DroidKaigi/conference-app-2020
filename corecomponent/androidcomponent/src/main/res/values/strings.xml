@@ -1,16 +1,17 @@
 <resources>
     <!-- Session -->
-    <string name="session_label">Session</string>
+    <string name="session_label">Sessions</string>
     <!-- Speaker -->
     <string name="speaker_label" translatable="false">Speaker</string>
+
     <!-- Material -->
     <string name="material_label" translatable="false">Material</string>
     <!-- Announce -->
-    <string name="announce_label">Announce</string>
+    <string name="announce_label">Announcements</string>
     <!-- About -->
     <string name="about_label">About</string>
     <!-- Sponsor -->
-    <string name="sponsor_label">Sponsor</string>
+    <string name="sponsor_label">Sponsors</string>
     <!-- FloorMap -->
     <string name="map_label">Floormap</string>
     <!-- Survey -->
@@ -20,9 +21,9 @@
     <!-- Search -->
     <string name="search_label" translatable="false">Search</string>
     <!-- Contributor -->
-    <string name="contributor_label" translatable="false">Contributor</string>
+    <string name="contributor_label" translatable="false">Contributors</string>
     <!-- Setting -->
-    <string name="setting_label" translatable="false">Setting</string>
+    <string name="setting_label" translatable="false">Settings</string>
     <!-- Staff Search -->
     <string name="staffs_label">Committee Members</string>
     <!-- Widgets -->
@@ -32,11 +33,32 @@
     <string name="notification_title_session_start">Notice of favorite session start</string>
     <string name="notification_message_session_title">%1$s will start soon</string>
     <string name="notification_message_session_start_time">%1$s to %2$s @ %3$s</string>
+    <string name="notification_channel_name_start_favorite_session">start favorite session</string>
     <!-- Tabular Form -->
     <string name="tabular_form_label">Timetable</string>
-
+    <!-- Preference -->
     <string name="theme_label" translatable="false">Theme</string>
     <string name="dark_theme_label" translatable="false">Dark theme</string>
+    <string name="pref_theme_value_default" translatable="false">default</string>
+    <string name="pref_theme_value_battery" translatable="false">battery</string>
+    <string name="pref_theme_value_light" translatable="false">light</string>
+    <string name="pref_theme_value_dark" translatable="false">dark</string>
+    <string name="pref_theme_entry_default">System default</string>
+    <string name="pref_theme_entry_battery">When battery saver is on</string>
+    <string name="pref_theme_entry_light">Light</string>
+    <string name="pref_theme_entry_dark">Dark</string>
+    <!-- override in v29 -->
+    <string name="pref_theme_default" translatable="false">@string/pref_theme_value_battery</string>
+    <string-array name="pref_theme_entries">
+        <item>@string/pref_theme_entry_light</item>
+        <item>@string/pref_theme_entry_dark</item>
+        <item>@string/pref_theme_entry_battery</item>
+    </string-array>
+    <string-array name="pref_theme_entry_values">
+        <item>@string/pref_theme_value_light</item>
+        <item>@string/pref_theme_value_dark</item>
+        <item>@string/pref_theme_value_battery</item>
+    </string-array>
 
     <string name="error_network" translatable="false">A network error has occurred.Please try again.</string>
     <string name="error_server" translatable="false">A server error has occurred.Please try again.</string>

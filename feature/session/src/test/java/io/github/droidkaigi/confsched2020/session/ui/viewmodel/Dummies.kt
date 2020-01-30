@@ -11,6 +11,7 @@ import io.github.droidkaigi.confsched2020.model.ServiceSession
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionId
+import io.github.droidkaigi.confsched2020.model.SessionList
 import io.github.droidkaigi.confsched2020.model.SessionType
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeakerId
@@ -69,7 +70,7 @@ object Dummies {
         speachSession1
     )
     val sessionContents = SessionContents(
-        sessions = sessions,
+        sessions = SessionList(sessions),
         speakers = speakers,
         rooms = listOf(hall),
         langs = listOf(Lang.JA, Lang.EN),

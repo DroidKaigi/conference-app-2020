@@ -1,6 +1,9 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
 import android.content.Context
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -22,6 +25,7 @@ import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import com.xwray.groupie.databinding.ViewHolder
+import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.LocaledString
 import io.github.droidkaigi.confsched2020.model.Session
@@ -35,11 +39,13 @@ import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirecti
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
 import io.github.droidkaigi.confsched2020.util.lazyWithParam
+import java.util.regex.Pattern
 import kotlin.math.max
 
 class SessionItem @AssistedInject constructor(
     @Assisted private val session: Session,
     @Assisted private val sessionsViewModel: SessionsViewModel,
+    @Assisted private val searchQuery: String?,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
 ) : BindableItem<ItemSessionBinding>(session.id.hashCode().toLong()),
     EqualableContentsProvider {
@@ -68,12 +74,24 @@ class SessionItem @AssistedInject constructor(
             }
             bindFavorite(session.isFavorited, favorite)
             root.setOnClickListener {
-                root.findNavController().navigate(actionSessionToSessionDetail(session.id))
+                val extra = FragmentNavigatorExtras(
+                    itemRoot to itemRoot.transitionName
+                )
+                root.findNavController()
+                    .navigate(
+                        actionSessionToSessionDetail(
+                            session.id,
+                            TRANSITION_NAME_SUFFIX,
+                            searchQuery),
+                        extra
+                    )
             }
+            itemRoot.transitionName = "${session.id}-$TRANSITION_NAME_SUFFIX"
             live.isVisible = session.isOnGoing
+            bindSessionMessage(session, viewBinding)
             title.text = session.title.ja
-            room.text = session.room.name.getByLang(defaultLang())
-            survey.isEnabled = session.isFinished
+            title.setSearchHighlight()
+            room.text = session.minutesRoom(defaultLang())
             imageRequestDisposables.clear()
             speakers.bindSpeaker()
         }
@@ -102,6 +120,20 @@ class SessionItem @AssistedInject constructor(
         imageButton: ImageButton
     ) {
         imageButton.isSelected = isFavorited
+    }
+
+    private fun bindSessionMessage(
+        session: Session,
+        viewBinding: ItemSessionBinding
+    ) {
+        (session as? SpeechSession)?.let {
+            viewBinding.sessionMessage.text = it.message?.getByLang(defaultLang())
+            viewBinding.sessionMessage.setSearchHighlight()
+            viewBinding.sessionMessage.isVisible = it.hasMessage
+        }
+//        Test Code
+//        viewBinding.sessionMessage.text = "セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
+//        viewBinding.sessionMessage.isVisible = true
     }
 
     private fun ViewGroup.bindSpeaker() {
@@ -135,8 +167,13 @@ class SessionItem @AssistedInject constructor(
                 val extras = FragmentNavigatorExtras(
                     speakerImageView to speakerImageView.transitionName
                 )
-                it.findNavController()
-                    .navigate(actionSessionToSpeaker(speaker.id, TRANSITION_NAME_SUFFIX), extras)
+                it.findNavController().navigate(
+                    actionSessionToSpeaker(
+                        speaker.id,
+                        TRANSITION_NAME_SUFFIX,
+                        null),
+                    extras
+                )
             }
             bindSpeakerData(speaker, speakerNameView, speakerImageView)
         }
@@ -148,7 +185,7 @@ class SessionItem @AssistedInject constructor(
         speakerImageView: ImageView
     ) {
         speakerNameView.text = speaker.name
-//        setHighlightText(textView, query)
+        speakerNameView.setSearchHighlight()
         val imageUrl = speaker.imageUrl
         val context = speakerNameView.context
         val placeholder = placeholder.get(context)?.also {
@@ -169,6 +206,22 @@ class SessionItem @AssistedInject constructor(
     override fun unbind(viewHolder: ViewHolder<ItemSessionBinding>) {
         super.unbind(viewHolder)
         imageRequestDisposables.forEach { it.dispose() }
+    }
+
+    private fun TextView.setSearchHighlight() {
+        if (searchQuery.isNullOrEmpty()) return
+        val highlightColor = context.getThemeColor(R.attr.colorSecondary)
+        val pattern = Pattern.compile(searchQuery, Pattern.CASE_INSENSITIVE)
+        val matcher = pattern.matcher(text)
+        val spannableStringBuilder = SpannableStringBuilder(text)
+        while (matcher.find()) {
+            spannableStringBuilder.setSpan(
+                BackgroundColorSpan(highlightColor),
+                matcher.start(),
+                matcher.end(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        text = spannableStringBuilder
     }
 
     fun startSessionTime(): String = session.startTimeText
@@ -207,7 +260,8 @@ class SessionItem @AssistedInject constructor(
     interface Factory {
         fun create(
             session: Session,
-            sessionsViewModel: SessionsViewModel
+            sessionsViewModel: SessionsViewModel,
+            searchQuery: String? = null
         ): SessionItem
     }
 }

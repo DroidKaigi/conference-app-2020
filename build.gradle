@@ -70,12 +70,9 @@ allprojects {
             task ktlint(type: JavaExec, group: "verification") {
                 def parameters = [
                         "--android",
-                        "--reporter=checkstyle,output=${buildDir}/ktlint/checkstyle.xml"
+                        "--reporter=checkstyle,output=${buildDir}/ktlint/checkstyle.xml",
+                        "--reporter=html,output=${buildDir}/ktlint/checkstyle.html"
                 ]
-
-                if (!isCi) {
-                    parameters += "--reporter=html,output=${buildDir}/ktlint/checkstyle.html"
-                }
 
                 parameters += ['src/**/*.kt', '**/*.gradle.kts']
 

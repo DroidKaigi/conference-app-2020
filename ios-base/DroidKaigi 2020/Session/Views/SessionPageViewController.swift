@@ -19,7 +19,6 @@ enum SessionViewControllerType: Int {
 }
 
 final class SessionPageViewController: UIPageViewController {
-
     private let viewModel: SessionViewModel
 
     private var selectedViewControllerIndex: Int = 0
@@ -27,7 +26,7 @@ final class SessionPageViewController: UIPageViewController {
 
     weak var filterViewControllerDelegate: FilterViewControllerDelegate?
 
-    init(viewModel: SessionViewModel, transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
+    init(viewModel: SessionViewModel, transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey: Any]? = nil) {
         self.viewModel = viewModel
         super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
     }
@@ -55,7 +54,7 @@ final class SessionPageViewController: UIPageViewController {
     func setViewControllers(type: SessionViewControllerType) {
         let direction: UIPageViewController.NavigationDirection =
             selectedViewControllerIndex < type.rawValue
-            ? .forward : .reverse
+                ? .forward : .reverse
         selectedViewControllerIndex = type.rawValue
         setViewControllers([sessionViewControllers[type.rawValue - 1]], direction: direction, animated: true)
     }
@@ -76,6 +75,7 @@ extension SessionPageViewController: UIPageViewControllerDataSource {
             return nil
         }
     }
+
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         switch viewController {
         case sessionViewControllers[0]:
@@ -94,8 +94,7 @@ extension SessionPageViewController: UIPageViewControllerDataSource {
 
 extension SessionPageViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        guard let changedVC = pageViewController.viewControllers?.first,
-            let changedIndex = sessionViewControllers.firstIndex(of: changedVC) else {
+        guard let changedVC = pageViewController.viewControllers?.first, let changedIndex = sessionViewControllers.firstIndex(of: changedVC) else {
             return
         }
         filterViewControllerDelegate?.shouldChangeTab(index: changedIndex)

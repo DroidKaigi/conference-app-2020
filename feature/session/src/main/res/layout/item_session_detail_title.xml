@@ -42,7 +42,7 @@
             />
 
 
-        <TextView
+        <androidx.emoji.widget.EmojiAppCompatTextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -51,6 +51,7 @@
             android:text="@{session.title.getByLang(lang)}"
             android:textAppearance="?textAppearanceHeadline5"
             android:textColor="@color/session_title"
+            android:textIsSelectable="true"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toTopOf="parent"
@@ -95,6 +96,19 @@
             tools:text="20min / Hall"
             />
 
+        <TextView
+            android:id="@+id/session_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.DroidKaigi.SessionMessage"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/duration_room"
+            tools:text="セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
+            />
+
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/tags"
             android:layout_width="0dp"
@@ -102,7 +116,7 @@
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/duration_room"
+            app:layout_constraintTop_toBottomOf="@id/session_message"
             />
 
         <View

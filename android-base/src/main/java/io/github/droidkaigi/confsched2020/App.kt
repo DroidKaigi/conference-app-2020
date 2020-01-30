@@ -1,8 +1,9 @@
 package io.github.droidkaigi.confsched2020
 
-import android.os.Build
-import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.provider.FontRequest
+import androidx.emoji.text.EmojiCompat
+import androidx.emoji.text.FontRequestEmojiCompatConfig
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
@@ -10,12 +11,14 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.AppComponentHolder
+import io.github.droidkaigi.confsched2020.di.AppInjector
 import io.github.droidkaigi.confsched2020.di.createAppComponent
+import io.github.droidkaigi.confsched2020.image.CoilInitializer
+import io.github.droidkaigi.confsched2020.util.Prefs
 import timber.log.LogcatTree
 import timber.log.Timber
 
 open class App : DaggerApplication(), AppComponentHolder {
-    private val SWITCH_DARK_THEME_KEY = "switchDarkTheme"
 
     override val appComponent: AppComponent by lazy {
         createAppComponent()
@@ -27,9 +30,16 @@ open class App : DaggerApplication(), AppComponentHolder {
 
     override fun onCreate() {
         super.onCreate()
+        setupAppInjector()
         setupTimber()
         setupFirestore()
         setupNightMode()
+        setupCoil()
+        setupEmoji()
+    }
+
+    private fun setupAppInjector() {
+        AppInjector.initialize(this)
     }
 
     private fun setupTimber() {
@@ -46,19 +56,21 @@ open class App : DaggerApplication(), AppComponentHolder {
     }
 
     private fun setupNightMode() {
+        AppCompatDelegate.setDefaultNightMode(Prefs(this).getNightMode())
+    }
 
-        val nightMode = when {
-            PreferenceManager.getDefaultSharedPreferences(applicationContext)
-                .getBoolean(SWITCH_DARK_THEME_KEY, false) -> {
-                AppCompatDelegate.MODE_NIGHT_YES
-            }
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
-                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            }
-            else -> {
-                AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
-            }
-        }
-        AppCompatDelegate.setDefaultNightMode(nightMode)
+    private fun setupCoil() {
+        CoilInitializer.init(this)
+    }
+
+    private fun setupEmoji() {
+        val fontRequest = FontRequest(
+            "com.google.android.gms.fonts",
+            "com.google.android.gms",
+            "Noto Color Emoji Compat",
+            R.array.com_google_android_gms_fonts_certs
+        )
+        val config = FontRequestEmojiCompatConfig(applicationContext, fontRequest)
+        EmojiCompat.init(config)
     }
 }
