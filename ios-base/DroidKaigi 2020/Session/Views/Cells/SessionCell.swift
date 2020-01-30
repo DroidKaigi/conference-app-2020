@@ -32,7 +32,7 @@ final class SessionCell: UICollectionViewCell {
     @IBOutlet weak var minutesAndRoomLabel: UILabel!
     @IBOutlet weak var speakersStackView: UIStackView!
 
-    private var disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -78,8 +78,6 @@ final class SessionCell: UICollectionViewCell {
                 speakerTapHandler()
             })
             .disposed(by: disposeBag)
-
-        bookmarkButton.rx.tap.subscribe(onNext: {}).disposed(by: disposeBag)
     }
 
     override func prepareForReuse() {
