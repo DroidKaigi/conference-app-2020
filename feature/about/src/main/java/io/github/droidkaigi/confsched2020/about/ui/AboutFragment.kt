@@ -86,7 +86,7 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 aboutItemFactory.create(
                     getString(R.string.about_item_access)
                 ) {
-                    // todo go access-page
+                    // TODO go access-page
                 },
                 aboutItemFactory.create(
                     getString(R.string.about_item_staff)
@@ -96,16 +96,16 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 aboutItemFactory.create(
                     getString(R.string.about_item_privacy_policy)
                 ) {
-                    // todo go privacy-policy-page
+                    // TODO go privacy-policy-page
                 },
                 aboutItemFactory.create(
                     getString(R.string.about_item_licence)
                 ) {
-                    // todo go licence-page
+                    // TODO go licence-page
                 },
                 aboutTextItemFactory.create(
                     getString(R.string.about_item_app_version),
-                    "1.2.0"
+                    "1.2.0" // TODO get app version code
                 )
             )
         )
