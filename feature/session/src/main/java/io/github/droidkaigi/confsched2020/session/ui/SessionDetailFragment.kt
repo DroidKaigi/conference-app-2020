@@ -1,5 +1,7 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
@@ -135,7 +137,12 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.session_share -> {
-                    // do something
+                    val session = binding.session ?: return@setOnMenuItemClickListener true
+                    systemViewModel.sendEventToTwitter(
+                        activity = requireActivity(),
+                        title = session.title.getByLang(defaultLang()),
+                        location = session.room.name.getByLang((defaultLang()))
+                    )
                 }
                 R.id.session_calendar -> {
                     val session = binding.session ?: return@setOnMenuItemClickListener true

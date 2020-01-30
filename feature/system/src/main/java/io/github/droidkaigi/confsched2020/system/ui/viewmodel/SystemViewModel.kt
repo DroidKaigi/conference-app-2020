@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched2020.system.ui.viewmodel
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.provider.CalendarContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -33,6 +34,24 @@ class SystemViewModel @Inject constructor() : ViewModel() {
             .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDateTime.unixMillisLong)
             .putExtra(CalendarContract.Events.TITLE, "[$location] $title")
             .putExtra(CalendarContract.Events.EVENT_LOCATION, location)
+        try {
+            activity.startActivity(intent)
+        } catch (e: Exception) {
+            Timber.debug(e) { "Fail startActivity" }
+        }
+    }
+
+    fun sendEventToTwitter(
+        activity: Activity,
+        title: String,
+        location: String
+    ) {
+        val message =
+            "%0A%23DroidKaigi2020" +
+            "%0A%23${title.replace(" ", "")}" +
+            "%0A%23${location.replace(" ", "")}"
+        val intent = Intent(Intent.ACTION_VIEW)
+            .setData(Uri.parse("twitter://post?message=$message"))
         try {
             activity.startActivity(intent)
         } catch (e: Exception) {
