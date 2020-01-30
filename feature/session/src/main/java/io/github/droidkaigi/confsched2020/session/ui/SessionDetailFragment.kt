@@ -1,7 +1,5 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
