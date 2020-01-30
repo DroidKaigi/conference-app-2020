@@ -36,7 +36,7 @@
             app:layout_constraintGuide_end="24dp"
             />
 
-        <TextView
+        <androidx.emoji.widget.EmojiAppCompatTextView
             android:id="@+id/session_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -45,6 +45,7 @@
             android:lineSpacingExtra="8sp"
             android:textAppearance="?textAppearanceBody1"
             android:textColor="?android:attr/textColorPrimary"
+            android:textIsSelectable="true"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toTopOf="parent"

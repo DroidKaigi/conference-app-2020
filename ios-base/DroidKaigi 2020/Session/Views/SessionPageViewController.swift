@@ -37,6 +37,11 @@ final class SessionPageViewController: UIPageViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.layer.masksToBounds = true
+        view.layer.maskedCorners = [.layerMinXMinYCorner]
+        view.layer.cornerRadius = 24
+
         sessionViewControllers = [
             SessionViewController(viewModel: viewModel, sessionViewType: .day1),
             SessionViewController(viewModel: viewModel, sessionViewType: .day2),
@@ -94,8 +99,7 @@ extension SessionPageViewController: UIPageViewControllerDataSource {
 
 extension SessionPageViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        guard let changedVC = pageViewController.viewControllers?.first,
-            let changedIndex = sessionViewControllers.firstIndex(of: changedVC) else {
+        guard let changedVC = pageViewController.viewControllers?.first, let changedIndex = sessionViewControllers.firstIndex(of: changedVC) else {
             return
         }
         filterViewControllerDelegate?.shouldChangeTab(index: changedIndex)

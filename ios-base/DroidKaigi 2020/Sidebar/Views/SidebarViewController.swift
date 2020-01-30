@@ -47,10 +47,9 @@ final class SidebarViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard
-            let cell = tableView.cellForRow(at: indexPath),
-            let switchType = SwitchViewControllerType(rawValue: cell.tag)
-        else { return }
+        guard let cell = tableView.cellForRow(at: indexPath), let switchType = SwitchViewControllerType(rawValue: cell.tag) else {
+            return
+        }
 
         switch switchType {
         case .timeline:
@@ -77,7 +76,9 @@ final class SidebarViewController: UITableViewController {
             }
 
         case .sponsor:
-            break
+            let vc = SponsorViewController()
+            rootViewController?.pushViewController(vc, animated: true)
+            rootViewController?.navigationDrawerController?.toggleLeftView()
         case .contributor:
             break
         case .setting:

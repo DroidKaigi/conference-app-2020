@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.map
 
 class SpeakerViewModel @AssistedInject constructor(
     @Assisted private val speakerId: SpeakerId,
+    @Assisted private val searchQuery: String?,
     private val sessionRepository: SessionRepository
 ) : ViewModel() {
     // UiModel definition
@@ -26,10 +27,11 @@ class SpeakerViewModel @AssistedInject constructor(
         val isLoading: Boolean,
         val error: AppError?,
         val speaker: Speaker?,
-        val sessions: List<SpeechSession>
+        val sessions: List<SpeechSession>,
+        val searchQuery: String?
     ) {
         companion object {
-            val EMPTY = UiModel(false, null, null, listOf())
+            val EMPTY = UiModel(false, null, null, listOf(), null)
         }
     }
 
@@ -92,14 +94,16 @@ class SpeakerViewModel @AssistedInject constructor(
                     ?: speakerSessionLoadState.getErrorIfExists()
                 ).toAppError(),
             speaker = speaker,
-            sessions = speakerSessions
+            sessions = speakerSessions,
+            searchQuery = searchQuery
         )
     }
 
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            speakerId: SpeakerId
+            speakerId: SpeakerId,
+            searchQuery: String? = null
         ): SpeakerViewModel
     }
 }
