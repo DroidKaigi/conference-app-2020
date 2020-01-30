@@ -550,6 +550,11 @@ PODS:
     - MotionInterchange (~> 1.6)
   - MotionInterchange (1.6.0)
   - Nuke (8.4.0)
+  - Realm (4.3.1):
+    - Realm/Headers (= 4.3.1)
+  - Realm/Headers (4.3.1)
+  - RealmSwift (4.3.1):
+    - Realm (= 4.3.1)
   - RxCocoa (5.0.1):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
@@ -561,6 +566,8 @@ DEPENDENCIES:
   - Material
   - MaterialComponents
   - Nuke
+  - Realm
+  - RealmSwift
   - RxCocoa
   - RxSwift
 
@@ -574,6 +581,8 @@ SPEC REPOS:
     - MotionAnimator
     - MotionInterchange
     - Nuke
+    - Realm
+    - RealmSwift
     - RxCocoa
     - RxRelay
     - RxSwift
@@ -587,10 +596,12 @@ SPEC CHECKSUMS:
   MotionAnimator: ee16aa30567c5bae0fb2750c132915829cfaaf8a
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   Nuke: fa6f784c4f7e1c0f9313668510186c68b7af2509
+  Realm: 31dc40934081ef740f60feedc46d88473cbfeb40
+  RealmSwift: b5199e9a41f67b99f51acf6874a6166f5fbe93d1
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
 
-PODFILE CHECKSUM: 731e0ca3bf1842c9079478753e6e74074b52cfd7
+PODFILE CHECKSUM: b0b9cd9f57db908a9696eec8778b95fa6da266c0
 
 COCOAPODS: 1.8.4
