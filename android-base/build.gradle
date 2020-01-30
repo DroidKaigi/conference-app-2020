@@ -103,8 +103,6 @@ dependencies {
     implementation Dep.Firebase.analytics
     implementation Dep.AndroidX.emoji
 
-    implementation Dep.PlayServices.licensesPlugin
-
     implementation Dep.Dagger.core
     implementation Dep.Dagger.androidSupport
     implementation Dep.Dagger.android

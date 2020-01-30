@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.about.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePadding
@@ -7,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.ViewHolder
 import dagger.Module
@@ -56,6 +59,11 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
         binding.staffs.setOnClickListener(
             Navigation.createNavigateOnClickListener(AboutFragmentDirections.actionAboutToStaffs())
         )
+        binding.licenses.setOnClickListener {
+            OssLicensesMenuActivity.setActivityTitle(this.getString(R.string.licenses_label))
+            val intent = Intent(this.context, OssLicensesMenuActivity::class.java)
+            this.startActivity(intent)
+        }
         // TODO: Add AboutUI into RecyclerView
     }
 }
