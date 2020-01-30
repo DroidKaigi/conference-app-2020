@@ -37,6 +37,11 @@ final class SessionPageViewController: UIPageViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.layer.masksToBounds = true
+        view.layer.maskedCorners = [.layerMinXMinYCorner]
+        view.layer.cornerRadius = 24
+
         sessionViewControllers = [
             SessionViewController(viewModel: viewModel, sessionViewType: .day1),
             SessionViewController(viewModel: viewModel, sessionViewType: .day2),

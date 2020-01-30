@@ -36,7 +36,7 @@
             app:layout_constraintGuide_end="24dp"
             />
 
-        <TextView
+        <androidx.emoji.widget.EmojiAppCompatTextView
             android:id="@+id/session_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

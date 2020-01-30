@@ -3,7 +3,6 @@ package io.github.droidkaigi.confsched2020.session.ui
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -18,13 +17,13 @@ import dagger.Provides
 import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.isShow
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSpeakerBinding
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerDetailItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerSessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SpeakerViewModel
 import io.github.droidkaigi.confsched2020.util.AndroidRTransition
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 
 class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
@@ -51,18 +50,14 @@ class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentSpeakerBinding.bind(view)
         postponeEnterTransition()
-        val progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
-        }.apply {
-            loading = true
-        }
+        binding.progressBar.show()
 
         val groupAdapter = GroupAdapter<ViewHolder<*>>()
         binding.speakerRecycler.adapter = groupAdapter
 
         speakerViewModel.uiModel.distinctUntilChanged()
             .observe(viewLifecycleOwner) { uiModel: SpeakerViewModel.UiModel ->
-                progressTimeLatch.loading = uiModel.isLoading
+                binding.progressBar.isShow = uiModel.isLoading
                 val speaker = uiModel.speaker ?: return@observe
                 val sessions = uiModel.sessions.takeIf { it.isNotEmpty() } ?: return@observe
 

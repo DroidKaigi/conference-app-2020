@@ -2,7 +2,6 @@ package io.github.droidkaigi.confsched2020.sponsor.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -20,6 +19,7 @@ import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.isShow
 import io.github.droidkaigi.confsched2020.model.Sponsor
 import io.github.droidkaigi.confsched2020.model.SponsorCategory
 import io.github.droidkaigi.confsched2020.sponsor.R
@@ -30,7 +30,6 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.item.LargeSponsorItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.SponsorItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.viewmodel.SponsorsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -72,13 +71,9 @@ class SponsorsFragment : Fragment(R.layout.fragment_sponsors), Injectable {
             )
         }
 
-        val progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
-        }.apply {
-            loading = true
-        }
+        binding.progressBar.show()
         sponsorsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            progressTimeLatch.loading = uiModel.isLoading
+            binding.progressBar.isShow = uiModel.isLoading
             groupAdapter.update(
                 uiModel.sponsorCategories.map {
                     it.toSection()

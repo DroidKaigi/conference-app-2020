@@ -17,11 +17,11 @@ final class SessionViewController: UIViewController {
         didSet {
             filterButton.isSelected = true
             filterButton.applyTextTheme(withScheme: ApplicationScheme.shared.buttonScheme)
-            let filterListImage = UIImage(named: "ic_filter_list")
-            let templateFilterListImage = filterListImage?.withRenderingMode(.alwaysTemplate)
+            let filterListImage = Asset.icFilterList.image
+            let templateFilterListImage = filterListImage.withRenderingMode(.alwaysTemplate)
             filterButton.setImage(templateFilterListImage, for: .selected)
-            let arrowUpImage = UIImage(named: "ic_keyboard_arrow_up")
-            let templateArrowUpImage = arrowUpImage?.withRenderingMode(.alwaysTemplate)
+            let arrowUpImage = Asset.icKeyboardArrowUp.image
+            let templateArrowUpImage = arrowUpImage.withRenderingMode(.alwaysTemplate)
             filterButton.setImage(templateArrowUpImage, for: .normal)
             filterButton.setTitle("Filter", for: .selected)
             filterButton.setTitle("", for: .normal)

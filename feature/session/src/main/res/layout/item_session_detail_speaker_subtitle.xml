@@ -36,7 +36,7 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <TextView
+        <androidx.emoji.widget.EmojiAppCompatTextView
             android:id="@+id/speaker_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
