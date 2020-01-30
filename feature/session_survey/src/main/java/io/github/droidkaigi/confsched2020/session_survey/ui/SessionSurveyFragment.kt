@@ -47,11 +47,9 @@ class SessionSurveyFragment : Fragment(R.layout.fragment_session_survey), Inject
 @Module
 abstract class SessionSurveyFragmentModule {
 
-    @Module
     companion object {
 
         @PageScope
-        @JvmStatic
         @Provides
         fun providesLifecycleOwnerLiveData(
             sessionSurveyFragment: SessionSurveyFragment
