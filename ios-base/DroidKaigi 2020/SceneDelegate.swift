@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         UINavigationBar.appearance().backIndicatorImage = backButtonBackgroundImage
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = backButtonBackgroundImage
 
-        let vc = FilterViewController()
+        let vc = AboutViewController.instantiate()
         let nvc = NavigationController(rootViewController: vc)
         let root = NavigationDrawerController(rootViewController: nvc, leftViewController: SidebarViewController.instantiate(rootViewController: nvc))
         window.rootViewController = root

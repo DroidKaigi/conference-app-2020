@@ -1,4 +1,5 @@
 import ios_combined
+import SafariServices
 import UIKit
 
 class AboutViewController: UITableViewController {
@@ -41,6 +42,20 @@ extension AboutViewController {
                 let attributes: [NSAttributedString.Key: Any] = [.kern: 0.5, .paragraphStyle: paragraphStyle]
                 cell.detailLabel?.attributedText = NSMutableAttributedString(string: detail,
                                                                              attributes: attributes)
+                cell.onButtonTapped = { [weak self] button in
+                    guard let self = self else { return }
+                    let urlString: String
+                    switch button {
+                    case .twitter:
+                        urlString = "https://twitter.com/DroidKaigi"
+                    case .youtube:
+                        urlString = "https://www.youtube.com/channel/UCgK6L-PKx2OZBuhrQ6mmQZw"
+                    case .medium:
+                        urlString = "https://medium.com/droidkaigi"
+                    }
+                    guard let url = URL(string: urlString) else { return }
+                    self.presentSafariViewController(with: url)
+                }
             }
         case .access:
             return dequeueReusableCell(withIdentifier: AboutCell.Identifier.icon, for: indexPath) { cell in
@@ -103,7 +118,11 @@ extension AboutViewController {
         case .staff:
             break
         case .policy:
-            break
+            guard let url = URL(string: "http://www.association.droidkaigi.jp/privacy.html") else {
+                tableView.deselectRow(at: indexPath, animated: true)
+                return
+            }
+            presentSafariViewController(with: url)
         case .license:
             break
         default:
@@ -140,5 +159,10 @@ extension AboutViewController {
         if let url = urlComponents?.url {
             UIApplication.shared.open(url)
         }
+    }
+
+    private func presentSafariViewController(with url: URL) {
+        let safariViewController = SFSafariViewController(url: url)
+        present(safariViewController, animated: true)
     }
 }

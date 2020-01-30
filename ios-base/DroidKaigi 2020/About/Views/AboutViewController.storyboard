@@ -53,14 +53,23 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wq0-ID-rPD">
                                                     <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                                     <state key="normal" image="ic_twitter"/>
+                                                    <connections>
+                                                        <action selector="onButtonTapped:" destination="HPU-RQ-Qzg" eventType="touchUpInside" id="pkD-3W-iAJ"/>
+                                                    </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D6f-ZO-h9c">
+                                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D6f-ZO-h9c">
                                                     <rect key="frame" x="40" y="0.0" width="24" height="24"/>
                                                     <state key="normal" image="ic_youtube"/>
+                                                    <connections>
+                                                        <action selector="onButtonTapped:" destination="HPU-RQ-Qzg" eventType="touchUpInside" id="4Bf-3w-9NR"/>
+                                                    </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n64-hB-RfR">
+                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n64-hB-RfR">
                                                     <rect key="frame" x="80" y="0.0" width="24" height="24"/>
                                                     <state key="normal" image="ic_medium"/>
+                                                    <connections>
+                                                        <action selector="onButtonTapped:" destination="HPU-RQ-Qzg" eventType="touchUpInside" id="Auz-q1-Ann"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
