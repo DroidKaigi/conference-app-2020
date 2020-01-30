@@ -140,7 +140,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                     // do something
                 }
                 R.id.floormap -> {
-                    val directions = actionSessionToFloormap(session.room.id)
+                    val directions = actionSessionToFloormap(session.room)
                     findNavController().navigate(directions)
                 }
                 R.id.session_calendar -> {

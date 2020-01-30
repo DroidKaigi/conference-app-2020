@@ -17,12 +17,12 @@
             android:layout_height="match_parent"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
+            android:src="@drawable/ic_floor_map"
             android:tint="?attr/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_floor_map"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

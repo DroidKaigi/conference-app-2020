@@ -220,11 +220,13 @@
     <fragment
         android:id="@+id/floormap"
         android:name="io.github.droidkaigi.confsched2020.floormap.ui.FloorMapFragment"
-        android:label="@string/map_label">
+        android:label="@string/map_label"
+        >
         <argument
-            android:name="roomId"
-            android:defaultValue="-1"
-            app:argType="integer"
+            android:name="room"
+            android:defaultValue="@null"
+            app:argType="io.github.droidkaigi.confsched2020.model.Room"
+            app:nullable="true"
             />
     </fragment>
     <fragment

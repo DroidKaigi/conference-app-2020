@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched2020.floormap.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -12,7 +13,7 @@ import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.floormap.R
 import io.github.droidkaigi.confsched2020.floormap.databinding.FragmentFloormapBinding
-import io.github.droidkaigi.confsched2020.model.FloorMap
+import io.github.droidkaigi.confsched2020.model.Room
 
 // TODO: Apply the floor map UI
 class FloorMapFragment : Fragment(R.layout.fragment_floormap), Injectable {
@@ -23,19 +24,8 @@ class FloorMapFragment : Fragment(R.layout.fragment_floormap), Injectable {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentFloormapBinding.bind(view)
 
-        binding.floorMapImage.setImageResource(getFloorMapResource())
-    }
-
-    private fun getFloorMapResource(): Int {
-        val floor = FloorMap.fromId(navArgs.roomId) ?: return R.drawable.ic_floor_map
-        return when (floor) {
-            FloorMap.APP_BAR -> R.drawable.ic_floor_map_app_bars
-            FloorMap.BACKDROP -> R.drawable.ic_floor_map_backdrop
-            FloorMap.CARDS -> R.drawable.ic_floor_map_cards
-            FloorMap.DIALOGS -> R.drawable.ic_floor_map_dialogs
-            FloorMap.PICKERS -> R.drawable.ic_floor_map_pickers
-            FloorMap.SLIDERS -> R.drawable.ic_floor_map_sliders
-            FloorMap.TABS -> R.drawable.ic_floor_map_tabs
+        navArgs.room?.getRoomTypeResource()?.let { resId ->
+            binding.floorMapImage.setImageResource(resId)
         }
     }
 
@@ -54,5 +44,20 @@ class FloorMapFragment : Fragment(R.layout.fragment_floormap), Injectable {
                 return floorMapFragment.viewLifecycleOwnerLiveData
             }
         }
+    }
+}
+
+@DrawableRes
+fun Room.getRoomTypeResource(): Int {
+    val type = this.roomType ?: return R.drawable.ic_floor_map
+    return when (type) {
+        Room.RoomType.EXHIBITION -> R.drawable.ic_floor_map_exhibition
+        Room.RoomType.APP_BAR -> R.drawable.ic_floor_map_app_bars
+        Room.RoomType.BACKDROP -> R.drawable.ic_floor_map_backdrop
+        Room.RoomType.CARDS -> R.drawable.ic_floor_map_cards
+        Room.RoomType.DIALOGS -> R.drawable.ic_floor_map_dialogs
+        Room.RoomType.PICKERS -> R.drawable.ic_floor_map_pickers
+        Room.RoomType.SLIDERS -> R.drawable.ic_floor_map_sliders
+        Room.RoomType.TABS -> R.drawable.ic_floor_map_tabs
     }
 }

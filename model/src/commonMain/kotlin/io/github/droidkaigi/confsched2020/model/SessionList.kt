@@ -12,7 +12,7 @@ data class SessionList(private val sessions: List<Session>) : List<Session> by s
     }
 
     val events: SessionList by lazy {
-        SessionList(filter { it.room.name.ja == Room.EXHIBITION.name.ja })
+        SessionList(filter { it.room.roomType == Room.RoomType.EXHIBITION })
     }
 
     val favorited: SessionList by lazy {
