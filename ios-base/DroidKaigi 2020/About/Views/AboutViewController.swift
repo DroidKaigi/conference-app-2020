@@ -74,3 +74,71 @@ extension AboutViewController {
         return aboutCell
     }
 }
+
+extension AboutViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch cells[indexPath.row] {
+        case .access:
+            tableView.deselectRow(at: indexPath, animated: true)
+            let address = "TOCビル"
+            let latitude = "35.621925"
+            let longitude = "139.719063"
+            guard canOpenWithGoogleMaps else {
+                openWithMaps(address: address, latitude: latitude, longitude: longitude)
+                return
+            }
+
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let openWithMapsAction = UIAlertAction(title: "マップ", style: .default) { [weak self] _ in
+                self?.openWithMaps(address: address, latitude: latitude, longitude: longitude)
+            }
+            let openWithGoogleMapsAction = UIAlertAction(title: "Google Maps", style: .default) { [weak self] _ in
+                self?.openWithGoogleMaps(address: address, latitude: latitude, longitude: longitude)
+            }
+            let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel)
+            alertController.addAction(openWithMapsAction)
+            alertController.addAction(openWithGoogleMapsAction)
+            alertController.addAction(cancelAction)
+            present(alertController, animated: true)
+        case .staff:
+            break
+        case .policy:
+            break
+        case .license:
+            break
+        default:
+            break
+        }
+    }
+
+    private var canOpenWithGoogleMaps: Bool {
+        if let url = URL(string: "comgooglemaps://"),
+            UIApplication.shared.canOpenURL(url) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    private func openWithMaps(address: String, latitude: String, longitude: String) {
+        var urlComponents = URLComponents(string: "http://maps.apple.com/")
+        urlComponents?.queryItems = [
+            URLQueryItem(name: "address", value: address),
+            URLQueryItem(name: "ll", value: "\(latitude),\(longitude)"),
+        ]
+        if let url = urlComponents?.url {
+            UIApplication.shared.open(url)
+        }
+    }
+
+    private func openWithGoogleMaps(address: String, latitude: String, longitude: String) {
+        var urlComponents = URLComponents(string: "comgooglemaps://")
+        urlComponents?.queryItems = [
+            URLQueryItem(name: "q", value: address),
+            URLQueryItem(name: "center", value: "\(latitude),\(longitude)"),
+        ]
+        if let url = urlComponents?.url {
+            UIApplication.shared.open(url)
+        }
+    }
+}
