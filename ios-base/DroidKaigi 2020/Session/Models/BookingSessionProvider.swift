@@ -12,4 +12,14 @@ final class BookingSessionProvider {
             return .error(error)
         }
     }
+
+    func fetchBookedSessions() -> Single<[LocalSession]> {
+        do {
+            let realm = try Realm()
+            let result: Single<[LocalSession]> = realm.rx.fetch()
+            return result
+        } catch {
+            return .error(error)
+        }
+    }
 }
