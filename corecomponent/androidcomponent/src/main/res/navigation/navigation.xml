@@ -81,6 +81,16 @@
             android:name="sessionId"
             app:argType="io.github.droidkaigi.confsched2020.model.SessionId"
             />
+        <argument
+            android:name="transitionNameSuffix"
+            app:argType="string"
+            />
+        <argument
+            android:name="searchQuery"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"
+            />
         <action
             android:id="@+id/action_session_to_speaker"
             app:destination="@id/speaker"
@@ -121,6 +131,11 @@
             android:name="transitionNameSuffix"
             app:argType="string"
             />
+        <argument
+            android:name="searchQuery"
+            app:argType="string"
+            app:nullable="true"
+            />
 
         <action
             android:id="@+id/action_speaker_to_session_detail"
@@ -158,7 +173,22 @@
         android:id="@+id/contributor"
         android:name="io.github.droidkaigi.confsched2020.contributor.ui.ContributorsFragment"
         android:label="@string/contributor_label"
-        />
+        >
+
+        <action
+            android:id="@+id/action_contributors_to_chrome"
+            app:destination="@id/chrome"
+            >
+
+            <argument
+                android:name="url"
+                app:argType="string"
+                app:nullable="false"
+                />
+
+        </action>
+
+    </fragment>
     <fragment
         android:id="@+id/announcement"
         android:name="io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment"

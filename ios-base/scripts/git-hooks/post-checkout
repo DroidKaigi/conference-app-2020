@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+PREV_COMMIT=$1
+POST_COMMIT=$2
+
+DIFF=$(git diff $PREV_COMMIT..$POST_COMMIT --name-status --diff-filter=ADR | grep 'ios-base/DroidKaigi 2020')
+if [[ $DIFF != "" ]]; then
+    while read line
+    do
+        echo "$line"
+    done <<END
+    $DIFF
+END
+    echo 'File added/deleted in ios-base. Re-run xcodegen'
+    make -C "$(git rev-parse --show-toplevel)/ios-base" xcode
+fi

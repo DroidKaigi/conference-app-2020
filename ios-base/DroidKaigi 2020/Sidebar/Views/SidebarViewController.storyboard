@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UMJ-4Q-UFg">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Sidebar View Controller-->
+        <scene sceneID="4Zk-Hs-88p">
+            <objects>
+                <tableViewController id="UMJ-4Q-UFg" customClass="SidebarViewController" customModule="DroidKaigi_2020" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="6bz-FS-hZk">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <imageView key="tableHeaderView" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_title" id="hbz-0u-UpO">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="190"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
+                        </imageView>
+                        <sections>
+                            <tableViewSection id="ccU-6r-5FY">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="gC4-2M-ZC8" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="208" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gC4-2M-ZC8" id="L86-TI-vJu">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qQV-sd-x45">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="1"/>
+                                                    <color key="backgroundColor" systemColor="separatorColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="fXO-8f-PhL"/>
+                                                    </constraints>
+                                                </view>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="event_24px" translatesAutoresizingMaskIntoConstraints="NO" id="bcw-vi-9gd">
+                                                    <rect key="frame" x="25" y="11" width="19" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="19" id="rGI-Kj-RAk"/>
+                                                        <constraint firstAttribute="height" constant="22" id="wvw-cD-8tN"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="タイムライン" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wlM-D0-wmL">
+                                                    <rect key="frame" x="80" y="12" width="84" height="20"/>
+                                                    <fontDescription key="fontDescription" name="NotoSansOriya" family="Noto Sans Oriya" pointSize="14"/>
+                                                    <color key="textColor" red="0.036950111389999998" green="0.080407150090000004" blue="0.1607929766" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="bcw-vi-9gd" firstAttribute="leading" secondItem="L86-TI-vJu" secondAttribute="leading" constant="25" id="9Qh-xx-CWY"/>
+                                                <constraint firstItem="wlM-D0-wmL" firstAttribute="leading" secondItem="bcw-vi-9gd" secondAttribute="trailing" constant="36" id="M6L-kn-NBM"/>
+                                                <constraint firstItem="bcw-vi-9gd" firstAttribute="centerY" secondItem="L86-TI-vJu" secondAttribute="centerY" id="VN5-0T-BTX"/>
+                                                <constraint firstItem="qQV-sd-x45" firstAttribute="top" secondItem="L86-TI-vJu" secondAttribute="top" id="fzh-Mp-OLM"/>
+                                                <constraint firstItem="wlM-D0-wmL" firstAttribute="centerY" secondItem="bcw-vi-9gd" secondAttribute="centerY" id="gaF-cb-Lmt"/>
+                                                <constraint firstItem="qQV-sd-x45" firstAttribute="leading" secondItem="L86-TI-vJu" secondAttribute="leading" id="oGr-Qj-P6r"/>
+                                                <constraint firstAttribute="trailing" secondItem="qQV-sd-x45" secondAttribute="trailing" id="puP-Gb-qay"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconImageView" destination="bcw-vi-9gd" id="vOl-Zn-SpE"/>
+                                            <outlet property="titleLabel" destination="wlM-D0-wmL" id="u1t-ME-PXu"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" tag="1" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="lBL-3f-5ge" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="252" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lBL-3f-5ge" id="MsO-BE-1C1">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="android_24px" translatesAutoresizingMaskIntoConstraints="NO" id="suj-H7-hIe">
+                                                    <rect key="frame" x="25" y="11" width="19" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="22" id="ZR1-Xk-vDq"/>
+                                                        <constraint firstAttribute="width" constant="19" id="vRR-sE-n4T"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DroidKaigiとは" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JtF-GG-evG">
+                                                    <rect key="frame" x="80" y="12" width="93" height="20"/>
+                                                    <fontDescription key="fontDescription" name="NotoSansOriya" family="Noto Sans Oriya" pointSize="14"/>
+                                                    <color key="textColor" red="0.6584423184" green="0.658539176" blue="0.65842115879999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q0I-fB-yof">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="1"/>
+                                                    <color key="backgroundColor" systemColor="separatorColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="zpa-Ut-YSG"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="JtF-GG-evG" firstAttribute="centerY" secondItem="suj-H7-hIe" secondAttribute="centerY" id="FEg-Xb-K3w"/>
+                                                <constraint firstItem="suj-H7-hIe" firstAttribute="leading" secondItem="MsO-BE-1C1" secondAttribute="leading" constant="25" id="MWi-4s-TGY"/>
+                                                <constraint firstItem="q0I-fB-yof" firstAttribute="leading" secondItem="MsO-BE-1C1" secondAttribute="leading" id="Uuu-7F-uu6"/>
+                                                <constraint firstItem="JtF-GG-evG" firstAttribute="leading" secondItem="suj-H7-hIe" secondAttribute="trailing" constant="36" id="Vpo-W7-Ib6"/>
+                                                <constraint firstItem="q0I-fB-yof" firstAttribute="top" secondItem="MsO-BE-1C1" secondAttribute="top" id="ilL-Yc-1ST"/>
+                                                <constraint firstItem="suj-H7-hIe" firstAttribute="centerY" secondItem="MsO-BE-1C1" secondAttribute="centerY" id="jAC-dK-edX"/>
+                                                <constraint firstAttribute="trailing" secondItem="q0I-fB-yof" secondAttribute="trailing" id="yx7-D7-iAQ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconImageView" destination="suj-H7-hIe" id="W6o-oc-DLO"/>
+                                            <outlet property="titleLabel" destination="JtF-GG-evG" id="hMy-k2-0m2"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" tag="2" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="u0U-RA-EX7" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="296" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="u0U-RA-EX7" id="Qel-vt-Xh4">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info_24px" translatesAutoresizingMaskIntoConstraints="NO" id="BWQ-jd-Gnn">
+                                                    <rect key="frame" x="25" y="11" width="19" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="19" id="2uE-9w-xgM"/>
+                                                        <constraint firstAttribute="height" constant="22" id="tXG-5A-zu5"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="お知らせ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RMR-xd-cxl">
+                                                    <rect key="frame" x="80" y="12" width="56" height="20"/>
+                                                    <fontDescription key="fontDescription" name="NotoSansOriya" family="Noto Sans Oriya" pointSize="14"/>
+                                                    <color key="textColor" red="0.6584423184" green="0.658539176" blue="0.65842115879999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="BWQ-jd-Gnn" firstAttribute="centerY" secondItem="Qel-vt-Xh4" secondAttribute="centerY" id="1TG-1M-I09"/>
+                                                <constraint firstItem="RMR-xd-cxl" firstAttribute="leading" secondItem="BWQ-jd-Gnn" secondAttribute="trailing" constant="36" id="3gv-Xh-rh5"/>
+                                                <constraint firstItem="BWQ-jd-Gnn" firstAttribute="leading" secondItem="Qel-vt-Xh4" secondAttribute="leading" constant="25" id="D9N-7J-PeS"/>
+                                                <constraint firstItem="RMR-xd-cxl" firstAttribute="centerY" secondItem="BWQ-jd-Gnn" secondAttribute="centerY" id="k8B-Qb-OVe"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconImageView" destination="BWQ-jd-Gnn" id="pQh-qT-aYd"/>
+                                            <outlet property="titleLabel" destination="RMR-xd-cxl" id="kaw-xb-uj2"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" tag="3" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Wgm-WX-p7y" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="340" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Wgm-WX-p7y" id="ZxG-IW-D0x">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="place_24px" translatesAutoresizingMaskIntoConstraints="NO" id="Hm8-4X-Ekn">
+                                                    <rect key="frame" x="25" y="11" width="19" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="19" id="dGx-rj-uJk"/>
+                                                        <constraint firstAttribute="height" constant="22" id="syb-l8-3qu"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="フロアマップ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CRA-KP-fCf">
+                                                    <rect key="frame" x="80" y="12" width="84" height="20"/>
+                                                    <fontDescription key="fontDescription" name="NotoSansOriya" family="Noto Sans Oriya" pointSize="14"/>
+                                                    <color key="textColor" red="0.6584423184" green="0.658539176" blue="0.65842115879999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Hm8-4X-Ekn" firstAttribute="centerY" secondItem="ZxG-IW-D0x" secondAttribute="centerY" id="9VD-YB-Hcg"/>
+                                                <constraint firstItem="CRA-KP-fCf" firstAttribute="centerY" secondItem="Hm8-4X-Ekn" secondAttribute="centerY" id="ZNP-Bl-fJh"/>
+                                                <constraint firstItem="CRA-KP-fCf" firstAttribute="leading" secondItem="Hm8-4X-Ekn" secondAttribute="trailing" constant="36" id="niq-Cj-cDz"/>
+                                                <constraint firstItem="Hm8-4X-Ekn" firstAttribute="leading" secondItem="ZxG-IW-D0x" secondAttribute="leading" constant="25" id="qGE-Hd-6ad"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconImageView" destination="Hm8-4X-Ekn" id="dxs-nn-55R"/>
+                                            <outlet property="titleLabel" destination="CRA-KP-fCf" id="JMQ-RU-Pxw"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" tag="4" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="HIc-vM-hK1" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="384" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HIc-vM-hK1" id="oyh-G6-KSd">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="domain_24px" translatesAutoresizingMaskIntoConstraints="NO" id="x2O-t6-d9E">
+                                                    <rect key="frame" x="25" y="11" width="19" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="19" id="0Sm-Ni-roM"/>
+                                                        <constraint firstAttribute="height" constant="22" id="Y7Q-T5-Efu"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="スポンサー" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsU-4x-J7y">
+                                                    <rect key="frame" x="80" y="12" width="70" height="20"/>
+                                                    <fontDescription key="fontDescription" name="NotoSansOriya" family="Noto Sans Oriya" pointSize="14"/>
+                                                    <color key="textColor" red="0.6584423184" green="0.658539176" blue="0.65842115879999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fqu-qI-xtL">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="1"/>
+                                                    <color key="backgroundColor" systemColor="separatorColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="u84-3M-rOJ"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="Fqu-qI-xtL" secondAttribute="trailing" id="6VB-JN-4uW"/>
+                                                <constraint firstItem="Fqu-qI-xtL" firstAttribute="leading" secondItem="oyh-G6-KSd" secondAttribute="leading" id="9df-t9-Fc2"/>
+                                                <constraint firstItem="x2O-t6-d9E" firstAttribute="leading" secondItem="oyh-G6-KSd" secondAttribute="leading" constant="25" id="GlW-QL-xTX"/>
+                                                <constraint firstItem="jsU-4x-J7y" firstAttribute="centerY" secondItem="x2O-t6-d9E" secondAttribute="centerY" id="eOM-Do-L22"/>
+                                                <constraint firstItem="Fqu-qI-xtL" firstAttribute="top" secondItem="oyh-G6-KSd" secondAttribute="top" id="puc-lg-tpD"/>
+                                                <constraint firstItem="jsU-4x-J7y" firstAttribute="leading" secondItem="x2O-t6-d9E" secondAttribute="trailing" constant="36" id="ykq-ZI-iJZ"/>
+                                                <constraint firstItem="x2O-t6-d9E" firstAttribute="centerY" secondItem="oyh-G6-KSd" secondAttribute="centerY" id="zR1-s7-GwZ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconImageView" destination="x2O-t6-d9E" id="yvL-wT-mbu"/>
+                                            <outlet property="titleLabel" destination="jsU-4x-J7y" id="xx9-NU-Tb9"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" tag="5" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="dbw-8e-edi" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="428" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dbw-8e-edi" id="R23-kl-TPJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="group_24px" translatesAutoresizingMaskIntoConstraints="NO" id="3I4-YR-pHO">
+                                                    <rect key="frame" x="25" y="11" width="19" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="19" id="dfJ-PV-Qnp"/>
+                                                        <constraint firstAttribute="height" constant="22" id="jpN-37-99k"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contributor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="urg-1V-e7f">
+                                                    <rect key="frame" x="80" y="12" width="70" height="20"/>
+                                                    <fontDescription key="fontDescription" name="NotoSansOriya" family="Noto Sans Oriya" pointSize="14"/>
+                                                    <color key="textColor" red="0.6584423184" green="0.658539176" blue="0.65842115879999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="urg-1V-e7f" firstAttribute="leading" secondItem="3I4-YR-pHO" secondAttribute="trailing" constant="36" id="29X-tf-50c"/>
+                                                <constraint firstItem="3I4-YR-pHO" firstAttribute="centerY" secondItem="R23-kl-TPJ" secondAttribute="centerY" id="J1e-Kz-pbA"/>
+                                                <constraint firstItem="urg-1V-e7f" firstAttribute="centerY" secondItem="3I4-YR-pHO" secondAttribute="centerY" id="RiW-M3-tAs"/>
+                                                <constraint firstItem="3I4-YR-pHO" firstAttribute="leading" secondItem="R23-kl-TPJ" secondAttribute="leading" constant="25" id="rif-eY-ddV"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconImageView" destination="3I4-YR-pHO" id="41D-k3-L0z"/>
+                                            <outlet property="titleLabel" destination="urg-1V-e7f" id="Vnm-V6-45H"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" tag="6" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zAm-EE-XpB" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="472" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zAm-EE-XpB" id="4Hb-MJ-txg">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings_24px" translatesAutoresizingMaskIntoConstraints="NO" id="pSX-y6-PeN">
+                                                    <rect key="frame" x="25" y="11" width="19" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="19" id="Hge-iL-bfC"/>
+                                                        <constraint firstAttribute="height" constant="22" id="Wgm-Id-aQf"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Yz-DM-qpc">
+                                                    <rect key="frame" x="80" y="12" width="44" height="20"/>
+                                                    <fontDescription key="fontDescription" name="NotoSansOriya" family="Noto Sans Oriya" pointSize="14"/>
+                                                    <color key="textColor" red="0.6584423184" green="0.658539176" blue="0.65842115879999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="pSX-y6-PeN" firstAttribute="centerY" secondItem="4Hb-MJ-txg" secondAttribute="centerY" id="0Zf-82-haF"/>
+                                                <constraint firstItem="pSX-y6-PeN" firstAttribute="leading" secondItem="4Hb-MJ-txg" secondAttribute="leading" constant="25" id="3Ze-b4-6jh"/>
+                                                <constraint firstItem="1Yz-DM-qpc" firstAttribute="leading" secondItem="pSX-y6-PeN" secondAttribute="trailing" constant="36" id="jKp-y6-TaH"/>
+                                                <constraint firstItem="1Yz-DM-qpc" firstAttribute="centerY" secondItem="pSX-y6-PeN" secondAttribute="centerY" id="mhc-3G-YPE"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconImageView" destination="pSX-y6-PeN" id="76X-6N-DMJ"/>
+                                            <outlet property="titleLabel" destination="1Yz-DM-qpc" id="PT9-Ll-JTU"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="UMJ-4Q-UFg" id="eab-1u-ItX"/>
+                            <outlet property="delegate" destination="UMJ-4Q-UFg" id="yhu-77-MJW"/>
+                        </connections>
+                    </tableView>
+                    <size key="freeformSize" width="414" height="896"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DMK-JP-MZ5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-389" y="-629"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="android_24px" width="20" height="24"/>
+        <image name="domain_24px" width="20" height="18"/>
+        <image name="event_24px" width="18" height="20"/>
+        <image name="group_24px" width="20" height="14"/>
+        <image name="info_24px" width="20" height="20"/>
+        <image name="logo_title" width="230" height="61"/>
+        <image name="place_24px" width="14" height="20"/>
+        <image name="settings_24px" width="20" height="20"/>
+    </resources>
+</document>

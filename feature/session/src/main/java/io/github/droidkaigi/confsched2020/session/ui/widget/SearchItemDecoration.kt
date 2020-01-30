@@ -63,7 +63,8 @@ class SearchItemDecoration(
         parent.forEach { childView ->
             val position = parent.getChildAdapterPosition(childView)
             if (position < 0) return@forEach
-            // Acquires the first character of the immediately preceding character and the Id of the character to be checked this time
+            // Acquires the first character of the immediately preceding character
+            // and the Id of the character to be checked this time
             previousGroupId = groupId
             groupId = getGroupId(position)
 

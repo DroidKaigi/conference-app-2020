@@ -1,0 +1,12 @@
+[*]
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{kt, kts}]
+# Temporary disabled this rule through .editorconfig due to https://youtrack.jetbrains.com/issue/KT-10974 and https://github.com/pinterest/ktlint/issues/527
+disabled_rules = import-ordering
+
+[*.{Dangerfile,Gemfile,Rakefile}]
+indent_style = space
+indent_size = 2

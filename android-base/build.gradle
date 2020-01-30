@@ -100,6 +100,7 @@ dependencies {
     implementation Dep.Firebase.firestoreKtx
     implementation Dep.Firebase.crashlytics
     implementation Dep.Firebase.analytics
+    implementation Dep.AndroidX.emoji
 
     implementation Dep.Dagger.core
     implementation Dep.Dagger.androidSupport
@@ -123,6 +124,7 @@ dependencies {
     }
     debugImplementation Dep.Stetho.stetho
     debugImplementation Dep.LeakCanary.leakCanary
+    kapt Dep.Google.autoservice
 }
 
 apply plugin: 'com.google.gms.google-services'

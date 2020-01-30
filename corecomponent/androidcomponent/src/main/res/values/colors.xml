@@ -30,6 +30,7 @@
     <color name="black_alpha_87">#DE000000</color>
     <color name="black_alpha_38">#61000000</color>
     <color name="black_alpha_12">#1F000000</color>
+    <color name="red">#FF0000</color>
 
     <!--
         > The recommended dark theme surface color is #121212.

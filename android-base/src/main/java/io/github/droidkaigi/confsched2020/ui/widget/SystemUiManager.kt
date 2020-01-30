@@ -27,7 +27,7 @@ class SystemUiManager(
             }
         }
     private val drawerIsOpened: Boolean
-        get() = drawerSlideOffset >= DRAWER_OFFSET_OPEN_THRESHOLD
+        get() = drawerSlideOffset > 0f
 
     var isIndigoBackground: Boolean? = null
         set(value) {
@@ -93,7 +93,6 @@ class SystemUiManager(
     }
 
     companion object {
-        private const val DRAWER_OFFSET_OPEN_THRESHOLD = 0.1f
         private const val COLOR_STATUS_BAR_INVISIBLE = Color.TRANSPARENT
         private const val COLOR_STATUS_BAR_VISIBLE = 0x8a000000.toInt()
     }
