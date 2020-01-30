@@ -78,6 +78,8 @@ final class SessionCell: UICollectionViewCell {
                 speakerTapHandler()
             })
             .disposed(by: disposeBag)
+
+        bookmarkButton.rx.tap.subscribe(onNext: {}).disposed(by: disposeBag)
     }
 
     override func prepareForReuse() {
