@@ -1,6 +1,6 @@
 import UIKit
 
-class AboutCell: UITableViewCell {
+final class AboutCell: UITableViewCell {
     struct Identifier {
         static let description = "description"
         static let icon = "icon"
