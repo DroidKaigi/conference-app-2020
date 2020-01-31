@@ -231,6 +231,15 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     private fun handleNavigation(@IdRes itemId: Int): Boolean {
         binding.drawerLayout.closeDrawers()
 
+        when (itemId) {
+            R.id.entire_survey -> {
+                navController.navigate(R.id.chrome, Bundle().apply {
+                    putString("url", "https://google.com")
+                })
+                return true
+            }
+        }
+
         return try {
             // ignore if current destination is selected
             if (navController.currentDestination?.id == itemId) return false
