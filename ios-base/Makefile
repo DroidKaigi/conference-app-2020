@@ -4,7 +4,7 @@ GIT_DIR = $(shell git rev-parse --git-dir)
 init: 
 	scripts/bootstrap.sh
 
-xcode:
+xcode: swiftgen
 	mint run xcodegen
 	bundle exec pod install
 
