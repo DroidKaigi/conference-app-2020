@@ -70,6 +70,7 @@
             android:tint="?colorSecondary"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/favorite_icon"
             />
 
         <TextView
