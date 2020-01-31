@@ -1,5 +1,5 @@
 init: 
-	scripts/bootstrap.sh
+	@scripts/bootstrap.sh
 
 xcode: swiftgen
 	mint run xcodegen
