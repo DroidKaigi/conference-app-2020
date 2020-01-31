@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.DroidKaigi.Sponsor.Card" parent="Widget.DroidKaigi.Sponsor.Base.Card">
+        <item name="rippleColor">@color/black_alpha_12</item>
+    </style>
+</resources>

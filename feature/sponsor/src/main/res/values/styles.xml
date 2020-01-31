@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.DroidKaigi.Sponsor.Base.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">?colorOnPrimary</item>
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardElevation">3dp</item>
+    </style>
+
+    <style name="Widget.DroidKaigi.Sponsor.Card" parent="Widget.DroidKaigi.Sponsor.Base.Card">
+        <item name="rippleColor">@color/black_alpha_12</item>
+    </style>
+</resources>

@@ -6,12 +6,10 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
+        style="@style/Widget.DroidKaigi.Sponsor.Card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardBackgroundColor="?attr/colorOnPrimary"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="3dp"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,6 +21,7 @@
                 android:id="@+id/image"
                 android:layout_width="0dp"
                 android:layout_height="72dp"
+                android:contentDescription="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
