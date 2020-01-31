@@ -15,7 +15,7 @@ class AboutViewController: UITableViewController {
     }
 
     override func viewDidLoad() {
-        title = "DroidKaigiとは"
+        title = L10n.aboutDroidKaigi
     }
 }
 
@@ -32,11 +32,8 @@ extension AboutViewController {
         switch cells[indexPath.row] {
         case .description:
             return dequeueReusableCell(withIdentifier: AboutCell.Identifier.description, for: indexPath) { cell in
-                cell.titleLabel.text = "What is DroidKaigi?"
-                let detail = """
-                DroidKaigiはエンジニアが主役のAndroidカンファレンスです。
-                Android技術情報の共有とコミュニケーションを目的に、2020年2月20日(木)、21日(金)の2日間開催します。
-                """
+                cell.titleLabel.text = L10n.whatIsDroidKaigi
+                let detail = L10n.droidKaigiDescription
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.lineHeightMultiple = 1.1
                 let attributes: [NSAttributedString.Key: Any] = [.kern: 0.5, .paragraphStyle: paragraphStyle]
@@ -59,23 +56,23 @@ extension AboutViewController {
             }
         case .access:
             return dequeueReusableCell(withIdentifier: AboutCell.Identifier.icon, for: indexPath) { cell in
-                cell.titleLabel.text = "会場アクセス"
+                cell.titleLabel.text = L10n.access
             }
         case .staff:
             return dequeueReusableCell(withIdentifier: AboutCell.Identifier.basic, for: indexPath) { cell in
-                cell.titleLabel.text = "スタッフリスト"
+                cell.titleLabel.text = L10n.staffs
             }
         case .policy:
             return dequeueReusableCell(withIdentifier: AboutCell.Identifier.basic, for: indexPath) { cell in
-                cell.titleLabel.text = "プライバシーポリシー"
+                cell.titleLabel.text = L10n.privacyPolicy
             }
         case .license:
             return dequeueReusableCell(withIdentifier: AboutCell.Identifier.basic, for: indexPath) { cell in
-                cell.titleLabel.text = "ライセンス"
+                cell.titleLabel.text = L10n.licence
             }
         case .version:
             return dequeueReusableCell(withIdentifier: AboutCell.Identifier.detail, for: indexPath) { cell in
-                cell.titleLabel.text = "アプリバージョン"
+                cell.titleLabel.text = L10n.version
                 cell.detailLabel?.text =
                     Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
             }
@@ -95,7 +92,7 @@ extension AboutViewController {
         switch cells[indexPath.row] {
         case .access:
             tableView.deselectRow(at: indexPath, animated: true)
-            let address = "TOCビル"
+            let address = L10n.tocBuilding
             let latitude = "35.621925"
             let longitude = "139.719063"
             guard canOpenWithGoogleMaps else {
@@ -104,13 +101,13 @@ extension AboutViewController {
             }
 
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            let openWithMapsAction = UIAlertAction(title: "マップ", style: .default) { [weak self] _ in
+            let openWithMapsAction = UIAlertAction(title: L10n.maps, style: .default) { [weak self] _ in
                 self?.openWithMaps(address: address, latitude: latitude, longitude: longitude)
             }
-            let openWithGoogleMapsAction = UIAlertAction(title: "Google Maps", style: .default) { [weak self] _ in
+            let openWithGoogleMapsAction = UIAlertAction(title: L10n.googleMaps, style: .default) { [weak self] _ in
                 self?.openWithGoogleMaps(address: address, latitude: latitude, longitude: longitude)
             }
-            let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel)
+            let cancelAction = UIAlertAction(title: L10n.cancel, style: .cancel)
             alertController.addAction(openWithMapsAction)
             alertController.addAction(openWithGoogleMapsAction)
             alertController.addAction(cancelAction)
@@ -118,7 +115,7 @@ extension AboutViewController {
         case .staff:
             break
         case .policy:
-            guard let url = URL(string: "http://www.association.droidkaigi.jp/privacy.html") else {
+            guard let url = URL(string: L10n.privacyPolicyURL) else {
                 tableView.deselectRow(at: indexPath, animated: true)
                 return
             }
