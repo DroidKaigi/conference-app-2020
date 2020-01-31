@@ -1,11 +1,8 @@
 GIT_REPO = $(shell git rev-parse --show-toplevel)
 GIT_DIR = $(shell git rev-parse --git-dir)
 
-init: swiftgen
-	mint run xcodegen
-	bundle install --path vendor/bundle
-	bundle exec pod install
-	@cp $(GIT_REPO)/ios-base/scripts/git-hooks/* $(GIT_DIR)/hooks
+init: 
+	scripts/bootstrap.sh
 
 xcode:
 	mint run xcodegen
