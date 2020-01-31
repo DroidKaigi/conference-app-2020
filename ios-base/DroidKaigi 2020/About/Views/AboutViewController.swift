@@ -2,7 +2,7 @@ import ios_combined
 import SafariServices
 import UIKit
 
-class AboutViewController: UITableViewController {
+final class AboutViewController: UITableViewController {
     private enum CellType {
         case description, access, staff, policy, license, version
     }
