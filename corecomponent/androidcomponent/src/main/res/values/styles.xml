@@ -21,4 +21,9 @@
     <style name="Widget.DroidKaigi.SearchView" parent="Widget.AppCompat.SearchView">
         <item name="searchHintIcon">@null</item>
     </style>
+
+    <style name="Widget.DroidKaigi.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardElevation">3dp</item>
+    </style>
 </resources>

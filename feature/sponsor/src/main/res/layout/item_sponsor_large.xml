@@ -6,7 +6,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
-        style="@style/Widget.DroidKaigi.Sponsor.Card"
+        style="@style/Widget.DroidKaigi.Card.Sponsor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
