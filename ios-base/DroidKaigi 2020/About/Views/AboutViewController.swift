@@ -38,8 +38,7 @@ extension AboutViewController {
                 let attributes: [NSAttributedString.Key: Any] = [.kern: 0.5, .paragraphStyle: paragraphStyle]
                 cell.detailLabel?.attributedText = NSMutableAttributedString(string: detail,
                                                                              attributes: attributes)
-                cell.onButtonTapped = { [weak self] button in
-                    guard let self = self else { return }
+                cell.onButtonTapped = { button in
                     let urlString: String
                     switch button {
                     case .twitter:
@@ -50,7 +49,7 @@ extension AboutViewController {
                         urlString = "https://medium.com/droidkaigi"
                     }
                     guard let url = URL(string: urlString) else { return }
-                    self.presentSafariViewController(with: url)
+                    UIApplication.shared.open(url)
                 }
             }
         case .access:
