@@ -1,3 +1,6 @@
+.PHONY: default
+default: xcode
+
 init: 
 	@scripts/bootstrap.sh
 
@@ -6,7 +9,7 @@ xcode: swiftgen
 	bundle exec pod install
 
 swiftgen:
-	mkdir -p "DroidKaigi 2020/Generated"
+	@mkdir -p "DroidKaigi 2020/Generated"
 	mint run swiftgen swiftgen
 
 test: xcode
