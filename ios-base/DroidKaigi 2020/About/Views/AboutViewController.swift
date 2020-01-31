@@ -1,3 +1,5 @@
+import RxCocoa
+import RxSwift
 import SafariServices
 import UIKit
 
@@ -6,6 +8,7 @@ final class AboutViewController: UITableViewController {
         case description, access, staff, policy, license, version
     }
 
+    private let disposeBag = DisposeBag()
     private let cells: [CellType] = [.description, .access, .staff, .policy, .license, .version]
 
     static func instantiate() -> AboutViewController {
@@ -14,7 +17,21 @@ final class AboutViewController: UITableViewController {
     }
 
     override func viewDidLoad() {
+        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.backgroundColor
+        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onBackgroundColor
+        let menuImage = Asset.icMenu.image
+        let templateMenuImage = menuImage.withRenderingMode(.alwaysTemplate)
+        let menuItem = UIBarButtonItem(image: templateMenuImage,
+                                       style: .plain,
+                                       target: self,
+                                       action: nil)
+        navigationItem.leftBarButtonItems = [menuItem]
         title = L10n.aboutDroidKaigi
+
+        menuItem.rx.tap
+            .bind(to: Binder(self) { me, _ in
+                me.navigationDrawerController?.toggleLeftView()
+            }).disposed(by: disposeBag)
     }
 }
 
