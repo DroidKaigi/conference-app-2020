@@ -22,8 +22,7 @@ import java.util.regex.Pattern
 class SessionDetailTitleItem @AssistedInject constructor(
     @Assisted private val session: Session,
     @Assisted private val searchQuery: String?
-) :
-    BindableItem<ItemSessionDetailTitleBinding>() {
+) : BindableItem<ItemSessionDetailTitleBinding>() {
     override fun getLayout() = R.layout.item_session_detail_title
 
     override fun bind(binding: ItemSessionDetailTitleBinding, position: Int) {
@@ -61,8 +60,6 @@ class SessionDetailTitleItem @AssistedInject constructor(
 //            binding.sessionMessage.isVisible = true
         }
     }
-
-    override fun isSameAs(other: Item<*>) = other is SessionDetailTitleItem
 
     private fun TextView.setSearchHighlight() {
         doOnPreDraw {

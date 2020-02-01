@@ -15,8 +15,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailM
 class SessionDetailMaterialItem @AssistedInject constructor(
     @Assisted private val session: Session,
     @Assisted private val listener: Listener
-) :
-    BindableItem<ItemSessionDetailMaterialBinding>() {
+) : BindableItem<ItemSessionDetailMaterialBinding>() {
 
     interface Listener {
         fun onClickMovie(movieUrl: String)
@@ -29,8 +28,6 @@ class SessionDetailMaterialItem @AssistedInject constructor(
     override fun bind(binding: ItemSessionDetailMaterialBinding, position: Int) {
         setUpMaterialData(binding)
     }
-
-    override fun isSameAs(other: Item<*>) = other is SessionDetailMaterialItem
 
     private fun setUpMaterialData(binding: ItemSessionDetailMaterialBinding) {
         if (session is SpeechSession) {
