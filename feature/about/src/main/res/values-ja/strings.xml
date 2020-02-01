@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_what_is_droidkaigi">What is DroidKaigi?</string>
+    <string name="about_description">DroidKaigiはエンジニアが主役のAndroidカンファレンスです。 Android技術情報の共有とコミュニケーションを目的に、2020年2月20日(木)、21日(金)の2日間開催します。</string>
+    <string name="about_item_access">会場アクセス</string>
+    <string name="about_item_staff">スタッフリスト</string>
+    <string name="about_item_privacy_policy">プライバシーポリシー</string>
+    <string name="about_item_licence">ライセンス</string>
+    <string name="about_item_app_version">アプリバージョン</string>
+</resources>

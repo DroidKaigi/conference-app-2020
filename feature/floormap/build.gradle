@@ -8,6 +8,8 @@ apply from: rootProject.file('gradle/android.gradle')
 android.dataBinding.enabled = true
 
 dependencies {
+    implementation project(":model")
+
     implementation project(':corecomponent:androidcomponent')
     implementation project(':ext:log')
 

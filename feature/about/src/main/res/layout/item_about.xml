@@ -6,23 +6,26 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.FloorMapFragment"
+        android:layout_height="wrap_content"
         >
 
-        <com.github.chrisbanes.photoview.PhotoView
-            android:id="@+id/floorMapImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:src="@drawable/ic_floor_map"
-            android:tint="?attr/colorPrimary"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:textColor="@color/black_alpha_87"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:text="About Item"
             />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

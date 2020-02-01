@@ -6,8 +6,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
-import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
@@ -17,8 +17,7 @@ import io.github.droidkaigi.confsched2020.session.ui.SpeakerFragmentDirections
 class SpeakerSessionItem @AssistedInject constructor(
     @Assisted val speechSession: SpeechSession,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
-) : BindableItem<ItemSpeakerSessionBinding>(speechSession.id.hashCode().toLong()),
-    EqualableContentsProvider {
+) : BindableItem<ItemSpeakerSessionBinding>(speechSession.id.hashCode().toLong()) {
 
     companion object {
         private const val TRANSITION_NAME_SUFFIX = "speaker-session"
@@ -46,17 +45,8 @@ class SpeakerSessionItem @AssistedInject constructor(
         }
     }
 
-    override fun providerEqualableContents(): Array<*> {
-        return arrayOf(speechSession)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return isSameContents(other)
-    }
-
-    override fun hashCode(): Int {
-        return contentsHash()
-    }
+    override fun hasSameContentAs(other: Item<*>): Boolean =
+        speechSession == (other as? SpeakerSessionItem)?.speechSession
 
     @AssistedInject.Factory
     interface Factory {

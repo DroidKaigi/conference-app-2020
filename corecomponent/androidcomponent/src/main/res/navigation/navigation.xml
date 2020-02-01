@@ -108,6 +108,12 @@
             app:popExitAnim="@anim/fade_out"
             />
         <action
+            android:id="@+id/action_session_to_floormap"
+            app:destination="@id/floormap"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" />
+        <action
             android:id="@+id/action_session_to_chrome"
             app:destination="@id/chrome"
             >
@@ -203,6 +209,13 @@
         android:label="@string/about_label"
         >
         <action
+            android:id="@+id/action_about_to_floormap"
+            app:destination="@id/floormap"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+        <action
             android:id="@+id/action_about_to_staffs"
             app:destination="@id/staffs"
             app:enterAnim="@anim/fade_in"
@@ -210,12 +223,27 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out"
             />
+        <action
+            android:id="@+id/action_about_to_chrome"
+            app:destination="@id/chrome">
+            <argument
+                android:name="url"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/floormap"
         android:name="io.github.droidkaigi.confsched2020.floormap.ui.FloorMapFragment"
         android:label="@string/map_label"
-        />
+        >
+        <argument
+            android:name="room"
+            android:defaultValue="@null"
+            app:argType="io.github.droidkaigi.confsched2020.model.Room"
+            app:nullable="true"
+            />
+    </fragment>
     <fragment
         android:id="@+id/session_survey"
         android:name="io.github.droidkaigi.confsched2020.session_survey.ui.SessionSurveyFragment"

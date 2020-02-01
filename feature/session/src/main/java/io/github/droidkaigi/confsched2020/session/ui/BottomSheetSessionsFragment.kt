@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
@@ -63,7 +63,7 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentBottomSheetSessionsBinding.bind(view)
         binding.isEmptyFavoritePage = false
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
         binding.sessionRecycler.addItemDecoration(
             SessionsItemDecoration(

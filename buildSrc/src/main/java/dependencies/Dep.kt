@@ -192,7 +192,7 @@ object Dep {
     }
 
     object Groupie {
-        val version = "2.4.0-alpha1"
+        val version = "2.7.2"
         val groupie = "com.xwray:groupie:$version"
         val databinding = "com.xwray:groupie-databinding:$version"
     }

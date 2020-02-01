@@ -70,6 +70,7 @@
             android:tint="?colorSecondary"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/favorite_icon"
             />
 
         <TextView
@@ -77,7 +78,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.DroidKaigi.SessionMessage"
+            android:textAppearance="?textAppearanceBody1"
+            android:textColor="@color/red"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
