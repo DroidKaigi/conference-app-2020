@@ -22,7 +22,7 @@ final class AnnouncementsDataSource: NSObject, RxTableViewDataSourceType, UITabl
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AnnouncementCell.self), for: indexPath) as! AnnouncementCell // swiftlint:disable:this force_cast
-        cell.configura(items[indexPath.item])
+        cell.configure(items[indexPath.item])
         return cell
     }
 }

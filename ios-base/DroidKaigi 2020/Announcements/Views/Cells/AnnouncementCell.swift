@@ -32,7 +32,7 @@ final class AnnouncementCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
 
-    func configura(_ announcement: Announcement) {
+    func configure(_ announcement: Announcement) {
         iconImageView.image = announcement.type.iconImage
         publishedAtLabel.text = Constant.dateFormatter.string(from: Date(timeIntervalSince1970: announcement.publishedAt))
         titleLabel.text = announcement.title
