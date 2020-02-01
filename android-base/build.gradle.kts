@@ -2,129 +2,130 @@ import dependencies.Dep
 import dependencies.Packages
 import dependencies.Versions
 
-apply plugin: 'com.android.application'
-
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.firebase.crashlytics'
+plugins {
+    id("com.android.application")
+    kotlin("android")
+    kotlin("kapt")
+    id("com.google.firebase.crashlytics")
+}
 
 android {
-    compileSdkVersion Versions.androidCompileSdkVersion
+    compileSdkVersion(Versions.androidCompileSdkVersion)
     defaultConfig {
-        applicationId Packages.name
-        minSdkVersion Versions.androidMinSdkVersion
-        targetSdkVersion Versions.androidTargetSdkVersion
-        versionCode Versions.androidVersionCode
-        versionName Versions.androidVersionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments clearPackageData: 'true'
+        applicationId = Packages.name
+        minSdkVersion(Versions.androidMinSdkVersion)
+        targetSdkVersion(Versions.androidTargetSdkVersion)
+        versionCode = Versions.androidVersionCode
+        versionName = Versions.androidVersionName
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments = mapOf("clearPackageData" to "true")
     }
     signingConfigs {
-        debug {
-            storeFile file("debug.keystore")
-            storePassword "android"
-            keyAlias "androiddebugkey"
-            keyPassword "android"
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
         }
-        release.initWith(debug)
+        create("release").initWith(getByName("debug"))
 
-        def releaseKeystore = file("release.keystore")
+        val releaseKeystore = file("release.keystore")
 
-        if (isReleaseBuild) {
-            assert releaseKeystore.exists()
-            assert System.getenv("RELEASE_KEYSTORE_STORE_PASSWORD")
-            assert System.getenv("RELEASE_KEYSTORE_KEY_PASSWORD")
+        if (rootProject.ext.get("isReleaseBuild") as Boolean) {
+            assert(releaseKeystore.exists())
+            assert(System.getenv("RELEASE_KEYSTORE_STORE_PASSWORD") != null)
+            assert(System.getenv("RELEASE_KEYSTORE_KEY_PASSWORD") != null)
         }
 
         if (releaseKeystore.exists()) {
-            release {
-                storeFile releaseKeystore
-                storePassword System.getenv("RELEASE_KEYSTORE_STORE_PASSWORD")
-                keyAlias "droidkaigi"
-                keyPassword System.getenv("RELEASE_KEYSTORE_KEY_PASSWORD")
+            getByName("release") {
+                storeFile = releaseKeystore
+                storePassword = System.getenv("RELEASE_KEYSTORE_STORE_PASSWORD")
+                keyAlias = "droidkaigi"
+                keyPassword = System.getenv("RELEASE_KEYSTORE_KEY_PASSWORD")
             }
         }
     }
     buildTypes {
-        debug {
-            applicationIdSuffix Packages.debugNameSuffix
+        getByName("debug") {
+            applicationIdSuffix = Packages.debugNameSuffix
         }
-        release {
-            minifyEnabled true
-            signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        getByName("release") {
+            isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("release")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     dataBinding {
-        enabled = true
+        isEnabled = true
     }
     packagingOptions {
-        exclude 'META-INF/*.kotlin_module'
-        exclude 'META-INF/*.version'
-        exclude 'META-INF/proguard/*.pro'
+        exclude("META-INF/*.kotlin_module")
+        exclude("META-INF/*.version")
+        exclude("META-INF/proguard/*.pro")
     }
-    dynamicFeatures = [
-            ':feature:staff',
-            ':feature:preference',
-            ':feature:contributor'
-    ]
+    dynamicFeatures = hashSetOf(
+            ":feature:staff",
+            ":feature:preference",
+            ":feature:contributor"
+    )
     testOptions {
-        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
         animationsDisabled = true
     }
 }
 
 dependencies {
-    implementation project(':feature:session')
-    implementation project(':feature:system')
-    implementation project(':feature:sponsor')
-    implementation project(':feature:announcement')
-    implementation project(':feature:about')
-    implementation project(':feature:floormap')
-    implementation project(':feature:session_survey')
+    implementation(project(":feature:session"))
+    implementation(project(":feature:system"))
+    implementation(project(":feature:sponsor"))
+    implementation(project(":feature:announcement"))
+    implementation(project(":feature:about"))
+    implementation(project(":feature:floormap"))
+    implementation(project(":feature:session_survey"))
 
-    implementation project(':data:repository')
-    implementation project(':data:db')
-    implementation project(':data:firestore')
-    implementation project(':data:api')
-    implementation project(':data:device')
+    implementation(project(":data:repository"))
+    implementation(project(":data:db"))
+    implementation(project(":data:firestore"))
+    implementation(project(":data:api"))
+    implementation(project(":data:device"))
 
-    implementation project(':corecomponent:androidcomponent')
-    implementation project(':ext:log')
+    implementation(project(":corecomponent:androidcomponent"))
+    implementation(project(":ext:log"))
 
-    implementation Dep.Kotlin.stdlibJvm
-    implementation Dep.AndroidX.appCompat
-    implementation Dep.AndroidX.coreKtx
-    implementation Dep.AndroidX.constraint
-    implementation Dep.AndroidX.activityKtx
-    implementation Dep.Firebase.firestoreKtx
-    implementation Dep.Firebase.crashlytics
-    implementation Dep.Firebase.analytics
-    implementation Dep.AndroidX.emoji
+    implementation(Dep.Kotlin.stdlibJvm)
+    implementation(Dep.AndroidX.appCompat)
+    implementation(Dep.AndroidX.coreKtx)
+    implementation(Dep.AndroidX.constraint)
+    implementation(Dep.AndroidX.activityKtx)
+    implementation(Dep.Firebase.firestoreKtx)
+    implementation(Dep.Firebase.crashlytics)
+    implementation(Dep.Firebase.analytics)
+    implementation(Dep.AndroidX.emoji)
 
-    implementation Dep.Dagger.core
-    implementation Dep.Dagger.androidSupport
-    implementation Dep.Dagger.android
-    kapt Dep.Dagger.compiler
-    kapt Dep.Dagger.androidProcessor
-    compileOnly Dep.Dagger.assistedInjectAnnotations
-    kapt Dep.Dagger.assistedInjectProcessor
-    implementation Dep.Groupie.groupie
+    implementation(Dep.Dagger.core)
+    implementation(Dep.Dagger.androidSupport)
+    implementation(Dep.Dagger.android)
+    kapt(Dep.Dagger.compiler)
+    kapt(Dep.Dagger.androidProcessor)
+    compileOnly(Dep.Dagger.assistedInjectAnnotations)
+    kapt(Dep.Dagger.assistedInjectProcessor)
+    implementation(Dep.Groupie.groupie)
 
-    testImplementation Dep.Test.junit
-    androidTestImplementation Dep.Test.testRunner
-    androidTestImplementation Dep.Test.testRules
-    androidTestImplementation Dep.Test.espressoCore
-    androidTestImplementation Dep.Test.testCoreKtx
-    androidTestImplementation Dep.Test.androidJunit4Ktx
-    androidTestUtil Dep.Test.orchestrator
+    testImplementation(Dep.Test.junit)
+    androidTestImplementation(Dep.Test.testRunner)
+    androidTestImplementation(Dep.Test.testRules)
+    androidTestImplementation(Dep.Test.espressoCore)
+    androidTestImplementation(Dep.Test.testCoreKtx)
+    androidTestImplementation(Dep.Test.androidJunit4Ktx)
+    androidTestUtil(Dep.Test.orchestrator)
 
     Dep.Hyperion.hyperionPlugins.forEach{
-        debugImplementation it
+        debugImplementation(it)
     }
-    debugImplementation Dep.Stetho.stetho
-    debugImplementation Dep.LeakCanary.leakCanary
-    kapt Dep.Google.autoservice
+    debugImplementation(Dep.Stetho.stetho)
+    debugImplementation(Dep.LeakCanary.leakCanary)
+    kapt(Dep.Google.autoservice)
 }
 
-apply plugin: 'com.google.gms.google-services'
+apply(mapOf("plugin" to "com.google.gms.google-services"))
