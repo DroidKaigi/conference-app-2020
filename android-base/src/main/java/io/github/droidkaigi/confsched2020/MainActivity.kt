@@ -234,6 +234,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
         when (itemId) {
             R.id.entire_survey -> {
+                // TODO: Change to the correct URL
                 navController.navigate(actionGlobalToChrome("https://google.com"))
                 return true
             }
