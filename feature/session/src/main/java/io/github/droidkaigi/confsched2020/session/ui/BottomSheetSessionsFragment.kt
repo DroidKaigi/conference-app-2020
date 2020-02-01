@@ -169,10 +169,8 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
 
 @Module
 abstract class BottomSheetSessionsFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic
         @Provides
         fun providesLifecycleOwnerLiveData(
             mainBottomSheetSessionsFragment: BottomSheetSessionsFragment

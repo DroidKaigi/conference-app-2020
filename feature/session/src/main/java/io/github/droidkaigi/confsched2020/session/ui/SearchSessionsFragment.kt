@@ -196,10 +196,9 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
 
 @Module
 abstract class SearchSessionsFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides
+        @Provides
         fun providesLifecycleOwnerLiveData(
             searchSessionsFragment: SearchSessionsFragment
         ): LiveData<LifecycleOwner> {

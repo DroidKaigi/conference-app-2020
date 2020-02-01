@@ -63,11 +63,9 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
 @Module
 abstract class AboutFragmentModule {
 
-    @Module
     companion object {
 
         @PageScope
-        @JvmStatic
         @Provides
         fun providesLifecycleOwnerLiveData(
             aboutFragment: AboutFragment

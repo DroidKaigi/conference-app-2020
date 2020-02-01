@@ -115,10 +115,9 @@ class SponsorsFragment : Fragment(R.layout.fragment_sponsors), Injectable {
 
 @Module
 abstract class SponsorsFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
+        @Provides fun providesLifecycleOwnerLiveData(
             sponsorsFragment: SponsorsFragment
         ): LiveData<LifecycleOwner> {
             return sponsorsFragment.viewLifecycleOwnerLiveData

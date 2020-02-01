@@ -310,9 +310,6 @@ abstract class MainActivityModule {
     abstract fun contributeSessionSurveyFragment(): SessionSurveyFragment
 
     @Module
-    companion object
-
-    @Module
     abstract class MainActivityBuilder {
         @ContributesAndroidInjector(modules = [MainActivityModule::class])
         abstract fun contributeMainActivity(): MainActivity
