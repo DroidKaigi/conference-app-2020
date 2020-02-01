@@ -48,8 +48,10 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix Packages.debugNameSuffix
+            buildConfigField("boolean", "USE_FAKE_SPLIT", "Boolean.parseBoolean(\"${project.hasProperty("useFakeSplit")}\")")
         }
         release {
+            buildConfigField("boolean", "USE_FAKE_SPLIT", "false")
             minifyEnabled true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
