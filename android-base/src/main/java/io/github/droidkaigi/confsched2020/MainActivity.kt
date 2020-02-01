@@ -65,6 +65,7 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.di.SponsorsAssistedInjectMo
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.PageConfiguration
 import io.github.droidkaigi.confsched2020.ui.widget.SystemUiManager
+import io.github.droidkaigi.confsched2020.widget.component.NavigationDirections.Companion.actionGlobalToChrome
 import javax.inject.Inject
 import javax.inject.Provider
 import timber.log.Timber
@@ -233,9 +234,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
         when (itemId) {
             R.id.entire_survey -> {
-                navController.navigate(R.id.chrome, Bundle().apply {
-                    putString("url", "https://google.com")
-                })
+                navController.navigate(actionGlobalToChrome("https://google.com"))
                 return true
             }
         }
