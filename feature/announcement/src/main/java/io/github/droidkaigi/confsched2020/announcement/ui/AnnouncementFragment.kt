@@ -101,11 +101,9 @@ class AnnouncementFragment : Fragment(R.layout.fragment_announcement), Injectabl
     @Module
     abstract class AnnouncementFragmentModule {
 
-        @Module
         companion object {
 
             @PageScope
-            @JvmStatic
             @Provides
             fun providesLifecycleOwnerLiveData(
                 announcementFragment: AnnouncementFragment

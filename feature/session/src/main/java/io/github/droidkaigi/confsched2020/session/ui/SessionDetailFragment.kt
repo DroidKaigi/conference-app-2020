@@ -236,10 +236,9 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
 
 @Module
 abstract class SessionDetailFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides
+        @Provides
         fun providesLifecycleOwnerLiveData(
             sessionDetailFragment: SessionDetailFragment
         ): LiveData<LifecycleOwner> {

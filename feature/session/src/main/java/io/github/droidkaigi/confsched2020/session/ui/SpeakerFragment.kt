@@ -77,10 +77,9 @@ class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
 
 @Module
 abstract class SpeakerFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides
+        @Provides
         fun providesLifecycleOwnerLiveData(
             speakerFragment: SpeakerFragment
         ): LiveData<LifecycleOwner> {
