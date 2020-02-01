@@ -19,13 +19,11 @@
             <nav-graph android:value="@navigation/navigation" />
         </activity>
         <receiver android:name=".session.broadcastreceiver.NotificationBroadcastReceiver" />
-
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:theme="@style/Theme.DroidKaigi.ActionBar"
             />
         <activity
-            android:id="@+id/licenses"
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/Theme.DroidKaigi.ActionBar"
             />

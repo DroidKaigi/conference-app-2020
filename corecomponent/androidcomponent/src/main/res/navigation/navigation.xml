@@ -264,4 +264,8 @@
         android:name="io.github.droidkaigi.confsched2020.ui.ChromeCustomTabsNavigator"
         android:label="chrome"
         />
+    <activity
+        android:id="@+id/licenses"
+        android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+        />
 </navigation>

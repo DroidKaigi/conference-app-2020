@@ -7,6 +7,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.navigation.Navigation
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupAdapter
@@ -104,8 +105,8 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                     getString(R.string.about_item_licence)
                 ) {
                     OssLicensesMenuActivity.setActivityTitle(this.getString(R.string.licenses_label))
-                    val intent = Intent(this.context, OssLicensesMenuActivity::class.java)
-                    this.startActivity(intent)
+                    Navigation.findNavController(this.requireActivity(), R.id.root_nav_host_fragment)
+                        .navigate(R.id.licenses)
                 },
                 aboutTextItemFactory.create(
                     getString(R.string.about_item_app_version),
