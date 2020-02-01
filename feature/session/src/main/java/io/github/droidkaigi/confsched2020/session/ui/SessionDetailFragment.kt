@@ -29,6 +29,7 @@ import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToChrome
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToFloormap
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailDescriptionItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailMaterialItem
@@ -128,12 +129,16 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
             }
 
         binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
+            val session = binding.session ?: return@setOnMenuItemClickListener true
             when (menuItem.itemId) {
                 R.id.session_share -> {
                     // do something
                 }
+                R.id.floormap -> {
+                    val directions = actionSessionToFloormap(session.room)
+                    findNavController().navigate(directions)
+                }
                 R.id.session_calendar -> {
-                    val session = binding.session ?: return@setOnMenuItemClickListener true
                     systemViewModel.sendEventToCalendar(
                         activity = requireActivity(),
                         title = session.title.getByLang(defaultLang()),
