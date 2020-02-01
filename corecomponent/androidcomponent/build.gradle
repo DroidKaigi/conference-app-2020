@@ -8,6 +8,10 @@ apply plugin: 'kotlin-kapt'
 apply from: rootProject.file('gradle/android.gradle')
 android.dataBinding.enabled = true
 
+android.buildTypes.debug {
+    consumerProguardFiles 'proguard-rules-navigation.pro'
+}
+
 android.buildTypes.release {
     consumerProguardFiles 'proguard-rules-navigation.pro'
 }
