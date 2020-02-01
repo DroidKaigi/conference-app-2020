@@ -131,10 +131,8 @@ abstract class MainSessionsFragmentModule {
     @ContributesAndroidInjector(modules = [SessionsFragmentModule::class])
     abstract fun contributeSessionPageFragment(): SessionsFragment
 
-    @Module
     companion object {
         @PageScope
-        @JvmStatic
         @Provides
         fun providesLifecycleOwnerLiveData(
             mainSessionsFragment: MainSessionsFragment

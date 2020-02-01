@@ -11,7 +11,7 @@ class DividerItem : BindableItem<ItemDividerBinding>() {
     override fun bind(viewBinding: ItemDividerBinding, position: Int) {
     }
 
-    override fun isSameAs(other: Item<*>?): Boolean {
+    override fun isSameAs(other: Item<*>): Boolean {
         return other is DividerItem
     }
 }

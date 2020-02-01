@@ -50,5 +50,10 @@
             android:icon="@drawable/ic_settings_24px"
             android:title="@string/setting_label"
             />
+        <item
+            android:id="@+id/entire_survey"
+            android:icon="@drawable/ic_feedback_black_24dp"
+            android:title="@string/survey_label"
+            />
     </group>
 </menu>

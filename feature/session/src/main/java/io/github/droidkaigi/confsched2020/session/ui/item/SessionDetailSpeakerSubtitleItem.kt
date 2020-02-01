@@ -13,7 +13,7 @@ class SessionDetailSpeakerSubtitleItem @AssistedInject constructor() :
     override fun bind(binding: ItemSessionDetailSpeakerSubtitleBinding, position: Int) {
     }
 
-    override fun isSameAs(other: Item<*>?) = other is SessionDetailSpeakerSubtitleItem
+    override fun isSameAs(other: Item<*>) = other is SessionDetailSpeakerSubtitleItem
 
     @AssistedInject.Factory
     interface Factory {
