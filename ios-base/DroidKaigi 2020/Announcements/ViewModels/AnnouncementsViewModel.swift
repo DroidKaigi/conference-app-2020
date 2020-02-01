@@ -17,7 +17,7 @@ final class AnnouncementsViewModel: AnnouncementsViewModelType {
     let announcements: Driver<[Announcement]>
     let error: Driver<KotlinError?>
 
-    private let viewDidLoadReplay = PublishRelay<Void>()
+    private let viewDidLoadRelay = PublishRelay<Void>()
     private let pullToRefreshRelay = PublishRelay<Void>()
 
     private let disposeBag = DisposeBag()
@@ -31,7 +31,7 @@ final class AnnouncementsViewModel: AnnouncementsViewModelType {
         announcements = announcementsRelay.asDriver()
         error = errorRelay.asDriver()
 
-        let fetchResult = Observable.merge(viewDidLoadReplay.asObservable(), pullToRefreshRelay.asObservable())
+        let fetchResult = Observable.merge(viewDidLoadRelay.asObservable(), pullToRefreshRelay.asObservable())
             .flatMap { provider.fetch().asObservable().materialize() }
             .share()
 
@@ -45,7 +45,7 @@ final class AnnouncementsViewModel: AnnouncementsViewModelType {
     }
 
     func viewDidLoad() {
-        viewDidLoadReplay.accept(())
+        viewDidLoadRelay.accept(())
     }
 
     func pullToRefresh() {
