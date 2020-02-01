@@ -1,8 +1,19 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation"
     app:startDestination="@id/main"
     >
+    <action
+        android:id="@+id/action_global_to_chrome"
+        app:destination="@id/chrome">
+        <argument
+            android:name="url"
+            app:argType="string"
+            app:nullable="false"
+            />
+    </action>
+
     <fragment
         android:id="@+id/main"
         android:name="io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragment"

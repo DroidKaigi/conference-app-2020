@@ -65,6 +65,7 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.di.SponsorsAssistedInjectMo
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.PageConfiguration
 import io.github.droidkaigi.confsched2020.ui.widget.SystemUiManager
+import io.github.droidkaigi.confsched2020.widget.component.NavigationDirections.Companion.actionGlobalToChrome
 import javax.inject.Inject
 import javax.inject.Provider
 import timber.log.Timber
@@ -230,6 +231,14 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
     private fun handleNavigation(@IdRes itemId: Int): Boolean {
         binding.drawerLayout.closeDrawers()
+
+        when (itemId) {
+            R.id.entire_survey -> {
+                // TODO: Change to the correct URL
+                navController.navigate(actionGlobalToChrome("https://google.com"))
+                return true
+            }
+        }
 
         return try {
             // ignore if current destination is selected
