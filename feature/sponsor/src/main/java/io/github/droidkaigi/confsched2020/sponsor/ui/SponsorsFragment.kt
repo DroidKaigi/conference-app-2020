@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.Section
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
@@ -54,7 +54,7 @@ class SponsorsFragment : Fragment(R.layout.fragment_sponsors), Injectable {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentSponsorsBinding.bind(view)
 
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         groupAdapter.spanCount = 2
 
         binding.sponsorRecycler.layoutManager = GridLayoutManager(
@@ -115,10 +115,9 @@ class SponsorsFragment : Fragment(R.layout.fragment_sponsors), Injectable {
 
 @Module
 abstract class SponsorsFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
+        @Provides fun providesLifecycleOwnerLiveData(
             sponsorsFragment: SponsorsFragment
         ): LiveData<LifecycleOwner> {
             return sponsorsFragment.viewLifecycleOwnerLiveData

@@ -22,7 +22,7 @@ class SessionDetailTargetItem @AssistedInject constructor(
         binding.speechSession = (session as? SpeechSession)
     }
 
-    override fun isSameAs(other: Item<*>?) = other is SessionDetailTargetItem
+    override fun isSameAs(other: Item<*>) = other is SessionDetailTargetItem
 
     @AssistedInject.Factory
     interface Factory {
