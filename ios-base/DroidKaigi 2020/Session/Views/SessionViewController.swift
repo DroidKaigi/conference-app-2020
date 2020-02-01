@@ -89,11 +89,16 @@ final class SessionViewController: UIViewController {
                 self?.navigationController?.pushViewController(SpeakerViewController.instantiate(speaker: speaker, sessions: sessions), animated: true)
             })
             .disposed(by: disposeBag)
-        dataSource.onTapBookmark.emit(onNext: { [weak self] session in
-            guard let self = self else {
-                return
+        dataSource.onTapBookmark.emit(onNext: { [unowned self] cell, session in
+            if session.isFavorited {
+                self.viewModel.resignBookingSession(session).subscribe { _ in
+                    cell.bookmarkButton.setImage(Asset.icBookmarkBorder.image, for: .normal)
+                }.disposed(by: cell.disposeBag)
+            } else {
+                self.viewModel.bookSession(session).subscribe { _ in
+                    cell.bookmarkButton.setImage(Asset.icBookmark.image, for: .normal)
+                }.disposed(by: cell.disposeBag)
             }
-            self.viewModel.bookSession(session)
 		}).disposed(by: disposeBag)
         collectionView.rx.modelSelected(Session.self)
             .bind(onNext: { [unowned self] in self.showDetail(forSession: $0) })

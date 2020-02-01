@@ -12,14 +12,14 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
         return onTapSpeakerRelay.asSignal()
     }
 
-    var onTapBookmark: Signal<Session> {
+    var onTapBookmark: Signal<(SessionCell, Session)> {
         onTapBookmarkRelay.asSignal()
     }
 
     private var previousTimeString = ""
     private let disposeBag = DisposeBag()
     private let onTapSpeakerRelay = PublishRelay<(speaker: Speaker, sessions: [Session])>()
-    private let onTapBookmarkRelay = PublishRelay<Session>()
+    private let onTapBookmarkRelay = PublishRelay<(SessionCell, Session)>()
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
@@ -62,7 +62,7 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
         cell.minutesAndRoomLabel.text = "\(session.timeInMinutes)min / \(session.room.name.ja)"
 
         cell.bookmarkButton.rx.tap
-            .map { _ in session }
+            .map { _ in (cell, session) }
             .bind(to: onTapBookmarkRelay)
             .disposed(by: cell.disposeBag)
         return cell

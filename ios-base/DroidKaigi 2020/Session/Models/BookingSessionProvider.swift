@@ -22,4 +22,13 @@ final class BookingSessionProvider {
             return .error(error)
         }
     }
+
+    func resignBookingSession(_ session: LocalSession) -> Completable {
+        do {
+            let realm = try Realm()
+            return realm.rx.delete(object: session)
+        } catch {
+            return .error(error)
+        }
+    }
 }
