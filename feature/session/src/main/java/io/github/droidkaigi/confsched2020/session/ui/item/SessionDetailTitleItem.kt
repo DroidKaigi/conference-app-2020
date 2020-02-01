@@ -62,7 +62,7 @@ class SessionDetailTitleItem @AssistedInject constructor(
         }
     }
 
-    override fun isSameAs(other: Item<*>?) = other is SessionDetailTitleItem
+    override fun isSameAs(other: Item<*>) = other is SessionDetailTitleItem
 
     private fun TextView.setSearchHighlight() {
         doOnPreDraw {

@@ -38,7 +38,7 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
 
     override fun getLayout() = R.layout.item_session_detail_description
 
-    override fun isSameAs(other: Item<*>?): Boolean = other is SessionDetailDescriptionItem
+    override fun isSameAs(other: Item<*>): Boolean = other is SessionDetailDescriptionItem
 
     override fun bind(binding: ItemSessionDetailDescriptionBinding, position: Int) {
         val fullDescription = session.desc

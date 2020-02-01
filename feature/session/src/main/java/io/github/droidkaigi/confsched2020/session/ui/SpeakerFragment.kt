@@ -11,7 +11,7 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
 import io.github.droidkaigi.confsched2020.di.Injectable
@@ -52,7 +52,7 @@ class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
         postponeEnterTransition()
         binding.progressBar.show()
 
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.speakerRecycler.adapter = groupAdapter
 
         speakerViewModel.uiModel.distinctUntilChanged()
