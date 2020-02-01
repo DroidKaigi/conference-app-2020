@@ -226,6 +226,9 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         statusBarColors.statusBarColor.distinctUntilChanged().observe(this) { color ->
             window.statusBarColor = color
         }
+        statusBarColors.navigationBarColor.distinctUntilChanged().observe(this) { color ->
+            window.navigationBarColor = color
+        }
     }
 
     private fun handleNavigation(@IdRes itemId: Int): Boolean {
