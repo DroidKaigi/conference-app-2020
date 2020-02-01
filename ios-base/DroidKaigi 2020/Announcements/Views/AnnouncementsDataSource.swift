@@ -6,7 +6,7 @@ import UIKit
 final class AnnouncementsDataSource: NSObject, RxTableViewDataSourceType, UITableViewDataSource {
     typealias Element = [Announcement]
 
-    var items = [Announcement]()
+    private var items = [Announcement]()
 
     func tableView(_ tableView: UITableView, observedEvent: Event<[Announcement]>) {
         Binder(self) { target, items in
