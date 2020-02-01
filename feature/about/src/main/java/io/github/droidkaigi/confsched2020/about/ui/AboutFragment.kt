@@ -103,9 +103,13 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 aboutItemFactory.create(
                     getString(R.string.about_item_licence)
                 ) {
-                    OssLicensesMenuActivity.setActivityTitle(this.getString(R.string.licenses_label))
-                    Navigation.findNavController(this.requireActivity(), R.id.root_nav_host_fragment)
-                        .navigate(R.id.licenses)
+                    OssLicensesMenuActivity.setActivityTitle(
+                        this.getString(R.string.licenses_label)
+                    )
+                    Navigation.findNavController(
+                        this.requireActivity(),
+                        R.id.root_nav_host_fragment
+                    ).navigate(R.id.licenses)
                 },
                 aboutTextItemFactory.create(
                     getString(R.string.about_item_app_version),
