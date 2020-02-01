@@ -90,6 +90,11 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                     // TODO go access-page
                 },
                 aboutItemFactory.create(
+                    getString(R.string.about_item_wifi)
+                ) {
+                    // TODO go wifi-page
+                },
+                aboutItemFactory.create(
                     getString(R.string.about_item_staff)
                 ) {
                     findNavController().navigate(actionAboutToStaffs())
