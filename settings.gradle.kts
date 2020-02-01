@@ -1,3 +1,4 @@
+// TODO: replace build.gradle in root
 //rootProject.buildFileName = "build.gradle.kts"
 include(":android-base",
         ":feature:preference",
