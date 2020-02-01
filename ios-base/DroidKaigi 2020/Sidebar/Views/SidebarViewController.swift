@@ -74,8 +74,10 @@ final class SidebarViewController: UITableViewController {
     private func transition(to viewController: UIViewController) {
         guard let navigationDrawerController = self.navigationDrawerController else { return }
         let navigationController = NavigationController(rootViewController: viewController)
-        navigationDrawerController.transition(to: navigationController)
+        navigationDrawerController.transition(to: navigationController) { [weak self] isFinishing in
+            guard let self = self, isFinishing else { return }
+            self.rootViewController = navigationController
+        }
         navigationDrawerController.toggleLeftView()
-        rootViewController = navigationController
     }
 }
