@@ -35,8 +35,7 @@ final class AnnouncementsViewModel: AnnouncementsViewModelType {
             .flatMap { provider.fetch().asObservable().materialize() }
             .share()
 
-        fetchResult.map { $0.element }
-            .filterNil()
+        fetchResult.compactMap { $0.element }
             .bind(to: announcementsRelay)
             .disposed(by: disposeBag)
         fetchResult.map { $0.error as? KotlinError }
