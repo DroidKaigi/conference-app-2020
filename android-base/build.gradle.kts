@@ -53,7 +53,10 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             signingConfig = signingConfigs.getByName("release")
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     dataBinding {
@@ -120,7 +123,7 @@ dependencies {
     androidTestImplementation(Dep.Test.androidJunit4Ktx)
     androidTestUtil(Dep.Test.orchestrator)
 
-    Dep.Hyperion.hyperionPlugins.forEach{
+    Dep.Hyperion.hyperionPlugins.forEach {
         debugImplementation(it)
     }
     debugImplementation(Dep.Stetho.stetho)
