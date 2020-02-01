@@ -50,14 +50,14 @@ class FloorMapFragment : Fragment(R.layout.fragment_floormap), Injectable {
 @DrawableRes
 fun Room.getRoomTypeResource(): Int {
     val type = this.roomType ?: return R.drawable.ic_floor_map
-    return when (type) {
-        Room.RoomType.EXHIBITION -> R.drawable.ic_floor_map_exhibition
-        Room.RoomType.APP_BAR -> R.drawable.ic_floor_map_app_bars
-        Room.RoomType.BACKDROP -> R.drawable.ic_floor_map_backdrop
-        Room.RoomType.CARDS -> R.drawable.ic_floor_map_cards
-        Room.RoomType.DIALOGS -> R.drawable.ic_floor_map_dialogs
-        Room.RoomType.PICKERS -> R.drawable.ic_floor_map_pickers
-        Room.RoomType.SLIDERS -> R.drawable.ic_floor_map_sliders
-        Room.RoomType.TABS -> R.drawable.ic_floor_map_tabs
+    return when (type) { // TODO: Add pin images
+        Room.RoomType.EXHIBITION -> R.drawable.ic_floor_map
+        Room.RoomType.APP_BAR -> R.drawable.ic_floor_map
+        Room.RoomType.BACKDROP -> R.drawable.ic_floor_map
+        Room.RoomType.CARDS -> R.drawable.ic_floor_map
+        Room.RoomType.DIALOGS -> R.drawable.ic_floor_map
+        Room.RoomType.PICKERS -> R.drawable.ic_floor_map
+        Room.RoomType.SLIDERS -> R.drawable.ic_floor_map
+        Room.RoomType.TABS -> R.drawable.ic_floor_map
     }
 }
