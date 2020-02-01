@@ -36,16 +36,25 @@ final class SidebarViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard
-            let cell = tableView.cellForRow(at: indexPath),
-            let switchType = SwitchViewControllerType(rawValue: cell.tag)
-        else { return }
+        guard let cell = tableView.cellForRow(at: indexPath),
+            let switchType = SwitchViewControllerType(rawValue: cell.tag),
+            let rootViewController = rootViewController else {
+            return
+        }
 
         switch switchType {
         case .timeline:
-            rootViewController?.navigationDrawerController?.toggleLeftView()
+            if rootViewController.viewControllers.first is FilterViewController {
+                break
+            }
+            let filterViewController = FilterViewController()
+            transition(to: filterViewController)
         case .about:
-            break
+            if rootViewController.viewControllers.first is AboutViewController {
+                break
+            }
+            let aboutViewController = AboutViewController.instantiate()
+            transition(to: aboutViewController)
         case .info:
             let controller = AnnouncementsViewController.instantiate()
             rootViewController?.pushViewController(controller, animated: true)
@@ -53,11 +62,24 @@ final class SidebarViewController: UITableViewController {
         case .map:
             break
         case .sponsor:
-            break
+            let vc = SponsorViewController()
+            rootViewController.pushViewController(vc, animated: true)
         case .contributor:
             break
         case .setting:
             break
         }
+
+        rootViewController.navigationDrawerController?.toggleLeftView()
+    }
+
+    private func transition(to viewController: UIViewController) {
+        guard let navigationDrawerController = self.navigationDrawerController else { return }
+        let navigationController = NavigationController(rootViewController: viewController)
+        navigationDrawerController.transition(to: navigationController) { [weak self] isFinishing in
+            guard let self = self, isFinishing else { return }
+            self.rootViewController = navigationController
+        }
+        navigationDrawerController.toggleLeftView()
     }
 }

@@ -18,7 +18,9 @@ final class SuggestView: UIView {
     }
 
     private func loadFromBundle() {
-        let view = Bundle.main.loadNibNamed("SuggestView", owner: self, options: nil)!.first as! UIView
+        guard let view = Bundle.main.loadNibNamed("SuggestView", owner: self, options: nil)?.first as? UIView else {
+            fatalError("can't load SuggestView.xib")
+        }
         addSubview(view)
 
         view.translatesAutoresizingMaskIntoConstraints = false

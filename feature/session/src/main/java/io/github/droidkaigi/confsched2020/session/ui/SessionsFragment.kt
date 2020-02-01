@@ -338,10 +338,8 @@ abstract class SessionsFragmentModule {
     )
     abstract fun contributeBottomSheetSessionsFragment(): BottomSheetSessionsFragment
 
-    @Module
     companion object {
         @PageScope
-        @JvmStatic
         @Provides
         fun providesLifecycleOwnerLiveData(
             mainSessionsFragment: MainSessionsFragment

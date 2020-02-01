@@ -9,11 +9,11 @@ import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.contributor.R
 import io.github.droidkaigi.confsched2020.contributor.databinding.ItemContributorBinding
 import io.github.droidkaigi.confsched2020.contributor.ui.ContributorsFragmentDirections.Companion.actionContributorsToChrome
-import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Contributor
 import io.github.droidkaigi.confsched2020.ui.ProfilePlaceholderCreator
 import io.github.droidkaigi.confsched2020.util.lazyWithParam
@@ -21,8 +21,7 @@ import io.github.droidkaigi.confsched2020.util.lazyWithParam
 class ContributorItem @AssistedInject constructor(
     @Assisted private val contributor: Contributor,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
-) : BindableItem<ItemContributorBinding>(contributor.id.toLong()),
-    EqualableContentsProvider {
+) : BindableItem<ItemContributorBinding>(contributor.id.toLong()) {
 
     private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> {
         ProfilePlaceholderCreator.create(it)
@@ -47,20 +46,12 @@ class ContributorItem @AssistedInject constructor(
         }
     }
 
+    override fun hasSameContentAs(other: Item<*>): Boolean {
+        return contributor == (other as? ContributorItem)?.contributor
+    }
+
     @AssistedInject.Factory
     interface Factory {
         fun create(contributor: Contributor): ContributorItem
-    }
-
-    override fun providerEqualableContents(): Array<*> {
-        return arrayOf(contributor)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return isSameContents(other)
-    }
-
-    override fun hashCode(): Int {
-        return contentsHash()
     }
 }
