@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.Navigation
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
@@ -41,7 +41,7 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentAboutBinding.bind(view)
 
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.aboutRecycler.run {
             adapter = groupAdapter
             doOnApplyWindowInsets { recyclerView, insets, initialState ->

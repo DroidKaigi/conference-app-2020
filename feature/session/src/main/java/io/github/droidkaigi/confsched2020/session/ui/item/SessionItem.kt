@@ -24,7 +24,7 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.LocaledString
@@ -203,7 +203,7 @@ class SessionItem @AssistedInject constructor(
         }
     }
 
-    override fun unbind(viewHolder: ViewHolder<ItemSessionBinding>) {
+    override fun unbind(viewHolder: GroupieViewHolder<ItemSessionBinding>) {
         super.unbind(viewHolder)
         imageRequestDisposables.forEach { it.dispose() }
     }
@@ -228,7 +228,7 @@ class SessionItem @AssistedInject constructor(
 
     fun title(): LocaledString = session.title
 
-    override fun getChangePayload(newItem: Item<*>?): Any? {
+    override fun getChangePayload(newItem: Item<*>): Any? {
         return when {
             newItem !is SessionItem -> null
             isChangeFavorited(newItem) -> ItemPayload.FavoritePayload(newItem.session.isFavorited)

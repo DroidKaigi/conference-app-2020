@@ -17,7 +17,7 @@ import coil.transform.CircleCropTransformation
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Speaker
@@ -81,7 +81,7 @@ class SpeakerItem @AssistedInject constructor(
         }
     }
 
-    override fun unbind(viewHolder: ViewHolder<ItemSpeakerBinding>) {
+    override fun unbind(viewHolder: GroupieViewHolder<ItemSpeakerBinding>) {
         super.unbind(viewHolder)
         imageRequestDisposables.forEach { it.dispose() }
     }

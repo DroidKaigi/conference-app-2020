@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.xwray.groupie.Group
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
 import io.github.droidkaigi.confsched2020.di.Injectable
@@ -93,7 +93,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         postponeEnterTransition()
 
         val binding = FragmentSessionDetailBinding.bind(view)
-        val adapter = GroupAdapter<ViewHolder<*>>()
+        val adapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.sessionDetailRecycler.adapter = adapter
         binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(context)
         context?.let {
@@ -170,7 +170,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
 
     private fun setupSessionViews(
         binding: FragmentSessionDetailBinding,
-        adapter: GroupAdapter<ViewHolder<*>>,
+        adapter: GroupAdapter<GroupieViewHolder<*>>,
         session: Session,
         showEllipsis: Boolean,
         searchQuery: String?
