@@ -2,7 +2,8 @@ package io.github.droidkaigi.confsched2020.model
 
 data class SessionList(private val sessions: List<Session>) : List<Session> by sessions {
     val dayToSessionMap: Map<SessionPage.Day, SessionList> by lazy {
-        groupBy { it.dayNumber }
+        minus(events)
+            .groupBy { it.dayNumber }
             .mapKeys {
                 SessionPage.dayOfNumber(
                     it.key
