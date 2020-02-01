@@ -49,8 +49,14 @@ android {
     buildTypes {
         getByName("debug") {
             applicationIdSuffix = Packages.debugNameSuffix
+            buildConfigField(
+                "boolean",
+                "USE_FAKE_SPLIT",
+                "Boolean.parseBoolean(\"${project.hasProperty("useFakeSplit")}\")"
+            )
         }
         getByName("release") {
+            buildConfigField("boolean", "USE_FAKE_SPLIT", "false")
             isMinifyEnabled = true
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(
