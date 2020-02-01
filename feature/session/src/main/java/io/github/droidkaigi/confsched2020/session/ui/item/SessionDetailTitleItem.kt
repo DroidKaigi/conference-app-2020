@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.Session
@@ -22,7 +21,7 @@ import java.util.regex.Pattern
 class SessionDetailTitleItem @AssistedInject constructor(
     @Assisted private val session: Session,
     @Assisted private val searchQuery: String?
-) : BindableItem<ItemSessionDetailTitleBinding>() {
+) : BindableItem<ItemSessionDetailTitleBinding>(session.id.hashCode().toLong()) {
     override fun getLayout() = R.layout.item_session_detail_title
 
     override fun bind(binding: ItemSessionDetailTitleBinding, position: Int) {
