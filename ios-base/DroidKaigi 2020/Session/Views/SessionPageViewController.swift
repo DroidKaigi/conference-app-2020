@@ -51,9 +51,6 @@ final class SessionPageViewController: UIPageViewController {
         selectedViewControllerIndex = 0
         dataSource = self
         delegate = self
-
-        // rx
-        viewModel.viewDidLoad()
     }
 
     func setViewControllers(type: SessionViewControllerType) {

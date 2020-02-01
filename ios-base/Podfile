@@ -12,6 +12,7 @@ target 'DroidKaigi 2020' do
   pod 'Nuke'
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'RxRealm'
 	pod 'Realm'
 	pod 'RealmSwift'
 

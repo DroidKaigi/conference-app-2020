@@ -1,32 +1,40 @@
 import ios_combined
 import RealmSwift
+import RxRealm
 import RxSwift
 
 final class BookingSessionProvider {
-    func bookSession(session: Session) -> Completable {
+    func bookSession(session: Session) -> Single<Void> {
         do {
             let realm = try Realm()
             let localSession = LocalSession(session: session)
-            return realm.rx.write(object: localSession)
+            try realm.write {
+                realm.add(localSession)
+            }
+            return .just(())
         } catch {
             return .error(error)
         }
     }
 
-    func fetchBookedSessions() -> Single<[LocalSession]> {
+    func fetchBookedSessions() -> Observable<[LocalSession]> {
         do {
             let realm = try Realm()
-            let result: Single<[LocalSession]> = realm.rx.fetch()
-            return result
+            let result = realm.objects(LocalSession.self)
+            let a = Observable.collection(from: result)
+            return a.map { Array($0) }
         } catch {
             return .error(error)
         }
     }
 
-    func resignBookingSession(_ session: LocalSession) -> Completable {
+    func resignBookingSession(_ session: LocalSession) -> Single<Void> {
         do {
             let realm = try Realm()
-            return realm.rx.delete(object: session)
+            try realm.write {
+                realm.delete(session)
+            }
+            return .just(())
         } catch {
             return .error(error)
         }

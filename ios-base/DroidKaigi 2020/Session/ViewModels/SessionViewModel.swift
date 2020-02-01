@@ -6,12 +6,10 @@ final class SessionViewModel {
     private let disposeBag = DisposeBag()
 
     // input
-    private let viewDidLoadRelay = PublishRelay<Void>()
     private let toggleEmbeddedViewRelay = PublishRelay<Void>()
-
-    func viewDidLoad() {
-        viewDidLoadRelay.accept(())
-    }
+    private let remoteSessionsRelay: BehaviorRelay<[Session]> = .init(value: [])
+    private let localSessionsRelay: BehaviorRelay<[LocalSession]> = .init(value: [])
+    private let updateLocalSessionsRelay: PublishRelay<Void> = .init()
 
     func toggleEmbeddedView() {
         toggleEmbeddedViewRelay.accept(())
@@ -19,42 +17,38 @@ final class SessionViewModel {
 
     // output
     let isFocusedOnEmbeddedView: Driver<Bool>
-    let sessions: Driver<[SessionUIModel]>
+    lazy var sessions: Driver<[SessionUIModel]> = {
+        Observable.combineLatest(remoteSessionsRelay.asObservable(), localSessionsRelay.asObservable()).map { remoteSessions, localSessions -> [SessionUIModel] in
+            var totalSessions: [SessionUIModel] = remoteSessions
+
+            for localSession in localSessions {
+                if let index = remoteSessions.lazy.firstIndex(where: { $0.pureId == localSession.pureId }) {
+                    totalSessions.remove(at: index)
+                    totalSessions.insert(localSession, at: index)
+                }
+            }
+            return totalSessions
+        }.asDriver(onErrorJustReturn: [])
+    }()
 
     // dependencies
     private let bookingSessionProvider: BookingSessionProvider = .init()
 
     init() {
         let isFocusedOnEmbeddedViewRelay = BehaviorRelay<Bool>(value: true)
-        let sessionsRelay = BehaviorRelay<[SessionUIModel]>(value: [])
-        sessions = sessionsRelay.asDriver()
         isFocusedOnEmbeddedView = isFocusedOnEmbeddedViewRelay.asDriver()
 
         let dataProvider = SessionDataProvider()
 
-        let remoteSessions = viewDidLoadRelay.asObservable()
-            .share()
-            .flatMap {
-                dataProvider.fetchSessions()
-                    .asObservable()
-                    .map { $0.compactMap { $0 as SessionUIModel } }
-            }
+        dataProvider
+            .fetchSessions()
+            .asObservable()
+            .bind(to: remoteSessionsRelay)
+            .disposed(by: disposeBag)
 
-        let localSessions = bookingSessionProvider
-            .fetchBookedSessions().asObservable()
-            .map { $0.compactMap { $0 as SessionUIModel } }
-
-        let combinedSession = Observable.combineLatest(remoteSessions, localSessions).map { (arg: ([SessionUIModel], [SessionUIModel])) -> [SessionUIModel] in
-            var (remote, local) = arg
-            if let bookmarkedSessionIndex = remote.firstIndex(where: { local.map { $0.pureId }.contains($0.pureId) }) {
-                remote.remove(at: bookmarkedSessionIndex)
-            }
-            return remote + local
-        }
-
-        viewDidLoadRelay.asObservable()
-            .withLatestFrom(combinedSession)
-            .bind(to: sessionsRelay)
+        bookingSessionProvider
+            .fetchBookedSessions()
+            .bind(to: localSessionsRelay)
             .disposed(by: disposeBag)
 
         toggleEmbeddedViewRelay.asObservable()
@@ -64,16 +58,16 @@ final class SessionViewModel {
             .disposed(by: disposeBag)
     }
 
-    func bookSession(_ session: SessionUIModel) -> Completable {
-        if var session = session as? Session {
-            return bookingSessionProvider.bookSession(session: session).observeOn(MainScheduler.instance)
+    func bookSession(_ session: SessionUIModel) -> Observable<Void> {
+        if let session = session as? Session {
+            return bookingSessionProvider.bookSession(session: session).asObservable()
         }
         return .empty()
     }
 
-    func resignBookingSession(_ session: SessionUIModel) -> Completable {
-        if var session = session as? LocalSession {
-            return bookingSessionProvider.resignBookingSession(session)
+    func resignBookingSession(_ session: SessionUIModel) -> Observable<Void> {
+        if let session = session as? LocalSession {
+            return bookingSessionProvider.resignBookingSession(session).asObservable()
         }
         return .empty()
     }

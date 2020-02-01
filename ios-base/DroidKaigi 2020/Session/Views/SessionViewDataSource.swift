@@ -65,6 +65,9 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
             .map { _ in (cell, session) }
             .bind(to: onTapBookmarkRelay)
             .disposed(by: cell.disposeBag)
+
+        let bookmarkImage = session.isLocal ? Asset.icBookmark.image : Asset.icBookmarkBorder.image
+        cell.bookmarkButton.setImage(bookmarkImage, for: .normal)
         return cell
     }
 }

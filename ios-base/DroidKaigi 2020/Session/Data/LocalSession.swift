@@ -31,7 +31,8 @@ extension SessionUIModel where Self: Session {
 
 extension SessionUIModel where Self: LocalSession {
     var isLocal: Bool {
-        true
+//        return !isInvalidated
+        return true
     }
 }
 

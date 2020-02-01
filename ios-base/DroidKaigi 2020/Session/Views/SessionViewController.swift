@@ -1,6 +1,5 @@
 import ios_combined
 import MaterialComponents
-import RealmSwift
 import RxCocoa
 import RxSwift
 import UIKit
@@ -67,7 +66,12 @@ final class SessionViewController: UIViewController {
         let dataSource = SessionViewDataSource()
         let filteredSessions = viewModel.sessions.asObservable()
             .map { sessions -> [SessionUIModel] in
-                sessions.filter { Int($0.dayNumber) == self.type.rawValue }
+
+                if self.type == .myPlan {
+                    return sessions.compactMap { $0 as? LocalSession }.filter { $0.isLocal }
+                }
+
+                return sessions.filter { Int($0.dayNumber) == self.type.rawValue }
             }
             .share(replay: 1, scope: .whileConnected)
 
@@ -100,7 +104,7 @@ final class SessionViewController: UIViewController {
                     cell.bookmarkButton.setImage(Asset.icBookmark.image, for: .normal)
                 }.disposed(by: cell.disposeBag)
             }
-		}).disposed(by: disposeBag)
+            }).disposed(by: disposeBag)
         collectionView.rx.modelSelected(Session.self)
             .bind(onNext: { [unowned self] in self.showDetail(forSession: $0) })
             .disposed(by: disposeBag)
