@@ -34,6 +34,7 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
         const val TWITTER_URL = "https://twitter.com/DroidKaigi"
         const val YOUTUBE_URL = "https://www.youtube.com/channel/UCgK6L-PKx2OZBuhrQ6mmQZw"
         const val MEDIUM_URL = "https://medium.com/droidkaigi"
+        const val PRIVACY_URL = "http://www.association.droidkaigi.jp/privacy.html"
     }
 
     @Inject
@@ -96,7 +97,7 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 aboutItemFactory.create(
                     getString(R.string.about_item_privacy_policy)
                 ) {
-                    // TODO go privacy-policy-page
+                    findNavController().navigate(actionAboutToChrome(PRIVACY_URL))
                 },
                 aboutItemFactory.create(
                     getString(R.string.about_item_licence)
