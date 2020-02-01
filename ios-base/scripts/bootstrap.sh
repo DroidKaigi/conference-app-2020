@@ -3,6 +3,15 @@
 GIT_REPO=$(git rev-parse --show-toplevel)
 GIT_DIR=$(git rev-parse --git-dir)
 
+if [ "$SHELL" = '/bin/bash' ]; then
+    SHELL_RESOURCE=~/.bashrc
+elif [ "$SHELL" = '/bin/zsh' ]; then
+    SHELL_RESOURCE=~/.zshrc
+else
+    echo "Unsupported shell: ${SHELL}"
+    exit 1
+fi
+
 # Install Homebrew
 if ! type "brew" > /dev/null; then
     echo '`brew` not found. Install Homebrew'
@@ -14,14 +23,14 @@ if ! type "rbenv" > /dev/null; then
     echo '`rbenv` not found. Install rbenv'
     brew install rbenv rbenv-communal-gems
 
-    cat << EOS >> ~/.zshrc
+    cat << EOS >> ${SHELL_RESOURCE}
     if which rbenv > /dev/null; then eval "\$(rbenv init -)"; fi
     export PATH="\$HOME/.rbenv/bin:\$PATH"
     eval "\$(rbenv init -)"
 EOS
 fi
 
-source ~/.zshrc
+source ${SHELL_RESOURCE}
 
 # Ruby
 RUBY_VERSION="$(rbenv local)"
