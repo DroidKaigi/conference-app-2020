@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched2020.about.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePadding
