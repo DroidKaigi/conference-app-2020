@@ -130,6 +130,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                             uiModel.searchQuery
                         )
                     }
+                println("⭐ ${uiModel.thumbsUpCount}")
             }
 
         binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
@@ -184,7 +185,12 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
             "${session.id}-${navArgs.transitionNameSuffix}"
 
         val items = mutableListOf<Group>()
-        items += sessionDetailTitleItemFactory.create(session, searchQuery)
+        items += sessionDetailTitleItemFactory.create(
+            session,
+            searchQuery
+        ) {
+            sessionDetailViewModel.thumbsUp(session)
+        }
         items += sessionDetailDescriptionItemFactory.create(
             session,
             showEllipsis,

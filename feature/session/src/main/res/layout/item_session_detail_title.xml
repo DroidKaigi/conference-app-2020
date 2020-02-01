@@ -99,7 +99,7 @@
         <TextView
             android:id="@+id/session_message"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:layout_marginTop="8dp"
             android:textAppearance="@style/TextAppearance.DroidKaigi.SessionMessage"
             android:visibility="gone"
@@ -119,15 +119,27 @@
             app:layout_constraintTop_toBottomOf="@id/session_message"
             />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/thumbs_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/tags"
+            app:layout_constraintBottom_toTopOf="@id/divider_survey_and_text"
+            tools:text="thumbs-up"
+            />
+
         <View
             android:id="@+id/divider_survey_and_text"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="24dp"
             android:background="@color/black_alpha_12"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/tags"
+            app:layout_constraintTop_toBottomOf="@id/thumbs_up"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,11 +11,11 @@ import io.github.droidkaigi.confsched2020.ext.combine
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
-import io.github.droidkaigi.confsched2020.model.TextExpandState
 import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionId
+import io.github.droidkaigi.confsched2020.model.TextExpandState
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
@@ -32,10 +32,18 @@ class SessionDetailViewModel @AssistedInject constructor(
         val error: AppError?,
         val session: Session?,
         val showEllipsis: Boolean,
-        val searchQuery: String?
+        val searchQuery: String?,
+        val thumbsUpCount: Int
     ) {
         companion object {
-            val EMPTY = UiModel(false, null, null, true, null)
+            val EMPTY = UiModel(
+                isLoading = false,
+                error = null ,
+                session = null,
+                showEllipsis = true,
+                searchQuery = null,
+                thumbsUpCount = 0
+            )
         }
     }
 
@@ -55,16 +63,25 @@ class SessionDetailViewModel @AssistedInject constructor(
     private val descriptionTextExpandStateLiveData: MutableLiveData<TextExpandState> =
         MutableLiveData(TextExpandState.COLLAPSED)
 
+    private val thumbsUpCountLiveData: LiveData<Int> = liveData {
+        sessionRepository.thumbsUpCounts(sessionId)
+            .collect { thumbsUpCount ->
+               emit(thumbsUpCount)
+            }
+    }
+
     // Produce UiModel
     val uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
         liveData1 = sessionLoadStateLiveData,
         liveData2 = favoriteLoadingStateLiveData,
-        liveData3 = descriptionTextExpandStateLiveData
+        liveData3 = descriptionTextExpandStateLiveData,
+        liveData4 = thumbsUpCountLiveData
     ) { current: UiModel,
         sessionLoadState: LoadState<Session>,
         favoriteState: LoadingState,
-        descriptionTextExpandState: TextExpandState ->
+        descriptionTextExpandState: TextExpandState,
+        thumbsUpCount: Int ->
         val isLoading =
             sessionLoadState.isLoading || favoriteState.isLoading
         val sessions = when (sessionLoadState) {
@@ -87,7 +104,8 @@ class SessionDetailViewModel @AssistedInject constructor(
                     .toAppError(),
             session = sessions,
             showEllipsis = showEllipsis,
-            searchQuery = searchQuery
+            searchQuery = searchQuery,
+            thumbsUpCount = thumbsUpCount
         )
     }
 
@@ -105,6 +123,17 @@ class SessionDetailViewModel @AssistedInject constructor(
 
     fun expandDescription() {
         descriptionTextExpandStateLiveData.value = TextExpandState.EXPANDED
+    }
+
+    fun thumbsUp(session: Session) {
+        viewModelScope.launch {
+            try {
+                sessionRepository.incrementThumbsUpCount(session.id)
+            } catch (e: Exception) {
+                // TODO: implement
+                println("⭐ " + e.message)
+            }
+        }
     }
 
     @AssistedInject.Factory

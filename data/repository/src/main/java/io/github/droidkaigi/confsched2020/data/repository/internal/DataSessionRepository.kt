@@ -18,7 +18,6 @@ import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.SessionList
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -26,6 +25,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import timber.log.debug
+import javax.inject.Inject
 
 internal class DataSessionRepository @Inject constructor(
     private val droidKaigiApi: DroidKaigiApi,
@@ -128,5 +128,13 @@ internal class DataSessionRepository @Inject constructor(
     override suspend fun refresh() {
         val response = droidKaigiApi.getSessions()
         sessionDatabase.save(response)
+    }
+
+    override fun thumbsUpCounts(sessionId: SessionId): Flow<Int> {
+        return firestore.getThumbsUpCount(sessionId)
+    }
+
+    override suspend fun incrementThumbsUpCount(sessionId: SessionId) {
+        firestore.incrementThumbsUpCount(sessionId)
     }
 }

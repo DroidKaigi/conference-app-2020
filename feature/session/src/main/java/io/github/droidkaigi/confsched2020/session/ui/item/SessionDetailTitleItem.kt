@@ -21,7 +21,8 @@ import java.util.regex.Pattern
 
 class SessionDetailTitleItem @AssistedInject constructor(
     @Assisted private val session: Session,
-    @Assisted private val searchQuery: String?
+    @Assisted private val searchQuery: String?,
+    @Assisted private val thumbsUpListener: () -> Unit
 ) :
     BindableItem<ItemSessionDetailTitleBinding>() {
     override fun getLayout() = R.layout.item_session_detail_title
@@ -59,6 +60,10 @@ class SessionDetailTitleItem @AssistedInject constructor(
 //            Test Code
 //            binding.sessionMessage.text = "セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
 //            binding.sessionMessage.isVisible = true
+
+            binding.thumbsUp.setOnClickListener {
+                thumbsUpListener.invoke()
+            }
         }
     }
 
@@ -87,7 +92,8 @@ class SessionDetailTitleItem @AssistedInject constructor(
     interface Factory {
         fun create(
             session: Session,
-            searchQuery: String? = null
+            searchQuery: String? = null,
+            thumbsUpListener: () -> Unit
         ): SessionDetailTitleItem
     }
 }
