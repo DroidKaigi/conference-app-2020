@@ -16,10 +16,10 @@ import coil.request.RequestDisposable
 import coil.transform.CircleCropTransformation
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
-import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSpeakerBinding
@@ -32,8 +32,7 @@ class SpeakerItem @AssistedInject constructor(
     @Assisted val speaker: Speaker,
     @Assisted val searchQuery: String?,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
-) : BindableItem<ItemSpeakerBinding>(speaker.id.hashCode().toLong()),
-    EqualableContentsProvider {
+) : BindableItem<ItemSpeakerBinding>(speaker.id.hashCode().toLong()) {
 
     private val imageRequestDisposables = mutableListOf<RequestDisposable>()
     private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> { context ->
@@ -81,7 +80,7 @@ class SpeakerItem @AssistedInject constructor(
         }
     }
 
-    override fun unbind(viewHolder: ViewHolder<ItemSpeakerBinding>) {
+    override fun unbind(viewHolder: GroupieViewHolder<ItemSpeakerBinding>) {
         super.unbind(viewHolder)
         imageRequestDisposables.forEach { it.dispose() }
     }
@@ -102,17 +101,8 @@ class SpeakerItem @AssistedInject constructor(
         text = spannableStringBuilder
     }
 
-    override fun providerEqualableContents(): Array<*> {
-        return arrayOf(speaker)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return isSameContents(other)
-    }
-
-    override fun hashCode(): Int {
-        return contentsHash()
-    }
+    override fun hasSameContentAs(other: Item<*>): Boolean =
+        speaker == (other as? SpeakerItem)?.speaker
 
     @AssistedInject.Factory
     interface Factory {

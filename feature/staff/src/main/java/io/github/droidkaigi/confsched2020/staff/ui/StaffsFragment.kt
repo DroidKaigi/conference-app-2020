@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -57,7 +57,7 @@ class StaffsFragment : Fragment(R.layout.fragment_staffs) {
             .create(appComponent, StaffModule(this))
         component.inject(this)
 
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.staffRecycler.adapter = groupAdapter
         binding.staffRecycler.doOnApplyWindowInsets { recyclerView, insets, initialState ->
             // Set a bottom padding due to the system UI is enabled.

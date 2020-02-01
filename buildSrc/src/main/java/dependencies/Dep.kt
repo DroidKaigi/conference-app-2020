@@ -3,7 +3,7 @@ package dependencies
 @Suppress("unused")
 object Dep {
     object GradlePlugin {
-        val android = "com.android.tools.build:gradle:3.6.0-rc01"
+        val android = "com.android.tools.build:gradle:3.6.0-rc02"
         val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}"
         val playServices = "com.google.gms:google-services:4.3.3"
@@ -126,7 +126,7 @@ object Dep {
     }
 
     object Dagger {
-        val version = "2.25.4"
+        val version = "2.26"
         val core = "com.google.dagger:dagger:$version"
         val compiler = "com.google.dagger:dagger-compiler:$version"
         val androidSupport = "com.google.dagger:dagger-android-support:$version"
@@ -192,7 +192,7 @@ object Dep {
     }
 
     object Groupie {
-        val version = "2.4.0-alpha1"
+        val version = "2.7.2"
         val groupie = "com.xwray:groupie:$version"
         val databinding = "com.xwray:groupie-databinding:$version"
     }

@@ -21,4 +21,6 @@
     <string name="movie" translatable="false">MOVIE</string>
     <string name="slide">SLIDE</string>
     <string name="empty_favorite_session">You choose your favorite sessions, then you can make a plan for you.</string>
+    <string name="time_icon">Time Icon</string>
+    <string name="favorite_icon">Favorite Icon</string>
 </resources>
