@@ -5,21 +5,21 @@ import RxSwift
 import UIKit
 
 final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
-    typealias Element = [Session]
+    typealias Element = [SessionUIModel]
     var items: Element = []
 
-    var onTapSpeaker: Signal<(speaker: Speaker, sessions: [Session])> {
+    var onTapSpeaker: Signal<(speaker: Speaker, sessions: [SessionUIModel])> {
         return onTapSpeakerRelay.asSignal()
     }
 
-    var onTapBookmark: Signal<(SessionCell, Session)> {
+    var onTapBookmark: Signal<(SessionCell, SessionUIModel)> {
         onTapBookmarkRelay.asSignal()
     }
 
     private var previousTimeString = ""
     private let disposeBag = DisposeBag()
-    private let onTapSpeakerRelay = PublishRelay<(speaker: Speaker, sessions: [Session])>()
-    private let onTapBookmarkRelay = PublishRelay<(SessionCell, Session)>()
+    private let onTapSpeakerRelay = PublishRelay<(speaker: Speaker, sessions: [SessionUIModel])>()
+    private let onTapBookmarkRelay = PublishRelay<(SessionCell, SessionUIModel)>()
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
@@ -32,7 +32,7 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
 
         let session = items[indexPath.item]
 
-        cell.titleLabel.text = session.title.ja
+        cell.titleLabel.text = session.pureTitle
 
         var speakers: [Speaker] = []
         if let speechSession = session as? SpeechSession {
@@ -41,7 +41,7 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
         speakers.forEach { speaker in
             cell.addSpeakerView(imageURL: URL(string: speaker.imageUrl ?? ""), speakerName: speaker.name) { [weak self] in
                 guard let self = self else { return }
-                let sessions: [Session] = self.items.filter { session in
+                let sessions: [SessionUIModel] = self.items.filter { session in
                     if let speechSession = session as? SpeechSession {
                         return speechSession.speakers.contains { $0.id == speaker.id }
                     } else {
@@ -59,7 +59,7 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
         }
         previousTimeString = session.startTimeText
 
-        cell.minutesAndRoomLabel.text = "\(session.timeInMinutes)min / \(session.room.name.ja)"
+        cell.minutesAndRoomLabel.text = "\(session.timeInMinutes)min / \(session.roomName)"
 
         cell.bookmarkButton.rx.tap
             .map { _ in (cell, session) }

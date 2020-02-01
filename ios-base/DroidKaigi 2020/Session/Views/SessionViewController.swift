@@ -1,5 +1,6 @@
 import ios_combined
 import MaterialComponents
+import RealmSwift
 import RxCocoa
 import RxSwift
 import UIKit
@@ -65,7 +66,7 @@ final class SessionViewController: UIViewController {
         // TODO: Error handling for viewModel.sessions
         let dataSource = SessionViewDataSource()
         let filteredSessions = viewModel.sessions.asObservable()
-            .map { sessions -> [Session] in
+            .map { sessions -> [SessionUIModel] in
                 sessions.filter { Int($0.dayNumber) == self.type.rawValue }
             }
             .share(replay: 1, scope: .whileConnected)
@@ -90,7 +91,7 @@ final class SessionViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         dataSource.onTapBookmark.emit(onNext: { [unowned self] cell, session in
-            if session.isFavorited {
+            if session.isLocal {
                 self.viewModel.resignBookingSession(session).subscribe { _ in
                     cell.bookmarkButton.setImage(Asset.icBookmarkBorder.image, for: .normal)
                 }.disposed(by: cell.disposeBag)

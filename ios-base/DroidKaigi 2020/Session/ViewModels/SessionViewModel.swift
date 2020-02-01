@@ -8,7 +8,6 @@ final class SessionViewModel {
     // input
     private let viewDidLoadRelay = PublishRelay<Void>()
     private let toggleEmbeddedViewRelay = PublishRelay<Void>()
-    private let localSessionsRelay = BehaviorRelay<[LocalSession]>(value: [])
 
     func viewDidLoad() {
         viewDidLoadRelay.accept(())
@@ -20,33 +19,42 @@ final class SessionViewModel {
 
     // output
     let isFocusedOnEmbeddedView: Driver<Bool>
-    let sessions: Driver<[Session]>
-    var localSessions: Driver<[LocalSession]> {
-        localSessionsRelay.asDriver()
-    }
+    let sessions: Driver<[SessionUIModel]>
 
     // dependencies
     private let bookingSessionProvider: BookingSessionProvider = .init()
 
     init() {
         let isFocusedOnEmbeddedViewRelay = BehaviorRelay<Bool>(value: true)
-        let sessionsRelay = BehaviorRelay<[Session]>(value: [])
-
-        isFocusedOnEmbeddedView = isFocusedOnEmbeddedViewRelay.asDriver()
+        let sessionsRelay = BehaviorRelay<[SessionUIModel]>(value: [])
         sessions = sessionsRelay.asDriver()
+        isFocusedOnEmbeddedView = isFocusedOnEmbeddedViewRelay.asDriver()
 
         let dataProvider = SessionDataProvider()
 
-        viewDidLoadRelay.asObservable()
+        let remoteSessions = viewDidLoadRelay.asObservable()
             .share()
-            .flatMap { dataProvider.fetchSessions() }
-            .bind(to: sessionsRelay)
-            .disposed(by: disposeBag)
+            .flatMap {
+                dataProvider.fetchSessions()
+                    .asObservable()
+                    .map { $0.compactMap { $0 as SessionUIModel } }
+            }
+
+        let localSessions = bookingSessionProvider
+            .fetchBookedSessions().asObservable()
+            .map { $0.compactMap { $0 as SessionUIModel } }
+
+        let combinedSession = Observable.combineLatest(remoteSessions, localSessions).map { (arg: ([SessionUIModel], [SessionUIModel])) -> [SessionUIModel] in
+            var (remote, local) = arg
+            if let bookmarkedSessionIndex = remote.firstIndex(where: { local.map { $0.pureId }.contains($0.pureId) }) {
+                remote.remove(at: bookmarkedSessionIndex)
+            }
+            return remote + local
+        }
 
         viewDidLoadRelay.asObservable()
-            .share()
-            .flatMap { self.bookingSessionProvider.fetchBookedSessions() }
-            .bind(to: localSessionsRelay)
+            .withLatestFrom(combinedSession)
+            .bind(to: sessionsRelay)
             .disposed(by: disposeBag)
 
         toggleEmbeddedViewRelay.asObservable()
@@ -56,13 +64,15 @@ final class SessionViewModel {
             .disposed(by: disposeBag)
     }
 
-    func bookSession(_ session: Session) -> Completable {
-        return bookingSessionProvider.bookSession(session: session).observeOn(MainScheduler.instance)
+    func bookSession(_ session: SessionUIModel) -> Completable {
+        if var session = session as? Session {
+            return bookingSessionProvider.bookSession(session: session).observeOn(MainScheduler.instance)
+        }
+        return .empty()
     }
 
-    func resignBookingSession(_ session: Session) -> Completable {
-        let localSessions = localSessionsRelay.value
-        if let session = localSessions.lazy.first(where: { $0.id == session.id.id }) {
+    func resignBookingSession(_ session: SessionUIModel) -> Completable {
+        if var session = session as? LocalSession {
             return bookingSessionProvider.resignBookingSession(session)
         }
         return .empty()

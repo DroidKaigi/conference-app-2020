@@ -17,9 +17,9 @@ final class SpeakerViewController: UIViewController {
     @IBOutlet weak var biographyLabel: UILabel!
 
     private var speaker: Speaker!
-    private var sessions: [Session]!
+    private var sessions: [SessionUIModel]!
 
-    static func instantiate(speaker: Speaker, sessions: [Session]) -> SpeakerViewController {
+    static func instantiate(speaker: Speaker, sessions: [SessionUIModel]) -> SpeakerViewController {
         guard let viewController = UIStoryboard(name: "SpeakerViewController", bundle: .main).instantiateInitialViewController() as? SpeakerViewController else { fatalError() }
         viewController.speaker = speaker
         viewController.sessions = sessions
@@ -28,7 +28,6 @@ final class SpeakerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupUI()
     }
 
@@ -51,8 +50,8 @@ final class SpeakerViewController: UIViewController {
 
         sessions.forEach { session in
             let sessionView = SpeakerSessionView.instantiate()
-            sessionView.sessionTitleLabel.text = session.title.ja
-            sessionView.sessionDateLabel.text = session.timeSummary(lang: Lang.ja, timezoneOffset: TimeZoneOffsetKt.defaultTimeZoneOffset())
+            sessionView.sessionTitleLabel.text = session.pureTitle
+            sessionView.sessionDateLabel.text = session.pureTitleSummary
             stackView.insertArrangedSubview(sessionView, at: stackView.arrangedSubviews.count)
         }
     }
