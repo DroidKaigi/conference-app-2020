@@ -35,8 +35,28 @@ final class AnnouncementsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navigationItem.title = "お知らせ"
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.backgroundColor
+        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onBackgroundColor
+
+        let templateMenuImage = Asset.icMenu.image.withRenderingMode(.alwaysTemplate)
+        let menuItem = UIBarButtonItem(image: templateMenuImage,
+                                       style: .plain,
+                                       target: self,
+                                       action: nil)
+        let titleItem = UIBarButtonItem(title: L10n.announcements,
+                                        style: .plain,
+                                        target: nil,
+                                        action: nil)
+        titleItem.setTitleTextAttributes([.foregroundColor: UIColor.black], for: .disabled)
+        titleItem.isEnabled = false
+        navigationItem.leftBarButtonItems = [menuItem, titleItem]
+
+        menuItem.rx.tap
+            .bind(to: Binder(self) { target, _ in
+                target.navigationDrawerController?.toggleLeftView()
+            })
+            .disposed(by: disposeBag)
 
         let dataSource = AnnouncementsDataSource()
 

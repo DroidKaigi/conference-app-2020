@@ -57,8 +57,7 @@ final class SidebarViewController: UITableViewController {
             transition(to: aboutViewController)
         case .info:
             let controller = AnnouncementsViewController.instantiate()
-            rootViewController.pushViewController(controller, animated: true)
-            rootViewController.navigationDrawerController?.toggleLeftView()
+            transition(to: controller)
         case .map:
             break
         case .sponsor:
