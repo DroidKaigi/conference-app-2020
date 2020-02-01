@@ -30,12 +30,23 @@ final class AnnouncementCell: UITableViewCell {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var publishedAtLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var contentLabel: UILabel!
+    @IBOutlet weak var contentTextView: UITextView!
 
     func configure(_ announcement: Announcement) {
         iconImageView.image = announcement.type.iconImage
         publishedAtLabel.text = Constant.dateFormatter.string(from: Date(timeIntervalSince1970: announcement.publishedAt))
         titleLabel.text = announcement.title
-        contentLabel.text = announcement.content
+        contentTextView.attributedText = { content in
+            guard
+                let data = content.data(using: .utf8),
+                let attributedString = try? NSMutableAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+            else {
+                return nil
+            }
+
+            let range = NSRange(location: 0, length: attributedString.length)
+            attributedString.addAttribute(.font, value: UIFont.preferredFont(forTextStyle: .body), range: range)
+            return attributedString
+        }(announcement.content)
     }
 }

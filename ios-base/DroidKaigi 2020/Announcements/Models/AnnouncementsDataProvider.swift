@@ -15,11 +15,11 @@ final class AnnouncementsDataProvider: AnnouncementsDataProviderProtocol {
 
         static func transform(_ response: String) -> Announcement.Type_? {
             switch response {
-            case "notification":
+            case "NOTIFICATION":
                 return .notification
-            case "alert":
+            case "ALERT":
                 return .alert
-            case "feedback":
+            case "FEEDBACK":
                 return .feedback
             default:
                 return .none
