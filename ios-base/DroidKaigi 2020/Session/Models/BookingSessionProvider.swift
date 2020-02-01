@@ -21,8 +21,7 @@ final class BookingSessionProvider {
         do {
             let realm = try Realm()
             let result = realm.objects(LocalSession.self)
-            let a = Observable.collection(from: result)
-            return a.map { Array($0) }
+            return Observable.collection(from: result).map { Array($0) }
         } catch {
             return .error(error)
         }
