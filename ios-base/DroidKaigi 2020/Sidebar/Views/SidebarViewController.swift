@@ -69,13 +69,11 @@ final class SidebarViewController: UITableViewController {
         case .info:
             break
         case .map:
-            if let _ = UIApplication.topViewController() as? FloorMapViewController {
-                navigationDrawerController?.toggleLeftView()
-            } else {
-                let vc = FloorMapViewController.instantiate()
-                rootViewController.pushViewController(vc, animated: true)
-                rootViewController.navigationDrawerController?.toggleLeftView()
+            if rootViewController.viewControllers.first is FloorMapViewController {
+                break
             }
+            let floorMapViewController = FloorMapViewController.instantiate()
+            transition(to: floorMapViewController)
 
         case .sponsor:
             let vc = SponsorViewController()

@@ -15,19 +15,16 @@ class ContentViewController: UIViewController {
     }
 
     private func setUpAppBar() {
-        let menuImage = UIImage(named: "ic_menu")
-        let templateMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
+        let menuImage = Asset.icMenu.image
+        let templateMenuImage = menuImage.withRenderingMode(.alwaysTemplate)
         let menuItem = UIBarButtonItem(image: templateMenuImage,
                                        style: .plain,
                                        target: self,
                                        action: nil)
-
         navigationItem.leftBarButtonItems = [menuItem]
-        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.primaryColor
-        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
-        navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor: UIColor.white,
-        ]
+
+        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.backgroundColor
+        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onBackgroundColor
 
         menuItem.rx.tap
             .bind(to: Binder(self) { me, _ in

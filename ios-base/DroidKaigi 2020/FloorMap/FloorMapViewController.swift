@@ -1,7 +1,5 @@
 
-import Material
-import RxCocoa
-import RxSwift
+import ios_combined
 import UIKit
 
 final class FloorMapViewController: ContentViewController {
@@ -14,5 +12,7 @@ final class FloorMapViewController: ContentViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        title = L10n.maps
     }
 }
