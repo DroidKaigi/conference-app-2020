@@ -1,18 +1,15 @@
-GIT_REPO = $(shell git rev-parse --show-toplevel)
-GIT_DIR = $(shell git rev-parse --git-dir)
+.PHONY: default
+default: xcode
 
-init: swiftgen
-	mint run xcodegen
-	bundle install --path vendor/bundle
-	bundle exec pod install
-	@cp $(GIT_REPO)/ios-base/scripts/git-hooks/* $(GIT_DIR)/hooks
+init: 
+	@scripts/bootstrap.sh
 
-xcode:
+xcode: swiftgen
 	mint run xcodegen
 	bundle exec pod install
 
 swiftgen:
-	mkdir -p $(GIT_REPO)/ios-base/DroidKaigi\ 2020/Generated
+	@mkdir -p "DroidKaigi 2020/Generated"
 	mint run swiftgen swiftgen
 
 test: xcode
