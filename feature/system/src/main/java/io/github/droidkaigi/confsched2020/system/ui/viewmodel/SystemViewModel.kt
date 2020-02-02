@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2020.system.ui.viewmodel
 import android.app.Activity
 import android.content.Intent
 import android.provider.CalendarContract
+import androidx.core.app.ShareCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -35,6 +36,20 @@ class SystemViewModel @Inject constructor() : ViewModel() {
             .putExtra(CalendarContract.Events.EVENT_LOCATION, location)
         try {
             activity.startActivity(intent)
+        } catch (e: Exception) {
+            Timber.debug(e) { "Fail startActivity" }
+        }
+    }
+
+    fun shareURL(
+        activity: Activity,
+        url: String
+    ) {
+        try {
+            ShareCompat.IntentBuilder.from(activity)
+                .setText(url)
+                .setType("text/plain")
+                .startChooser()
         } catch (e: Exception) {
             Timber.debug(e) { "Fail startActivity" }
         }
