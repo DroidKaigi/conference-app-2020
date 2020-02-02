@@ -16,8 +16,16 @@ final class SessionViewModel {
 
     // output
     let isFocusedOnEmbeddedView: Driver<Bool>
-    var sessions: Observable<[AppBaseSession]> {
-        Observable.combineLatest(
+    let sessions: Observable<[AppBaseSession]>
+
+    // dependencies
+    private let bookingSessionProvider: BookingSessionProvider = .init()
+
+    init() {
+        let isFocusedOnEmbeddedViewRelay = BehaviorRelay<Bool>(value: true)
+        isFocusedOnEmbeddedView = isFocusedOnEmbeddedViewRelay.asDriver()
+
+        sessions = Observable.combineLatest(
             remoteSessionsRelay
                 .asObservable()
                 .map { sessions in
@@ -34,17 +42,13 @@ final class SessionViewModel {
                 .asObservable()
         ).map { (arg: ([AppBaseSession], [AppBaseSession])) -> [AppBaseSession] in
             var (remote, local) = arg
+            remote.removeAll(where: { session in
+                local.map { $0.id }.contains(session.id)
+            })
             remote.append(contentsOf: local)
+            remote.sort(by: { $0.startTime < $1.startTime })
             return remote
         }
-    }
-
-    // dependencies
-    private let bookingSessionProvider: BookingSessionProvider = .init()
-
-    init() {
-        let isFocusedOnEmbeddedViewRelay = BehaviorRelay<Bool>(value: true)
-        isFocusedOnEmbeddedView = isFocusedOnEmbeddedViewRelay.asDriver()
 
         let dataProvider = SessionDataProvider()
 

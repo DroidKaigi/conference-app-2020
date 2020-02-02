@@ -16,7 +16,7 @@ protocol AppBaseSession {
     var startTimeText: String { get }
     var isFinished: Bool { get }
     var isOnGoing: Bool { get }
-    var timeInMinutes: Int { get }
+    var timeInMinutes: Int32 { get }
     var hasIntendedAudience: Bool { get }
     var hasSpeaker: Bool { get }
     var shouldCountForFilter: Bool { get }
@@ -26,28 +26,12 @@ protocol AppBaseSession {
 }
 
 extension AppServiceSession: AppBaseSession {
-    var startDayText: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.M.d"
-        return formatter.string(from: Date(timeIntervalSince1970: startTime))
-    }
-
-    var startTimeText: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: Date(timeIntervalSince1970: startTime))
-    }
-
     var isFinished: Bool {
         Date().timeIntervalSince1970 > endTime
     }
 
     var isOnGoing: Bool {
         (startTime ... endTime).contains(Date().timeIntervalSince1970)
-    }
-
-    var timeInMinutes: Int {
-        Int(endTime.distance(to: startTime) / 60)
     }
 
     var hasIntendedAudience: Bool {
@@ -60,10 +44,6 @@ extension AppServiceSession: AppBaseSession {
 
     var shouldCountForFilter: Bool {
         true
-    }
-
-    var timeRoomText: String {
-        "\(timeInMinutes)min / \(room?.name?.ja ?? "")"
     }
 
     func shortSummary(lang: Lang) -> String {
@@ -72,28 +52,12 @@ extension AppServiceSession: AppBaseSession {
 }
 
 extension AppSpeechSession: AppBaseSession {
-    var startDayText: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.M.d"
-        return formatter.string(from: Date(timeIntervalSince1970: startTime))
-    }
-
-    var startTimeText: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: Date(timeIntervalSince1970: startTime))
-    }
-
     var isFinished: Bool {
         Date().timeIntervalSince1970 > endTime
     }
 
     var isOnGoing: Bool {
         (startTime ... endTime).contains(Date().timeIntervalSince1970)
-    }
-
-    var timeInMinutes: Int {
-        Int(endTime.distance(to: startTime) / 60)
     }
 
     var hasIntendedAudience: Bool {
@@ -106,10 +70,6 @@ extension AppSpeechSession: AppBaseSession {
 
     var shouldCountForFilter: Bool {
         false
-    }
-
-    var timeRoomText: String {
-        "\(timeInMinutes)min / \(room?.name?.ja ?? "")"
     }
 
     func shortSummary(lang: Lang) -> String {

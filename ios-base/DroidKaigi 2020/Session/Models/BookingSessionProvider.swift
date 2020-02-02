@@ -9,6 +9,7 @@ final class BookingSessionProvider {
             let realm = try Realm()
             if let serviceSession = session as? ServiceSession {
                 let localSession = AppServiceSession(session: serviceSession)
+                localSession.isFavorited = true
                 try realm.write {
                     realm.add(localSession)
                 }
@@ -30,10 +31,10 @@ final class BookingSessionProvider {
             let realm = try Realm()
             let serviceResult = realm.objects(AppServiceSession.self)
             let speechResult = realm.objects(AppSpeechSession.self)
-            return Observable<[AppBaseSession]>.merge(
+            return Observable.combineLatest(
                 Observable.collection(from: serviceResult).map { Array($0) as [AppBaseSession] },
                 Observable.collection(from: speechResult).map { Array($0) as [AppBaseSession] }
-            )
+            ).map { $0 + $1 }
         } catch {
             return .error(error)
         }

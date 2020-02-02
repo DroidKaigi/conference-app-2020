@@ -17,7 +17,11 @@ final class AppSpeechSession: Object {
     @objc dynamic var videoUrl: String?
     @objc dynamic var slideUrl: String?
     @objc dynamic var isInterpretationTarget: Bool = false
+    @objc dynamic var timeInMinutes: Int32 = 0
     @objc dynamic var isFavorited: Bool = false
+    @objc dynamic var startDayText: String = ""
+    @objc dynamic var startTimeText: String = ""
+    @objc dynamic var timeRoomText: String = ""
     let speakers: List<AppSpeaker>
     @objc dynamic var message: AppLocaledString?
 
@@ -47,11 +51,16 @@ final class AppSpeechSession: Object {
         videoUrl = session.videoUrl
         slideUrl = session.slideUrl
         isInterpretationTarget = session.isInterpretationTarget
+        timeInMinutes = session.timeInMinutes
         isFavorited = session.isFavorited
+        startDayText = session.startDayText
+        startTimeText = session.startTimeText
+        timeRoomText = session.timeRoomText
         if let message = session.message {
             self.message = .init(localedString: message)
         }
-        let speakers = session.speakers.map { AppSpeaker(speaker: $0) } as? List<AppSpeaker> ?? List()
+        let speakers = List<AppSpeaker>()
+        speakers.append(objectsIn: session.speakers.map { AppSpeaker(speaker: $0) })
         self.speakers = speakers
         super.init()
         lang = session.lang
