@@ -3,9 +3,9 @@
 GIT_REPO=$(git rev-parse --show-toplevel)
 GIT_DIR=$(git rev-parse --git-dir)
 
-if [ "$SHELL" = '/bin/bash' ]; then
+if [ "$SHELL" = '/bin/bash' ] || [ "$SHELL" = '/usr/local/bin/bash' ]; then
     SHELL_RESOURCE=~/.bashrc
-elif [ "$SHELL" = '/bin/zsh' ]; then
+elif [ "$SHELL" = '/bin/zsh' ] || [ "$SHELL" = '/usr/local/bin/zsh' ]; then
     SHELL_RESOURCE=~/.zshrc
 else
     echo "Unsupported shell: ${SHELL}"
