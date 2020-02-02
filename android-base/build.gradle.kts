@@ -49,6 +49,9 @@ android {
     buildTypes {
         getByName("debug") {
             applicationIdSuffix = Packages.debugNameSuffix
+
+            // When using useFakeSplit, you need to push split to /sdcard/Android/data/io.github.droidkaigi.confsched2020.debug/files.
+            // Details can be found in `script/install_fakesplit`.
             buildConfigField(
                 "boolean",
                 "USE_FAKE_SPLIT",
