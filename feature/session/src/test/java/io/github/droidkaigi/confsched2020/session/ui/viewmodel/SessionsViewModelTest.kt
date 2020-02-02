@@ -12,6 +12,7 @@ import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionList
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
+import io.github.droidkaigi.confsched2020.session.util.SessionAlarm
 import io.github.droidkaigi.confsched2020.widget.component.MockkRule
 import io.github.droidkaigi.confsched2020.widget.component.ViewModelTestRule
 import io.kotlintest.shouldBe
@@ -26,12 +27,16 @@ class SessionsViewModelTest {
     @get:Rule val viewModelTestRule = ViewModelTestRule()
     @get:Rule val mockkRule = MockkRule(this)
     @MockK(relaxed = true) lateinit var sessionRepository: SessionRepository
+    @MockK lateinit var sessionAlarm: SessionAlarm
 
     @Test
     fun load() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
         coEvery { sessionRepository.refresh() }
-        val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
+        val sessionsViewModel = SessionsViewModel(
+            sessionRepository = sessionRepository,
+            sessionAlarm = sessionAlarm
+        )
 
         val testObserver = sessionsViewModel
             .uiModel
@@ -68,7 +73,10 @@ class SessionsViewModelTest {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
         coEvery { sessionRepository.toggleFavorite(Dummies.speachSession1.id) } returns Unit
 
-        val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
+        val sessionsViewModel = SessionsViewModel(
+            sessionRepository = sessionRepository,
+            sessionAlarm = sessionAlarm
+        )
 
         val testObserver = sessionsViewModel
             .uiModel
@@ -76,6 +84,7 @@ class SessionsViewModelTest {
 
         sessionsViewModel.favorite(Dummies.speachSession1)
         verify { sessionsViewModel.favorite(Dummies.speachSession1) }
+        verify { sessionAlarm.toggleRegister(Dummies.speachSession1) }
         val valueHistory = testObserver.valueHistory()
         val dayToSessionsMap = mapOf(
             SessionPage.dayOfNumber(1) to listOf<Session>(
@@ -150,7 +159,10 @@ class SessionsViewModelTest {
     fun filterChanged_room_true() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
-        val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
+        val sessionsViewModel = SessionsViewModel(
+            sessionRepository = sessionRepository,
+            sessionAlarm = sessionAlarm
+        )
 
         val testObserver = sessionsViewModel
             .uiModel
@@ -177,7 +189,10 @@ class SessionsViewModelTest {
     fun filterChanged_room_false() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
-        val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
+        val sessionsViewModel = SessionsViewModel(
+            sessionRepository = sessionRepository,
+            sessionAlarm = sessionAlarm
+        )
         // turn on once for testing.
         val room1 = Room(1, LocaledString("JA App bar", "EN App bar"), 1)
         val room2 = Room(2, LocaledString("JA App room", "EN App room"), 2)
@@ -210,7 +225,10 @@ class SessionsViewModelTest {
     fun filterChanged_category_true() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
-        val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
+        val sessionsViewModel = SessionsViewModel(
+            sessionRepository = sessionRepository,
+            sessionAlarm = sessionAlarm
+        )
 
         val testObserver = sessionsViewModel
             .uiModel
@@ -241,7 +259,10 @@ class SessionsViewModelTest {
     fun filterChanged_category_false() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
-        val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
+        val sessionsViewModel = SessionsViewModel(
+            sessionRepository = sessionRepository,
+            sessionAlarm = sessionAlarm
+        )
         // turn on once for testing.
         val category1 = Category(
             id = 0,
@@ -280,7 +301,10 @@ class SessionsViewModelTest {
     fun filterChanged_lang_true() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
-        val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
+        val sessionsViewModel = SessionsViewModel(
+            sessionRepository = sessionRepository,
+            sessionAlarm = sessionAlarm
+        )
 
         val testObserver = sessionsViewModel
             .uiModel
@@ -307,7 +331,10 @@ class SessionsViewModelTest {
     fun filterChanged_lang_false() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
-        val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
+        val sessionsViewModel = SessionsViewModel(
+            sessionRepository = sessionRepository,
+            sessionAlarm = sessionAlarm
+        )
         // turn on once for testing.
         sessionsViewModel.filterChanged(Lang.JA, true)
         sessionsViewModel.filterChanged(Lang.EN, true)
@@ -340,7 +367,10 @@ class SessionsViewModelTest {
     fun filterChanged_langSupport_true() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
-        val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
+        val sessionsViewModel = SessionsViewModel(
+            sessionRepository = sessionRepository,
+            sessionAlarm = sessionAlarm
+        )
 
         val testObserver = sessionsViewModel
             .uiModel
@@ -367,7 +397,10 @@ class SessionsViewModelTest {
     fun filterChanged_langSupport_false() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
-        val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
+        val sessionsViewModel = SessionsViewModel(
+            sessionRepository = sessionRepository,
+            sessionAlarm = sessionAlarm
+        )
         // turn on once for testing.
         sessionsViewModel.filterChanged(LangSupport.INTERPRETATION, true)
 
@@ -397,7 +430,10 @@ class SessionsViewModelTest {
     fun filterChanged_audienceCategory_true() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
-        val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
+        val sessionsViewModel = SessionsViewModel(
+            sessionRepository = sessionRepository,
+            sessionAlarm = sessionAlarm
+        )
 
         val testObserver = sessionsViewModel
             .uiModel
@@ -424,7 +460,10 @@ class SessionsViewModelTest {
     fun filterChanged_audienceCategory_false() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
-        val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
+        val sessionsViewModel = SessionsViewModel(
+            sessionRepository = sessionRepository,
+            sessionAlarm = sessionAlarm
+        )
         // turn on once for testing.
         sessionsViewModel.filterChanged(AudienceCategory.BEGINNERS, true)
         sessionsViewModel.filterChanged(AudienceCategory.UNSPECIFIED, true)
@@ -465,7 +504,10 @@ class SessionsViewModelTest {
     fun resetFilters() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
-        val sessionsViewModel = SessionsViewModel(sessionRepository = sessionRepository)
+        val sessionsViewModel = SessionsViewModel(
+            sessionRepository = sessionRepository,
+            sessionAlarm = sessionAlarm
+        )
         sessionsViewModel.filterChanged(AudienceCategory.BEGINNERS, true)
         sessionsViewModel.filterChanged(LangSupport.INTERPRETATION, true)
         sessionsViewModel.filterChanged(Lang.JA, true)
