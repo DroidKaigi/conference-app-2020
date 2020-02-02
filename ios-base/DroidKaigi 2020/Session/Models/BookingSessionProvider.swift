@@ -7,17 +7,15 @@ final class BookingSessionProvider {
     func bookSession(session: AppBaseSession) -> Single<Void> {
         do {
             let realm = try Realm()
-            if let serviceSession = session as? ServiceSession {
-                let localSession = AppServiceSession(session: serviceSession)
-                localSession.isFavorited = true
+            if let serviceSession = session as? AppServiceSession {
+                serviceSession.isFavorited = true
                 try realm.write {
-                    realm.add(localSession)
+                    realm.add(serviceSession)
                 }
-            } else if let speechSession = session as? SpeechSession {
-                let localSession = AppSpeechSession(session: speechSession)
-
+            } else if let speechSession = session as? AppSpeechSession {
+                speechSession.isFavorited = true
                 try realm.write {
-                    realm.add(localSession)
+                    realm.add(speechSession)
                 }
             }
             return .just(())

@@ -43,7 +43,7 @@ final class SessionViewModel {
         ).map { (arg: ([AppBaseSession], [AppBaseSession])) -> [AppBaseSession] in
             var (remote, local) = arg
             remote.removeAll(where: { session in
-                local.map { $0.id }.contains(session.id)
+                local.map { $0.id?.id }.contains(session.id?.id)
             })
             remote.append(contentsOf: local)
             remote.sort(by: { $0.startTime < $1.startTime })
