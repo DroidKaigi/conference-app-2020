@@ -2,10 +2,11 @@ import ios_combined
 import RxSwift
 
 final class ContributorDataProvider {
-    func fetchContributors() -> Single<ContributorResponse> {
+    func fetchContributors() -> Single<[ContributorIndex]> {
         return Single.create { observer -> Disposable in
             ApiComponentKt.generateDroidKaigiApi().getContributorList(callback: { response in
-                observer(.success(response))
+                let model = ContributorResponseToModelMapperKt.toModel(response)
+                observer(.success(model))
             }) { error in
                 observer(.error(KotlinError(localizedDescription: error.description())))
             }

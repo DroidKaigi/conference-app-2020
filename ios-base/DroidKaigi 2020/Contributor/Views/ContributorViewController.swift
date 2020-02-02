@@ -4,9 +4,9 @@ final class ContributorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        ContributorDataProvider().fetchContributors().subscribe(onSuccess: { response in
-            for contributor in response.contributors {
-                print(contributor)
+        ContributorDataProvider().fetchContributors().subscribe(onSuccess: { contributorIndices in
+            for contributorIndex in contributorIndices {
+                print(contributorIndex.index, contributorIndex.contributors.map { $0.name })
             }
         })
     }
