@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
+import androidx.appcompat.content.res.AppCompatResources
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.BackgroundColorSpan
@@ -42,12 +43,26 @@ class SessionDetailTitleItem @AssistedInject constructor(
                     Chip(context).apply {
                         text = categoryLabel
                         isClickable = false
+                        setTextColor(
+                            AppCompatResources.getColorStateList(
+                                context,
+                                R.color.session_detail_label
+                            )
+                        )
+                        setChipBackgroundColorResource(R.color.session_detail_chip_category)
                     }
                 )
                 binding.tags.addView(
                     Chip(context).apply {
                         text = langLabel
                         isClickable = false
+                        setTextColor(
+                            AppCompatResources.getColorStateList(
+                                context,
+                                R.color.session_detail_label
+                            )
+                        )
+                        setChipBackgroundColorResource(R.color.session_detail_chip_level)
                     }
                 )
                 binding.tags.tag = newTag
