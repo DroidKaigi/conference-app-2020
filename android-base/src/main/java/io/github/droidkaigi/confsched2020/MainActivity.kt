@@ -194,8 +194,10 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         binding.toolbar.children.forEach {
             when (it) {
                 is ActionMenuView -> {
-                    it.children.filterIsInstance<ActionMenuItemView>().forEach { menuItemView ->
-                        setRippleColor(menuItemView, binding.isIndigoBackground)
+                    it.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+                        it.children.filterIsInstance<ActionMenuItemView>().forEach { menuItemView ->
+                            setRippleColor(menuItemView, binding.isIndigoBackground)
+                        }
                     }
                 }
                 is AppCompatImageButton -> setRippleColor(it, binding.isIndigoBackground)
