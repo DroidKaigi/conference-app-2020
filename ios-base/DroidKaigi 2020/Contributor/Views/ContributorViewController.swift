@@ -1,6 +1,16 @@
 import UIKit
 
 final class ContributorViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        ContributorDataProvider().fetchContributors().subscribe(onSuccess: { response in
+            for contributor in response.contributors {
+                print(contributor)
+            }
+        })
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
