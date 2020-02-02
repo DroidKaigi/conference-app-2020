@@ -19,13 +19,25 @@
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cSa-9q-dxe">
                         <rect key="frame" x="24" y="12" width="366" height="257"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="laI-rp-P8T">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bUd-mf-CyH">
                                 <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="laI-rp-P8T">
+                                        <rect key="frame" x="7" y="7" width="18" height="18"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="laI-rp-P8T" secondAttribute="height" multiplier="1:1" id="DFc-az-CNB"/>
+                                            <constraint firstAttribute="width" constant="18" id="MbU-B3-Qkw"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="laI-rp-P8T" secondAttribute="height" multiplier="1:1" id="DFc-az-CNB"/>
-                                    <constraint firstAttribute="width" constant="32" id="MbU-B3-Qkw"/>
+                                    <constraint firstAttribute="width" constant="32" id="4TX-G8-NPc"/>
+                                    <constraint firstItem="laI-rp-P8T" firstAttribute="centerY" secondItem="bUd-mf-CyH" secondAttribute="centerY" id="86b-aa-3Cd"/>
+                                    <constraint firstItem="laI-rp-P8T" firstAttribute="centerX" secondItem="bUd-mf-CyH" secondAttribute="centerX" id="h2R-ld-vL6"/>
+                                    <constraint firstAttribute="width" secondItem="bUd-mf-CyH" secondAttribute="height" multiplier="1:1" id="kwa-L3-Nzc"/>
                                 </constraints>
-                            </imageView>
+                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="mcR-F3-oub">
                                 <rect key="frame" x="40" y="0.0" width="326" height="257"/>
                                 <subviews>
@@ -64,6 +76,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="contentTextView" destination="VvF-zm-ZHD" id="1C9-el-Xoh"/>
+                <outlet property="iconImageContainerView" destination="bUd-mf-CyH" id="K59-FL-4OL"/>
                 <outlet property="iconImageView" destination="laI-rp-P8T" id="Y59-lP-OSm"/>
                 <outlet property="publishedAtLabel" destination="FXy-Rc-83h" id="x4x-CF-HTo"/>
                 <outlet property="titleLabel" destination="v9S-3W-gbA" id="SVb-kB-MPi"/>

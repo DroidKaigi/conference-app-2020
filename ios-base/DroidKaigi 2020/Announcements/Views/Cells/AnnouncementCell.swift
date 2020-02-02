@@ -27,13 +27,21 @@ final class AnnouncementCell: UITableViewCell {
         }()
     }
 
+    @IBOutlet weak var iconImageContainerView: UIView! {
+        didSet {
+            iconImageContainerView.clipsToBounds = true
+            iconImageContainerView.backgroundColor = Asset.secondary50.color
+            iconImageContainerView.layer.cornerRadius = 16
+        }
+    }
+
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var publishedAtLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var contentTextView: UITextView!
 
     func configure(_ announcement: Announcement) {
-        iconImageView.image = announcement.type.iconImage
+        iconImageView.image = announcement.type.iconImage?.withRenderingMode(.alwaysOriginal).tint(with: Asset.secondary300.color)
         publishedAtLabel.text = Constant.dateFormatter.string(from: Date(timeIntervalSince1970: announcement.publishedAt))
         titleLabel.text = announcement.title
         contentTextView.attributedText = { content in
