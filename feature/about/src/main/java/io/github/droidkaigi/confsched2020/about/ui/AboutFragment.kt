@@ -1,5 +1,7 @@
 package io.github.droidkaigi.confsched2020.about.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePadding
@@ -27,6 +29,7 @@ import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import javax.inject.Inject
 import javax.inject.Provider
+
 
 class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
 
@@ -87,7 +90,13 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 aboutItemFactory.create(
                     getString(R.string.about_item_access)
                 ) {
-                    // TODO go access-page
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("geo:35.6219252,139.7190626?q=TOCビル")
+                    ).setPackage("com.google.android.apps.maps")
+                    if (intent.resolveActivity(requireContext().packageManager) != null) {
+                        startActivity(intent)
+                    }
                 },
                 aboutItemFactory.create(
                     getString(R.string.about_item_staff)
