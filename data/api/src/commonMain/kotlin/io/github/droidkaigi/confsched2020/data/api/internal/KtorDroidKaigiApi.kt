@@ -19,6 +19,8 @@ import io.ktor.client.request.accept
 import io.ktor.client.request.get
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
+import io.ktor.http.withCharset
+import io.ktor.utils.io.charsets.Charsets
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
@@ -38,7 +40,7 @@ internal open class KtorDroidKaigiApi constructor(
         // We are separate getting response string and parsing for Kotlin Native
         val rawResponse = httpClient.get<String> {
             url("$apiEndpoint/timetable")
-            accept(ContentType.Application.Json)
+            accept(ContentType.Application.Json.withCharset(Charsets.UTF_8))
         }
         return json.parse(ResponseImpl.serializer(), rawResponse)
     }
@@ -70,7 +72,7 @@ internal open class KtorDroidKaigiApi constructor(
     override suspend fun getAnnouncements(lang: LangParameter): AnnouncementListResponse {
         val rawResponse = httpClient.get<String> {
             url("$apiEndpoint/announcements/${lang.value}")
-            accept(ContentType.Application.Json)
+            accept(ContentType.Application.Json.withCharset(Charsets.UTF_8))
         }
 
         return json.parse(AnnouncementResponseImpl.serializer().list, rawResponse)
@@ -79,7 +81,7 @@ internal open class KtorDroidKaigiApi constructor(
     override suspend fun getSponsors(): SponsorListResponse {
         val rawResponse = httpClient.get<String> {
             url("$apiEndpoint/sponsors")
-            accept(ContentType.Application.Json)
+            accept(ContentType.Application.Json.withCharset(Charsets.UTF_8))
         }
 
         return json.parse(SponsorResponseImpl.serializer().list, rawResponse)
@@ -102,7 +104,7 @@ internal open class KtorDroidKaigiApi constructor(
     override suspend fun getStaffs(): StaffResponse {
         val rawResponse = httpClient.get<String> {
             url("$apiEndpoint/committee_members")
-            accept(ContentType.Application.Json)
+            accept(ContentType.Application.Json.withCharset(Charsets.UTF_8))
         }
 
         return StaffResponseImpl(json.parse(StaffItemResponseImpl.serializer().list, rawResponse))
@@ -111,7 +113,7 @@ internal open class KtorDroidKaigiApi constructor(
     override suspend fun getContributorList(): ContributorResponse {
         val rawResponse = httpClient.get<String> {
             url("$apiEndpoint/contributors")
-            accept(ContentType.Application.Json)
+            accept(ContentType.Application.Json.withCharset(Charsets.UTF_8))
         }
 
         return ContributorResponseImpl(
