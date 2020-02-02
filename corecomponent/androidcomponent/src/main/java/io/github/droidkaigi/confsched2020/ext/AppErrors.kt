@@ -32,6 +32,7 @@ fun AppError.stringRes() = when (this) {
     is AppError.ApiException.NetworkException -> R.string.error_network
     is AppError.ApiException.ServerException -> R.string.error_server
     is AppError.ApiException.UnknownException -> R.string.error_unknown
-    is AppError.ExternalIntegrationError.NoCalendarIntegrationFoundException -> R.string.error_no_calendar_integration
+    is AppError.ExternalIntegrationError.NoCalendarIntegrationFoundException
+        -> R.string.error_no_calendar_integration
     is AppError.UnknownException -> R.string.error_unknown
 }

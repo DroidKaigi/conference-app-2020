@@ -14,7 +14,8 @@ sealed class AppError : RuntimeException {
     }
 
     sealed class ExternalIntegrationError(cause: Throwable?) : AppError(cause) {
-        class NoCalendarIntegrationFoundException(cause: Throwable?): ExternalIntegrationError(cause)
+        class NoCalendarIntegrationFoundException(cause: Throwable?)
+            : ExternalIntegrationError(cause)
     }
 
     class UnknownException(cause: Throwable?) : AppError(cause)
