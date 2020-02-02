@@ -12,9 +12,8 @@ target 'DroidKaigi 2020' do
   pod 'Nuke'
   pod 'RxSwift'
   pod 'RxCocoa'
-  pod 'RxRealm'
-	pod 'Realm'
-	pod 'RealmSwift'
+  pod 'RealmSwift'
+  pod 'Realm'
 
   target 'DroidKaigi 2020Tests' do
     inherit! :search_paths
