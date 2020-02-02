@@ -49,7 +49,8 @@ final class AnnouncementsDataProvider: AnnouncementsDataProviderProtocol {
             ApiComponentKt.generateDroidKaigiApi().getAnnouncements(
                 lang: LangParameter.from(LangKt.defaultLang()),
                 callback: { response in
-                    observer(.success(response.compactMap(Transformer.transform)))
+                    let response = response.compactMap(Transformer.transform).sorted { $0.publishedAt >= $1.publishedAt }
+                    observer(.success(response))
                 },
                 onError: { exception in
                     observer(.error(KotlinError(localizedDescription: exception.description())))
