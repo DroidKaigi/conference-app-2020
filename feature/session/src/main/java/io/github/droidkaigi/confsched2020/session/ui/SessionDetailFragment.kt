@@ -134,7 +134,6 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
             val session = binding.session ?: return@setOnMenuItemClickListener true
             when (menuItem.itemId) {
                 R.id.session_share -> {
-                    val session = binding.session ?: return@setOnMenuItemClickListener true
                     val url = resources.getString(R.string.session_share_url).format(session.id.id.toInt())
                     systemViewModel.shareURL(
                         activity = requireActivity(),
