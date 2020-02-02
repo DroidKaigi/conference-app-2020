@@ -16,7 +16,6 @@ import androidx.core.view.doOnPreDraw
 import androidx.transition.TransitionManager
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.Session
@@ -29,16 +28,13 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
     @Assisted private var showEllipsis: Boolean,
     @Assisted private val searchQuery: String?,
     @Assisted private val expandClickListener: () -> Unit
-) :
-    BindableItem<ItemSessionDetailDescriptionBinding>() {
+) : BindableItem<ItemSessionDetailDescriptionBinding>(session.id.hashCode().toLong()) {
 
     companion object {
         private const val ELLIPSIS_LINE_COUNT = 6
     }
 
     override fun getLayout() = R.layout.item_session_detail_description
-
-    override fun isSameAs(other: Item<*>): Boolean = other is SessionDetailDescriptionItem
 
     override fun bind(binding: ItemSessionDetailDescriptionBinding, position: Int) {
         val fullDescription = session.desc
