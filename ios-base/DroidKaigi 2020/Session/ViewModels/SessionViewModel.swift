@@ -8,7 +8,7 @@ final class SessionViewModel {
     // input
     private let toggleEmbeddedViewRelay = PublishRelay<Void>()
     private let remoteSessionsRelay: BehaviorRelay<[Session]> = .init(value: [])
-    private let localSessionsRelay: BehaviorRelay<[LocalSession]> = .init(value: [])
+    private let localSessionsRelay: BehaviorRelay<[AppServiceSession]> = .init(value: [])
     private let updateLocalSessionsRelay: PublishRelay<Void> = .init()
 
     func toggleEmbeddedView() {
@@ -17,7 +17,7 @@ final class SessionViewModel {
 
     // output
     let isFocusedOnEmbeddedView: Driver<Bool>
-    lazy var sessions: Driver<[SessionUIModel]> = {
+    lazy var sessions: Driver<[]> = {
         Observable.combineLatest(remoteSessionsRelay.asObservable(), localSessionsRelay.asObservable()).map { remoteSessions, localSessions -> [SessionUIModel] in
             var totalSessions: [SessionUIModel] = remoteSessions
 
@@ -66,7 +66,7 @@ final class SessionViewModel {
     }
 
     func resignBookingSession(_ session: SessionUIModel) -> Observable<Void> {
-        if let session = session as? LocalSession {
+        if let session = session as? ApplicationServiceSession {
             return bookingSessionProvider.resignBookingSession(session).asObservable()
         }
         return .empty()

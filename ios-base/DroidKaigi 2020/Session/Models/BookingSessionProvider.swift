@@ -7,7 +7,7 @@ final class BookingSessionProvider {
     func bookSession(session: Session) -> Single<Void> {
         do {
             let realm = try Realm()
-            let localSession = LocalSession(session: session)
+            let localSession = AppServiceSession(session: session)
             try realm.write {
                 realm.add(localSession)
             }
@@ -17,17 +17,17 @@ final class BookingSessionProvider {
         }
     }
 
-    func fetchBookedSessions() -> Observable<[LocalSession]> {
+    func fetchBookedSessions() -> Observable<[AppServiceSession]> {
         do {
             let realm = try Realm()
-            let result = realm.objects(LocalSession.self)
+            let result = realm.objects(AppServiceSession.self)
             return Observable.collection(from: result).map { Array($0) }
         } catch {
             return .error(error)
         }
     }
 
-    func resignBookingSession(_ session: LocalSession) -> Single<Void> {
+    func resignBookingSession(_ session: AppServiceSession) -> Single<Void> {
         do {
             let realm = try Realm()
             try realm.write {

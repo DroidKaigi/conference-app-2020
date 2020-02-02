@@ -68,7 +68,7 @@ final class SessionViewController: UIViewController {
             .map { sessions -> [SessionUIModel] in
 
                 if self.type == .myPlan {
-                    return sessions.compactMap { $0 as? LocalSession }.filter { $0.isLocal }
+                    return sessions.compactMap { $0 as? ApplicationServiceSession }.filter { $0.isLocal }
                 }
 
                 return sessions.filter { Int($0.dayNumber) == self.type.rawValue }
