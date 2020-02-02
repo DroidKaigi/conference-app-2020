@@ -242,3 +242,6 @@ This project uses some modern Android libraries and source codes.
 * [Material](https://github.com/CosmicMind/Material)
 * [Nuke](https://github.com/kean/Nuke)
 * [SwiftGen](https://github.com/SwiftGen/SwiftGen)
+* [RealmSwift](https://github.com/realm/realm-cocoa)
+
+
