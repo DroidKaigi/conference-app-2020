@@ -3,15 +3,15 @@ package dependencies
 @Suppress("unused")
 object Dep {
     object GradlePlugin {
-        val android = "com.android.tools.build:gradle:3.6.0-rc01"
+        val android = "com.android.tools.build:gradle:3.6.0-rc02"
         val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}"
-        val playServices = "com.google.gms:google-services:4.3.0"
+        val playServices = "com.google.gms:google-services:4.3.3"
         val safeArgs =
             "androidx.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.version}"
         val jetifier = "com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta05"
         val licensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.9.5"
-        val crashlytics = "io.fabric.tools:gradle:1.28.0"
+        val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.0.0-beta01"
         val iconRibbonPlugin = "com.akaita.android:easylauncher:1.3.1"
         val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.22.0"
     }
@@ -19,8 +19,10 @@ object Dep {
     object Test {
         val junit = "junit:junit:4.12"
         val testRunner = "androidx.test:runner:1.3.0-alpha02"
-        val testCore = "androidx.test:core:1.1.0"
-        val androidJunit4 = "androidx.test.ext.junit:1.1.0"
+        val testRules = "androidx.test:rules:1.3.0-alpha02"
+        val testCoreKtx = "androidx.test:core-ktx:1.2.1-alpha02"
+        val androidJunit4Ktx = "androidx.test.ext:junit-ktx:1.1.2-alpha02"
+        val orchestrator = "androidx.test:orchestrator:1.3.0-alpha02"
         val archCore = "androidx.arch.core:core-testing:2.1.0"
         val liveDataTestingKtx = "com.jraska.livedata:testing-ktx:1.1.0"
         val espressoCore = "androidx.test.espresso:espresso-core:3.3.0-alpha02"
@@ -41,21 +43,20 @@ object Dep {
 
     object AndroidX {
         val jetifier = "com.android.tools.build.jetifier:jetifier-core:1.0.0-beta02"
-        val appCompat = "androidx.appcompat:appcompat:1.1.0-rc01"
-        val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
+        val appCompat = "androidx.appcompat:appcompat:1.1.0"
+        val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
         val constraint = "androidx.constraintlayout:constraintlayout:2.0.0-beta2"
         val emoji = "androidx.emoji:emoji-appcompat:1.0.0"
         val design = "com.google.android.material:material:1.1.0-rc01"
-        val coreKtx = "androidx.core:core-ktx:1.2.0-alpha03"
-        val preference = "androidx.preference:preference:1.1.0-rc01"
-        val browser = "androidx.browser:browser:1.0.0"
-        val activityKtx = "androidx.activity:activity-ktx:1.1.0-alpha03"
-        val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.0-alpha02"
+        val coreKtx = "androidx.core:core-ktx:1.2.0-rc01"
+        val preference = "androidx.preference:preference:1.1.0"
+        val browser = "androidx.browser:browser:1.2.0"
+        val activityKtx = "androidx.activity:activity-ktx:1.1.0"
+        val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.0"
 
-        val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
-        val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:2.2.0-rc03"
-        val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0-rc03"
-        val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc03"
+        val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:2.2.0"
+        val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0"
+        val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
 
         object Room {
             val version = "2.2.3"
@@ -65,17 +66,14 @@ object Dep {
         }
 
         object Navigation {
-            val version = "2.2.0-beta01"
-            val runtime = "androidx.navigation:navigation-runtime:$version"
+            val version = "2.2.0"
             val runtimeKtx = "androidx.navigation:navigation-runtime-ktx:$version"
-            val fragment = "androidx.navigation:navigation-fragment:$version"
-            val ui = "androidx.navigation:navigation-ui:$version"
             val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
         }
 
         object Work {
-            val version = "2.3.0-beta02"
+            val version = "2.3.0"
             val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
         }
     }
@@ -117,7 +115,8 @@ object Dep {
         val core = "com.google.firebase:firebase-core:16.0.4"
         val firestoreKtx = "com.google.firebase:firebase-firestore-ktx:20.2.0"
         val auth = "com.google.firebase:firebase-auth:18.1.0"
-        val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.9.8"
+        val crashlytics = "com.google.firebase:firebase-crashlytics:17.0.0-beta01"
+        val analytics = "com.google.firebase:firebase-analytics:17.2.2"
         val messaging = "com.google.firebase:firebase-messaging:17.3.3"
     }
 
@@ -127,19 +126,19 @@ object Dep {
     }
 
     object Dagger {
-        val version = "2.25.4"
+        val version = "2.26"
         val core = "com.google.dagger:dagger:$version"
         val compiler = "com.google.dagger:dagger-compiler:$version"
         val androidSupport = "com.google.dagger:dagger-android-support:$version"
         val android = "com.google.dagger:dagger-android:$version"
         val androidProcessor = "com.google.dagger:dagger-android-processor:$version"
         val assistedInjectAnnotations =
-            "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.0"
-        val assistedInjectProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:0.5.0"
+            "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2"
+        val assistedInjectProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:0.5.2"
     }
 
     object Ktor {
-        val version = "1.3.0-beta-2"
+        val version = "1.3.0"
         val clientCommon = "io.ktor:ktor-client-core:$version"
         val clientAndroid = "io.ktor:ktor-client-okhttp:$version"
         val clientIos = "io.ktor:ktor-client-ios:$version"
@@ -187,12 +186,13 @@ object Dep {
             "com.willowtreeapps.hyperion:hyperion-crash:$version",
             "com.willowtreeapps.hyperion:hyperion-shared-preferences:$version",
             "com.willowtreeapps.hyperion:hyperion-geiger-counter:$version",
-            "com.willowtreeapps.hyperion:hyperion-build-config:$version"
+            "com.willowtreeapps.hyperion:hyperion-build-config:$version",
+            "com.willowtreeapps.hyperion:hyperion-plugin:$version"
         )
     }
 
     object Groupie {
-        val version = "2.4.0-alpha1"
+        val version = "2.7.2"
         val groupie = "com.xwray:groupie:$version"
         val databinding = "com.xwray:groupie-databinding:$version"
     }
@@ -220,5 +220,13 @@ object Dep {
 
     object Insetter {
         val insetter = "dev.chrisbanes:insetter-ktx:0.2.0"
+    }
+
+    object PhotoView {
+        val photoview =  "com.github.chrisbanes:PhotoView:2.3.0"
+    }
+
+    object Google {
+        val autoservice = "com.google.auto.service:auto-service:1.0-rc6"
     }
 }

@@ -18,6 +18,18 @@ sealed class Session(
 
     val startTimeText by lazy { startTime.toOffset(defaultTimeZoneOffset()).format("HH:mm") }
 
+    fun minutesRoom(lang: Lang) = buildString {
+        val minutes = endTime.minus(startTime).minutes.toInt()
+        append(minutes)
+        if (lang == Lang.JA) {
+            append("分")
+        } else {
+            append("min")
+        }
+        append(" / ")
+        append(room.name.getByLang(lang))
+    }
+
     fun timeSummary(lang: Lang, timezoneOffset: TimezoneOffset) = buildString {
         val startTimeTZ = startTime.toOffset(timezoneOffset)
         val endTimeTZ = endTime.toOffset(timezoneOffset)
@@ -38,6 +50,12 @@ sealed class Session(
         append(" - ")
         append(endTimeTZ.format("HH:mm"))
     }
+
+    // See https://github.com/DroidKaigi/conference-app-2020/issues/419
+    fun timeSummary(lang: Lang, timezoneOffset: Double) = timeSummary(
+        lang,
+        TimezoneOffset(timezoneOffset)
+    )
 
     fun summary(lang: Lang, timezoneOffset: TimezoneOffset) = buildString {
         append(timeSummary(lang, timezoneOffset))
@@ -90,6 +108,7 @@ data class SpeechSession(
 
     val hasVideo: Boolean = videoUrl.isNullOrEmpty().not()
     val hasSlide: Boolean = slideUrl.isNullOrEmpty().not()
+    val hasMessage: Boolean get() = message?.getByLang(lang).isNullOrEmpty().not()
 }
 
 @AndroidParcelize

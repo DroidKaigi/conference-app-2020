@@ -1,11 +1,9 @@
 package io.github.droidkaigi.confsched2020.sponsor.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -13,13 +11,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.Section
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
-import dagger.android.support.DaggerFragment
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
+import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.isShow
 import io.github.droidkaigi.confsched2020.model.Sponsor
 import io.github.droidkaigi.confsched2020.model.SponsorCategory
 import io.github.droidkaigi.confsched2020.sponsor.R
@@ -30,13 +30,10 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.item.LargeSponsorItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.item.SponsorItem
 import io.github.droidkaigi.confsched2020.sponsor.ui.viewmodel.SponsorsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
-class SponsorsFragment : DaggerFragment() {
-
-    private lateinit var binding: FragmentSponsorsBinding
+class SponsorsFragment : Fragment(R.layout.fragment_sponsors), Injectable {
 
     @Inject lateinit var sponsorsModelFactory: Provider<SponsorsViewModel>
     private val sponsorsViewModel by assistedViewModels {
@@ -53,26 +50,11 @@ class SponsorsFragment : DaggerFragment() {
 
     @Inject lateinit var categoryHeaderItemFactory: CategoryHeaderItem.Factory
 
-    private lateinit var progressTimeLatch: ProgressTimeLatch
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_sponsors,
-            container,
-            false
-        )
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentSponsorsBinding.bind(view)
 
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         groupAdapter.spanCount = 2
 
         binding.sponsorRecycler.layoutManager = GridLayoutManager(
@@ -82,14 +64,16 @@ class SponsorsFragment : DaggerFragment() {
             spanSizeLookup = groupAdapter.spanSizeLookup
         }
         binding.sponsorRecycler.adapter = groupAdapter
-
-        progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
-        }.apply {
-            loading = true
+        binding.sponsorRecycler.doOnApplyWindowInsets { recyclerView, insets, initialState ->
+            // Set a bottom padding due to the system UI is enabled.
+            recyclerView.updatePadding(
+                bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+            )
         }
+
+        binding.progressBar.show()
         sponsorsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            progressTimeLatch.loading = uiModel.isLoading
+            binding.progressBar.isShow = uiModel.isLoading
             groupAdapter.update(
                 uiModel.sponsorCategories.map {
                     it.toSection()
@@ -120,10 +104,10 @@ class SponsorsFragment : DaggerFragment() {
         return when (category) {
             SponsorCategory.Category.PLATINUM,
             SponsorCategory.Category.GOLD -> {
-                largeSponsorItemFactory.create(this, spanSize, systemViewModel)
+                largeSponsorItemFactory.create(this, spanSize)
             }
             else -> {
-                sponsorItemFactory.create(this, spanSize, systemViewModel)
+                sponsorItemFactory.create(this, spanSize)
             }
         }
     }
@@ -131,10 +115,9 @@ class SponsorsFragment : DaggerFragment() {
 
 @Module
 abstract class SponsorsFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides fun providesLifecycleOwnerLiveData(
+        @Provides fun providesLifecycleOwnerLiveData(
             sponsorsFragment: SponsorsFragment
         ): LiveData<LifecycleOwner> {
             return sponsorsFragment.viewLifecycleOwnerLiveData

@@ -19,6 +19,7 @@ import io.ktor.client.request.accept
 import io.ktor.client.request.get
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -26,12 +27,11 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.list
-import kotlin.coroutines.CoroutineContext
 
 internal open class KtorDroidKaigiApi constructor(
-    val httpClient: HttpClient,
-    val apiEndpoint: String,
-    val coroutineDispatcherForCallback: CoroutineContext?
+    private val httpClient: HttpClient,
+    private val apiEndpoint: String,
+    private val coroutineDispatcherForCallback: CoroutineContext?
 ) : DroidKaigiApi {
     private val json = Json(JsonConfiguration.Stable.copy(strictMode = false))
     override suspend fun getSessions(): Response {
@@ -85,9 +85,23 @@ internal open class KtorDroidKaigiApi constructor(
         return json.parse(SponsorResponseImpl.serializer().list, rawResponse)
     }
 
+    override fun getSponsors(
+        callback: (response: SponsorListResponse) -> Unit,
+        onError: (error: Exception) -> Unit
+    ) {
+        GlobalScope.launch(requireNotNull(coroutineDispatcherForCallback)) {
+            try {
+                val response = getSponsors()
+                callback(response)
+            } catch (ex: Exception) {
+                onError(ex)
+            }
+        }
+    }
+
     override suspend fun getStaffs(): StaffResponse {
         val rawResponse = httpClient.get<String> {
-            url("$apiEndpoint/staffs")
+            url("$apiEndpoint/committee_members")
             accept(ContentType.Application.Json)
         }
 

@@ -49,4 +49,5 @@
         <item name="fontFamily">@font/notosans_regular</item>
         <item name="android:textColor">?colorOnBackground</item>
     </style>
+
 </resources>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DK2020 Debug</string>
+
+    <string name="deeplink_action_publish">発行</string>
+    <string name="deeplink_text_or">OR</string>
+    <string name="deeplink_title">Deeplink Tester</string>
+</resources>

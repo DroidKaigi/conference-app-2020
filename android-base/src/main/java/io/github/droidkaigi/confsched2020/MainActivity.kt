@@ -4,9 +4,12 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
@@ -24,8 +27,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.Binds
 import dagger.Module
+import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.about.ui.AboutFragment
 import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentModule
@@ -60,12 +65,13 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.di.SponsorsAssistedInjectMo
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.PageConfiguration
 import io.github.droidkaigi.confsched2020.ui.widget.SystemUiManager
-import timber.log.Timber
-import timber.log.warn
+import io.github.droidkaigi.confsched2020.widget.component.NavigationDirections.Companion.actionGlobalToChrome
 import javax.inject.Inject
 import javax.inject.Provider
+import timber.log.Timber
+import timber.log.warn
 
-class MainActivity : DaggerAppCompatActivity() {
+class MainActivity : AppCompatActivity(), HasAndroidInjector {
     private val binding: ActivityMainBinding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(
             this,
@@ -79,13 +85,18 @@ class MainActivity : DaggerAppCompatActivity() {
     }
     @Inject
     lateinit var sessionRepository: SessionRepository
-    val navController: NavController by lazy {
+    private val navController: NavController by lazy {
         Navigation.findNavController(this, R.id.root_nav_host_fragment)
     }
 
     private val statusBarColors: SystemUiManager by lazy {
         SystemUiManager(this)
     }
+
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,19 +107,23 @@ class MainActivity : DaggerAppCompatActivity() {
         binding.drawerLayout.doOnApplyWindowInsets { _, insets, _ ->
             binding.drawerLayout.setChildInsetsWorkAround(insets)
         }
-        binding.contentContainer.doOnApplyWindowInsets { _, insets, initialState ->
-            binding.contentContainer.updatePadding(
+        binding.contentContainer.doOnApplyWindowInsets { view, insets, initialState ->
+            view.updatePadding(
                 left = insets.systemWindowInsetLeft + initialState.paddings.left,
                 right = insets.systemWindowInsetRight + initialState.paddings.right
             )
         }
-        binding.toolbar.doOnApplyWindowInsets { _, insets, initialState ->
-            binding.toolbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+        binding.toolbar.doOnApplyWindowInsets { view, insets, initialState ->
+            view.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 topMargin = insets.systemWindowInsetTop + initialState.margins.top
             }
         }
-        binding.navView.doOnApplyWindowInsets { _, insets, initialState ->
-            binding.navView.apply {
+        binding.toolbar.doOnLayout {
+            // Invalidate because option menu cannot be displayed after screen rotation
+            invalidateOptionsMenu()
+        }
+        binding.navView.doOnApplyWindowInsets { view, insets, initialState ->
+            view.apply {
                 // On seascape mode only, nav bar is overlapped with DrawerLayout.
                 // So set left padding and reset width.
                 val leftSpace = insets.systemWindowInsetLeft + initialState.paddings.left
@@ -130,6 +145,14 @@ class MainActivity : DaggerAppCompatActivity() {
                     Snackbar.LENGTH_LONG
                 )
                 .show()
+        }
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
         }
     }
 
@@ -209,6 +232,14 @@ class MainActivity : DaggerAppCompatActivity() {
     private fun handleNavigation(@IdRes itemId: Int): Boolean {
         binding.drawerLayout.closeDrawers()
 
+        when (itemId) {
+            R.id.entire_survey -> {
+                // TODO: Change to the correct URL
+                navController.navigate(actionGlobalToChrome("https://google.com"))
+                return true
+            }
+        }
+
         return try {
             // ignore if current destination is selected
             if (navController.currentDestination?.id == itemId) return false
@@ -286,9 +317,6 @@ abstract class MainActivityModule {
         modules = [SessionSurveyFragmentModule::class, SessionSurveyAssistedInjectModule::class]
     )
     abstract fun contributeSessionSurveyFragment(): SessionSurveyFragment
-
-    @Module
-    companion object
 
     @Module
     abstract class MainActivityBuilder {

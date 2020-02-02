@@ -5,6 +5,5 @@ interface ContributorEntity {
     val name: String
     val iconUrl: String
     val profileUrl: String
-    val type: String
     val order: Int
 }

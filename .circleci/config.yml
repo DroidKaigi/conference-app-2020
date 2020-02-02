@@ -1,0 +1,89 @@
+version: 2.1
+
+executors:
+  android:
+    working_directory: ~/conference-app-2020
+    docker:
+      - image: circleci/android:api-29
+    environment:
+      JAVA_OPTS: "-Xmx1024m"
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.daemon=false -Dorg.gradle.parallel=false'
+      JUNIT_TEST_RESULT_DIR: test-results/junit
+      JUNIT_TEST_REPORT_DIR: test-reports/
+      KTLINT_REPORT_DIR: ktlint-repots/
+
+commands:
+  restore_and_save_gradle_cache:
+    description: Restore, install, and save a cache of gradle
+    parameters:
+      version:
+        type: string
+        default: v1
+    steps:
+      - run: .circleci/android/create-cache-key.bash > ~/android.md5
+      - restore_cache:
+          keys:
+            - &key_restore_gradle_cache gradle-cache-<< parameters.version >>-{{ checksum "~/android.md5" }}
+            - gradle-cache-<< parameters.version >>-
+      - run: .circleci/retry_command.bash ./gradlew androidDependenciesExtra dependencies
+      - run: rm -f ~/.gradle/caches/modules-2/modules-2.lock ~/.gradle/caches/*/plugin-resolution/
+      - save_cache:
+          paths: ['~/.android', '~/.gradle/caches', '.gradle', '~/.m2/repository']
+          key: *key_restore_gradle_cache
+  restore_and_save_bundler_cache:
+    description: Restore, install, and save a cache of bundler
+    parameters:
+      version:
+        type: string
+        default: v1
+    steps:
+      - restore_cache:
+          keys:
+            - &key_restore_bundler_cache bundler-cache-<< parameters.version >>-{{ checksum ".ci/Gemfile.lock" }}
+            - bundler-cache-<< parameters.version >>-
+      - run: bundle check --path=vendor/bundle --gemfile=.ci/Gemfile || bundle install --path=vendor/bundle --jobs=4 --clean --gemfile=.ci/Gemfile
+      - save_cache:
+          paths: ['.ci/vendor/bundle']
+          key: *key_restore_bundler_cache
+
+jobs:
+  assemble_apk:
+    executor: android
+    steps:
+      - checkout
+      - restore_and_save_gradle_cache
+      - run: ./gradlew android-base:assembleDebug --offline
+      - store_artifacts:
+          path: android-base/build/outputs
+      - run: .circleci/android/deploy-to-deploygate.bash
+      - restore_and_save_bundler_cache
+      - run: .circleci/android/try-it.bash
+  
+  test_android:
+    executor: android
+    steps:
+      - checkout
+      - restore_and_save_gradle_cache
+      - run: ./gradlew lintDebug testDebugUnitTest ktlint --continue --offline || true
+      - run: .ci/scripts/collect-test-artifacts.bash
+      - run: .ci/scripts/collect-ktlint-artifacts.bash
+      - store_test_results:
+          path: test-results/junit
+      - store_artifacts:
+          path: test-reports
+      - store_artifacts:
+          path: ktlint-reports
+      - restore_and_save_bundler_cache
+      - run: .circleci/android/danger.bash
+
+filters:
+  disable_on_internal: &disable_on_internal
+    filters:
+      branches:
+        ignore: /master|release/
+
+workflows:
+  every_pull_request:
+    jobs:
+      - assemble_apk: *disable_on_internal
+      - test_android: *disable_on_internal

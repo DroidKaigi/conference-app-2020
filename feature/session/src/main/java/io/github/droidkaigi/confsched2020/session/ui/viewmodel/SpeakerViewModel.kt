@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.ext.combine
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
@@ -14,22 +13,25 @@ import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeakerId
 import io.github.droidkaigi.confsched2020.model.SpeechSession
+import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 
 class SpeakerViewModel @AssistedInject constructor(
     @Assisted private val speakerId: SpeakerId,
-    val sessionRepository: SessionRepository
+    @Assisted private val searchQuery: String?,
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
     // UiModel definition
     data class UiModel(
         val isLoading: Boolean,
         val error: AppError?,
         val speaker: Speaker?,
-        val session: SpeechSession?
+        val sessions: List<SpeechSession>,
+        val searchQuery: String?
     ) {
         companion object {
-            val EMPTY = UiModel(false, null, null, null)
+            val EMPTY = UiModel(false, null, null, listOf(), null)
         }
     }
 
@@ -43,14 +45,19 @@ class SpeakerViewModel @AssistedInject constructor(
             }
     }
 
-    private val speakerSessionLoadingStateLiveData: LiveData<LoadState<SpeechSession>> = liveData {
+    private val speakerSessionLoadingStateLiveData = liveData {
         sessionRepository.sessionContents()
-            .map { it.sessions
-                .filterIsInstance<SpeechSession>()
-                .first { session -> session.speakers.firstOrNull { speaker -> speakerId == speaker.id } != null }
+            .map {
+                it.sessions
+                    .filterIsInstance<SpeechSession>()
+                    .filter { session ->
+                        session.speakers.firstOrNull { speaker ->
+                            speakerId == speaker.id
+                        } != null
+                    }
             }
             .toLoadingState()
-            .collect { loadState: LoadState<SpeechSession> ->
+            .collect { loadState: LoadState<List<SpeechSession>> ->
                 emit(loadState)
             }
     }
@@ -62,7 +69,7 @@ class SpeakerViewModel @AssistedInject constructor(
         liveData2 = speakerSessionLoadingStateLiveData
     ) { current: UiModel,
         speakerLoadState: LoadState<Speaker>,
-        speakerSessionLoadState: LoadState<SpeechSession> ->
+        speakerSessionLoadState: LoadState<List<SpeechSession>> ->
         val isLoading = speakerLoadState.isLoading || speakerSessionLoadState.isLoading
         val speaker = when (speakerLoadState) {
             is LoadState.Loaded -> {
@@ -72,27 +79,31 @@ class SpeakerViewModel @AssistedInject constructor(
                 current.speaker
             }
         }
-        val speakerSession = when (speakerSessionLoadState) {
+        val speakerSessions = when (speakerSessionLoadState) {
             is LoadState.Loaded -> {
                 speakerSessionLoadState.value
             }
             else -> {
-                current.session
+                current.sessions
             }
         }
         UiModel(
             isLoading = isLoading,
-            error = (speakerLoadState.getErrorIfExists()
-                ?: speakerSessionLoadState.getErrorIfExists()).toAppError(),
+            error = (
+                speakerLoadState.getErrorIfExists()
+                    ?: speakerSessionLoadState.getErrorIfExists()
+                ).toAppError(),
             speaker = speaker,
-            session = speakerSession
+            sessions = speakerSessions,
+            searchQuery = searchQuery
         )
     }
 
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            speakerId: SpeakerId
+            speakerId: SpeakerId,
+            searchQuery: String? = null
         ): SpeakerViewModel
     }
 }

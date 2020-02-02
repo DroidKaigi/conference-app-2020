@@ -23,3 +23,10 @@ Pods/*
 *.swp
 !.gitkeep
 .DS_Store
+
+# XcodeGen
+*.xcworkspace
+*.xcodeproj
+
+# SwiftGen
+Generated/

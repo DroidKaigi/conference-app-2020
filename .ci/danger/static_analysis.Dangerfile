@@ -1,5 +1,13 @@
 # require 'pry'
 
+# Disabled: Report issues to only modified lines except simple messages and markdowns
+# github.dismiss_out_of_range_messages(
+#   warning: true,
+#   error: true,
+#   message: false,
+#   markdown: false
+# )
+
 # Create inline comments to report warning or more serious issues which happen only on modified files
 android_lint.tap do |plugin|
   plugin.skip_gradle_task = true
@@ -36,6 +44,10 @@ checkstyle_reports.tap do |plugin|
 end
 
 # If everything is okay, say LGTM to the author
-if status_report.slice(:errors, :warnings).values.flatten.empty?
+return unless status_report[:errors].empty?
+
+if status_report[:warnings].empty?
   markdown("No issue was reported. Cool!")
+else
+  markdown("No error was reported but at least one warning was found.")
 end
