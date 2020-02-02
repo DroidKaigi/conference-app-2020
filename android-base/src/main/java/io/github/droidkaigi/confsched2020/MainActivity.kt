@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -227,12 +228,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
     private fun setRippleColor(view: View, isIndigoBackground: Boolean) {
         (view.background as? RippleDrawable)?.setColor(
-            ColorStateList.valueOf(this.getThemeColor(
+            ColorStateList.valueOf(
                 if (isIndigoBackground) {
-                    R.attr.colorSurface
+                    Color.WHITE
                 } else {
-                    R.attr.colorControlHighlight
-                })))
+                    this.getThemeColor(R.attr.colorControlHighlight)
+                }))
     }
 
     private fun onDestinationChange(destination: NavDestination) {
