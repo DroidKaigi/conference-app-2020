@@ -27,6 +27,8 @@
         android:id="@+id/session"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
         tools:context="io.github.droidkaigi.confsched2020.session.ui.SessionPagesFragment"
         >
 
@@ -64,7 +66,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/start_filter"
+            android:text="@{isFiltered ? @string/filter_now : @string/start_filter}"
             android:textAppearance="@style/TextAppearance.DroidKaigi.Body2"
             app:icon="@drawable/ic_filter_list_black_24dp"
             app:isInvisible="@{(isEmptyFavoritePage &amp;&amp; !isFiltered) || isCollapsed || isEventPage}"

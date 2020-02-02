@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import androidx.annotation.IdRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.ActionMenuView
@@ -15,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
+import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
@@ -32,8 +34,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.Binds
 import dagger.Module
+import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.about.ui.AboutFragment
 import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentModule
@@ -73,7 +77,7 @@ import javax.inject.Provider
 import timber.log.Timber
 import timber.log.warn
 
-class MainActivity : DaggerAppCompatActivity() {
+class MainActivity : AppCompatActivity(), HasAndroidInjector {
     private val binding: ActivityMainBinding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(
             this,
@@ -95,6 +99,11 @@ class MainActivity : DaggerAppCompatActivity() {
         SystemUiManager(this)
     }
 
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> = androidInjector
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(binding.toolbar)
@@ -114,6 +123,8 @@ class MainActivity : DaggerAppCompatActivity() {
             view.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 topMargin = insets.systemWindowInsetTop + initialState.margins.top
             }
+        }
+        binding.toolbar.doOnLayout {
             // Invalidate because option menu cannot be displayed after screen rotation
             invalidateOptionsMenu()
         }
@@ -328,9 +339,6 @@ abstract class MainActivityModule {
         modules = [SessionSurveyFragmentModule::class, SessionSurveyAssistedInjectModule::class]
     )
     abstract fun contributeSessionSurveyFragment(): SessionSurveyFragment
-
-    @Module
-    companion object
 
     @Module
     abstract class MainActivityBuilder {

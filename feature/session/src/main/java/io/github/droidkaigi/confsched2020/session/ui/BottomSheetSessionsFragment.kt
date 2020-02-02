@@ -1,11 +1,11 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
-import dagger.android.support.DaggerFragment
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
+import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.model.ExpandFilterState
@@ -32,7 +32,7 @@ import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import javax.inject.Inject
 import javax.inject.Provider
 
-class BottomSheetSessionsFragment : DaggerFragment() {
+class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sessions), Injectable {
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -59,23 +59,11 @@ class BottomSheetSessionsFragment : DaggerFragment() {
         BottomSheetSessionsFragmentArgs.fromBundle(arguments ?: Bundle())
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(
-            R.layout.fragment_bottom_sheet_sessions,
-            container,
-            false
-        )
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentBottomSheetSessionsBinding.bind(view)
         binding.isEmptyFavoritePage = false
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
         binding.sessionRecycler.addItemDecoration(
             SessionsItemDecoration(
@@ -149,12 +137,6 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             )
             binding.isFiltered = uiModel.filters.isFiltered()
             binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()
-            val startFilterTextRes = if (uiModel.filters.isFiltered()) {
-                R.string.filter_now
-            } else {
-                R.string.start_filter
-            }
-            binding.startFilter.text = getString(startFilterTextRes)
             groupAdapter.update(sessions.map {
                 sessionItemFactory.create(it, sessionsViewModel)
             })
@@ -187,10 +169,8 @@ class BottomSheetSessionsFragment : DaggerFragment() {
 
 @Module
 abstract class BottomSheetSessionsFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic
         @Provides
         fun providesLifecycleOwnerLiveData(
             mainBottomSheetSessionsFragment: BottomSheetSessionsFragment

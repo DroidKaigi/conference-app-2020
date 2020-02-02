@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -16,30 +15,30 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_start"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/speaker_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/ic_person_outline_black_32dp"
+            android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <androidx.emoji.widget.EmojiAppCompatTextView
+            android:id="@+id/speaker"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:ignore="UselessParent"
-            >
-
-            <ImageView
-                android:id="@+id/speaker_image"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/ic_person_outline_black_32dp"
-                />
-
-            <TextView
-                android:id="@+id/speaker"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="16dp"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="@color/speaker_name_session_detail"
-                tools:text="taka"
-                />
-        </LinearLayout>
-    </FrameLayout>
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="@color/speaker_name_session_detail"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/speaker_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="taka"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

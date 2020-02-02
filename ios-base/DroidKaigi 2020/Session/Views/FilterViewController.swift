@@ -46,6 +46,13 @@ final class FilterViewController: UIViewController {
         embeddedView?.frame = containerView.bounds
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.primaryColor
+        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
+    }
+
     private func frameForEmbeddedController() -> CGRect {
         var embeddedFrame = view.bounds
         var insetHeader = UIEdgeInsets()
@@ -61,26 +68,25 @@ final class FilterViewController: UIViewController {
     }
 
     private func setUpAppBar() {
-        let menuImage = UIImage(named: "ic_menu")
-        let templateMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
+        let menuImage = Asset.icMenu.image
+        let templateMenuImage = menuImage.withRenderingMode(.alwaysTemplate)
         let menuItem = UIBarButtonItem(image: templateMenuImage,
                                        style: .plain,
                                        target: self,
                                        action: nil)
-        let logoImage = UIImage(named: "logo")
-        let templateLogoImage = logoImage?.withRenderingMode(.alwaysOriginal)
+        let logoImage = Asset.logo.image
+        let templateLogoImage = logoImage.withRenderingMode(.alwaysOriginal)
         let logoItem = UIBarButtonItem(image: templateLogoImage, style: .plain, target: nil, action: nil)
-        let searchImage = UIImage(named: "ic_search")
-        let templateSearchImage = searchImage?.withRenderingMode(.alwaysTemplate)
+        let searchImage = Asset.icSearch.image
+        let templateSearchImage = searchImage.withRenderingMode(.alwaysTemplate)
         let searchItem = UIBarButtonItem(image: templateSearchImage,
                                          style: .plain,
                                          target: self,
                                          action: nil)
         navigationItem.leftBarButtonItems = [menuItem, logoItem]
         navigationItem.rightBarButtonItems = [searchItem]
-        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.primaryColor
-        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
         navigationController?.navigationBar.shadowImage = UIImage()
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         edgesForExtendedLayout = []
 
         menuItem.rx.tap
