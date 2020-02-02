@@ -78,6 +78,7 @@ class SessionsViewModelTest {
 
         sessionsViewModel.favorite(Dummies.speachSession1)
         verify { sessionsViewModel.favorite(Dummies.speachSession1) }
+        verify { sessionAlarm.toggleRegister(Dummies.speachSession1) }
         val valueHistory = testObserver.valueHistory()
         val dayToSessionsMap = mapOf(
             SessionPage.dayOfNumber(1) to listOf<Session>(
