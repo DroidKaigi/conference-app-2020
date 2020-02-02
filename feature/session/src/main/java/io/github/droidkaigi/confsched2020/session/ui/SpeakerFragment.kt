@@ -58,7 +58,9 @@ class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
         binding.speakerRecycler.also {
             it.adapter = groupAdapter
             it.doOnApplyWindowInsets { recyclerView, insets, initialState ->
-                recyclerView.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+                recyclerView.updatePadding(
+                    bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+                )
             }
         }
 
