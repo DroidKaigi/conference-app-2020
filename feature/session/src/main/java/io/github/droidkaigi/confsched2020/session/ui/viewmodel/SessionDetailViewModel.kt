@@ -38,7 +38,7 @@ class SessionDetailViewModel @AssistedInject constructor(
         companion object {
             val EMPTY = UiModel(
                 isLoading = false,
-                error = null ,
+                error = null,
                 session = null,
                 showEllipsis = true,
                 searchQuery = null,
