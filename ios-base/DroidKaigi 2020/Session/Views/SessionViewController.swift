@@ -67,7 +67,9 @@ final class SessionViewController: UIViewController {
         let filteredSessions = viewModel.sessions.asObservable()
             .map { sessions -> [AppBaseSession] in
                 if self.type == .myPlan {
-                    return sessions.filter { $0.isFavorited }
+                    return sessions
+                        .filter { $0.isFavorited }
+                        .sorted(by: { $0.dayNumber == $1.dayNumber ? $0.startTime < $1.startTime : $0.dayNumber < $1.dayNumber })
                 }
                 return sessions.filter { $0.dayNumber == self.type.rawValue }
             }
@@ -76,17 +78,20 @@ final class SessionViewController: UIViewController {
         filteredSessions
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
+
         filteredSessions
-            .filter { [weak self] sessions in
-                guard let self = self else { return false }
-                return sessions.count == 0 && self.type == .myPlan
-            }
-            .bind(to: Binder(self) { me, _ in
+            .filter { _ in self.type == .myPlan }
+            .map { $0.isEmpty }
+            .subscribe(onNext: { isEmpty in
                 DispatchQueue.main.async {
-                    me.showSuggestView()
+                    if isEmpty {
+                        self.showSuggestView()
+                    } else {
+                        self.removeSuggestView()
+                    }
                 }
-            })
-            .disposed(by: disposeBag)
+            }).disposed(by: disposeBag)
+
         dataSource.onTapSpeaker
             .emit(onNext: { [weak self] speaker, sessions in
                 self?.navigationController?.pushViewController(SpeakerViewController.instantiate(speaker: speaker, sessions: sessions), animated: true)
@@ -94,18 +99,21 @@ final class SessionViewController: UIViewController {
             .disposed(by: disposeBag)
         dataSource.onTapBookmark.emit(onNext: { [unowned self] cell, session in
             if session.isFavorited {
-                self.viewModel.resignBookingSession(session).subscribe { _ in
-                    cell.bookmarkButton.setImage(Asset.icBookmarkBorder.image, for: .normal)
-                }.disposed(by: cell.disposeBag)
+                self.viewModel.resignBookingSession(session)
+                cell.bookmarkButton.setImage(Asset.icBookmarkBorder.image, for: .normal)
             } else {
-                self.viewModel.bookSession(session).subscribe { _ in
-                    cell.bookmarkButton.setImage(Asset.icBookmark.image, for: .normal)
-                }.disposed(by: cell.disposeBag)
+                self.viewModel.bookSession(session)
+                cell.bookmarkButton.setImage(Asset.icBookmark.image, for: .normal)
             }
             }).disposed(by: disposeBag)
         collectionView.rx.modelSelected(AppBaseSession.self)
             .bind(onNext: { [unowned self] in self.showDetail(forSession: $0) })
             .disposed(by: disposeBag)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewModel.viewDidAppear()
     }
 
     func showSuggestView() {
@@ -118,6 +126,12 @@ final class SessionViewController: UIViewController {
             suggestView.rightAnchor.constraint(equalTo: view.rightAnchor),
             suggestView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+    }
+
+    func removeSuggestView() {
+        if let suggestView = view.subviews.first(where: { $0 is SuggestView }) {
+            suggestView.removeFromSuperview()
+        }
     }
 }
 
