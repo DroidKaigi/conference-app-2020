@@ -397,7 +397,7 @@ class SessionsViewModelTest {
     fun filterChanged_langSupport_false() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
-        val sessionsViewModel =SessionsViewModel(
+        val sessionsViewModel = SessionsViewModel(
             sessionRepository = sessionRepository,
             sessionAlarm = sessionAlarm
         )
