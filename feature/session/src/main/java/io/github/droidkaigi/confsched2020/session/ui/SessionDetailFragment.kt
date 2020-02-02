@@ -127,10 +127,10 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                             adapter,
                             session,
                             uiModel.showEllipsis,
-                            uiModel.searchQuery
+                            uiModel.searchQuery,
+                            uiModel.thumbsUpCount
                         )
                     }
-                println("⭐ ${uiModel.thumbsUpCount}")
             }
 
         binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
@@ -179,7 +179,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         adapter: GroupAdapter<ViewHolder<*>>,
         session: Session,
         showEllipsis: Boolean,
-        searchQuery: String?
+        searchQuery: String?,
+        thumbsUpCount: Int
     ) {
         binding.sessionDetailRecycler.transitionName =
             "${session.id}-${navArgs.transitionNameSuffix}"
@@ -187,7 +188,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         val items = mutableListOf<Group>()
         items += sessionDetailTitleItemFactory.create(
             session,
-            searchQuery
+            searchQuery,
+            thumbsUpCount
         ) {
             sessionDetailViewModel.thumbsUp(session)
         }

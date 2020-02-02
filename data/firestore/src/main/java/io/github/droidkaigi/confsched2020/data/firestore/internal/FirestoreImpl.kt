@@ -144,6 +144,7 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
         try {
             Tasks.whenAll(tasks).await()
         } catch(e: Exception) {
+            // FIXME: debug code
             println("⭐" + e.message)
         }
         Timber.debug { "createShardsIfNeeded creating shards completed" }
