@@ -32,11 +32,11 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
 
         let session = items[indexPath.item]
 
-        cell.titleLabel.text = session.title.ja
+        cell.titleLabel.text = session.title?.ja ?? ""
 
         var speakers: [AppSpeaker] = []
         if let speechSession = session as? AppSpeechSession {
-            speakers = speechSession.speakers
+            speakers = Array(speechSession.speakers)
         }
         speakers.forEach { speaker in
             cell.addSpeakerView(imageURL: URL(string: speaker.imageUrl ?? ""), speakerName: speaker.name) { [weak self] in
@@ -62,7 +62,7 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
         }
         previousTimeString = session.startTimeText
 
-        cell.minutesAndRoomLabel.text = "\(session.timeInMinutes)min / \(session.room.name)"
+        cell.minutesAndRoomLabel.text = session.timeRoomText
 
         cell.bookmarkButton.rx.tap
             .map { _ in (cell, session) }

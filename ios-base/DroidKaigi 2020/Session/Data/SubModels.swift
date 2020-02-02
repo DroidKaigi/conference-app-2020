@@ -54,7 +54,7 @@ final class AppLocaledString: Object {
 
 final class AppRoom: Object {
     @objc dynamic var id: Int32 = 0
-    @objc dynamic var name: AppLocaledString = .init()
+    @objc dynamic var name: AppLocaledString?
     @objc dynamic var sort: Int32 = 0
 
     init(room: Room) {
@@ -72,7 +72,7 @@ final class AppRoom: Object {
 
 final class AppCategory: Object {
     @objc dynamic var id: Int32 = 0
-    @objc dynamic var name: AppLocaledString = .init()
+    @objc dynamic var name: AppLocaledString?
 
     init(category: ios_combined.Category) {
         id = category.id
