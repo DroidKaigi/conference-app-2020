@@ -3,7 +3,6 @@ import dependencies.Dep
 def ideaActive = System.getProperty("idea.active") == "true"
 
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-multiplatform'
 apply plugin: 'kotlinx-serialization'
 apply plugin: 'kotlin-android-extensions'
@@ -104,11 +103,4 @@ kotlin {
 }
 configurations {
     compileClasspath
-}
-dependencies {
-    implementation "androidx.core:core-ktx:+"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-}
-repositories {
-    mavenCentral()
 }
