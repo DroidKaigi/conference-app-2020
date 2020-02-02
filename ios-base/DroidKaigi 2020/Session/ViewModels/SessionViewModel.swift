@@ -56,6 +56,10 @@ final class SessionViewModel {
                 .compactMap { $0 as? Object }
                 .filter { !$0.isInvalidated }
                 .compactMap { $0 as? AppBaseSession }
+            remote = remote
+                .compactMap { $0 as? Object }
+                .filter { !$0.isInvalidated }
+                .compactMap { $0 as? AppBaseSession }
             for (index, session) in remote.enumerated() {
                 if let sameSession = local.lazy.first(where: { $0.id?.id == session.id?.id }) {
                     remote.remove(at: index)

@@ -11,17 +11,14 @@ final class BookingSessionProvider {
                     serviceSession.isFavorited = true
                     try realm.write {
                         realm.add(serviceSession)
-                        try realm.commitWrite()
-                        observer(.success(()))
                     }
                 } else if let speechSession = session as? AppSpeechSession {
                     speechSession.isFavorited = true
                     try realm.write {
                         realm.add(speechSession)
-                        try realm.commitWrite()
-                        observer(.success(()))
                     }
                 }
+                observer(.success(()))
             } catch {
                 observer(.error(error))
             }
@@ -32,8 +29,8 @@ final class BookingSessionProvider {
     func fetchBookedSessions() -> [AppBaseSession] {
         do {
             let realm = try Realm()
-            let serviceResult = Array(realm.objects(AppServiceSession.self)).filter { !$0.isInvalidated }.map { $0 as AppBaseSession }
-            let speechResult = Array(realm.objects(AppSpeechSession.self)).filter { !$0.isInvalidated }.map { $0 as AppBaseSession }
+            let serviceResult = Array(realm.objects(AppServiceSession.self)).map { $0 as AppBaseSession }
+            let speechResult = Array(realm.objects(AppSpeechSession.self)).map { $0 as AppBaseSession }
             return serviceResult + speechResult
         } catch {
             return []
@@ -48,15 +45,14 @@ final class BookingSessionProvider {
                     try realm.write {
                         realm.delete(serviceSession)
                         try realm.commitWrite()
-                        observer(.success(()))
                     }
                 } else if let speechSession = session as? AppSpeechSession, !speechSession.isInvalidated {
                     try realm.write {
                         realm.delete(speechSession)
                         try realm.commitWrite()
-                        observer(.success(()))
                     }
                 }
+                observer(.success(()))
             } catch {
                 observer(.error(error))
             }

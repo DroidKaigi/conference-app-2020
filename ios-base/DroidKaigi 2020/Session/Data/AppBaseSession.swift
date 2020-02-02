@@ -11,7 +11,7 @@ protocol AppBaseSession {
     var startTime: TimeInterval { get }
     var endTime: TimeInterval { get }
     var room: AppRoom? { get }
-    var isFavorited: Bool { get }
+    var isFavorited: Bool { get set }
     var startDayText: String { get }
     var startTimeText: String { get }
     var isFinished: Bool { get }
