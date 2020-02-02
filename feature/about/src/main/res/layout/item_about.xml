@@ -7,16 +7,17 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/root"
-        android:background="?selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
         >
 
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
             android:paddingTop="14dp"
             android:paddingBottom="14dp"
             android:textAppearance="?textAppearanceBody1"
