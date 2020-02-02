@@ -2,7 +2,7 @@ package io.github.droidkaigi.confsched2020.staff.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -11,14 +11,16 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.App
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.isShow
 import io.github.droidkaigi.confsched2020.staff.R
 import io.github.droidkaigi.confsched2020.staff.databinding.FragmentStaffsBinding
 import io.github.droidkaigi.confsched2020.staff.ui.di.StaffAssistedInjectModule
@@ -26,7 +28,6 @@ import io.github.droidkaigi.confsched2020.staff.ui.item.StaffItem
 import io.github.droidkaigi.confsched2020.staff.ui.viewmodel.StaffsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.transition.Stagger
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -56,8 +57,14 @@ class StaffsFragment : Fragment(R.layout.fragment_staffs) {
             .create(appComponent, StaffModule(this))
         component.inject(this)
 
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.staffRecycler.adapter = groupAdapter
+        binding.staffRecycler.doOnApplyWindowInsets { recyclerView, insets, initialState ->
+            // Set a bottom padding due to the system UI is enabled.
+            recyclerView.updatePadding(
+                bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+            )
+        }
         // Because custom RecyclerView's animation, set custom SimpleItemAnimator implementation.
         //
         // see https://developer.android.com/reference/androidx/recyclerview/widget/SimpleItemAnimator.html#animateAdd(androidx.recyclerview.widget.RecyclerView.ViewHolder)
@@ -70,16 +77,12 @@ class StaffsFragment : Fragment(R.layout.fragment_staffs) {
             }
         }
 
-        val progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
-        }.apply {
-            loading = true
-        }
+        binding.progressBar.show()
 
         // This is the transition for the stagger effect.
         val stagger = Stagger()
         staffsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            progressTimeLatch.loading = uiModel.isLoading
+            binding.progressBar.isShow = uiModel.isLoading
 
             // Delay the stagger effect until the list is updated.
             TransitionManager.beginDelayedTransition(binding.staffRecycler, stagger)

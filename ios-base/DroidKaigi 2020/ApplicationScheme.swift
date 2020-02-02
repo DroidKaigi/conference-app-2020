@@ -33,11 +33,11 @@ final class ApplicationScheme: NSObject {
     private static let semanticColorScheme: MDCSemanticColorScheme = {
         let scheme = MDCSemanticColorScheme(defaults: .material201804)
 
-        scheme.primaryColor = UIColor(hex: "041E42")
-        scheme.onPrimaryColor = .white
-        scheme.secondaryColor = UIColor(hex: "041E42")
-        scheme.surfaceColor = .white
-        scheme.onSurfaceColor = .black
+        scheme.primaryColor = UIColor(named: "Primary")!
+        scheme.onPrimaryColor = UIColor(named: "OnPrimary")!
+        scheme.secondaryColor = UIColor(named: "Secondary")!
+        scheme.surfaceColor = UIColor(named: "Surface")!
+        scheme.onSurfaceColor = UIColor(named: "OnSurface")!
         return scheme
     }()
 }

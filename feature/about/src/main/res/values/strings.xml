@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_what_is_droidkaigi">What is DroidKaigi?</string>
+    <string name="about_description">DroidKaigi is a conference tailored for Android developers. It\'s scheduled to take place on the 20 and 21 of February 2020.</string>
+    <string name="about_item_access">Access</string>
+    <string name="about_item_staff">Staffs</string>
+    <string name="about_item_privacy_policy">PrivacyPolicy</string>
+    <string name="about_item_licence">Licence</string>
+    <string name="about_item_app_version">AppVersion</string>
+</resources>

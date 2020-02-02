@@ -30,7 +30,7 @@ class SessionDetailMaterialItem @AssistedInject constructor(
         setUpMaterialData(binding)
     }
 
-    override fun isSameAs(other: Item<*>?) = other is SessionDetailMaterialItem
+    override fun isSameAs(other: Item<*>) = other is SessionDetailMaterialItem
 
     private fun setUpMaterialData(binding: ItemSessionDetailMaterialBinding) {
         if (session is SpeechSession) {
