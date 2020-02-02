@@ -5,7 +5,7 @@ import RxSwift
 import UIKit
 
 final class SessionDetailViewController: UIViewController {
-    var session: Session!
+    var session: AppBaseSession!
 
     // MARK: Private
 
@@ -61,7 +61,7 @@ final class SessionDetailViewController: UIViewController {
 // MARK: Create view
 
 private extension SessionDetailViewController {
-    func loadSession(_ session: Session) {
+    func loadSession(_ session: AppBaseSession) {
         // FIXME: How to detect current lang?
         titleLabel.text = session.title.ja
         dateLabel.text = "\(session.startDayText) \(session.startTimeText)-"
@@ -70,15 +70,15 @@ private extension SessionDetailViewController {
         readMoreButton.isHidden = !descriptionLabel.isTruncated
 
         switch session {
-        case let speech as SpeechSession:
+        case let speech as AppSpeechSession:
             loadSpeechSession(speech)
-        case let service as ServiceSession:
+        case let service as AppServiceSession:
             loadServiceSession(service)
         default: break
         }
     }
 
-    func loadSpeechSession(_ session: SpeechSession) {
+    func loadSpeechSession(_ session: AppSpeechSession) {
         // FIXME: How to detect current lang?
         categoryLabel.text = session.category.name.ja
         langLabel.text = session.lang.text.ja
@@ -113,7 +113,7 @@ private extension SessionDetailViewController {
         }
     }
 
-    func loadServiceSession(_ session: ServiceSession) {
+    func loadServiceSession(_ session: AppServiceSession) {
         [
             categoryLabel,
             langLabel,
@@ -126,7 +126,7 @@ private extension SessionDetailViewController {
         .forEach { $0.isHidden = true }
     }
 
-    func addSpeaker(_ speaker: Speaker) {
+    func addSpeaker(_ speaker: AppSpeaker) {
         let iconImageView = SpeakerIconImageView()
         if let imageUrl = speaker.imageUrl.flatMap(URL.init) {
             let options = ImageLoadingOptions(transition: .fadeIn(duration: 0.3))
@@ -192,7 +192,7 @@ private extension SessionDetailViewController {
 // MARK: Transition
 
 private extension SessionDetailViewController {
-    func showSpeakerView(_ speaker: Speaker) {
+    func showSpeakerView(_ speaker: AppSpeaker) {
         // FIXME: Sessions should be all fetched
         let speakerView = SpeakerViewController.instantiate(speaker: speaker, sessions: [session])
         navigationController?.pushViewController(speakerView, animated: true)

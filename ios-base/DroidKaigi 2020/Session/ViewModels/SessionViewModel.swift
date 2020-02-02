@@ -8,8 +8,7 @@ final class SessionViewModel {
     // input
     private let toggleEmbeddedViewRelay = PublishRelay<Void>()
     private let remoteSessionsRelay: BehaviorRelay<[Session]> = .init(value: [])
-    private let localSessionsRelay: BehaviorRelay<[AppServiceSession]> = .init(value: [])
-    private let updateLocalSessionsRelay: PublishRelay<Void> = .init()
+    private let localSessionsRelay: BehaviorRelay<[AppBaseSession]> = .init(value: [])
 
     func toggleEmbeddedView() {
         toggleEmbeddedViewRelay.accept(())
@@ -17,19 +16,28 @@ final class SessionViewModel {
 
     // output
     let isFocusedOnEmbeddedView: Driver<Bool>
-    lazy var sessions: Driver<[]> = {
-        Observable.combineLatest(remoteSessionsRelay.asObservable(), localSessionsRelay.asObservable()).map { remoteSessions, localSessions -> [SessionUIModel] in
-            var totalSessions: [SessionUIModel] = remoteSessions
-
-            for localSession in localSessions {
-                if let index = remoteSessions.lazy.firstIndex(where: { $0.pureId == localSession.pureId }) {
-                    totalSessions.remove(at: index)
-                    totalSessions.insert(localSession, at: index)
-                }
-            }
-            return totalSessions
-        }.asDriver(onErrorJustReturn: [])
-    }()
+    var sessions: Observable<[AppBaseSession]> {
+        Observable.combineLatest(
+            remoteSessionsRelay
+                .asObservable()
+                .map { sessions in
+                    sessions.compactMap { (session) -> AppBaseSession? in
+                        if let session = session as? SpeechSession {
+                            return AppSpeechSession(session: session)
+                        } else if let session = session as? ServiceSession {
+                            return AppServiceSession(session: session)
+                        }
+                        return nil
+                    }
+                },
+            localSessionsRelay
+                .asObservable()
+        ).map { (arg: ([AppBaseSession], [AppBaseSession])) -> [AppBaseSession] in
+            var (remote, local) = arg
+            remote.append(contentsOf: local)
+            return remote
+        }
+    }
 
     // dependencies
     private let bookingSessionProvider: BookingSessionProvider = .init()
@@ -58,17 +66,11 @@ final class SessionViewModel {
             .disposed(by: disposeBag)
     }
 
-    func bookSession(_ session: SessionUIModel) -> Observable<Void> {
-        if let session = session as? Session {
-            return bookingSessionProvider.bookSession(session: session).asObservable()
-        }
-        return .empty()
+    func bookSession(_ session: AppBaseSession) -> Observable<Void> {
+        return bookingSessionProvider.bookSession(session: session).asObservable()
     }
 
-    func resignBookingSession(_ session: SessionUIModel) -> Observable<Void> {
-        if let session = session as? ApplicationServiceSession {
-            return bookingSessionProvider.resignBookingSession(session).asObservable()
-        }
-        return .empty()
+    func resignBookingSession(_ session: AppBaseSession) -> Observable<Void> {
+        return bookingSessionProvider.resignBookingSession(session).asObservable()
     }
 }

@@ -4,12 +4,20 @@ import RxRealm
 import RxSwift
 
 final class BookingSessionProvider {
-    func bookSession(session: Session) -> Single<Void> {
+    func bookSession(session: AppBaseSession) -> Single<Void> {
         do {
             let realm = try Realm()
-            let localSession = AppServiceSession(session: session)
-            try realm.write {
-                realm.add(localSession)
+            if let serviceSession = session as? ServiceSession {
+                let localSession = AppServiceSession(session: serviceSession)
+                try realm.write {
+                    realm.add(localSession)
+                }
+            } else if let speechSession = session as? SpeechSession {
+                let localSession = AppSpeechSession(session: speechSession)
+
+                try realm.write {
+                    realm.add(localSession)
+                }
             }
             return .just(())
         } catch {
@@ -17,21 +25,31 @@ final class BookingSessionProvider {
         }
     }
 
-    func fetchBookedSessions() -> Observable<[AppServiceSession]> {
+    func fetchBookedSessions() -> Observable<[AppBaseSession]> {
         do {
             let realm = try Realm()
-            let result = realm.objects(AppServiceSession.self)
-            return Observable.collection(from: result).map { Array($0) }
+            let serviceResult = realm.objects(AppServiceSession.self)
+            let speechResult = realm.objects(AppSpeechSession.self)
+            return Observable<[AppBaseSession]>.merge(
+                Observable.collection(from: serviceResult).map { Array($0) as [AppBaseSession] },
+                Observable.collection(from: speechResult).map { Array($0) as [AppBaseSession] }
+            )
         } catch {
             return .error(error)
         }
     }
 
-    func resignBookingSession(_ session: AppServiceSession) -> Single<Void> {
+    func resignBookingSession(_ session: AppBaseSession) -> Single<Void> {
         do {
             let realm = try Realm()
-            try realm.write {
-                realm.delete(session)
+            if let serviceSession = session as? AppServiceSession {
+                try realm.write {
+                    realm.delete(serviceSession)
+                }
+            } else if let speechSession = session as? AppSpeechSession {
+                try realm.write {
+                    realm.delete(speechSession)
+                }
             }
             return .just(())
         } catch {

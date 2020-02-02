@@ -5,6 +5,7 @@ apply from: file('gradle/jvm.gradle')
 apply from: file('gradle/utils.gradle')
 
 buildscript {
+    ext.kotlin_version = '1.3.61'
     ext {
         isCi = System.getenv("CI") == "true"
         isReleaseBuild = System.getenv("RELEASE_BUILD") == "true"
@@ -30,6 +31,7 @@ buildscript {
         classpath Dep.GradlePlugin.iconRibbonPlugin
         classpath Dep.GradlePlugin.gradleVersionsPlugin
         classpath Dep.GradlePlugin.crashlytics
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 

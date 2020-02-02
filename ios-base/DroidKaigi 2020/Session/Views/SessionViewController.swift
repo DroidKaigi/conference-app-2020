@@ -65,13 +65,11 @@ final class SessionViewController: UIViewController {
         // TODO: Error handling for viewModel.sessions
         let dataSource = SessionViewDataSource()
         let filteredSessions = viewModel.sessions.asObservable()
-            .map { sessions -> [SessionUIModel] in
-
+            .map { sessions -> [AppBaseSession] in
                 if self.type == .myPlan {
-                    return sessions.compactMap { $0 as? ApplicationServiceSession }.filter { $0.isLocal }
+                    return sessions.filter { $0.isFavorited }
                 }
-
-                return sessions.filter { Int($0.dayNumber) == self.type.rawValue }
+                return sessions.filter { $0.dayNumber == self.type.rawValue }
             }
             .share(replay: 1, scope: .whileConnected)
 
@@ -95,7 +93,7 @@ final class SessionViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         dataSource.onTapBookmark.emit(onNext: { [unowned self] cell, session in
-            if session.isLocal {
+            if session.isFavorited {
                 self.viewModel.resignBookingSession(session).subscribe { _ in
                     cell.bookmarkButton.setImage(Asset.icBookmarkBorder.image, for: .normal)
                 }.disposed(by: cell.disposeBag)
@@ -105,7 +103,7 @@ final class SessionViewController: UIViewController {
                 }.disposed(by: cell.disposeBag)
             }
             }).disposed(by: disposeBag)
-        collectionView.rx.modelSelected(Session.self)
+        collectionView.rx.modelSelected(AppBaseSession.self)
             .bind(onNext: { [unowned self] in self.showDetail(forSession: $0) })
             .disposed(by: disposeBag)
     }
@@ -126,7 +124,7 @@ final class SessionViewController: UIViewController {
 // MARK: -
 
 private extension SessionViewController {
-    func showDetail(forSession session: Session) {
+    func showDetail(forSession session: AppBaseSession) {
         // FIXME: Use coordinator?
         guard let vc = UIStoryboard(name: "SessionDetail", bundle: nil)
             .instantiateInitialViewController() as? SessionDetailViewController else {
