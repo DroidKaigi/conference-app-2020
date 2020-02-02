@@ -46,7 +46,7 @@ final class AnnouncementCell: UITableViewCell {
         titleLabel.text = announcement.title
         contentTextView.attributedText = { content in
             guard
-                let data = content.data(using: .utf8),
+                let data = content.data(using: .unicode),
                 let attributedString = try? NSMutableAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
             else {
                 return nil
