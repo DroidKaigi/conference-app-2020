@@ -30,7 +30,6 @@ import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import javax.inject.Inject
 import javax.inject.Provider
 
-
 class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
 
     companion object {
