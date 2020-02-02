@@ -3,8 +3,6 @@ package io.github.droidkaigi.confsched2020.session.ui
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
-import androidx.core.app.ShareCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
