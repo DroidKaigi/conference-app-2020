@@ -73,10 +73,10 @@ final class SessionViewController: UIViewController {
                 case .day1, .day2:
                     return sessions.filter {
                         Int($0.dayNumber) == self.type.rawValue
-                            && $0.room.roomType != Room.RoomType.backdrop
+                            && $0.room.roomType != Room.RoomType.exhibition
                     }
                 case .event:
-                    return sessions.filter { $0.room.roomType == Room.RoomType.backdrop }
+                    return sessions.filter { $0.room.roomType == Room.RoomType.exhibition }
                 case .myPlan:
                     return sessions.filter { $0.isFavorited }
                 }
