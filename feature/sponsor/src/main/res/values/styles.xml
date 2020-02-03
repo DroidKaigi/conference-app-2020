@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.DroidKaigi.Card.Sponsor" parent="Widget.DroidKaigi.CardView">
-        <item name="cardBackgroundColor">?attr/colorOnPrimary</item>
-        <item name="rippleColor">@color/black_alpha_12</item>
+    <style name="Widget.DroidKaigi.Card.Sponsor" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardElevation">3dp</item>
     </style>
 </resources>

@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:theme="@style/ThemeOverlay.DroidKaigi.Card.Sponsor"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout

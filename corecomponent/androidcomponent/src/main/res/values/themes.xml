@@ -13,7 +13,6 @@
 
         <!-- Widget styles -->
         <item name="filterChipStyle">@style/Widget.DroidKaigi.FilterChip</item>
-        <item name="materialCardViewStyle">@style/Widget.DroidKaigi.CardView</item>
     </style>
 
     <style name="Theme.DroidKaigi" parent="Base.Theme.DroidKaigi">
