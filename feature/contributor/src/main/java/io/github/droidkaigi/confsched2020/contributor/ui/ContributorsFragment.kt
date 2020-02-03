@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -47,7 +47,7 @@ class ContributorsFragment : Fragment(R.layout.fragment_contributors) {
         inject()
         val binding = FragmentContributorsBinding.bind(view)
 
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.contributorRecycler.adapter = groupAdapter
         binding.contributorRecycler.doOnApplyWindowInsets { recyclerView, insets, initialState ->
             // Set a bottom padding due to the system UI is enabled.

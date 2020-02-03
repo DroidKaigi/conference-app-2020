@@ -1,14 +1,17 @@
 package io.github.droidkaigi.confsched2020.system.ui.viewmodel
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.provider.CalendarContract
+import androidx.core.app.ShareCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.soywiz.klock.DateTime
 import io.github.droidkaigi.confsched2020.ext.toNonNullSingleEvent
 import io.github.droidkaigi.confsched2020.model.AppError
+import io.github.droidkaigi.confsched2020.model.AppError.ExternalIntegrationError.NoCalendarIntegrationFoundException
 import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
@@ -35,6 +38,21 @@ class SystemViewModel @Inject constructor() : ViewModel() {
             .putExtra(CalendarContract.Events.EVENT_LOCATION, location)
         try {
             activity.startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Timber.debug(e) { "Fail startActivity" }
+            onError(NoCalendarIntegrationFoundException(e))
+        }
+    }
+
+    fun shareURL(
+        activity: Activity,
+        url: String
+    ) {
+        try {
+            ShareCompat.IntentBuilder.from(activity)
+                .setText(url)
+                .setType("text/plain")
+                .startChooser()
         } catch (e: Exception) {
             Timber.debug(e) { "Fail startActivity" }
         }

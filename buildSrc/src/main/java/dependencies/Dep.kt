@@ -70,6 +70,8 @@ object Dep {
             val runtimeKtx = "androidx.navigation:navigation-runtime-ktx:$version"
             val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
+            val dynamicFeaturesFragment = "androidx.navigation:navigation-dynamic-features-fragment:2.3.0-SNAPSHOT"
+            val dynamicFeaturesRuntime = "androidx.navigation:navigation-dynamic-features-runtime:2.3.0-SNAPSHOT"
         }
 
         object Work {
@@ -123,6 +125,10 @@ object Dep {
     object PlayServices {
         val auth = "com.google.android.gms:play-services-auth:16.0.1"
         val licensesPlugin = "com.google.android.gms:play-services-oss-licenses:16.0.1"
+    }
+
+    object Play {
+        val core = "com.google.android.play:core:1.6.4"
     }
 
     object Dagger {
@@ -192,7 +198,7 @@ object Dep {
     }
 
     object Groupie {
-        val version = "2.4.0-alpha1"
+        val version = "2.7.2"
         val groupie = "com.xwray:groupie:$version"
         val databinding = "com.xwray:groupie-databinding:$version"
     }

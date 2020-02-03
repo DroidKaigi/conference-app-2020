@@ -11,7 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
@@ -49,7 +49,7 @@ class AnnouncementFragment : Fragment(R.layout.fragment_announcement), Injectabl
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentAnnouncementBinding.bind(view)
 
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.announcementRecycler.run {
             val offset = resources.getDimension(R.dimen.announcement_item_offset)
             addItemDecoration(AnnouncementItemDecoration(offset))
