@@ -6,7 +6,6 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.navigation.Navigation
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupAdapter
