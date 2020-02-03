@@ -2,14 +2,15 @@ package io.github.droidkaigi.confsched2020
 
 import android.annotation.SuppressLint
 import android.content.ComponentName
-import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
+import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -83,10 +84,10 @@ import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.PageConfiguration
 import io.github.droidkaigi.confsched2020.ui.widget.SystemUiManager
 import io.github.droidkaigi.confsched2020.widget.component.NavigationDirections.Companion.actionGlobalToChrome
-import javax.inject.Inject
-import javax.inject.Provider
 import timber.log.Timber
 import timber.log.warn
+import javax.inject.Inject
+import javax.inject.Provider
 
 class MainActivity : AppCompatActivity(), HasAndroidInjector {
     private val binding: ActivityMainBinding by lazy {
@@ -339,6 +340,11 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         } catch (e: IllegalArgumentException) {
             false
         }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
     }
 }
 

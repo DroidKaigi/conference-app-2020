@@ -1,6 +1,9 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.app.Activity
+import android.app.SearchManager
+import android.content.Context.SEARCH_SERVICE
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -64,6 +67,8 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
 
     @Inject
     lateinit var sectionHeaderItemFactory: SectionHeaderItem.Factory
+
+    private var menu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,10 +153,27 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        val intent = activity!!.intent
+        if (intent.action == Intent.ACTION_SEARCH) {
+            val query: String = intent.getStringExtra(SearchManager.QUERY)!!
+            val searchResult = searchSessionsViewModel.uiModel.requireValue().searchResult
+            val searchView: SearchView? =
+                menu?.findItem(R.id.search_view)?.actionView as SearchView?
+            if (searchView != null && query != searchResult.query) {
+                searchView.setQuery(query, true)
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_search_sessions, menu)
+        this.menu = menu
         val searchView = menu.findItem(R.id.search_view).actionView as SearchView
+        val searchManager = activity!!.getSystemService(SEARCH_SERVICE) as SearchManager
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
         (searchView.findViewById(AppcompatRId.search_button) as ImageView).setColorFilter(
             AppCompatResources.getColorStateList(
                 requireContext(),
