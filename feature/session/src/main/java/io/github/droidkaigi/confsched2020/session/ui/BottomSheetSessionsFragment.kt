@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -148,6 +149,11 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
             if (position != null) {
                 binding.sessionRecycler.smoothScrollToPositionWithLayoutManager(position)
                 sessionsViewModel.onScrolled()
+            }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                // Work around for fixing issue that sessions are not displayed on Android 5.0
+                // https://github.com/DroidKaigi/conference-app-2020/issues/117#issuecomment-581151289
+                binding.sessionRecycler.scrollBy(0, 0)
             }
         }
     }
