@@ -57,9 +57,16 @@ final class SessionViewModel {
                 .filter { !$0.isInvalidated }
                 .compactMap { $0 as? AppBaseSession }
             remote = remote
-                .compactMap { $0 as? Object }
-                .filter { !$0.isInvalidated }
-                .compactMap { $0 as? AppBaseSession }
+                .compactMap({ (session) -> AppBaseSession? in
+                    if let onceStoragedSession = session as? Object, onceStoragedSession.isInvalidated {
+                        if let speechSession = onceStoragedSession as? AppSpeechSession {
+                            return AppSpeechSession(value: speechSession)
+                        } else if let serviceSession = onceStoragedSession as? AppServiceSession {
+                            return AppServiceSession(value: serviceSession)
+                        }
+                    }
+                    return nil                    
+                })
             for (index, session) in remote.enumerated() {
                 if let sameSession = local.lazy.first(where: { $0.id?.id == session.id?.id }) {
                     remote.remove(at: index)
