@@ -66,8 +66,8 @@ class SessionDetailViewModel @AssistedInject constructor(
     private val thumbsUpCountLoadStateLiveData: LiveData<LoadState<Int>> = liveData {
         sessionRepository.thumbsUpCounts(sessionId)
             .toLoadingState()
-            .collect { thumbsUpCount ->
-               emit(thumbsUpCount)
+            .collect { loadState: LoadState<Int> ->
+                emit(loadState)
             }
     }
 
