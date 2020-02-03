@@ -53,6 +53,9 @@ final class SessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        filteredSessionCountLabel.isHidden = type == .event
+        filterButton.isHidden = type == .event
+
         filterButton.rx.tap.asSignal()
             .emit(to: Binder(self) { me, _ in
                 me.viewModel.toggleEmbeddedView()
@@ -66,7 +69,17 @@ final class SessionViewController: UIViewController {
         let dataSource = SessionViewDataSource()
         let filteredSessions = viewModel.sessions.asObservable()
             .map { sessions -> [Session] in
-                sessions.filter { Int($0.dayNumber) == self.type.rawValue }
+                switch self.type {
+                case .day1, .day2:
+                    return sessions.filter {
+                        Int($0.dayNumber) == self.type.rawValue
+                            && $0.room.roomType != Room.RoomType.backdrop
+                    }
+                case .event:
+                    return sessions.filter { $0.room.roomType == Room.RoomType.backdrop }
+                case .myPlan:
+                    return sessions.filter { $0.isFavorited }
+                }
             }
             .share(replay: 1, scope: .whileConnected)
 
