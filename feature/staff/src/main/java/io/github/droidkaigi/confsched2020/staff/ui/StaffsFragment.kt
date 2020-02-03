@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched2020.staff.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.VisibleForTesting
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -10,6 +11,9 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
+import com.dropbox.android.external.store4.MemoryPolicy
+import com.dropbox.android.external.store4.Store
+import com.dropbox.android.external.store4.StoreBuilder
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Component
@@ -17,10 +21,16 @@ import dagger.Module
 import dagger.Provides
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.App
+import io.github.droidkaigi.confsched2020.data.api.DroidKaigiApi
+import io.github.droidkaigi.confsched2020.data.api.response.StaffResponse
+import io.github.droidkaigi.confsched2020.data.db.StaffDatabase
+import io.github.droidkaigi.confsched2020.data.db.entity.StaffEntity
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
 import io.github.droidkaigi.confsched2020.ext.isShow
+import io.github.droidkaigi.confsched2020.model.Staff
+import io.github.droidkaigi.confsched2020.model.StaffContents
 import io.github.droidkaigi.confsched2020.staff.R
 import io.github.droidkaigi.confsched2020.staff.databinding.FragmentStaffsBinding
 import io.github.droidkaigi.confsched2020.staff.ui.di.StaffAssistedInjectModule
@@ -28,9 +38,13 @@ import io.github.droidkaigi.confsched2020.staff.ui.item.StaffItem
 import io.github.droidkaigi.confsched2020.staff.ui.viewmodel.StaffsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.transition.Stagger
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Provider
 
+@FlowPreview
 class StaffsFragment : Fragment(R.layout.fragment_staffs) {
 
     @Inject
@@ -97,6 +111,16 @@ class StaffsFragment : Fragment(R.layout.fragment_staffs) {
     }
 }
 
+@VisibleForTesting
+fun readFromLocal(staffDatabase: StaffDatabase): Flow<StaffContents> {
+    return staffDatabase
+        .staffs()
+        .map { StaffContents(it.map { staffEntity -> staffEntity.toStaff() }) }
+}
+
+private fun StaffEntity.toStaff(): Staff = Staff(id, name, iconUrl, profileUrl)
+
+@FlowPreview
 @Module
 class StaffModule(private val fragment: StaffsFragment) {
     @PageScope
@@ -104,8 +128,22 @@ class StaffModule(private val fragment: StaffsFragment) {
     fun providesLifecycleOwnerLiveData(): LiveData<LifecycleOwner> {
         return fragment.viewLifecycleOwnerLiveData
     }
+    @Provides
+    fun provideStaffsContentsStore(
+        api: DroidKaigiApi,
+        staffDatabase: StaffDatabase
+    ): Store<Unit, StaffContents> {
+        return StoreBuilder.fromNonFlow<Unit, StaffResponse> { api.getStaffs() }
+            .persister(
+                reader = { readFromLocal(staffDatabase) },
+                writer = { _: Unit, output: StaffResponse -> staffDatabase.save(output) }
+            )
+            .cachePolicy(MemoryPolicy.builder().build())
+            .build()
+    }
 }
 
+@FlowPreview
 @PageScope
 @Component(
     modules = [
