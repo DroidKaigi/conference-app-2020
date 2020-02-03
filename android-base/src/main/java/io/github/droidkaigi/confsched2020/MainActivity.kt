@@ -229,11 +229,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     private fun setRippleColor(view: View, isIndigoBackground: Boolean) {
         (view.background as? RippleDrawable)?.setColor(
             ColorStateList.valueOf(
-                if (isIndigoBackground) {
-                    Color.WHITE
-                } else {
-                    this.getThemeColor(R.attr.colorControlHighlight)
-                }))
+                this.getThemeColor(
+                    if (isIndigoBackground) {
+                        R.attr.colorOnPrimary
+                    } else {
+                        R.attr.colorControlHighlight
+                    })))
     }
 
     private fun onDestinationChange(destination: NavDestination) {
