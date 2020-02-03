@@ -29,16 +29,14 @@
             tools:text="About Item"
             />
 
-        <TextView
-            android:id="@+id/content"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/version_number"
-            android:textSize="14sp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_launch"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="1.2.0"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
