@@ -38,6 +38,8 @@ dependencies {
 
     implementation Dep.Coil.coil
 
+    implementation Dep.Store.store
+
     testImplementation project(':corecomponent:androidtestcomponent')
     testImplementation Dep.Test.junit
     testImplementation Dep.Test.kotlinTestAssertions
