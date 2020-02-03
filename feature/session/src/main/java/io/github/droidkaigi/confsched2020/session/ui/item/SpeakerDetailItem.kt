@@ -15,9 +15,9 @@ import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
-import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSpeakerDetailBinding
@@ -33,8 +33,7 @@ class SpeakerDetailItem @AssistedInject constructor(
     @Assisted val searchQuery: String?,
     @Assisted val onImageLoadedCallback: () -> Unit,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
-) : BindableItem<ItemSpeakerDetailBinding>(speaker.id.hashCode().toLong()),
-    EqualableContentsProvider {
+) : BindableItem<ItemSpeakerDetailBinding>(speaker.id.hashCode().toLong()) {
 
     private val placeholder by lazyWithParam<Context, VectorDrawableCompat?> { context ->
         ProfilePlaceholderCreator.create(context)
@@ -75,17 +74,8 @@ class SpeakerDetailItem @AssistedInject constructor(
         }
     }
 
-    override fun providerEqualableContents(): Array<*> {
-        return arrayOf(speaker)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return isSameContents(other)
-    }
-
-    override fun hashCode(): Int {
-        return contentsHash()
-    }
+    override fun hasSameContentAs(other: Item<*>): Boolean =
+        speaker == (other as? SpeakerDetailItem)?.speaker
 
     private fun TextView.setSearchHighlight() {
         doOnPreDraw {

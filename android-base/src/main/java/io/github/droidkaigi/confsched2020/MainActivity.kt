@@ -1,6 +1,9 @@
 package io.github.droidkaigi.confsched2020
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
@@ -25,6 +28,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.splitcompat.SplitCompat
 import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector
@@ -65,6 +69,7 @@ import io.github.droidkaigi.confsched2020.sponsor.ui.di.SponsorsAssistedInjectMo
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.PageConfiguration
 import io.github.droidkaigi.confsched2020.ui.widget.SystemUiManager
+import io.github.droidkaigi.confsched2020.widget.component.NavigationDirections.Companion.actionGlobalToChrome
 import javax.inject.Inject
 import javax.inject.Provider
 import timber.log.Timber
@@ -96,6 +101,20 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     override fun androidInjector(): AndroidInjector<Any> = androidInjector
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(newBase)
+        SplitCompat.installActivity(this)
+    }
+
+    override fun applyOverrideConfiguration(overrideConfiguration: Configuration?) {
+        // Workaround for crash on 5.x and 6.x after install dfm
+        // https://issuetracker.google.com/issues/147937971
+        if (Build.VERSION.SDK_INT in 21..23) {
+            return
+        }
+        super.applyOverrideConfiguration(overrideConfiguration)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -226,10 +245,21 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         statusBarColors.statusBarColor.distinctUntilChanged().observe(this) { color ->
             window.statusBarColor = color
         }
+        statusBarColors.navigationBarColor.distinctUntilChanged().observe(this) { color ->
+            window.navigationBarColor = color
+        }
     }
 
     private fun handleNavigation(@IdRes itemId: Int): Boolean {
         binding.drawerLayout.closeDrawers()
+
+        when (itemId) {
+            R.id.entire_survey -> {
+                // TODO: Change to the correct URL
+                navController.navigate(actionGlobalToChrome("https://google.com"))
+                return true
+            }
+        }
 
         return try {
             // ignore if current destination is selected
@@ -308,9 +338,6 @@ abstract class MainActivityModule {
         modules = [SessionSurveyFragmentModule::class, SessionSurveyAssistedInjectModule::class]
     )
     abstract fun contributeSessionSurveyFragment(): SessionSurveyFragment
-
-    @Module
-    companion object
 
     @Module
     abstract class MainActivityBuilder {

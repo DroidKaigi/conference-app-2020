@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2020.di
+package io.github.droidkaigi.confsched2020.initializer
 
 import android.app.Activity
 import android.app.Application
@@ -10,9 +10,11 @@ import androidx.fragment.app.FragmentManager
 import dagger.android.AndroidInjection
 import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
+import io.github.droidkaigi.confsched2020.di.Injectable
+import javax.inject.Inject
 
-object AppInjector {
-    fun initialize(application: Application) {
+class AppInjector @Inject constructor() : AppInitializer {
+    override fun initialize(application: Application) {
         application.registerActivityLifecycleCallbacks(
             object : Application.ActivityLifecycleCallbacks {
 

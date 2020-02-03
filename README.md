@@ -243,3 +243,4 @@ This project uses some modern Android libraries and source codes.
 * [Nuke](https://github.com/kean/Nuke)
 * [SwiftGen](https://github.com/SwiftGen/SwiftGen)
 * [RealmSwift](https://github.com/realm/realm-cocoa)
+* [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing)

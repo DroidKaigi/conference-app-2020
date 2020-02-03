@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.xwray.groupie.Group
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
 import io.github.droidkaigi.confsched2020.di.Injectable
@@ -29,6 +29,7 @@ import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToChrome
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToFloormap
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailDescriptionItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailMaterialItem
@@ -93,7 +94,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         postponeEnterTransition()
 
         val binding = FragmentSessionDetailBinding.bind(view)
-        val adapter = GroupAdapter<ViewHolder<*>>()
+        val adapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.sessionDetailRecycler.adapter = adapter
         binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(context)
         context?.let {
@@ -128,12 +129,21 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
             }
 
         binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
+            val session = binding.session ?: return@setOnMenuItemClickListener true
             when (menuItem.itemId) {
                 R.id.session_share -> {
-                    // do something
+                    val sessionId = session.id.id.toInt()
+                    val url = resources.getString(R.string.session_share_url).format(sessionId)
+                    systemViewModel.shareURL(
+                        activity = requireActivity(),
+                        url = url
+                    )
+                }
+                R.id.floormap -> {
+                    val directions = actionSessionToFloormap(session.room)
+                    findNavController().navigate(directions)
                 }
                 R.id.session_calendar -> {
-                    val session = binding.session ?: return@setOnMenuItemClickListener true
                     systemViewModel.sendEventToCalendar(
                         activity = requireActivity(),
                         title = session.title.getByLang(defaultLang()),
@@ -170,7 +180,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
 
     private fun setupSessionViews(
         binding: FragmentSessionDetailBinding,
-        adapter: GroupAdapter<ViewHolder<*>>,
+        adapter: GroupAdapter<GroupieViewHolder<*>>,
         session: Session,
         showEllipsis: Boolean,
         searchQuery: String?
@@ -236,10 +246,9 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
 
 @Module
 abstract class SessionDetailFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides
+        @Provides
         fun providesLifecycleOwnerLiveData(
             sessionDetailFragment: SessionDetailFragment
         ): LiveData<LifecycleOwner> {

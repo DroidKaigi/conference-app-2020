@@ -3,7 +3,7 @@ package dependencies
 @Suppress("unused")
 object Dep {
     object GradlePlugin {
-        val android = "com.android.tools.build:gradle:3.6.0-rc01"
+        val android = "com.android.tools.build:gradle:3.6.0-rc02"
         val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}"
         val playServices = "com.google.gms:google-services:4.3.3"
@@ -70,6 +70,8 @@ object Dep {
             val runtimeKtx = "androidx.navigation:navigation-runtime-ktx:$version"
             val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
+            val dynamicFeaturesFragment = "androidx.navigation:navigation-dynamic-features-fragment:2.3.0-SNAPSHOT"
+            val dynamicFeaturesRuntime = "androidx.navigation:navigation-dynamic-features-runtime:2.3.0-SNAPSHOT"
         }
 
         object Work {
@@ -125,8 +127,12 @@ object Dep {
         val licensesPlugin = "com.google.android.gms:play-services-oss-licenses:16.0.1"
     }
 
+    object Play {
+        val core = "com.google.android.play:core:1.6.4"
+    }
+
     object Dagger {
-        val version = "2.25.4"
+        val version = "2.26"
         val core = "com.google.dagger:dagger:$version"
         val compiler = "com.google.dagger:dagger-compiler:$version"
         val androidSupport = "com.google.dagger:dagger-android-support:$version"
@@ -192,7 +198,7 @@ object Dep {
     }
 
     object Groupie {
-        val version = "2.4.0-alpha1"
+        val version = "2.7.2"
         val groupie = "com.xwray:groupie:$version"
         val databinding = "com.xwray:groupie-databinding:$version"
     }

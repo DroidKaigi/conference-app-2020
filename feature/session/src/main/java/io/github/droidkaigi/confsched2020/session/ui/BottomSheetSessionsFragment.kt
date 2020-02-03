@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
@@ -63,7 +64,7 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentBottomSheetSessionsBinding.bind(view)
         binding.isEmptyFavoritePage = false
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
         binding.sessionRecycler.addItemDecoration(
             SessionsItemDecoration(
@@ -149,6 +150,11 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
                 binding.sessionRecycler.smoothScrollToPositionWithLayoutManager(position)
                 sessionsViewModel.onScrolled()
             }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                // Work around for fixing issue that sessions are not displayed on Android 5.0
+                // https://github.com/DroidKaigi/conference-app-2020/issues/117#issuecomment-581151289
+                binding.sessionRecycler.scrollBy(0, 0)
+            }
         }
     }
 
@@ -169,10 +175,8 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
 
 @Module
 abstract class BottomSheetSessionsFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic
         @Provides
         fun providesLifecycleOwnerLiveData(
             mainBottomSheetSessionsFragment: BottomSheetSessionsFragment

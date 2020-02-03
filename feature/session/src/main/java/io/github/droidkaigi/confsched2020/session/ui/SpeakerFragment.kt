@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2020.session.ui
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -11,9 +12,10 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
@@ -52,8 +54,15 @@ class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
         postponeEnterTransition()
         binding.progressBar.show()
 
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
-        binding.speakerRecycler.adapter = groupAdapter
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
+        binding.speakerRecycler.also {
+            it.adapter = groupAdapter
+            it.doOnApplyWindowInsets { recyclerView, insets, initialState ->
+                recyclerView.updatePadding(
+                    bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+                )
+            }
+        }
 
         speakerViewModel.uiModel.distinctUntilChanged()
             .observe(viewLifecycleOwner) { uiModel: SpeakerViewModel.UiModel ->
@@ -77,10 +86,9 @@ class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
 
 @Module
 abstract class SpeakerFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides
+        @Provides
         fun providesLifecycleOwnerLiveData(
             speakerFragment: SpeakerFragment
         ): LiveData<LifecycleOwner> {

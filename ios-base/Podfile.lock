@@ -561,6 +561,7 @@ PODS:
   - RxRelay (5.0.1):
     - RxSwift (~> 5)
   - RxSwift (5.0.1)
+  - SnapshotTesting (1.7.0)
 
 DEPENDENCIES:
   - Material
@@ -570,6 +571,7 @@ DEPENDENCIES:
   - RealmSwift
   - RxCocoa
   - RxSwift
+  - SnapshotTesting (~> 1.7)
 
 SPEC REPOS:
   trunk:
@@ -586,6 +588,7 @@ SPEC REPOS:
     - RxCocoa
     - RxRelay
     - RxSwift
+    - SnapshotTesting
 
 SPEC CHECKSUMS:
   Material: a2a3f400a3b549d53ef89e56c58c4535b29db387
@@ -601,6 +604,7 @@ SPEC CHECKSUMS:
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
+  SnapshotTesting: 273b614fcc60fac7d9f613f6648afa91a7da36be
 
 PODFILE CHECKSUM: 23727e536327505c92a4ab6ba17b5d52241590cb
 
