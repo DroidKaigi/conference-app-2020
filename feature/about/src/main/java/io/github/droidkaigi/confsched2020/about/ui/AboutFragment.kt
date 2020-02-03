@@ -89,13 +89,7 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 aboutItemFactory.create(
                     getString(R.string.about_item_access)
                 ) {
-                    val intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("geo:35.6219252,139.7190626?q=TOCビル")
-                    ).setPackage("com.google.android.apps.maps")
-                    if (intent.resolveActivity(requireContext().packageManager) != null) {
-                        startActivity(intent)
-                    }
+                    systemViewModel.navigateToAccessMap(requireActivity())
                 },
                 aboutItemFactory.create(
                     getString(R.string.about_item_staff)

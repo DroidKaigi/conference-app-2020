@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched2020.system.ui.viewmodel
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.provider.CalendarContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -37,6 +38,16 @@ class SystemViewModel @Inject constructor() : ViewModel() {
             activity.startActivity(intent)
         } catch (e: Exception) {
             Timber.debug(e) { "Fail startActivity" }
+        }
+    }
+
+    fun navigateToAccessMap(activity: Activity) {
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("geo:35.6219252,139.7190626?q=TOCビル")
+        )
+        if (intent.resolveActivity(activity.packageManager) != null) {
+            activity.startActivity(intent)
         }
     }
 }
