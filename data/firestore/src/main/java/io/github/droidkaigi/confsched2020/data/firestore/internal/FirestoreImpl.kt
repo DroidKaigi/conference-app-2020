@@ -128,7 +128,13 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
     }
 
     private suspend fun createShardsIfNeeded(counterRef: CollectionReference) {
-        if (!counterRef.fastGet().isEmpty) {
+        val lastShardId = NUM_SHARDS - 1
+        val lastShard = counterRef
+            .document(lastShardId.toString())
+            .get(Source.SERVER)
+            .await()
+
+        if (lastShard.exists()) {
             Timber.debug { "createShardsIfNeeded shards already exist" }
             return
         }
