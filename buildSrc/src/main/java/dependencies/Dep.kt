@@ -235,4 +235,9 @@ object Dep {
     object Google {
         val autoservice = "com.google.auto.service:auto-service:1.0-rc6"
     }
+
+    object Store {
+        val version = "4.0.0-alpha01"
+        val store = "com.dropbox.mobile.store:store4:$version"
+    }
 }
