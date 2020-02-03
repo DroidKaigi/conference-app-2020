@@ -7,4 +7,13 @@
     <style name="Widget.DroidKaigi.Backdrop.BackLayer" parent="">
         <item name="android:background">?colorPrimary</item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.DroidKaigi.Button.OutlinedButton" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
+
+    <style name="Widget.DroidKaigi.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.DroidKaigi.Button.OutlinedButton</item>
+    </style>
 </resources>
