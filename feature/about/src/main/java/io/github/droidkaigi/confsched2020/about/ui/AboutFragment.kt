@@ -90,7 +90,7 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 aboutIconItemFactory.create(
                     getString(R.string.about_item_access)
                 ) {
-                    // TODO go access-page
+                    systemViewModel.navigateToAccessMap(requireActivity())
                 },
                 aboutItemFactory.create(
                     getString(R.string.about_item_staff)
