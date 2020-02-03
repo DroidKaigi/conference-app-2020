@@ -63,8 +63,9 @@ class SessionDetailViewModel @AssistedInject constructor(
     private val descriptionTextExpandStateLiveData: MutableLiveData<TextExpandState> =
         MutableLiveData(TextExpandState.COLLAPSED)
 
-    private val thumbsUpCountLiveData: LiveData<Int> = liveData {
+    private val thumbsUpCountLoadStateLiveData: LiveData<LoadState<Int>> = liveData {
         sessionRepository.thumbsUpCounts(sessionId)
+            .toLoadingState()
             .collect { thumbsUpCount ->
                emit(thumbsUpCount)
             }
@@ -76,12 +77,12 @@ class SessionDetailViewModel @AssistedInject constructor(
         liveData1 = sessionLoadStateLiveData,
         liveData2 = favoriteLoadingStateLiveData,
         liveData3 = descriptionTextExpandStateLiveData,
-        liveData4 = thumbsUpCountLiveData
+        liveData4 = thumbsUpCountLoadStateLiveData
     ) { current: UiModel,
         sessionLoadState: LoadState<Session>,
         favoriteState: LoadingState,
         descriptionTextExpandState: TextExpandState,
-        thumbsUpCount: Int ->
+        thumbsUpCountLoadState: LoadState<Int> ->
         val isLoading =
             sessionLoadState.isLoading || favoriteState.isLoading
         val sessions = when (sessionLoadState) {
@@ -93,6 +94,14 @@ class SessionDetailViewModel @AssistedInject constructor(
             }
         }
         val showEllipsis = descriptionTextExpandState == TextExpandState.COLLAPSED
+        val thumbsUpCount = when (thumbsUpCountLoadState) {
+            is LoadState.Loaded -> {
+                thumbsUpCountLoadState.value
+            }
+            else -> {
+                current.thumbsUpCount
+            }
+        }
 
         UiModel(
             isLoading = isLoading,
@@ -100,6 +109,9 @@ class SessionDetailViewModel @AssistedInject constructor(
                 .getErrorIfExists()
                 .toAppError()
                 ?: favoriteState
+                    .getErrorIfExists()
+                    .toAppError()
+                ?: thumbsUpCountLoadState
                     .getErrorIfExists()
                     .toAppError(),
             session = sessions,
