@@ -15,6 +15,7 @@ androidExtensions {
     features = ["parcelize"]
 }
 kotlin {
+    jvm()
     android("android")
     iosArm64("iosArm64") {
         binaries {
@@ -56,6 +57,7 @@ kotlin {
         jvmMain {
             dependencies {
                 implementation Dep.Kotlin.stdlibJvm
+                implementation Dep.Kotlin.coroutines
             }
         }
         androidMain {
