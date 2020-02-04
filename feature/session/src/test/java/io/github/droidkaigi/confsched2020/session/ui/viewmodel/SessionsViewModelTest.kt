@@ -427,7 +427,7 @@ class SessionsViewModelTest {
     }
 
     @Test
-    fun filterChanged_audienceCategory_true() {
+    fun filterChanged_level_true() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
         val sessionsViewModel = SessionsViewModel(
@@ -457,7 +457,7 @@ class SessionsViewModelTest {
     }
 
     @Test
-    fun filterChanged_audienceCategory_false() {
+    fun filterChanged_level_false() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
 
         val sessionsViewModel = SessionsViewModel(
