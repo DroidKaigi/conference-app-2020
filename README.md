@@ -244,3 +244,4 @@ This project uses some modern Android libraries and source codes.
 * [SwiftGen](https://github.com/SwiftGen/SwiftGen)
 * [RealmSwift](https://github.com/realm/realm-cocoa)
 * [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing)
+* [RxRealm](https://github.com/RxSwiftCommunity/RxRealm)
