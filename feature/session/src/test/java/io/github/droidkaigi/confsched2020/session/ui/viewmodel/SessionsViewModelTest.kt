@@ -1,11 +1,11 @@
 package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 
 import com.jraska.livedata.test
-import io.github.droidkaigi.confsched2020.model.AudienceCategory
 import io.github.droidkaigi.confsched2020.model.Category
 import io.github.droidkaigi.confsched2020.model.Filters
 import io.github.droidkaigi.confsched2020.model.Lang
 import io.github.droidkaigi.confsched2020.model.LangSupport
+import io.github.droidkaigi.confsched2020.model.Level
 import io.github.droidkaigi.confsched2020.model.LocaledString
 import io.github.droidkaigi.confsched2020.model.Room
 import io.github.droidkaigi.confsched2020.model.Session
@@ -60,7 +60,7 @@ class SessionsViewModelTest {
             filters shouldBe Filters()
             allFilters shouldBe Filters(
                 rooms = Dummies.sessionContents.rooms.toSet(),
-                audienceCategories = Dummies.sessionContents.audienceCategories.toSet(),
+                levels = Dummies.sessionContents.levels.toSet(),
                 categories = Dummies.sessionContents.category.toSet(),
                 langs = Dummies.sessionContents.langs.toSet(),
                 langSupports = Dummies.sessionContents.langSupports.toSet()
@@ -95,7 +95,7 @@ class SessionsViewModelTest {
         val filters = Filters()
         val allFilters = Filters(
             rooms = Dummies.sessionContents.rooms.toSet(),
-            audienceCategories = Dummies.sessionContents.audienceCategories.toSet(),
+            levels = Dummies.sessionContents.levels.toSet(),
             categories = Dummies.sessionContents.category.toSet(),
             langs = Dummies.sessionContents.langs.toSet(),
             langSupports = Dummies.sessionContents.langSupports.toSet()
@@ -439,7 +439,7 @@ class SessionsViewModelTest {
             .uiModel
             .test()
 
-        sessionsViewModel.filterChanged(AudienceCategory.BEGINNERS, true)
+        sessionsViewModel.filterChanged(Level.BEGINNER, true)
         val valueHistory = testObserver.valueHistory()
         valueHistory[0] shouldBe SessionsViewModel.UiModel.EMPTY.copy(isLoading = true)
         valueHistory[1].apply {
@@ -451,7 +451,7 @@ class SessionsViewModelTest {
             isLoading shouldBe false
             error shouldBe null
             filters shouldBe Filters(
-                audienceCategories = setOf(AudienceCategory.BEGINNERS)
+                levels = setOf(Level.BEGINNER)
             )
         }
     }
@@ -465,21 +465,21 @@ class SessionsViewModelTest {
             sessionAlarm = sessionAlarm
         )
         // turn on once for testing.
-        sessionsViewModel.filterChanged(AudienceCategory.BEGINNERS, true)
-        sessionsViewModel.filterChanged(AudienceCategory.UNSPECIFIED, true)
+        sessionsViewModel.filterChanged(Level.BEGINNER, true)
+        sessionsViewModel.filterChanged(Level.INTERMEDIATE, true)
 
         val testObserver = sessionsViewModel
             .uiModel
             .test()
-        sessionsViewModel.filterChanged(AudienceCategory.UNSPECIFIED, false)
+        sessionsViewModel.filterChanged(Level.INTERMEDIATE, false)
         val valueHistory = testObserver.valueHistory()
         valueHistory[0].apply {
             isLoading shouldBe true
             error shouldBe null
             filters shouldBe Filters(
-                audienceCategories = setOf(
-                    AudienceCategory.BEGINNERS,
-                    AudienceCategory.UNSPECIFIED
+                levels = setOf(
+                    Level.BEGINNER,
+                    Level.INTERMEDIATE
                 )
             )
         }
@@ -487,16 +487,16 @@ class SessionsViewModelTest {
             isLoading shouldBe false
             error shouldBe null
             filters shouldBe Filters(
-                audienceCategories = setOf(
-                    AudienceCategory.BEGINNERS,
-                    AudienceCategory.UNSPECIFIED
+                levels = setOf(
+                    Level.BEGINNER,
+                    Level.INTERMEDIATE
                 )
             )
         }
         valueHistory[2].apply {
             isLoading shouldBe false
             error shouldBe null
-            filters shouldBe Filters(audienceCategories = setOf(AudienceCategory.BEGINNERS))
+            filters shouldBe Filters(levels = setOf(Level.BEGINNER))
         }
     }
 
@@ -508,7 +508,7 @@ class SessionsViewModelTest {
             sessionRepository = sessionRepository,
             sessionAlarm = sessionAlarm
         )
-        sessionsViewModel.filterChanged(AudienceCategory.BEGINNERS, true)
+        sessionsViewModel.filterChanged(Level.BEGINNER, true)
         sessionsViewModel.filterChanged(LangSupport.INTERPRETATION, true)
         sessionsViewModel.filterChanged(Lang.JA, true)
         val category1 = Category(
@@ -533,7 +533,7 @@ class SessionsViewModelTest {
                 categories = setOf(category1),
                 langs = setOf(Lang.JA),
                 langSupports = setOf(LangSupport.INTERPRETATION),
-                audienceCategories = setOf(AudienceCategory.BEGINNERS)
+                levels = setOf(Level.BEGINNER)
             )
         }
         valueHistory[1].apply {
@@ -544,7 +544,7 @@ class SessionsViewModelTest {
                 categories = setOf(category1),
                 langs = setOf(Lang.JA),
                 langSupports = setOf(LangSupport.INTERPRETATION),
-                audienceCategories = setOf(AudienceCategory.BEGINNERS)
+                levels = setOf(Level.BEGINNER)
             )
         }
         valueHistory[2].apply {
