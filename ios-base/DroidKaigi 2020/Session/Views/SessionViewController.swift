@@ -65,11 +65,9 @@ final class SessionViewController: UIViewController {
         // TODO: Error handling for viewModel.sessions
         let dataSource = SessionViewDataSource()
         let filteredSessions = viewModel.sessions.asObservable()
-            .map { sessions -> [AppBaseSession] in
+            .map { sessions -> [Session] in
                 if self.type == .myPlan {
-                    return sessions
-                        .filter { $0.isFavorited }
-                        .sorted(by: { $0.dayNumber == $1.dayNumber ? $0.startTime < $1.startTime : $0.dayNumber < $1.dayNumber })
+                    return sessions.filter { $0.isFavorited }
                 }
                 return sessions.filter { $0.dayNumber == self.type.rawValue }
             }
@@ -97,16 +95,14 @@ final class SessionViewController: UIViewController {
                 self?.navigationController?.pushViewController(SpeakerViewController.instantiate(speaker: speaker, sessions: sessions), animated: true)
             })
             .disposed(by: disposeBag)
-        dataSource.onTapBookmark.emit(onNext: { [unowned self] cell, session in
+        dataSource.onTapBookmark.emit(onNext: { [unowned self] _, session in
             if session.isFavorited {
                 self.viewModel.resignBookingSession(session)
-                cell.bookmarkButton.setImage(Asset.icBookmarkBorder.image, for: .normal)
             } else {
                 self.viewModel.bookSession(session)
-                cell.bookmarkButton.setImage(Asset.icBookmark.image, for: .normal)
             }
             }).disposed(by: disposeBag)
-        collectionView.rx.modelSelected(AppBaseSession.self)
+        collectionView.rx.modelSelected(Session.self)
             .bind(onNext: { [unowned self] in self.showDetail(forSession: $0) })
             .disposed(by: disposeBag)
     }
@@ -138,7 +134,7 @@ final class SessionViewController: UIViewController {
 // MARK: -
 
 private extension SessionViewController {
-    func showDetail(forSession session: AppBaseSession) {
+    func showDetail(forSession session: Session) {
         // FIXME: Use coordinator?
         guard let vc = UIStoryboard(name: "SessionDetail", bundle: nil)
             .instantiateInitialViewController() as? SessionDetailViewController else {

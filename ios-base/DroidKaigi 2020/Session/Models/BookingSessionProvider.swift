@@ -1,62 +1,57 @@
 import ios_combined
 import RealmSwift
+import RxRealm
 import RxSwift
 
 final class BookingSessionProvider {
-    func bookSession(session: AppBaseSession) -> Single<Void> {
-        return Single.create { (observer) -> Disposable in
-            do {
-                let realm = try Realm()
-                if let serviceSession = session as? AppServiceSession {
-                    serviceSession.isFavorited = true
-                    try realm.write {
-                        realm.add(serviceSession)
-                    }
-                } else if let speechSession = session as? AppSpeechSession {
-                    speechSession.isFavorited = true
-                    try realm.write {
-                        realm.add(speechSession)
-                    }
+    private let disposeBag = DisposeBag()
+
+    func bookSession(session: Session) {
+        do {
+            let sessionId = session.id.id
+            let realm = try Realm()
+
+            if let session = realm.object(ofType: SessionEntity.self, forPrimaryKey: sessionId) {
+                try realm.write {
+                    session.isFavorited = true
                 }
-                observer(.success(()))
-            } catch {
-                observer(.error(error))
+            } else {
+                let session = SessionEntity(session: session)
+                try realm.write {
+                    realm.add(session)
+                }
             }
-            return Disposables.create()
+        } catch {
+            fatalError(error.localizedDescription)
         }
     }
 
-    func fetchBookedSessions() -> [AppBaseSession] {
+    func fetchBookedSessions(firstSession: Session) -> Observable<[Session]> {
         do {
             let realm = try Realm()
-            let serviceResult = Array(realm.objects(AppServiceSession.self)).map { $0 as AppBaseSession }
-            let speechResult = Array(realm.objects(AppSpeechSession.self)).map { $0 as AppBaseSession }
-            return serviceResult + speechResult
+            let result = realm.objects(SessionEntity.self)
+
+            return Observable.collection(from: result).map { (results) -> [Session] in
+                results.compactMap { (sessionEntity) -> Session? in
+                    return RealmToModelMapper.toModel(sessionEntity: sessionEntity, firstSessionSTime: firstSession.startTime)
+                }
+            }
         } catch {
-            return []
+            return .error(error)
         }
     }
 
-    func resignBookingSession(_ session: AppBaseSession) -> Single<Void> {
-        return Single.create { (observer) -> Disposable in
-            do {
-                let realm = try Realm()
-                if let serviceSession = session as? AppServiceSession, !serviceSession.isInvalidated {
-                    try realm.write {
-                        realm.delete(serviceSession)
-                        try realm.commitWrite()
-                    }
-                } else if let speechSession = session as? AppSpeechSession, !speechSession.isInvalidated {
-                    try realm.write {
-                        realm.delete(speechSession)
-                        try realm.commitWrite()
-                    }
-                }
-                observer(.success(()))
-            } catch {
-                observer(.error(error))
+    func resignBookingSession(_ sessionId: String) {
+        do {
+            let realm = try Realm()
+            guard let session = realm.object(ofType: SessionEntity.self, forPrimaryKey: sessionId) else {
+                fatalError()
             }
-            return Disposables.create()
+            try realm.write {
+                session.isFavorited = false
+            }
+        } catch {
+            fatalError(error.localizedDescription)
         }
     }
 }

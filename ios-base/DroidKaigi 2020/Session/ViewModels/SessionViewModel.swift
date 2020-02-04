@@ -10,7 +10,7 @@ final class SessionViewModel {
     private let viewDidAppearRelay: PublishRelay<Void>
     private let toggleEmbeddedViewRelay = PublishRelay<Void>()
     private let sessionsFetchFromApiRelay: BehaviorRelay<[Session]>
-    private let sessionsFetchFromLocalRelay: BehaviorRelay<[AppBaseSession]>
+    private let sessionsFetchFromLocalRelay: BehaviorRelay<[Session]>
 
     func toggleEmbeddedView() {
         toggleEmbeddedViewRelay.accept(())
@@ -22,7 +22,7 @@ final class SessionViewModel {
 
     // output
     let isFocusedOnEmbeddedView: Driver<Bool>
-    let sessions: Observable<[AppBaseSession]>
+    let sessions: Driver<[Session]>
 
     // dependencies
     private let bookingSessionProvider: BookingSessionProvider
@@ -35,45 +35,15 @@ final class SessionViewModel {
         let isFocusedOnEmbeddedViewRelay = BehaviorRelay<Bool>(value: true)
         isFocusedOnEmbeddedView = isFocusedOnEmbeddedViewRelay.asDriver()
 
-        sessions = Observable.combineLatest(
-            sessionsFetchFromApiRelay
-                .asObservable()
-                .map { sessions in
-                    sessions.compactMap { (session) -> AppBaseSession? in
-                        if let session = session as? SpeechSession {
-                            return AppSpeechSession(session: session)
-                        } else if let session = session as? ServiceSession {
-                            return AppServiceSession(session: session)
-                        }
-                        return nil
-                    }
-                },
-            sessionsFetchFromLocalRelay
-                .asObservable()
-        ).map { (arg: ([AppBaseSession], [AppBaseSession])) -> [AppBaseSession] in
-            var (remote, local) = arg
-            local = local
-                .compactMap { $0 as? Object }
-                .filter { !$0.isInvalidated }
-                .compactMap { $0 as? AppBaseSession }
-            remote = remote
-                .compactMap { (session) -> AppBaseSession? in
-                    if let speech = session as? AppSpeechSession {
-                        return AppSpeechSession(value: speech)
-                    } else if let service = session as? AppServiceSession {
-                        return AppServiceSession(value: service)
-                    }
-                    return nil
-                }
-            for (index, session) in remote.enumerated() {
-                if let sameSession = local.lazy.first(where: { $0.id?.id == session.id?.id }) {
-                    remote.remove(at: index)
-                    remote.insert(sameSession, at: index)
-                }
+        sessions = Driver.combineLatest(
+            sessionsFetchFromApiRelay.asDriver(onErrorJustReturn: []),
+            sessionsFetchFromLocalRelay.asDriver()
+        ) { remote, local in
+            let filteredSameSession = remote.filter { (session: Session) in
+                !local.contains(where: { $0.isFavorited && session.id.id == $0.id.id })
             }
-            return remote
+            return (filteredSameSession + local).sorted { $0.startTime < $1.startTime }
         }
-
         let dataProvider = SessionDataProvider()
         dataProvider
             .fetchSessions()
@@ -87,21 +57,26 @@ final class SessionViewModel {
             .bind(to: isFocusedOnEmbeddedViewRelay)
             .disposed(by: disposeBag)
 
-        viewDidAppearRelay.asObservable().subscribe(onNext: {
-            let localSessions = self.bookingSessionProvider.fetchBookedSessions()
-            self.sessionsFetchFromLocalRelay.accept(localSessions)
-        }).disposed(by: disposeBag)
+        sessionsFetchFromApiRelay
+            .asObservable()
+            .filter { !$0.isEmpty }
+            .take(1)
+            .subscribe(onNext: { [weak self] sessions in
+                guard let self = self, let firstSession = sessions.first else {
+                    return
+                }
+                self.bookingSessionProvider
+                    .fetchBookedSessions(firstSession: firstSession)
+                    .bind(to: self.sessionsFetchFromLocalRelay)
+                    .disposed(by: self.disposeBag)
+            }).disposed(by: disposeBag)
     }
 
-    func bookSession(_ session: AppBaseSession) {
-        bookingSessionProvider.bookSession(session: session).subscribe(onSuccess: {
-            self.sessionsFetchFromLocalRelay.accept(self.bookingSessionProvider.fetchBookedSessions())
-        }).disposed(by: disposeBag)
+    func bookSession(_ session: Session) {
+        bookingSessionProvider.bookSession(session: session)
     }
 
-    func resignBookingSession(_ session: AppBaseSession) {
-        bookingSessionProvider.resignBookingSession(session).subscribe(onSuccess: {
-            self.sessionsFetchFromLocalRelay.accept(self.bookingSessionProvider.fetchBookedSessions())
-        }).disposed(by: disposeBag)
+    func resignBookingSession(_ session: Session) {
+        bookingSessionProvider.resignBookingSession(session.id.id)
     }
 }
