@@ -15,6 +15,12 @@ interface DroidKaigiApi {
 
     fun getSessionsAsync(): Deferred<Response>
 
+    fun getAnnouncements(
+        lang: LangParameter,
+        callback: (response: AnnouncementListResponse) -> Unit,
+        onError: (error: Exception) -> Unit
+    )
+
     fun getAnnouncementsAsync(lang: LangParameter): Deferred<AnnouncementListResponse>
 
     suspend fun getSponsors(): SponsorListResponse
