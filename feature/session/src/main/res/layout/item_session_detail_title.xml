@@ -18,6 +18,11 @@
             name="lang"
             type="io.github.droidkaigi.confsched2020.model.Lang"
             />
+
+        <variable
+            name="thumbsUpCount"
+            type="Integer"
+            />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -125,14 +130,17 @@
             android:layout_height="wrap_content"
             android:minWidth="56dp"
             android:layout_marginTop="24dp"
-            android:backgroundTint="?colorPrimary"
-            android:textColor="?colorSurface"
+            android:backgroundTint="@{ thumbsUpCount > 0 ? @color/indigo_900 : @color/white }"
+            android:text="@{ thumbsUpCount > 0 ? thumbsUpCount.toString() : @string/thumbs_up_default_label }"
+            android:textColor="@{ thumbsUpCount > 0 ? @color/white: @color/indigo_900 }"
             android:textAppearance="?textAppearanceButton"
             style="@style/Widget.DroidKaigi.Button.OvalButton"
             app:icon="@drawable/ic_thumbs_up_black_24dp"
-            app:iconTint="?colorSurface"
+            app:iconTint="@{ thumbsUpCount > 0 ? @color/white: @color/indigo_900 }"
             app:iconPadding="4dp"
             app:iconSize="16dp"
+            app:strokeColor="@{ thumbsUpCount > 0 ? @color/white : @color/indigo_900 }"
+            app:strokeWidth="1dp"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tags"
             app:layout_constraintBottom_toTopOf="@id/divider_survey_and_text"

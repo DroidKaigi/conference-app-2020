@@ -62,7 +62,7 @@ class SessionDetailTitleItem @AssistedInject constructor(
 //            binding.sessionMessage.text = "セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
 //            binding.sessionMessage.isVisible = true
 
-            binding.thumbsUp.text = thumbsUpCount.toString()
+            binding.thumbsUpCount = thumbsUpCount
             binding.thumbsUp.setOnClickListener {
                 thumbsUpListener.invoke()
             }
