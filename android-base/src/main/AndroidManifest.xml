@@ -17,6 +17,7 @@
             </intent-filter>
             <nav-graph android:value="@navigation/navigation" />
         </activity>
+        <receiver android:name=".session.broadcastreceiver.NotificationBroadcastReceiver" />
     </application>
 
 </manifest>

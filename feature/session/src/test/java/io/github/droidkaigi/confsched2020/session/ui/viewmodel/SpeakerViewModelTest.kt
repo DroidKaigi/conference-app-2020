@@ -29,7 +29,8 @@ class SpeakerViewModelTest {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
         val speakerViewModel = SpeakerViewModel(
             speakerId = Dummies.speakers.first().id,
-            sessionRepository = sessionRepository
+            sessionRepository = sessionRepository,
+            searchQuery = null
         )
 
         val testObserver = speakerViewModel
@@ -43,6 +44,7 @@ class SpeakerViewModelTest {
             error shouldBe null
             speaker shouldBe Dummies.speakers.first()
             sessions shouldBe listOf(Dummies.speachSession1)
+            searchQuery shouldBe null
         }
     }
 
@@ -63,7 +65,8 @@ class SpeakerViewModelTest {
         )
         val speakerViewModel = SpeakerViewModel(
             speakerId = Dummies.speakers.first().id,
-            sessionRepository = sessionRepository
+            sessionRepository = sessionRepository,
+            searchQuery = null
         )
 
         val testObserver = speakerViewModel
@@ -77,6 +80,7 @@ class SpeakerViewModelTest {
             error shouldBe null
             speaker shouldBe Dummies.speakers.first()
             sessions shouldBe listOf(Dummies.speachSession1, speachSession2)
+            searchQuery shouldBe null
         }
     }
 
@@ -85,7 +89,8 @@ class SpeakerViewModelTest {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
         val speakerViewModel = SpeakerViewModel(
             speakerId = SpeakerId("notExistId"),
-            sessionRepository = sessionRepository
+            sessionRepository = sessionRepository,
+            searchQuery = null
         )
 
         val testObserver = speakerViewModel
@@ -99,6 +104,7 @@ class SpeakerViewModelTest {
             error shouldNotBe null
             speaker shouldBe null
             sessions shouldBe listOf()
+            searchQuery shouldBe null
         }
     }
 
@@ -107,7 +113,8 @@ class SpeakerViewModelTest {
         coEvery { sessionRepository.sessionContents() } returns flowOf(SessionContents.EMPTY)
         val speakerViewModel = SpeakerViewModel(
             speakerId = SpeakerId("anyId"),
-            sessionRepository = sessionRepository
+            sessionRepository = sessionRepository,
+            searchQuery = null
         )
 
         val testObserver = speakerViewModel
@@ -121,6 +128,31 @@ class SpeakerViewModelTest {
             error shouldNotBe null
             speaker shouldBe null
             sessions shouldBe listOf()
+            searchQuery shouldBe null
+        }
+    }
+
+    @Test
+    fun uiModel_from_search() {
+        coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
+        val speakerViewModel = SpeakerViewModel(
+            speakerId = Dummies.speakers.first().id,
+            sessionRepository = sessionRepository,
+            searchQuery = "query"
+        )
+
+        val testObserver = speakerViewModel
+            .uiModel
+            .test()
+
+        val valueHistory = testObserver.valueHistory()
+        valueHistory[0].isLoading shouldBe true // other properties are not deterministic.
+        valueHistory[1].apply {
+            isLoading shouldBe false
+            error shouldBe null
+            speaker shouldBe Dummies.speakers.first()
+            sessions shouldBe listOf(Dummies.speachSession1)
+            searchQuery shouldBe "query"
         }
     }
 }

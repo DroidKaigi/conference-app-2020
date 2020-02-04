@@ -1,3 +1,4 @@
+import Material
 import MaterialComponents
 import RxCocoa
 import RxSwift
@@ -23,10 +24,14 @@ final class FilterViewController: UIViewController {
 
     private let embeddedViewAnimator = UIViewPropertyAnimator(duration: 0.8, curve: .easeInOut)
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = ApplicationScheme.shared.colorScheme.surfaceColor
+        view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
         setUpAppBar()
         setUpTabBar()
         setUpContainerView()
@@ -39,6 +44,13 @@ final class FilterViewController: UIViewController {
         let embeddedFrame = frameForEmbeddedController()
         containerView.frame = embeddedFrame
         embeddedView?.frame = containerView.bounds
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.primaryColor
+        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
     }
 
     private func frameForEmbeddedController() -> CGRect {
@@ -56,27 +68,31 @@ final class FilterViewController: UIViewController {
     }
 
     private func setUpAppBar() {
-        let menuImage = UIImage(named: "ic_menu")
-        let templateMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
+        let menuImage = Asset.icMenu.image
+        let templateMenuImage = menuImage.withRenderingMode(.alwaysTemplate)
         let menuItem = UIBarButtonItem(image: templateMenuImage,
                                        style: .plain,
                                        target: self,
                                        action: nil)
-        let logoImage = UIImage(named: "logo")
-        let templateLogoImage = logoImage?.withRenderingMode(.alwaysOriginal)
+        let logoImage = Asset.logo.image
+        let templateLogoImage = logoImage.withRenderingMode(.alwaysOriginal)
         let logoItem = UIBarButtonItem(image: templateLogoImage, style: .plain, target: nil, action: nil)
-        let searchImage = UIImage(named: "ic_search")
-        let templateSearchImage = searchImage?.withRenderingMode(.alwaysTemplate)
+        let searchImage = Asset.icSearch.image
+        let templateSearchImage = searchImage.withRenderingMode(.alwaysTemplate)
         let searchItem = UIBarButtonItem(image: templateSearchImage,
                                          style: .plain,
                                          target: self,
                                          action: nil)
-        self.navigationItem.leftBarButtonItems = [menuItem, logoItem]
-        self.navigationItem.rightBarButtonItems = [searchItem]
-        self.navigationController?.navigationBar
-            .setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.edgesForExtendedLayout = []
+        navigationItem.leftBarButtonItems = [menuItem, logoItem]
+        navigationItem.rightBarButtonItems = [searchItem]
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        edgesForExtendedLayout = []
+
+        menuItem.rx.tap
+            .bind(to: Binder(self) { me, _ in
+                me.navigationDrawerController?.toggleLeftView()
+            }).disposed(by: disposeBag)
     }
 
     private func setUpTabBar() {
@@ -84,7 +100,8 @@ final class FilterViewController: UIViewController {
         tabBar.items = [
             UITabBarItem(title: "DAY1", image: nil, tag: 0),
             UITabBarItem(title: "DAY2", image: nil, tag: 1),
-            UITabBarItem(title: "MYPLAN", image: nil, tag: 2),
+            UITabBarItem(title: "EVENT", image: nil, tag: 2),
+            UITabBarItem(title: "MYPLAN", image: nil, tag: 3),
         ]
         tabBar.alignment = .justified
         tabBar.itemAppearance = .titles
@@ -206,6 +223,8 @@ extension FilterViewController: MDCTabBarDelegate {
         case 1:
             embeddedViewController?.setViewControllers(type: .day2)
         case 2:
+            embeddedViewController?.setViewControllers(type: .event)
+        case 3:
             embeddedViewController?.setViewControllers(type: .myPlan)
         default:
             break

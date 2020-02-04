@@ -62,6 +62,21 @@ internal open class KtorDroidKaigiApi constructor(
             getSessions()
         }
 
+    override fun getAnnouncements(
+        lang: LangParameter,
+        callback: (response: AnnouncementListResponse) -> Unit,
+        onError: (error: Exception) -> Unit
+    ) {
+        GlobalScope.launch(requireNotNull(coroutineDispatcherForCallback)) {
+            try {
+                val response = getAnnouncements(lang)
+                callback(response)
+            } catch (ex: Exception) {
+                onError(ex)
+            }
+        }
+    }
+
     override fun getAnnouncementsAsync(lang: LangParameter): Deferred<AnnouncementListResponse> =
         GlobalScope.async(requireNotNull(coroutineDispatcherForCallback)) {
             getAnnouncements(lang)
@@ -83,6 +98,20 @@ internal open class KtorDroidKaigiApi constructor(
         }
 
         return json.parse(SponsorResponseImpl.serializer().list, rawResponse)
+    }
+
+    override fun getSponsors(
+        callback: (response: SponsorListResponse) -> Unit,
+        onError: (error: Exception) -> Unit
+    ) {
+        GlobalScope.launch(requireNotNull(coroutineDispatcherForCallback)) {
+            try {
+                val response = getSponsors()
+                callback(response)
+            } catch (ex: Exception) {
+                onError(ex)
+            }
+        }
     }
 
     override suspend fun getStaffs(): StaffResponse {
