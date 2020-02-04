@@ -208,7 +208,8 @@ class FiltersTest {
                     expected = false
                 ),
                 Param.forLevels(
-                    title = "filter has Beginners and Intermediate passes Intermediate and Advanced session",
+                    title = "filter has Beginners and Intermediate" +
+                        " passes Intermediate and Advanced session",
                     filterItem = setOf(Level.BEGINNER, Level.INTERMEDIATE),
                     levelList = listOf(Level.INTERMEDIATE, Level.ADVANCED),
                     expected = true

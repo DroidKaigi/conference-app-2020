@@ -99,7 +99,17 @@ data class SpeechSession(
     override val isFavorited: Boolean,
     val speakers: List<Speaker>,
     val message: LocaledString?
-) : Session(id, title, desc, dayNumber, startTime, endTime, room, isFavorited, levels), AndroidParcel {
+) : Session(
+    id,
+    title,
+    desc,
+    dayNumber,
+    startTime,
+    endTime,
+    room,
+    isFavorited,
+    levels
+), AndroidParcel {
 
     override fun shortSummary(lang: Lang) = buildString {
         append(timeInMinutes)
@@ -125,7 +135,17 @@ data class ServiceSession(
     override val levels: List<Level>,
     val sessionType: SessionType,
     override val isFavorited: Boolean
-) : Session(id, title, desc, dayNumber, startTime, endTime, room, isFavorited, levels), AndroidParcel {
+) : Session(
+    id,
+    title,
+    desc,
+    dayNumber,
+    startTime,
+    endTime,
+    room,
+    isFavorited,
+    levels
+), AndroidParcel {
 
     override fun shortSummary(lang: Lang) = buildString {
         append(timeInMinutes)
