@@ -21,5 +21,6 @@ internal data class SessionResponseImpl(
     override val targetAudience: String,
     override val interpretationTarget: Boolean,
     override val videoUrl: String? = null,
-    override val slideUrl: String? = null
+    override val slideUrl: String? = null,
+    override val levels: List<String>
 ) : SessionResponse

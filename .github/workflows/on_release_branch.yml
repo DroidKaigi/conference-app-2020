@@ -147,7 +147,7 @@ jobs:
           ${{ runner.os }}-m2-${{ hashFiles('buildSrc/**/*.kt') }}-${{ hashFiles('**/*.gradle.kts') }}-
           ${{ runner.os }}-m2-${{ hashFiles('buildSrc/**/*.kt') }}-
           ${{ runner.os }}-m2-
-    - run: ./gradlew lintRelease testRelease ktlint --continue
+    - run: ./gradlew lintRelease testRelease jvmTest ktlint --continue
       shell: bash
     - name: Collect test artifacts
       if: always()
