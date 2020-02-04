@@ -5,8 +5,8 @@ import io.github.droidkaigi.confsched2020.model.Level
 
 internal fun List<String>.toLevelEntity(): LevelEntityImpl {
     return LevelEntityImpl(
-        isBeginner = contains(Level.BEGINNER.name),
-        isIntermediate = contains(Level.INTERMEDIATE.name),
-        isAdvanced = contains(Level.ADVANCED.name)
+        isBeginner = contains(Level.BEGINNER.id),
+        isIntermediate = contains(Level.INTERMEDIATE.id),
+        isAdvanced = contains(Level.ADVANCED.id)
     )
 }
