@@ -64,7 +64,7 @@ jobs:
     steps:
       - checkout
       - restore_and_save_gradle_cache
-      - run: ./gradlew lintDebug testDebugUnitTest jvmTest ktlint --continue --offline
+      - run: ./gradlew lintDebug testDebugUnitTest jvmTest ktlint --continue
       - run: .ci/scripts/collect-test-artifacts.bash
       - run: .ci/scripts/collect-ktlint-artifacts.bash
       - store_test_results:
