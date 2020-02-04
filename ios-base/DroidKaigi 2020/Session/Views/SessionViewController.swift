@@ -68,15 +68,16 @@ final class SessionViewController: UIViewController {
         // TODO: Error handling for viewModel.sessions
         let dataSource = SessionViewDataSource()
         let filteredSessions = viewModel.sessions.asObservable()
-            .map { sessions -> [Session] in
+            .map { [weak self] sessions -> [Session] in
+                guard let self = self else { return [] }
                 switch self.type {
                 case .day1, .day2:
                     return sessions.filter {
                         Int($0.dayNumber) == self.type.rawValue
-                            && $0.room.roomType != Room.RoomType.exhibition
+                            && $0.room.roomType != .exhibition
                     }
                 case .event:
-                    return sessions.filter { $0.room.roomType == Room.RoomType.exhibition }
+                    return sessions.filter { $0.room.roomType == .exhibition }
                 case .myPlan:
                     return sessions.filter { $0.isFavorited }
                 }
