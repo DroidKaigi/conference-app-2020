@@ -68,7 +68,7 @@ final class SessionEntity: Object {
         }
     }
     
-    override required init() {
+    required init() {
         speakers = .init()
         super.init()
     }
