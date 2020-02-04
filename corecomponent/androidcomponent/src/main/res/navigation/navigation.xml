@@ -1,8 +1,19 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation"
     app:startDestination="@id/main"
     >
+    <action
+        android:id="@+id/action_global_to_chrome"
+        app:destination="@id/chrome">
+        <argument
+            android:name="url"
+            app:argType="string"
+            app:nullable="false"
+            />
+    </action>
+
     <fragment
         android:id="@+id/main"
         android:name="io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragment"
@@ -156,6 +167,7 @@
         android:id="@+id/staffs"
         android:name="io.github.droidkaigi.confsched2020.staff.ui.StaffsFragment"
         android:label="@string/staffs_label"
+        app:moduleName="staff"
         />
     <fragment
         android:id="@+id/sponsors"
@@ -179,6 +191,7 @@
         android:id="@+id/contributor"
         android:name="io.github.droidkaigi.confsched2020.contributor.ui.ContributorsFragment"
         android:label="@string/contributor_label"
+        app:moduleName="contributor"
         >
 
         <action
@@ -258,6 +271,7 @@
         android:id="@+id/setting"
         android:name="io.github.droidkaigi.confsched2020.preference.ui.PreferencesFragment"
         android:label="@string/setting_label"
+        app:moduleName="preference"
         />
     <chrome
         android:id="@+id/chrome"

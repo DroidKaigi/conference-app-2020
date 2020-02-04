@@ -9,16 +9,18 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
         >
 
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
             android:paddingTop="14dp"
             android:paddingBottom="14dp"
-            android:textColor="@color/black_alpha_87"
+            android:textAppearance="?textAppearanceBody1"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -18,6 +18,7 @@ import io.github.droidkaigi.confsched2020.about.databinding.FragmentAboutBinding
 import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentDirections.Companion.actionAboutToChrome
 import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentDirections.Companion.actionAboutToStaffs
 import io.github.droidkaigi.confsched2020.about.ui.item.AboutHeaderItem
+import io.github.droidkaigi.confsched2020.about.ui.item.AboutIconItem
 import io.github.droidkaigi.confsched2020.about.ui.item.AboutItem
 import io.github.droidkaigi.confsched2020.about.ui.item.AboutTextItem
 import io.github.droidkaigi.confsched2020.about.ui.viewmodel.AboutViewModel
@@ -35,6 +36,7 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
         const val TWITTER_URL = "https://twitter.com/DroidKaigi"
         const val YOUTUBE_URL = "https://www.youtube.com/channel/UCgK6L-PKx2OZBuhrQ6mmQZw"
         const val MEDIUM_URL = "https://medium.com/droidkaigi"
+        const val PRIVACY_URL = "http://www.association.droidkaigi.jp/privacy.html"
     }
 
     @Inject
@@ -55,6 +57,8 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
     lateinit var aboutHeaderItemFactory: AboutHeaderItem.Factory
     @Inject
     lateinit var aboutTextItemFactory: AboutTextItem.Factory
+    @Inject
+    lateinit var aboutIconItemFactory: AboutIconItem.Factory
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,10 +88,10 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                         findNavController().navigate(actionAboutToChrome(MEDIUM_URL))
                     }
                 ),
-                aboutItemFactory.create(
+                aboutIconItemFactory.create(
                     getString(R.string.about_item_access)
                 ) {
-                    // TODO go access-page
+                    systemViewModel.navigateToAccessMap(requireActivity())
                 },
                 aboutItemFactory.create(
                     getString(R.string.about_item_staff)
@@ -97,7 +101,7 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 aboutItemFactory.create(
                     getString(R.string.about_item_privacy_policy)
                 ) {
-                    // TODO go privacy-policy-page
+                    findNavController().navigate(actionAboutToChrome(PRIVACY_URL))
                 },
                 aboutItemFactory.create(
                     getString(R.string.about_item_licence)
