@@ -48,7 +48,7 @@ final class SessionPageViewController: UIPageViewController {
         sessionViewControllers = [
             SessionViewController(viewModel: viewModel, sessionViewType: .day1),
             SessionViewController(viewModel: viewModel, sessionViewType: .day2),
-            EventViewController(),
+            SessionViewController(viewModel: viewModel, sessionViewType: .event),
             SessionViewController(viewModel: viewModel, sessionViewType: .myPlan),
         ]
         setViewControllers([sessionViewControllers[0]], direction: .forward, animated: true)
