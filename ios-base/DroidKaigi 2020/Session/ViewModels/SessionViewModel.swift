@@ -7,17 +7,12 @@ final class SessionViewModel {
     private let disposeBag = DisposeBag()
 
     // input
-    private let viewDidAppearRelay: PublishRelay<Void>
     private let toggleEmbeddedViewRelay = PublishRelay<Void>()
     private let sessionsFetchFromApiRelay: BehaviorRelay<[Session]>
     private let sessionsFetchFromLocalRelay: BehaviorRelay<[Session]>
 
     func toggleEmbeddedView() {
         toggleEmbeddedViewRelay.accept(())
-    }
-
-    func viewDidAppear() {
-        viewDidAppearRelay.accept(())
     }
 
     // output
@@ -28,7 +23,6 @@ final class SessionViewModel {
     private let bookingSessionProvider: BookingSessionProvider
 
     init() {
-        viewDidAppearRelay = .init()
         sessionsFetchFromApiRelay = .init(value: [])
         sessionsFetchFromLocalRelay = .init(value: [])
         bookingSessionProvider = .init()
@@ -40,9 +34,11 @@ final class SessionViewModel {
             sessionsFetchFromLocalRelay.asDriver()
         ) { remote, local in
             let filteredSameSession = remote.filter { (session: Session) in
-                !local.contains(where: { $0.isFavorited && session.id.id == $0.id.id })
+                !local.contains(where: { session.id.id == $0.id.id })
             }
-            return (filteredSameSession + local).sorted { $0.startTime < $1.startTime }
+            return (filteredSameSession + local).sorted { (pre: Session, next: Session) in
+                return pre.startTime == next.startTime ? pre.room.name.en <= next.room.name.en : pre.startTime < next.startTime
+            }
         }
         let dataProvider = SessionDataProvider()
         dataProvider

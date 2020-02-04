@@ -2,7 +2,6 @@ import ios_combined
 
 class RealmToModelMapper {
     static func toModel(sessionEntity session: SessionEntity, firstSessionSTime firstSTime: TimeInterval) -> Session? {
-        
         let sessionTypeIds: [(String, SessionType)] = [
             ("normal", SessionType.normal),
             ("welcome_talk", SessionType.welcomeTalk),
@@ -14,22 +13,21 @@ class RealmToModelMapper {
             ("after_party", SessionType.afterParty),
             ("unknown", SessionType.unknown),
         ]
-        
+
         let calendar = Calendar(identifier: .gregorian)
-        
+
         // FIXME: I want to use same logic as Android.
         let startDay = calendar.dateComponents([.year, .month, .day], from: Date(timeIntervalSince1970: TimeInterval(session.stime) / 1000)).day ?? 0
         let firstDay = calendar.dateComponents([.year, .month, .day], from: Date(timeIntervalSince1970: firstSTime / 1000)).day ?? 0
         let dayNumber = startDay - firstDay + 1
-        
+
         guard let room = session.room else {
             return nil
         }
         let sessionTypeId = session.sessionType
         let sessionType = sessionTypeIds.first(where: { $0.0 == sessionTypeId })?.1
         let category = session.category
-        let message = session.message
-        
+
         if session.isServiceSession {
             return ServiceSession(
                 id: SessionId(id: session.id),
@@ -41,7 +39,8 @@ class RealmToModelMapper {
                 room: Room(
                     id: Int32(room.id),
                     name: LocaledString(ja: room.name, en: room.enName),
-                    sort: Int32(room.sort)),
+                    sort: Int32(room.sort)
+                ),
                 sessionType: sessionType ?? SessionType.unknown,
                 isFavorited: session.isFavorited
             )
@@ -56,25 +55,28 @@ class RealmToModelMapper {
                 room: Room(
                     id: Int32(room.id),
                     name: LocaledString(ja: room.name, en: room.enName),
-                    sort: Int32(room.sort))
-                ,
+                    sort: Int32(room.sort)
+                ),
+
                 lang: session.language == "ja" ? .ja : .en,
                 category: Category(
                     id: Int32(category?.id ?? 0),
                     name: LocaledString(
                         ja: category?.name ?? "",
-                        en: category?.enName ?? "")
+                        en: category?.enName ?? ""
+                    )
                 ),
                 intendedAudience: session.intendedAudience,
                 videoUrl: session.videoUrl,
                 slideUrl: session.slideUrl,
                 isInterpretationTarget: session.isInterpretationTarget,
                 isFavorited: session.isFavorited,
-                speakers: session.speakers.map({ toModel(speakerEntity: $0) }),
+                speakers: session.speakers.map { toModel(speakerEntity: $0) },
                 message: nil
             )
         }
     }
+
     private static func toModel(speakerEntity speaker: SpeakerEntity) -> Speaker {
         Speaker(
             id: SpeakerId(id: speaker.id),

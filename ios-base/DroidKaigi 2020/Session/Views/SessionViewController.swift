@@ -107,11 +107,6 @@ final class SessionViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        viewModel.viewDidAppear()
-    }
-
     func showSuggestView() {
         let suggestView = SuggestView()
         view.addSubview(suggestView)

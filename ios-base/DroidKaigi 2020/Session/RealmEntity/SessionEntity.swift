@@ -1,8 +1,7 @@
-import RealmSwift
 import ios_combined
+import RealmSwift
 
 final class SessionEntity: Object {
-    
     @objc dynamic var id: String = ""
     @objc dynamic var title: String = ""
     @objc dynamic var enTitle: String = ""
@@ -16,17 +15,14 @@ final class SessionEntity: Object {
     @objc dynamic var slideUrl: String?
     @objc dynamic var isInterpretationTarget: Bool = false
     @objc dynamic var room: RoomEntity?
-    @objc dynamic var message: MessageEntity?
     @objc dynamic var isServiceSession: Bool = false
     @objc dynamic var sessionType: String?
-    
+
     @objc dynamic var isFavorited: Bool = false
-    
+
     let speakers: List<SpeakerEntity>
-    
-    
+
     init(session: Session) {
-        
         let sessionTypeIds: [(String, SessionType)] = [
             ("normal", SessionType.normal),
             ("welcome_talk", SessionType.welcomeTalk),
@@ -38,7 +34,7 @@ final class SessionEntity: Object {
             ("after_party", SessionType.afterParty),
             ("unknown", SessionType.unknown),
         ]
-        
+
         id = session.id.id
         title = session.title.ja
         enTitle = session.title.en
@@ -47,7 +43,7 @@ final class SessionEntity: Object {
         etime = Int(session.endTime)
         room = RoomEntity(room: session.room)
         isFavorited = session.isFavorited
-        
+
         if let speech = session as? SpeechSession {
             // FIXME: I do not know what is lang.
             language = speech.lang == .ja ? "Japanese" : "english"
@@ -58,7 +54,7 @@ final class SessionEntity: Object {
             isInterpretationTarget = speech.isInterpretationTarget
             isServiceSession = false
             let speakers: List<SpeakerEntity> = List()
-            speakers.append(objectsIn: speech.speakers.map({ SpeakerEntity(speaker: $0) }))
+            speakers.append(objectsIn: speech.speakers.map { SpeakerEntity(speaker: $0) })
             self.speakers = speakers
         } else if let service = session as? ServiceSession {
             sessionType = sessionTypeIds.first(where: { $0.1 == service.sessionType })?.0
@@ -67,12 +63,12 @@ final class SessionEntity: Object {
             fatalError()
         }
     }
-    
+
     required init() {
         speakers = .init()
         super.init()
     }
-    
+
     override class func primaryKey() -> String? {
         "id"
     }
