@@ -178,11 +178,11 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjecto
                 sessionsViewModel.filterChanged(category, checked)
             }
             binding.audienceCategoryFilters.setupFilter(
-                allFilterSet = uiModel.allFilters.audienceCategories,
-                currentFilterSet = uiModel.filters.audienceCategories,
+                allFilterSet = uiModel.allFilters.levels,
+                currentFilterSet = uiModel.filters.levels,
                 filterName = { it.name }
-            ) { checked, audienceCategory ->
-                sessionsViewModel.filterChanged(audienceCategory, checked)
+            ) { checked, level ->
+                sessionsViewModel.filterChanged(level, checked)
             }
             binding.languageSupportFilters.setupFilter(
                 allFilterSet = uiModel.allFilters.langSupports,
