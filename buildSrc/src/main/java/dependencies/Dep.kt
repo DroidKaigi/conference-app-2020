@@ -10,7 +10,7 @@ object Dep {
         val safeArgs =
             "androidx.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.version}"
         val jetifier = "com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta05"
-        val licensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.9.5"
+        val licensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.10.0"
         val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.0.0-beta01"
         val iconRibbonPlugin = "com.akaita.android:easylauncher:1.3.1"
         val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.22.0"
@@ -124,7 +124,7 @@ object Dep {
 
     object PlayServices {
         val auth = "com.google.android.gms:play-services-auth:16.0.1"
-        val licensesPlugin = "com.google.android.gms:play-services-oss-licenses:16.0.1"
+        val licensesPlugin = "com.google.android.gms:play-services-oss-licenses:17.0.0"
     }
 
     object Play {

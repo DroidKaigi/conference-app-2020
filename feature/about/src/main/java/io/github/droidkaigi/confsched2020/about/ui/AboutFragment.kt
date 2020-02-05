@@ -6,6 +6,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.GroupieViewHolder
@@ -105,7 +106,10 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 aboutItemFactory.create(
                     getString(R.string.about_item_licence)
                 ) {
-                    // TODO go licence-page
+                    OssLicensesMenuActivity.setActivityTitle(
+                        this.getString(R.string.licenses_label)
+                    )
+                    findNavController().navigate(R.id.licenses)
                 },
                 aboutTextItemFactory.create(
                     getString(R.string.about_item_app_version),
@@ -113,7 +117,6 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 )
             )
         )
-
         binding.progressBar.hide()
     }
 }
