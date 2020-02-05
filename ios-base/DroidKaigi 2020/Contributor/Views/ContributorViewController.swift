@@ -1,14 +1,35 @@
+import RxCocoa
+import RxSwift
 import UIKit
 
 final class ContributorViewController: UIViewController {
+    private let disposeBag = DisposeBag()
+
+    @IBOutlet weak var collectionView: UICollectionView! {
+        didSet {
+            collectionView.register(
+                UINib(nibName: ContributorCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: ContributorCell.identifier
+            )
+
+            let layout = UICollectionViewFlowLayout()
+            layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: ContributorCell.rowHeight)
+            collectionView.collectionViewLayout = layout
+        }
+    }
+    
+    private let viewModel = ContributorViewModel()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        ContributorDataProvider().fetchContributors().subscribe(onSuccess: { contributorIndices in
-            for contributorIndex in contributorIndices {
-                print(contributorIndex.index, contributorIndex.contributors.map { $0.name })
-            }
-        })
+        let dataSource = ContributorViewDataSource()
+
+        viewModel.contributorIndices.asObservable()
+            .bind(to: collectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+
+        viewModel.viewDidLoad()        
     }
 
     override func viewWillAppear(_ animated: Bool) {
