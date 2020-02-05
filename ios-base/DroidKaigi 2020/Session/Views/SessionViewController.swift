@@ -91,15 +91,13 @@ final class SessionViewController: UIViewController {
         filteredSessions
             .filter { _ in self.type == .myPlan }
             .map { $0.isEmpty }
-            .subscribe(onNext: { isEmpty in
-                DispatchQueue.main.async {
-                    if isEmpty {
-                        self.showSuggestView()
-                    } else {
-                        self.removeSuggestView()
-                    }
+            .bind(to: Binder(self) { me, isEmpty in
+                if isEmpty {
+                    me.showSuggestView()
+                } else {
+                    me.removeSuggestView()
                 }
-            }).disposed(by: disposeBag)
+            })
 
         dataSource.onTapSpeaker
             .emit(onNext: { [weak self] speaker, sessions in
