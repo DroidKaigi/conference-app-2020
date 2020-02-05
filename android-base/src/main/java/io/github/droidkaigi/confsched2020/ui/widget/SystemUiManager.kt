@@ -19,6 +19,10 @@ class SystemUiManager(
         MutableLiveData(COLOR_STATUS_BAR_INVISIBLE)
     val statusBarColor: LiveData<Int> = _statusBarColor
 
+    private val _navigationBarColor =
+        MutableLiveData(COLOR_NAVIGATION_BAR_INVISIBLE)
+    val navigationBarColor: LiveData<Int> = _navigationBarColor
+
     var drawerSlideOffset: Float = 0f
         set(value) {
             if (field != value) {
@@ -70,6 +74,18 @@ class SystemUiManager(
             } else {
                 COLOR_STATUS_BAR_INVISIBLE
             }
+
+        // Navigation bar color
+        _navigationBarColor.value =
+            if (context.isNightMode()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    COLOR_NAVIGATION_BAR_INVISIBLE
+                } else {
+                    COLOR_NAVIGATION_BAR_VISIBLE
+                }
+            } else {
+                COLOR_NAVIGATION_BAR_INVISIBLE
+            }
     }
 
     private fun updateColorsPreM() {
@@ -90,10 +106,24 @@ class SystemUiManager(
             } else {
                 COLOR_STATUS_BAR_INVISIBLE
             }
+
+        // Navigation bar color
+        _navigationBarColor.value =
+            if (context.isNightMode()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    COLOR_NAVIGATION_BAR_INVISIBLE
+                } else {
+                    COLOR_NAVIGATION_BAR_VISIBLE
+                }
+            } else {
+                COLOR_NAVIGATION_BAR_INVISIBLE
+            }
     }
 
     companion object {
         private const val COLOR_STATUS_BAR_INVISIBLE = Color.TRANSPARENT
         private const val COLOR_STATUS_BAR_VISIBLE = 0x8a000000.toInt()
+        private const val COLOR_NAVIGATION_BAR_INVISIBLE = Color.TRANSPARENT
+        private const val COLOR_NAVIGATION_BAR_VISIBLE = 0x4DFFFFFF
     }
 }

@@ -3,7 +3,8 @@ import UIKit
 enum SessionViewControllerType: Int {
     case day1 = 1
     case day2 = 2
-    case myPlan = 3
+    case event = 3
+    case myPlan = 4
 
     var date: Date? {
         let calendar = Calendar(identifier: .gregorian)
@@ -12,6 +13,8 @@ enum SessionViewControllerType: Int {
             return calendar.date(from: .init(year: 2020, month: 2, day: 20))
         case .day2:
             return calendar.date(from: .init(year: 2020, month: 2, day: 21))
+        case .event:
+            return nil
         case .myPlan:
             return nil
         }
@@ -45,6 +48,7 @@ final class SessionPageViewController: UIPageViewController {
         sessionViewControllers = [
             SessionViewController(viewModel: viewModel, sessionViewType: .day1),
             SessionViewController(viewModel: viewModel, sessionViewType: .day2),
+            SessionViewController(viewModel: viewModel, sessionViewType: .event),
             SessionViewController(viewModel: viewModel, sessionViewType: .myPlan),
         ]
         setViewControllers([sessionViewControllers[0]], direction: .forward, animated: true)
@@ -76,6 +80,9 @@ extension SessionPageViewController: UIPageViewControllerDataSource {
         case sessionViewControllers[2]:
             selectedViewControllerIndex = 1
             return sessionViewControllers[1]
+        case sessionViewControllers[3]:
+            selectedViewControllerIndex = 2
+            return sessionViewControllers[2]
         default:
             return nil
         }
@@ -90,6 +97,9 @@ extension SessionPageViewController: UIPageViewControllerDataSource {
             selectedViewControllerIndex = 2
             return sessionViewControllers[2]
         case sessionViewControllers[2]:
+            selectedViewControllerIndex = 3
+            return sessionViewControllers[3]
+        case sessionViewControllers[3]:
             return nil
         default:
             return nil

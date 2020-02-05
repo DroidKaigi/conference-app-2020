@@ -56,7 +56,8 @@ final class SidebarViewController: UITableViewController {
             let aboutViewController = AboutViewController.instantiate()
             transition(to: aboutViewController)
         case .info:
-            break
+            let controller = AnnouncementsViewController.instantiate()
+            transition(to: controller)
         case .map:
             break
         case .sponsor:

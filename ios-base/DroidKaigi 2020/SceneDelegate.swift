@@ -16,6 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let backButtonBackgroundImage = #imageLiteral(resourceName: "ic_back")
         UINavigationBar.appearance().backIndicatorImage = backButtonBackgroundImage
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = backButtonBackgroundImage
+        
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
 
         let vc = FilterViewController()
         let nvc = NavigationController(rootViewController: vc)
