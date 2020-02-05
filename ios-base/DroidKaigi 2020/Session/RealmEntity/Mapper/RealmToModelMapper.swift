@@ -1,6 +1,6 @@
 import ios_combined
 
-class RealmToModelMapper {
+final class RealmToModelMapper {
     static func toModel(sessionEntity session: SessionEntity, firstSessionSTime firstSTime: TimeInterval) -> Session? {
         let sessionTypeIds: [(String, SessionType)] = [
             ("normal", SessionType.normal),

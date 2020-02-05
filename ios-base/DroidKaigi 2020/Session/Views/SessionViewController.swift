@@ -89,7 +89,7 @@ final class SessionViewController: UIViewController {
             .disposed(by: disposeBag)
 
         filteredSessions
-            .filter { _ in self.type == .myPlan }
+            .filter { [weak self] _ in self?.type == .myPlan }
             .map { $0.isEmpty }
             .bind(to: Binder(self) { me, isEmpty in
                 if isEmpty {
@@ -98,19 +98,21 @@ final class SessionViewController: UIViewController {
                     me.removeSuggestView()
                 }
             })
+            .disposed(by: disposeBag)
 
         dataSource.onTapSpeaker
             .emit(onNext: { [weak self] speaker, sessions in
                 self?.navigationController?.pushViewController(SpeakerViewController.instantiate(speaker: speaker, sessions: sessions), animated: true)
             })
             .disposed(by: disposeBag)
-        dataSource.onTapBookmark.emit(onNext: { [unowned self] _, session in
+        dataSource.onTapBookmark.emit(onNext: { [unowned self] session in
             if session.isFavorited {
                 self.viewModel.resignBookingSession(session)
             } else {
                 self.viewModel.bookSession(session)
             }
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
         collectionView.rx.modelSelected(Session.self)
             .bind(onNext: { [unowned self] in self.showDetail(forSession: $0) })
             .disposed(by: disposeBag)

@@ -92,7 +92,5 @@ final class SessionCell: UICollectionViewCell {
         speakersStackView.arrangedSubviews.forEach { subview in
             speakersStackView.removeArrangedSubview(subview)
         }
-
-        bookmarkButton.setImage(nil, for: .normal)
     }
 }

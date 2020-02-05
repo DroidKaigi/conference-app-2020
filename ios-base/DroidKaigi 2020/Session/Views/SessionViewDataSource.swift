@@ -13,7 +13,7 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
         return onTapSpeakerRelay.asSignal()
     }
 
-    var onTapBookmark: Signal<(SessionCell, Session)> {
+    var onTapBookmark: Signal<Session> {
         onTapBookmarkRelay.asSignal()
     }
 
@@ -21,7 +21,7 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
     private var previousDayString = ""
     private let disposeBag = DisposeBag()
     private let onTapSpeakerRelay = PublishRelay<(speaker: Speaker, sessions: [Session])>()
-    private let onTapBookmarkRelay = PublishRelay<(SessionCell, Session)>()
+    private let onTapBookmarkRelay = PublishRelay<Session>()
 
     init(type: SessionViewControllerType) {
         self.type = type
@@ -76,12 +76,11 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
         cell.minutesAndRoomLabel.text = session.timeRoomText
 
         cell.bookmarkButton.rx.tap
-            .map { _ in (cell, session) }
+            .map { _ in session }
             .bind(to: onTapBookmarkRelay)
             .disposed(by: cell.disposeBag)
 
-        let bookmarkImage = session.isFavorited ? Asset.icBookmark.image : Asset.icBookmarkBorder.image
-        cell.bookmarkButton.setImage(bookmarkImage, for: .normal)
+        cell.bookmarkButton.isSelected = session.isFavorited
         return cell
     }
 }

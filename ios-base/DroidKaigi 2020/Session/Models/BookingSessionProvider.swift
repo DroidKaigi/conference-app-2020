@@ -4,8 +4,6 @@ import RxRealm
 import RxSwift
 
 final class BookingSessionProvider {
-    private let disposeBag = DisposeBag()
-
     func bookSession(session: Session) {
         do {
             let realm = try Realm()
