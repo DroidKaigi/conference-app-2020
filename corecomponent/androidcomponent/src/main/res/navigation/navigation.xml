@@ -223,7 +223,8 @@
         android:label="@string/announce_label">
         <deepLink
             android:id="@+id/deepLink"
-            app:uri="https://droidkaigi.jp/2020/announcement" />
+            app:uri="https://droidkaigi.jp/2020/announcement"
+            />
     </fragment>
     <fragment
         android:id="@+id/about"
@@ -262,6 +263,7 @@
         <deepLink
             android:id="@+id/deepLink_floormap"
             app:uri="https://droidkaigi.jp/2020/floormap"
+            />
 
         <argument
             android:name="room"
