@@ -56,16 +56,12 @@ final class SessionViewModel {
 
         sessionsFetchFromApiRelay
             .asObservable()
+            .catchError { [unowned self] _ -> Observable<[Session]> in
+                self.bookingSessionProvider.fetchBookedSessions()
+            }
             .filter { !$0.isEmpty }
-            .take(1)
             .compactMap { $0.first?.startTime }
             .flatMap(bookingSessionProvider.fetchBookedSessions)
-            .bind(to: sessionsFetchFromLocalRelay)
-            .disposed(by: disposeBag)
-
-        bookingSessionProvider
-            .fetchBookedSessions()
-            .takeUntil(sessionsFetchFromApiRelay)
             .bind(to: sessionsFetchFromLocalRelay)
             .disposed(by: disposeBag)
     }
