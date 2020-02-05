@@ -152,7 +152,7 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
     }
 
     companion object {
-        const val NUM_SHARDS = 10
+        const val NUM_SHARDS = 5
         const val SHARDS_COUNT_KEY = "shards"
         const val FAVORITE_VALUE_KEY = "favorite"
     }
