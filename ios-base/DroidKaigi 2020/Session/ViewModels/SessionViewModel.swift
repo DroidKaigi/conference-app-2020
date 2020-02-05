@@ -57,15 +57,10 @@ final class SessionViewModel {
             .asObservable()
             .filter { !$0.isEmpty }
             .take(1)
-            .subscribe(onNext: { [weak self] sessions in
-                guard let self = self, let firstSession = sessions.first else {
-                    return
-                }
-                self.bookingSessionProvider
-                    .fetchBookedSessions(firstSession: firstSession)
-                    .bind(to: self.sessionsFetchFromLocalRelay)
-                    .disposed(by: self.disposeBag)
-            }).disposed(by: disposeBag)
+            .compactMap { $0.first }
+            .flatMap(bookingSessionProvider.fetchBookedSessions)
+            .bind(to: sessionsFetchFromLocalRelay)
+            .disposed(by: disposeBag)
     }
 
     func bookSession(_ session: Session) {
