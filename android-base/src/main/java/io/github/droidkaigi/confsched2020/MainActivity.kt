@@ -306,7 +306,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
             .setShortLabel(getString(R.string.my_plan_shortcut_short_label1))
             .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
             .setIntent(Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://droidkaigi.jp/2020/main/2")
+                Uri.parse("https://droidkaigi.jp/2020/main/3")
             ).setComponent(ComponentName(this, MainActivity::class.java)))
             .build()
         shortcutManager?.addDynamicShortcuts(listOf(map, myPlan))
