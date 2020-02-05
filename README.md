@@ -1,4 +1,6 @@
-# ![DroidKaigi Logo](corecomponent/androidcomponent/src/main/res/drawable-xxhdpi/ic_logo.png)DroidKaigi 2020 official Android app ![GitHub Actions](https://github.com/DroidKaigi/conference-app-2020/workflows/.github/workflows/on_release_branch.yml/badge.svg)
+# ![DroidKaigi Logo](corecomponent/androidcomponent/src/main/res/drawable-xxhdpi/ic_logo.png)DroidKaigi 2020 official Android app
+
+[![GitHub Actions](https://github.com/DroidKaigi/conference-app-2020/workflows/.github/workflows/on_release_branch.yml/badge.svg)](https://github.com/DroidKaigi/conference-app-2020/actions?query=workflow%3A%22On+release+branch%22)
 
 We are currently working on the event. We are looking for contributors!
 
