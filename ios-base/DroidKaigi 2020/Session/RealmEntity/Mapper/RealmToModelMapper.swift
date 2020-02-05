@@ -41,6 +41,7 @@ class RealmToModelMapper {
                     name: LocaledString(ja: room.name, en: room.enName),
                     sort: Int32(room.sort)
                 ),
+                levels: [],
                 sessionType: sessionType ?? SessionType.unknown,
                 isFavorited: session.isFavorited
             )
@@ -57,7 +58,7 @@ class RealmToModelMapper {
                     name: LocaledString(ja: room.name, en: room.enName),
                     sort: Int32(room.sort)
                 ),
-
+                levels: [],
                 lang: session.language == "ja" ? .ja : .en,
                 category: Category(
                     id: Int32(category?.id ?? 0),

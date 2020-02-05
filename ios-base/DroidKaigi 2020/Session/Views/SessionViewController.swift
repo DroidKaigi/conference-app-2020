@@ -68,7 +68,7 @@ final class SessionViewController: UIViewController {
         // TODO: Error handling for viewModel.sessions
         let dataSource = SessionViewDataSource(type: type)
         let filteredSessions = viewModel.sessions.asObservable()
-            .map { sessions -> [Session] in
+            .map { [weak self] sessions -> [Session] in
                 guard let self = self else { return [] }
                 switch self.type {
                 case .day1, .day2:
