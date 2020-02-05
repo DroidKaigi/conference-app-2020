@@ -47,7 +47,7 @@ final class AnnouncementsDataProvider: AnnouncementsDataProviderProtocol {
     func fetch() -> Single<[Announcement]> {
         Single.create { observer in
             ApiComponentKt.generateDroidKaigiApi().getAnnouncements(
-                lang: LangParameter.from(LangKt.defaultLang()),
+                lang: LangParameter.jp,
                 callback: { response in
                     let response = response.compactMap(Transformer.transform).sorted { $0.publishedAt >= $1.publishedAt }
                     observer(.success(response))

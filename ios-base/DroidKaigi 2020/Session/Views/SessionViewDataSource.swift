@@ -7,6 +7,7 @@ import UIKit
 final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
     typealias Element = [Session]
     var items: Element = []
+    let type: SessionViewControllerType
 
     var onTapSpeaker: Signal<(speaker: Speaker, sessions: [Session])> {
         return onTapSpeakerRelay.asSignal()
@@ -17,9 +18,14 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
     }
 
     private var previousTimeString = ""
+    private var previousDayString = ""
     private let disposeBag = DisposeBag()
     private let onTapSpeakerRelay = PublishRelay<(speaker: Speaker, sessions: [Session])>()
     private let onTapBookmarkRelay = PublishRelay<(SessionCell, Session)>()
+
+    init(type: SessionViewControllerType) {
+        self.type = type
+    }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
@@ -48,12 +54,24 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
             }
         }
 
+        cell.dateLabelInFirstFavoriteSession.text = session.startMonthAndDayText
+
+        if indexPath.item > 0 {
+            previousDayString = items[indexPath.item - 1].startMonthAndDayText
+            previousTimeString = items[indexPath.item - 1].startTimeText
+        } else {
+            previousDayString = ""
+            previousTimeString = ""
+        }
+
         if previousTimeString != session.startTimeText {
+            if type == .myPlan, previousDayString != session.startMonthAndDayText {
+                cell.dateLabelInFirstFavoriteSession.isHidden = false
+            }
             cell.timeLabel.text = session.startTimeText
         } else {
             cell.timeLabel.text = ""
         }
-        previousTimeString = session.startTimeText
 
         cell.minutesAndRoomLabel.text = session.timeRoomText
 

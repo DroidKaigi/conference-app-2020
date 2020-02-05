@@ -8,18 +8,11 @@ final class BookingSessionProvider {
 
     func bookSession(session: Session) {
         do {
-            let sessionId = session.id.id
             let realm = try Realm()
-
-            if let session = realm.object(ofType: SessionEntity.self, forPrimaryKey: sessionId) {
-                try realm.write {
-                    session.isFavorited = true
-                }
-            } else {
-                let session = SessionEntity(session: session)
-                try realm.write {
-                    realm.add(session)
-                }
+            let session = SessionEntity(session: session)
+            session.isFavorited = true
+            try realm.write {
+                realm.add(session)
             }
         } catch {
             fatalError(error.localizedDescription)
@@ -48,7 +41,7 @@ final class BookingSessionProvider {
                 fatalError()
             }
             try realm.write {
-                session.isFavorited = false
+                realm.delete(session)
             }
         } catch {
             fatalError(error.localizedDescription)

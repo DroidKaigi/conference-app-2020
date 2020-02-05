@@ -27,6 +27,7 @@ final class SessionCell: UICollectionViewCell {
         }
     }
 
+    @IBOutlet weak var dateLabelInFirstFavoriteSession: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var minutesAndRoomLabel: UILabel!

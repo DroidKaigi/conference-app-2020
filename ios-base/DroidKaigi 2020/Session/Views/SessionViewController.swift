@@ -63,7 +63,7 @@ final class SessionViewController: UIViewController {
             .disposed(by: disposeBag)
 
         // TODO: Error handling for viewModel.sessions
-        let dataSource = SessionViewDataSource()
+        let dataSource = SessionViewDataSource(type: type)
         let filteredSessions = viewModel.sessions.asObservable()
             .map { sessions -> [Session] in
                 if self.type == .myPlan {

@@ -34,7 +34,7 @@ final class SessionViewModel {
             sessionsFetchFromLocalRelay.asDriver()
         ) { remote, local in
             let filteredSameSession = remote.filter { (session: Session) in
-                !local.contains(where: { session.id.id == $0.id.id })
+                !local.contains(where: { (localSession: Session) in session.id.id == localSession.id.id })
             }
             return (filteredSameSession + local).sorted { (pre: Session, next: Session) in
                 return pre.startTime == next.startTime ? pre.room.name.en <= next.room.name.en : pre.startTime < next.startTime
