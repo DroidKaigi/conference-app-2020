@@ -100,7 +100,8 @@ final class FilterViewController: UIViewController {
         tabBar.items = [
             UITabBarItem(title: "DAY1", image: nil, tag: 0),
             UITabBarItem(title: "DAY2", image: nil, tag: 1),
-            UITabBarItem(title: "MYPLAN", image: nil, tag: 2),
+            UITabBarItem(title: "EVENT", image: nil, tag: 2),
+            UITabBarItem(title: "MYPLAN", image: nil, tag: 3),
         ]
         tabBar.alignment = .justified
         tabBar.itemAppearance = .titles
@@ -222,6 +223,8 @@ extension FilterViewController: MDCTabBarDelegate {
         case 1:
             embeddedViewController?.setViewControllers(type: .day2)
         case 2:
+            embeddedViewController?.setViewControllers(type: .event)
+        case 3:
             embeddedViewController?.setViewControllers(type: .myPlan)
         default:
             break
