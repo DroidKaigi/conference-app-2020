@@ -4,7 +4,7 @@ import RxRealm
 import RxSwift
 
 final class BookingSessionProvider {
-    func bookSession(session: Session) {
+    func bookSession(_ session: Session) {
         do {
             let realm = try Realm()
             let session = SessionEntity(session: session)
@@ -17,14 +17,15 @@ final class BookingSessionProvider {
         }
     }
 
-    func fetchBookedSessions(firstSession: Session) -> Observable<[Session]> {
+    // 1582160400 is 2/20 10:00
+    func fetchBookedSessions(firstSessionStartTime: TimeInterval = 1_582_160_400) -> Observable<[Session]> {
         do {
             let realm = try Realm()
             let result = realm.objects(SessionEntity.self)
 
             return Observable.collection(from: result).map { (results) -> [Session] in
                 results.compactMap { (sessionEntity) -> Session? in
-                    return RealmToModelMapper.toModel(sessionEntity: sessionEntity, firstSessionSTime: firstSession.startTime)
+                    return RealmToModelMapper.toModel(sessionEntity: sessionEntity, firstSessionSTime: firstSessionStartTime)
                 }
             }
         } catch {

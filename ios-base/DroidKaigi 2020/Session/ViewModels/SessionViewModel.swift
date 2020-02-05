@@ -43,6 +43,7 @@ final class SessionViewModel {
         let dataProvider = SessionDataProvider()
         dataProvider
             .fetchSessions()
+            .filter { !$0.isEmpty }
             .asObservable()
             .bind(to: sessionsFetchFromApiRelay)
             .disposed(by: disposeBag)
@@ -57,14 +58,20 @@ final class SessionViewModel {
             .asObservable()
             .filter { !$0.isEmpty }
             .take(1)
-            .compactMap { $0.first }
+            .compactMap { $0.first?.startTime }
             .flatMap(bookingSessionProvider.fetchBookedSessions)
+            .bind(to: sessionsFetchFromLocalRelay)
+            .disposed(by: disposeBag)
+
+        bookingSessionProvider
+            .fetchBookedSessions()
+            .takeUntil(sessionsFetchFromApiRelay)
             .bind(to: sessionsFetchFromLocalRelay)
             .disposed(by: disposeBag)
     }
 
     func bookSession(_ session: Session) {
-        bookingSessionProvider.bookSession(session: session)
+        bookingSessionProvider.bookSession(session)
     }
 
     func resignBookingSession(_ session: Session) {
