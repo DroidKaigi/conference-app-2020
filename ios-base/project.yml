@@ -28,6 +28,7 @@ targets:
         deploymentTarget: "12.0"
         sources: DroidKaigi 2020Tests
         dependencies:
+            - framework: build/ios_combined.framework
             - target: DroidKaigi 2020
         settings:
             INFOPLIST_FILE: DroidKaigi 2020Tests/info.plist

@@ -70,6 +70,7 @@
             android:tint="?colorSecondary"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/favorite_icon"
             />
 
         <TextView
@@ -77,24 +78,25 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:textAppearance="?textAppearanceBody1"
+            android:textColor="@color/red"
             android:visibility="gone"
-            android:textAppearance="@style/TextAppearance.DroidKaigi.SessionMessage"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/room"
             tools:text="セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
             />
 
-        <TextView
+        <androidx.emoji.widget.EmojiAppCompatTextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
+            android:lineSpacingExtra="8sp"
             android:singleLine="false"
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:textColor="@color/session_title"
-            android:lineSpacingExtra="8sp"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/session_message"

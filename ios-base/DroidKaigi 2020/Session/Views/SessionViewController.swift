@@ -17,11 +17,11 @@ final class SessionViewController: UIViewController {
         didSet {
             filterButton.isSelected = true
             filterButton.applyTextTheme(withScheme: ApplicationScheme.shared.buttonScheme)
-            let filterListImage = UIImage(named: "ic_filter_list")
-            let templateFilterListImage = filterListImage?.withRenderingMode(.alwaysTemplate)
+            let filterListImage = Asset.icFilterList.image
+            let templateFilterListImage = filterListImage.withRenderingMode(.alwaysTemplate)
             filterButton.setImage(templateFilterListImage, for: .selected)
-            let arrowUpImage = UIImage(named: "ic_keyboard_arrow_up")
-            let templateArrowUpImage = arrowUpImage?.withRenderingMode(.alwaysTemplate)
+            let arrowUpImage = Asset.icKeyboardArrowUp.image
+            let templateArrowUpImage = arrowUpImage.withRenderingMode(.alwaysTemplate)
             filterButton.setImage(templateArrowUpImage, for: .normal)
             filterButton.setTitle("Filter", for: .selected)
             filterButton.setTitle("", for: .normal)
@@ -53,6 +53,9 @@ final class SessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        filteredSessionCountLabel.isHidden = type == .event
+        filterButton.isHidden = type == .event
+
         filterButton.rx.tap.asSignal()
             .emit(to: Binder(self) { me, _ in
                 me.viewModel.toggleEmbeddedView()
@@ -65,10 +68,22 @@ final class SessionViewController: UIViewController {
         // TODO: Error handling for viewModel.sessions
         let dataSource = SessionViewDataSource()
         let filteredSessions = viewModel.sessions.asObservable()
-            .map { sessions -> [Session] in
-                sessions.filter { Int($0.dayNumber) == self.type.rawValue }
+            .map { [weak self] sessions -> [Session] in
+                guard let self = self else { return [] }
+                switch self.type {
+                case .day1, .day2:
+                    return sessions.filter {
+                        Int($0.dayNumber) == self.type.rawValue
+                            && $0.room.roomType != .exhibition
+                    }
+                case .event:
+                    return sessions.filter { $0.room.roomType == .exhibition }
+                case .myPlan:
+                    return sessions.filter { $0.isFavorited }
+                }
             }
             .share(replay: 1, scope: .whileConnected)
+
         filteredSessions
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
@@ -88,6 +103,9 @@ final class SessionViewController: UIViewController {
                 self?.navigationController?.pushViewController(SpeakerViewController.instantiate(speaker: speaker, sessions: sessions), animated: true)
             })
             .disposed(by: disposeBag)
+        collectionView.rx.modelSelected(Session.self)
+            .bind(onNext: { [unowned self] in self.showDetail(forSession: $0) })
+            .disposed(by: disposeBag)
     }
 
     func showSuggestView() {
@@ -100,5 +118,19 @@ final class SessionViewController: UIViewController {
             suggestView.rightAnchor.constraint(equalTo: view.rightAnchor),
             suggestView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+    }
+}
+
+// MARK: -
+
+private extension SessionViewController {
+    func showDetail(forSession session: Session) {
+        // FIXME: Use coordinator?
+        guard let vc = UIStoryboard(name: "SessionDetail", bundle: nil)
+            .instantiateInitialViewController() as? SessionDetailViewController else {
+            return
+        }
+        vc.session = session
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

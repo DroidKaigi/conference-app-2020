@@ -14,8 +14,8 @@ import org.junit.runners.Parameterized
 class FiltersTest {
 
     private companion object {
-        val room1 = Room(10, "room1")
-        val room2 = Room(11, "room2")
+        val room1 = Room(10, LocaledString("部屋1", "room1"), 0)
+        val room2 = Room(11, LocaledString("部屋2", "room2"), 0)
         val category1 = Category(10, LocaledString("ツール1", "Tool1"))
         val category2 = Category(11, LocaledString("ツール2", "Tool2"))
     }
@@ -156,50 +156,62 @@ class FiltersTest {
                     },
                     expected = false
                 ),
-                Param.forAudienceCategory(
-                    title = "empty filter passes beginners session",
-                    isForBeginners = true,
+                Param.forLevels(
+                    title = "empty filter passes beginner session",
+                    levelList = listOf(Level.BEGINNER),
                     expected = true
                 ),
-                Param.forAudienceCategory(
-                    title = "empty filter passes non beginners session",
-                    isForBeginners = false,
+                Param.forLevels(
+                    title = "empty filter passes intermediate session",
+                    levelList = listOf(Level.INTERMEDIATE),
                     expected = true
                 ),
-                Param.forAudienceCategory(
+                Param.forLevels(
+                    title = "empty filter passes advanced session",
+                    levelList = listOf(Level.ADVANCED),
+                    expected = true
+                ),
+                Param.forLevels(
                     title = "Beginners filter passes beginners session",
-                    filterItem = setOf(AudienceCategory.BEGINNERS),
-                    isForBeginners = true,
+                    filterItem = setOf(Level.BEGINNER),
+                    levelList = listOf(Level.BEGINNER),
                     expected = true
                 ),
-                Param.forAudienceCategory(
+                Param.forLevels(
                     title = "Beginners filter does not pass non beginners session",
-                    filterItem = setOf(AudienceCategory.BEGINNERS),
-                    isForBeginners = false,
+                    filterItem = setOf(Level.BEGINNER),
+                    levelList = listOf(Level.INTERMEDIATE),
                     expected = false
                 ),
-                Param.forAudienceCategory(
-                    title = "Unspecified filter does not pass beginners session",
-                    filterItem = setOf(AudienceCategory.UNSPECIFIED),
-                    isForBeginners = true,
+                Param.forLevels(
+                    title = "filter has Beginners passes Beginners and Intermediate session",
+                    filterItem = setOf(Level.BEGINNER),
+                    levelList = listOf(Level.BEGINNER, Level.INTERMEDIATE),
+                    expected = true
+                ),
+                Param.forLevels(
+                    title = "filter has Advanced not passes Beginners and Intermediate session",
+                    filterItem = setOf(Level.ADVANCED),
+                    levelList = listOf(Level.BEGINNER, Level.INTERMEDIATE),
                     expected = false
                 ),
-                Param.forAudienceCategory(
-                    title = "Unspecified filter passes non beginners session",
-                    filterItem = setOf(AudienceCategory.UNSPECIFIED),
-                    isForBeginners = false,
+                Param.forLevels(
+                    title = "filter has Beginners and Intermediate passes beginners session",
+                    filterItem = setOf(Level.BEGINNER, Level.INTERMEDIATE),
+                    levelList = listOf(Level.BEGINNER),
                     expected = true
                 ),
-                Param.forAudienceCategory(
-                    title = "filter has Beginners and Unspecified passes beginners session",
-                    filterItem = setOf(AudienceCategory.BEGINNERS, AudienceCategory.UNSPECIFIED),
-                    isForBeginners = true,
-                    expected = true
+                Param.forLevels(
+                    title = "filter has Beginners and Intermediate not passes Advanced session",
+                    filterItem = setOf(Level.BEGINNER, Level.INTERMEDIATE),
+                    levelList = listOf(Level.ADVANCED),
+                    expected = false
                 ),
-                Param.forAudienceCategory(
-                    title = "filter has Beginners and Unspecified passes non beginners session",
-                    filterItem = setOf(AudienceCategory.BEGINNERS, AudienceCategory.UNSPECIFIED),
-                    isForBeginners = false,
+                Param.forLevels(
+                    title = "filter has Beginners and Intermediate" +
+                        " passes Intermediate and Advanced session",
+                    filterItem = setOf(Level.BEGINNER, Level.INTERMEDIATE),
+                    levelList = listOf(Level.INTERMEDIATE, Level.ADVANCED),
                     expected = true
                 )
             )
@@ -228,16 +240,16 @@ data class Param<T>(
     override fun toString(): String = title
 
     companion object {
-        fun forAudienceCategory(
+        fun forLevels(
             title: String,
-            filterItem: Set<AudienceCategory> = setOf(),
-            isForBeginners: Boolean,
+            filterItem: Set<Level> = setOf(),
+            levelList: List<Level>,
             expected: Boolean
         ) = Param<SpeechSession>(
             title = title,
-            filters = Filters(audienceCategories = filterItem),
+            filters = Filters(levels = filterItem),
             sessionSetup = {
-                every { forBeginners } returns isForBeginners
+                every { levels } returns levelList
             },
             expected = expected
         )

@@ -15,7 +15,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
@@ -82,7 +82,7 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentSearchSessionsBinding.bind(view)
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.searchSessionRecycler.adapter = groupAdapter
         context?.let {
             binding.searchSessionRecycler.addItemDecoration(
@@ -196,10 +196,9 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
 
 @Module
 abstract class SearchSessionsFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides
+        @Provides
         fun providesLifecycleOwnerLiveData(
             searchSessionsFragment: SearchSessionsFragment
         ): LiveData<LifecycleOwner> {

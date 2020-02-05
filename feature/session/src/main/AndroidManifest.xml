@@ -3,6 +3,10 @@
     package="io.github.droidkaigi.confsched2020.session"
     >
 
-    <application
-        android:supportsRtl="false"/>
+    <application android:supportsRtl="false">
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts"
+            />
+    </application>
 </manifest>

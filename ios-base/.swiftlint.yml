@@ -1,7 +1,11 @@
 disabled_rules:
   - line_length
+  - identifier_name
+  - todo
+  - trailing_comma
 opt_in_rules:
   - file_header
+  - closure_end_indentation
 included:
   - DroidKaigi 2020
 excluded:

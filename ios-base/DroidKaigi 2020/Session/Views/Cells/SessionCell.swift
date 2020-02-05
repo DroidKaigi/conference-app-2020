@@ -1,8 +1,8 @@
 import MaterialComponents
 import Nuke
-import UIKit
 import RxCocoa
 import RxSwift
+import UIKit
 
 final class SessionCell: UICollectionViewCell {
     static let identifier = "SessionCell"
@@ -17,11 +17,11 @@ final class SessionCell: UICollectionViewCell {
 
     @IBOutlet weak var bookmarkButton: UIButton! {
         didSet {
-            let bookmarkImage = UIImage(named: "ic_bookmark")
-            let templatedBookmarkImage = bookmarkImage?.withRenderingMode(.alwaysTemplate)
+            let bookmarkImage = Asset.icBookmark.image
+            let templatedBookmarkImage = bookmarkImage.withRenderingMode(.alwaysTemplate)
             bookmarkButton.setImage(templatedBookmarkImage, for: .selected)
-            let bookmarkBorderImage = UIImage(named: "ic_bookmark_border")
-            let templatedBookmarkBorderImage = bookmarkBorderImage?.withRenderingMode(.alwaysTemplate)
+            let bookmarkBorderImage = Asset.icBookmarkBorder.image
+            let templatedBookmarkBorderImage = bookmarkBorderImage.withRenderingMode(.alwaysTemplate)
             bookmarkButton.setImage(templatedBookmarkBorderImage, for: .normal)
             bookmarkButton.tintColor = UIColor(hex: "00B5E2")
         }
@@ -40,7 +40,7 @@ final class SessionCell: UICollectionViewCell {
         widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
     }
 
-    func addSpeakerView(imageURL: URL?, speakerName: String, speakerTapHandler: @escaping () -> ()) {
+    func addSpeakerView(imageURL: URL?, speakerName: String, speakerTapHandler: @escaping () -> Void) {
         let view = UIControl()
         let speakerIconView = UIImageView()
         if let imageURL = imageURL {

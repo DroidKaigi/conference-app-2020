@@ -3,7 +3,6 @@ package io.github.droidkaigi.confsched2020.session.ui
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -15,13 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.xwray.groupie.Group
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
 import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.isShow
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
@@ -29,6 +29,7 @@ import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToChrome
+import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToFloormap
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentDirections.Companion.actionSessionToSpeaker
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailDescriptionItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionDetailMaterialItem
@@ -42,7 +43,6 @@ import io.github.droidkaigi.confsched2020.session.ui.widget.SessionDetailItemDec
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.animation.MEDIUM_EXPAND_DURATION
 import io.github.droidkaigi.confsched2020.ui.transition.fadeThrough
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -94,7 +94,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         postponeEnterTransition()
 
         val binding = FragmentSessionDetailBinding.bind(view)
-        val adapter = GroupAdapter<ViewHolder<*>>()
+        val adapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.sessionDetailRecycler.adapter = adapter
         binding.sessionDetailRecycler.layoutManager = LinearLayoutManager(context)
         context?.let {
@@ -110,16 +110,12 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
             itemAnimator.supportsChangeAnimations = false
         }
 
-        val progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
-        }.apply {
-            loading = true
-        }
+        binding.progressBar.show()
 
         sessionDetailViewModel.uiModel
             .observe(viewLifecycleOwner) { uiModel: SessionDetailViewModel.UiModel ->
                 uiModel.error?.let { systemViewModel.onError(it) }
-                progressTimeLatch.loading = uiModel.isLoading
+                binding.progressBar.isShow = uiModel.isLoading
                 uiModel.session
                     ?.let { session ->
                         setupSessionViews(
@@ -134,12 +130,21 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
             }
 
         binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
+            val session = binding.session ?: return@setOnMenuItemClickListener true
             when (menuItem.itemId) {
                 R.id.session_share -> {
-                    // do something
+                    val sessionId = session.id.id.toInt()
+                    val url = resources.getString(R.string.session_share_url).format(sessionId)
+                    systemViewModel.shareURL(
+                        activity = requireActivity(),
+                        url = url
+                    )
+                }
+                R.id.floormap -> {
+                    val directions = actionSessionToFloormap(session.room)
+                    findNavController().navigate(directions)
                 }
                 R.id.session_calendar -> {
-                    val session = binding.session ?: return@setOnMenuItemClickListener true
                     systemViewModel.sendEventToCalendar(
                         activity = requireActivity(),
                         title = session.title.getByLang(defaultLang()),
@@ -176,7 +181,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
 
     private fun setupSessionViews(
         binding: FragmentSessionDetailBinding,
-        adapter: GroupAdapter<ViewHolder<*>>,
+        adapter: GroupAdapter<GroupieViewHolder<*>>,
         session: Session,
         showEllipsis: Boolean,
         searchQuery: String?,
@@ -217,7 +222,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                                 actionSessionToSpeaker(
                                     speaker.id,
                                     TRANSITION_NAME_SUFFIX,
-                                    searchQuery),
+                                    searchQuery
+                                ),
                                 extras
                             )
                     }
@@ -248,10 +254,9 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
 
 @Module
 abstract class SessionDetailFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic @Provides
+        @Provides
         fun providesLifecycleOwnerLiveData(
             sessionDetailFragment: SessionDetailFragment
         ): LiveData<LifecycleOwner> {

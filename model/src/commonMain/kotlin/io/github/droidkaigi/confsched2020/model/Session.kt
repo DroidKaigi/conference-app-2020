@@ -12,7 +12,8 @@ sealed class Session(
     open val startTime: DateTime,
     open val endTime: DateTime,
     open val room: Room,
-    open val isFavorited: Boolean
+    open val isFavorited: Boolean,
+    open val levels: List<Level>
 ) {
     val startDayText by lazy { startTime.toOffset(defaultTimeZoneOffset()).format("yyyy.M.d") }
 
@@ -88,6 +89,7 @@ data class SpeechSession(
     override val title: LocaledString,
     override val desc: String,
     override val room: Room,
+    override val levels: List<Level>,
     val lang: Lang,
     val category: Category,
     val intendedAudience: String?,
@@ -97,7 +99,17 @@ data class SpeechSession(
     override val isFavorited: Boolean,
     val speakers: List<Speaker>,
     val message: LocaledString?
-) : Session(id, title, desc, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
+) : Session(
+    id,
+    title,
+    desc,
+    dayNumber,
+    startTime,
+    endTime,
+    room,
+    isFavorited,
+    levels
+), AndroidParcel {
 
     override fun shortSummary(lang: Lang) = buildString {
         append(timeInMinutes)
@@ -120,9 +132,20 @@ data class ServiceSession(
     override val title: LocaledString,
     override val desc: String,
     override val room: Room,
+    override val levels: List<Level>,
     val sessionType: SessionType,
     override val isFavorited: Boolean
-) : Session(id, title, desc, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
+) : Session(
+    id,
+    title,
+    desc,
+    dayNumber,
+    startTime,
+    endTime,
+    room,
+    isFavorited,
+    levels
+), AndroidParcel {
 
     override fun shortSummary(lang: Lang) = buildString {
         append(timeInMinutes)

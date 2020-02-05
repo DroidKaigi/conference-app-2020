@@ -1,8 +1,19 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation"
     app:startDestination="@id/main"
     >
+    <action
+        android:id="@+id/action_global_to_chrome"
+        app:destination="@id/chrome">
+        <argument
+            android:name="url"
+            app:argType="string"
+            app:nullable="false"
+            />
+    </action>
+
     <fragment
         android:id="@+id/main"
         android:name="io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragment"
@@ -108,6 +119,12 @@
             app:popExitAnim="@anim/fade_out"
             />
         <action
+            android:id="@+id/action_session_to_floormap"
+            app:destination="@id/floormap"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" />
+        <action
             android:id="@+id/action_session_to_chrome"
             app:destination="@id/chrome"
             >
@@ -150,6 +167,7 @@
         android:id="@+id/staffs"
         android:name="io.github.droidkaigi.confsched2020.staff.ui.StaffsFragment"
         android:label="@string/staffs_label"
+        app:moduleName="staff"
         />
     <fragment
         android:id="@+id/sponsors"
@@ -173,6 +191,7 @@
         android:id="@+id/contributor"
         android:name="io.github.droidkaigi.confsched2020.contributor.ui.ContributorsFragment"
         android:label="@string/contributor_label"
+        app:moduleName="contributor"
         >
 
         <action
@@ -203,6 +222,13 @@
         android:label="@string/about_label"
         >
         <action
+            android:id="@+id/action_about_to_floormap"
+            app:destination="@id/floormap"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+        <action
             android:id="@+id/action_about_to_staffs"
             app:destination="@id/staffs"
             app:enterAnim="@anim/fade_in"
@@ -210,12 +236,27 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out"
             />
+        <action
+            android:id="@+id/action_about_to_chrome"
+            app:destination="@id/chrome">
+            <argument
+                android:name="url"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/floormap"
         android:name="io.github.droidkaigi.confsched2020.floormap.ui.FloorMapFragment"
         android:label="@string/map_label"
-        />
+        >
+        <argument
+            android:name="room"
+            android:defaultValue="@null"
+            app:argType="io.github.droidkaigi.confsched2020.model.Room"
+            app:nullable="true"
+            />
+    </fragment>
     <fragment
         android:id="@+id/session_survey"
         android:name="io.github.droidkaigi.confsched2020.session_survey.ui.SessionSurveyFragment"
@@ -230,10 +271,15 @@
         android:id="@+id/setting"
         android:name="io.github.droidkaigi.confsched2020.preference.ui.PreferencesFragment"
         android:label="@string/setting_label"
+        app:moduleName="preference"
         />
     <chrome
         android:id="@+id/chrome"
         android:name="io.github.droidkaigi.confsched2020.ui.ChromeCustomTabsNavigator"
         android:label="chrome"
+        />
+    <activity
+        android:id="@+id/licenses"
+        android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
         />
 </navigation>

@@ -54,7 +54,7 @@
             app:layout_constraintTop_toTopOf="parent"
             >
 
-            <TextView
+            <androidx.emoji.widget.EmojiAppCompatTextView
                 android:id="@+id/speaker_session_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                 app:tint="?android:attr/textColorPrimary"
                 />
 
-            <TextView
+            <androidx.emoji.widget.EmojiAppCompatTextView
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

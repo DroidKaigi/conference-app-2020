@@ -32,4 +32,12 @@
     </style>
 
     <style name="Theme.DroidKaigi.DayNight" parent="Theme.DroidKaigi" />
+
+    <style name="Theme.DroidKaigi.ActionBar" parent="Theme.DroidKaigi">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/gray</item>
+    </style>
 </resources>

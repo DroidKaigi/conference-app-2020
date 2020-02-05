@@ -1,7 +1,9 @@
+-keepnames class com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 -keepnames class io.github.droidkaigi.confsched2020.about.ui.AboutFragment
 -keepnames class io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment
 -keepnames class io.github.droidkaigi.confsched2020.contributor.ui.ContributorsFragment
 -keepnames class io.github.droidkaigi.confsched2020.floormap.ui.FloorMapFragment
+-keepnames class io.github.droidkaigi.confsched2020.model.Room
 -keepnames class io.github.droidkaigi.confsched2020.model.SessionId
 -keepnames class io.github.droidkaigi.confsched2020.model.SessionId
 -keepnames class io.github.droidkaigi.confsched2020.model.SessionPage
