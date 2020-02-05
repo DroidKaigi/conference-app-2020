@@ -18,4 +18,5 @@ interface SessionResponse {
     val videoUrl: String?
     val slideUrl: String?
     val interpretationTarget: Boolean
+    val levels: List<String>
 }

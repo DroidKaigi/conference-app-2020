@@ -9,10 +9,10 @@ import io.github.droidkaigi.confsched2020.data.api.response.Response
 import io.github.droidkaigi.confsched2020.data.api.response.RoomResponse
 import io.github.droidkaigi.confsched2020.data.api.response.SessionResponse
 import io.github.droidkaigi.confsched2020.data.api.response.SpeakerResponse
-import io.github.droidkaigi.confsched2020.model.AudienceCategory
 import io.github.droidkaigi.confsched2020.model.Category
 import io.github.droidkaigi.confsched2020.model.Lang
 import io.github.droidkaigi.confsched2020.model.LangSupport
+import io.github.droidkaigi.confsched2020.model.Level
 import io.github.droidkaigi.confsched2020.model.LocaledString
 import io.github.droidkaigi.confsched2020.model.Room
 import io.github.droidkaigi.confsched2020.model.ServiceSession
@@ -47,7 +47,7 @@ fun Response.toModel(): SessionContents {
         langSupports = LangSupport.values().toList(),
         rooms = sessions.map { it.room }.sortedBy { it.sort }.distinct(),
         category = speechSessions.map { it.category }.distinct(),
-        audienceCategories = AudienceCategory.values().toList()
+        levels = Level.values().toList()
     )
 }
 
@@ -111,7 +111,8 @@ private fun SessionResponse.toSession(
                     requireNotNull(it.ja),
                     requireNotNull(it.en)
                 )
-            }
+            },
+            levels = response.levels.map { Level.findLevel(it) }
         )
     } else {
         ServiceSession(
@@ -133,7 +134,8 @@ private fun SessionResponse.toSession(
             ),
             // TODO
             isFavorited = false,
-            sessionType = SessionType.of(response.sessionType)
+            sessionType = SessionType.of(response.sessionType),
+            levels = response.levels.map { Level.findLevel(it) }
         )
     }
 }

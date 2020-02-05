@@ -73,7 +73,8 @@ internal fun SessionResponse.toSessionEntityImpl(
                 requireNotNull(room.name?.en),
                 requireNotNull(room.sort)
             ),
-            sessionType = sessionType
+            sessionType = sessionType,
+            level = levels.toLevelEntity()
         )
     } else {
         return SessionEntityImpl(
@@ -99,7 +100,8 @@ internal fun SessionResponse.toSessionEntityImpl(
             message = message?.let {
                 MessageEntityImpl(requireNotNull(it.ja), requireNotNull(it.en))
             },
-            sessionType = sessionType
+            sessionType = sessionType,
+            level = levels.toLevelEntity()
         )
     }
 }

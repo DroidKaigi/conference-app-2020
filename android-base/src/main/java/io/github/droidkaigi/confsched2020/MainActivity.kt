@@ -7,17 +7,24 @@ import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
 import android.net.Uri
+import android.content.res.ColorStateList
+import android.graphics.drawable.RippleDrawable
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.view.menu.ActionMenuItemView
+import androidx.appcompat.widget.ActionMenuView
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.children
 import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -207,6 +214,33 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             onDestinationChange(destination)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        binding.toolbar.children.forEach {
+            when (it) {
+                is ActionMenuView -> {
+                    it.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+                        it.children.filterIsInstance<ActionMenuItemView>().forEach { menuItemView ->
+                            setRippleColor(menuItemView, binding.isIndigoBackground)
+                        }
+                    }
+                }
+                is AppCompatImageButton -> setRippleColor(it, binding.isIndigoBackground)
+            }
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun setRippleColor(view: View, isIndigoBackground: Boolean) {
+        (view.background as? RippleDrawable)?.setColor(
+            ColorStateList.valueOf(
+                this.getThemeColor(
+                    if (isIndigoBackground) {
+                        R.attr.colorOnPrimary
+                    } else {
+                        R.attr.colorControlHighlight
+                    })))
     }
 
     private fun onDestinationChange(destination: NavDestination) {
