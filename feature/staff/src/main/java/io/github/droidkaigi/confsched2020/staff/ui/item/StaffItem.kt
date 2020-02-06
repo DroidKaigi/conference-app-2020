@@ -1,7 +1,5 @@
 package io.github.droidkaigi.confsched2020.staff.ui.item
 
-import android.content.Context
-import android.view.LayoutInflater
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
@@ -14,7 +12,6 @@ import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.model.Staff
 import io.github.droidkaigi.confsched2020.staff.R
 import io.github.droidkaigi.confsched2020.staff.databinding.ItemStaffBinding
-import io.github.droidkaigi.confsched2020.util.lazyWithParam
 
 class StaffItem @AssistedInject constructor(
     @Assisted private val staff: Staff,
