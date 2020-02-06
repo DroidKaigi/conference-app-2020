@@ -8,7 +8,7 @@ final class SessionViewModel {
 
     // input
     private let toggleEmbeddedViewRelay = PublishRelay<Void>()
-    private let sessionsFetchFromApiRelay: BehaviorRelay<[Session]>
+    private let sessionsFetchFromApiRelay: PublishRelay<[Session]>
     private let sessionsFetchFromLocalRelay: BehaviorRelay<[Session]>
 
     func toggleEmbeddedView() {
@@ -23,7 +23,7 @@ final class SessionViewModel {
     private let bookingSessionProvider: BookingSessionProvider
 
     init() {
-        sessionsFetchFromApiRelay = .init(value: [])
+        sessionsFetchFromApiRelay = .init()
         sessionsFetchFromLocalRelay = .init(value: [])
         bookingSessionProvider = .init()
         let isFocusedOnEmbeddedViewRelay = BehaviorRelay<Bool>(value: true)
