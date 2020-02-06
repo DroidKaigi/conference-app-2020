@@ -6,8 +6,8 @@ import androidx.navigation.findNavController
 import coil.api.load
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
-import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Sponsor
 import io.github.droidkaigi.confsched2020.sponsor.R
 import io.github.droidkaigi.confsched2020.sponsor.databinding.ItemSponsorLargeBinding
@@ -17,8 +17,7 @@ class LargeSponsorItem @AssistedInject constructor(
     @Assisted private val sponsor: Sponsor,
     @Assisted private val spanSize: Int,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
-) : BindableItem<ItemSponsorLargeBinding>(sponsor.id.toLong()),
-    EqualableContentsProvider {
+) : BindableItem<ItemSponsorLargeBinding>(sponsor.id.toLong()) {
     override fun getLayout(): Int = R.layout.item_sponsor_large
 
     override fun bind(viewBinding: ItemSponsorLargeBinding, position: Int) {
@@ -32,16 +31,8 @@ class LargeSponsorItem @AssistedInject constructor(
         }
     }
 
-    override fun providerEqualableContents(): Array<*> {
-        return arrayOf(sponsor)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return isSameContents(other)
-    }
-
-    override fun hashCode(): Int {
-        return contentsHash()
+    override fun hasSameContentAs(other: Item<*>): Boolean {
+        return sponsor == (other as? LargeSponsorItem)?.sponsor
     }
 
     override fun getSpanSize(spanCount: Int, position: Int): Int {

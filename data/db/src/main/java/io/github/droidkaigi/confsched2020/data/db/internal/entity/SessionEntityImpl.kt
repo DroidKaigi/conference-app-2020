@@ -22,5 +22,6 @@ internal data class SessionEntityImpl(
     override var language: String,
     @Embedded override val category: CategoryEntityImpl?,
     @Embedded override val room: RoomEntityImpl?,
-    @Embedded override val message: MessageEntityImpl?
+    @Embedded override val message: MessageEntityImpl?,
+    @Embedded override val level: LevelEntityImpl
 ) : SessionEntity

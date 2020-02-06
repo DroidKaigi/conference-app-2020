@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import type="io.github.droidkaigi.confsched2020.model.TimeZoneOffsetKt" />
+
+        <variable
+            name="session"
+            type="io.github.droidkaigi.confsched2020.model.Session"
+            />
+
+        <variable
+            name="lang"
+            type="io.github.droidkaigi.confsched2020.model.Lang"
+            />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="24dp"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="24dp"
+            />
+
+
+        <androidx.emoji.widget.EmojiAppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:lineSpacingExtra="8sp"
+            android:text="@{session.title.getByLang(lang)}"
+            android:textAppearance="?textAppearanceHeadline5"
+            android:textColor="@color/session_title"
+            android:textIsSelectable="true"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="DroidKaigi App Architecture"
+            />
+
+        <ImageView
+            android:id="@+id/time_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_access_time_black_24dp"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:tint="?android:attr/textColorPrimary"
+            android:contentDescription="@string/time_icon"
+            />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{session.timeSummary(lang, TimeZoneOffsetKt.defaultTimeZoneOffset())}"
+            android:textAppearance="?textAppearanceCaption"
+            android:textColor="?android:attr/textColorPrimary"
+            app:layout_constraintBottom_toBottomOf="@id/time_icon"
+            app:layout_constraintStart_toEndOf="@id/time_icon"
+            app:layout_constraintTop_toTopOf="@id/time_icon"
+            tools:text="2月20日 11:00-11:20"
+            />
+
+        <TextView
+            android:id="@+id/duration_room"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{session.shortSummary(lang)}"
+            android:textAppearance="?textAppearanceCaption"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/time_icon"
+            tools:text="20min / Hall"
+            />
+
+        <TextView
+            android:id="@+id/session_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="?textAppearanceBody1"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/duration_room"
+            tools:text="セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
+            />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/tags"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/session_message"
+            />
+
+        <View
+            android:id="@+id/divider_survey_and_text"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="22dp"
+            android:background="@color/black_alpha_12"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/tags"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -8,13 +8,14 @@ import io.kotlintest.shouldBe
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.flow.flowOf
-import org.junit.Test
 import org.junit.Rule
+import org.junit.Test
 
 class SearchSessionsViewModelTest {
     @get:Rule val viewModelTestRule = ViewModelTestRule()
     @get:Rule val mockkRule = MockkRule(this)
-    @MockK(relaxed = true) lateinit var sessionRepository: SessionRepository
+    @MockK(relaxed = true)
+    lateinit var sessionRepository: SessionRepository
 
     @Test
     fun load() {
@@ -35,7 +36,6 @@ class SearchSessionsViewModelTest {
             searchResult.speakers shouldBe Dummies.sessionContents.speakers
             searchResult.query shouldBe ""
         }
-
     }
 
     @Test
@@ -68,7 +68,6 @@ class SearchSessionsViewModelTest {
             searchResult.speakers shouldBe listOf()
             searchResult.query shouldBe "hoge"
         }
-
     }
 
     @Test
@@ -119,6 +118,5 @@ class SearchSessionsViewModelTest {
             searchResult.speakers shouldBe Dummies.speakers
             searchResult.query shouldBe "speaker"
         }
-
     }
 }

@@ -1,4 +1,4 @@
-# ![DroidKaigi Logo](corecomponent/androidcomponent/src/main/res/drawable-xxhdpi/ic_logo.png)DroidKaigi 2020 official Android app [![Build Status](https://travis-ci.com/DroidKaigi/conference-app-2020.svg?token=Syjf5JfarZTDJHiqdSRV&branch=master)](https://travis-ci.com/DroidKaigi/conference-app-2020)
+# ![DroidKaigi Logo](corecomponent/androidcomponent/src/main/res/drawable-xxhdpi/ic_logo.png)DroidKaigi 2020 official Android app ![GitHub Actions](https://github.com/DroidKaigi/conference-app-2020/workflows/.github/workflows/on_release_branch.yml/badge.svg)
 
 We are currently working on the event. We are looking for contributors!
 
@@ -228,7 +228,19 @@ This project uses some modern Android libraries and source codes.
 * [Injected ViewModel Provider](https://github.com/evant/injectedvmprovider) (evant)
 * [Google I/O 2018](https://github.com/google/iosched) (Google)
 * [TimetableLayout](https://github.com/MoyuruAizawa/TimetableLayout) (MoyuruAizawa)
+* [Android Architecture Components samples](https://github.com/android/architecture-components-samples) (Google)
+  * [AutoClearedValue](https://github.com/android/architecture-components-samples/blob/9826b59956eb93c9e627bdf16a19a1c8bc28ce14/GithubBrowserSample/app/src/main/java/com/android/example/github/util/AutoClearedValue.kt)
+* [Android Animation Samples Repository](https://github.com/android/animation-samples) (Google)
+  * [Motion](https://github.com/android/animation-samples/tree/master/Motion)
+* [Store4](https://github.com/dropbox/Store) (Dropbox)
 
 ### iOS
-
-// TODO: Add iOS Libraries
+* [Mint](https://github.com/yonaskolb/Mint)
+* [XcodeGen](https://github.com/yonaskolb/XcodeGen)
+* [material-components-ios](https://github.com/material-components/material-components-ios)
+* [RxSwift](https://github.com/ReactiveX/RxSwift)
+* [GNU Make](https://www.gnu.org/software/make/)
+* [Material](https://github.com/CosmicMind/Material)
+* [Nuke](https://github.com/kean/Nuke)
+* [SwiftGen](https://github.com/SwiftGen/SwiftGen)
+* [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing)

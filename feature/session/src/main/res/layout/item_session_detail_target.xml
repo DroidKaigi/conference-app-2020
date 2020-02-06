@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="session"
+            type="io.github.droidkaigi.confsched2020.model.Session"
+            />
+
+        <variable
+            name="speechSession"
+            type="io.github.droidkaigi.confsched2020.model.SpeechSession"
+            />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="24dp"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="24dp"
+            />
+
+
+        <View
+            android:id="@+id/divider_text_and_target"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="28dp"
+            android:background="@color/black_alpha_12"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+
+        <androidx.emoji.widget.EmojiAppCompatTextView
+            android:id="@+id/target_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@string/intended_audience_title"
+            android:textAppearance="?textAppearanceSubtitle2"
+            android:textColor="@color/session_detail_label"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/divider_text_and_target"
+            />
+
+        <androidx.emoji.widget.EmojiAppCompatTextView
+            android:id="@+id/target_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@{speechSession.intendedAudience}"
+            android:textAppearance="@style/TextAppearance.DroidKaigi.Body1"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textIsSelectable="true"
+            android:lineSpacingExtra="8sp"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/target_title"
+            tools:text="target text long target text long target text long target text long target text long target text"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,41 @@
+name: DroidKaigi 2020
+settings:
+    PRODUCT_BUNDLE_IDENTIFIER: io.github.droidkaigi.confsched2020.DroidKaigi-2020
+targets:
+    DroidKaigi 2020:
+        type: application
+        platform: iOS
+        deploymentTarget: "12.0"
+        sources: DroidKaigi 2020
+        configFiles:
+            Debug: Configs/DroidKaigi 2020-Debug.xcconfig
+            Release: Configs/DroidKaigi 2020-Release.xcconfig
+        dependencies:
+            - framework: build/ios_combined.framework
+        preBuildScripts:
+            - path: scripts/build_kotlin_modules.sh
+              name: Build Kotlin Modules
+            - path: scripts/lint.sh
+              name: "Run Lint"
+        postBuildScripts:
+            - path: scripts/format.sh
+              name: "Run Format"
+        testTargets:
+            - DroidKaigi 2020Tests
+    DroidKaigi 2020Tests:
+        type: bundle.unit-test
+        platform: iOS
+        deploymentTarget: "12.0"
+        sources: DroidKaigi 2020Tests
+        dependencies:
+            - framework: build/ios_combined.framework
+            - target: DroidKaigi 2020
+        settings:
+            INFOPLIST_FILE: DroidKaigi 2020Tests/info.plist
+            TEST_HOST: $(BUILT_PRODUCTS_DIR)/DroidKaigi 2020.app/DroidKaigi 2020
+    DroidKaigi 2020UITests:
+        type: bundle.ui-testing
+        platform: iOS
+        deploymentTarget: "12.0"
+        sources: DroidKaigi 2020UITests
+

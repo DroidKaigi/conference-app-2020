@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="session_on_going">LIVE</string>
+    <string name="start_filter">絞り込む</string>
+    <string name="filter_now">絞り込み中</string>
+    <string name="intended_audience_title">対象者</string>
+    <string name="applicable_session">該当セッション: %1$d</string>
+    <string name="filter_reset">リセット</string>
+    <string name="ellipsis_label">続きを読む</string>
+    <string name="speaker">スピーカー</string>
+    <string name="session">セッション</string>
+    <string name="query_hint">検索する</string>
+    <string name="slide">スライド</string>
+    <string name="empty_favorite_session">お気に入りのセッションを登録するとあなた専用のプランを作ることができます。</string>
+    <string name="time_icon">時計アイコン</string>
+    <string name="favorite_icon">お気に入りアイコン</string>
+    <string name="session_share_url">https://droidkaigi.jp/2020/timetable/%d</string>
+</resources>

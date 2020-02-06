@@ -5,7 +5,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 
-@Module
+@Module(includes = [AppModuleBinds::class])
 class AppModule {
     @Provides
     fun provideAppContext(application: Application): Context {

@@ -1,0 +1,26 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '12.0'
+
+target 'DroidKaigi 2020' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+  inhibit_all_warnings!
+
+  # Pods for DroidKaigi 2020
+  pod 'MaterialComponents'
+  pod 'Material'
+  pod 'Nuke'
+  pod 'RxSwift'
+  pod 'RxCocoa'
+
+  target 'DroidKaigi 2020Tests' do
+    inherit! :search_paths
+    # Pods for testing
+    pod 'SnapshotTesting', '~> 1.7'
+  end
+
+  target 'DroidKaigi 2020UITests' do
+    # Pods for testing
+  end
+
+end

@@ -1,5 +1,4 @@
 <manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="io.github.droidkaigi.confsched2020.staff"
     >
@@ -9,7 +8,7 @@
         dist:title="@string/staffs_label"
         >
         <dist:delivery>
-            <dist:install-time />
+            <dist:on-demand />
         </dist:delivery>
         <dist:fusing dist:include="true" />
     </dist:module>

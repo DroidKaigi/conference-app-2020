@@ -27,6 +27,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:paddingBottom="40dp"
                     >
 
                     <androidx.constraintlayout.widget.Guideline
@@ -120,11 +122,11 @@
                         />
 
                     <TextView
-                        android:id="@+id/filter_audience_category_title"
+                        android:id="@+id/filter_level_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
-                        android:text="@string/filter_audience_category"
+                        android:text="@string/filter_level"
                         android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
                         android:textColor="?attr/colorOnPrimary"
                         app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -132,7 +134,7 @@
                         />
 
                     <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/audience_category_filters"
+                        android:id="@+id/level_filters"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -140,7 +142,7 @@
                         app:layout_constraintEnd_toEndOf="@id/guideline_end"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@id/filter_audience_category_title"
+                        app:layout_constraintTop_toBottomOf="@id/filter_level_title"
                         />
 
                     <TextView
@@ -152,7 +154,7 @@
                         android:textAppearance="@style/TextAppearance.DroidKaigi.Subtitle2"
                         android:textColor="?attr/colorOnPrimary"
                         app:layout_constraintStart_toStartOf="@id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@id/audience_category_filters"
+                        app:layout_constraintTop_toBottomOf="@id/level_filters"
                         />
 
                     <com.google.android.material.chip.ChipGroup

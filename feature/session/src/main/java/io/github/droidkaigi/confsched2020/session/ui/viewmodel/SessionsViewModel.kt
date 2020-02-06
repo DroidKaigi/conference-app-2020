@@ -11,37 +11,51 @@ import io.github.droidkaigi.confsched2020.ext.requireValue
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
-import io.github.droidkaigi.confsched2020.model.AudienceCategory
 import io.github.droidkaigi.confsched2020.model.Category
 import io.github.droidkaigi.confsched2020.model.Filters
 import io.github.droidkaigi.confsched2020.model.Lang
 import io.github.droidkaigi.confsched2020.model.LangSupport
+import io.github.droidkaigi.confsched2020.model.Level
 import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Room
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
+import io.github.droidkaigi.confsched2020.model.SessionList
 import io.github.droidkaigi.confsched2020.model.SessionPage
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
+import io.github.droidkaigi.confsched2020.session.util.SessionAlarm
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
 
 class SessionsViewModel @Inject constructor(
-    private val sessionRepository: SessionRepository
+    private val sessionRepository: SessionRepository,
+    private val sessionAlarm: SessionAlarm
 ) : ViewModel() {
     // UiModel definition
     data class UiModel(
         val isLoading: Boolean,
         val error: AppError?,
-        val dayToSessionsMap: Map<SessionPage.Day, List<Session>>,
-        val favoritedSessions: List<Session>,
+        val dayToSessionsMap: Map<SessionPage.Day, SessionList>,
+        val shouldScrollSessionPosition: Map<SessionPage, Int>,
+        val events: SessionList,
+        val favoritedSessions: SessionList,
         val filters: Filters,
         val allFilters: Filters
     ) {
         companion object {
-            val EMPTY = UiModel(true, null, mapOf(), listOf(), Filters(), Filters())
+            val EMPTY = UiModel(
+                true,
+                null,
+                mapOf(),
+                mapOf(),
+                SessionList.EMPTY,
+                SessionList.EMPTY,
+                Filters(),
+                Filters()
+            )
         }
     }
 
@@ -59,33 +73,35 @@ class SessionsViewModel @Inject constructor(
             Timber.debug(e) { "Fail sessionRepository.refresh()" }
         }
     }
-    private var favoriteLoadingStateLiveData: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.Loaded)
+    private var favoriteLoadingStateLiveData: MutableLiveData<LoadingState> =
+        MutableLiveData(LoadingState.Loaded)
 
     private val filterLiveData: MutableLiveData<Filters> = MutableLiveData(Filters())
+
+    private val shouldScrollCurrentSessionLiveData = MutableLiveData(true)
 
     // Produce UiModel
     val uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
         liveData1 = sessionsLoadStateLiveData,
         liveData2 = favoriteLoadingStateLiveData,
-        liveData3 = filterLiveData
+        liveData3 = filterLiveData,
+        liveData4 = shouldScrollCurrentSessionLiveData
     ) { current: UiModel,
         sessionsLoadState: LoadState<SessionContents>,
         favoriteState: LoadingState,
-        filters: Filters
+        filters: Filters,
+        shouldScroll: Boolean
         ->
         val isLoading = sessionsLoadState.isLoading || favoriteState.isLoading
-        val sessionContents = when (sessionsLoadState) {
-            is LoadState.Loaded -> {
-                sessionsLoadState.value
-            }
-            else -> {
-                SessionContents.EMPTY
-            }
-        }
-        val filteredSessions = sessionContents
-            .sessions
-            .filter { filters.isPass(it) }
+        val sessionContents = sessionsLoadState.getValueOrNull() ?: SessionContents.EMPTY
+
+        val sessions = sessionContents.sessions
+        val filteredSessions = sessions.filtered(filters)
+        val dayToSessionMap = filteredSessions.dayToSessionMap
+        val shouldScrollSessionPosition =
+            if (shouldScroll) filteredSessions.toPageToScrollPositionMap() else emptyMap()
+
         UiModel(
             isLoading = isLoading,
             error = sessionsLoadState
@@ -93,19 +109,14 @@ class SessionsViewModel @Inject constructor(
                 .toAppError() ?: favoriteState
                 .getErrorIfExists()
                 .toAppError(),
-            dayToSessionsMap = filteredSessions
-                .groupBy { it.dayNumber }
-                .mapKeys {
-                    SessionPage.dayOfNumber(
-                        it.key
-                    )
-                },
-            favoritedSessions = filteredSessions
-                .filter { it.isFavorited },
+            dayToSessionsMap = dayToSessionMap,
+            shouldScrollSessionPosition = shouldScrollSessionPosition,
+            events = sessions.events,
+            favoritedSessions = filteredSessions.favorited,
             filters = filters,
             allFilters = Filters(
                 rooms = sessionContents.rooms.toSet(),
-                audienceCategories = sessionContents.audienceCategories.toSet(),
+                levels = sessionContents.levels.toSet(),
                 categories = sessionContents.category.toSet(),
                 langs = sessionContents.langs.toSet(),
                 langSupports = sessionContents.langSupports.toSet()
@@ -119,6 +130,7 @@ class SessionsViewModel @Inject constructor(
             favoriteLoadingStateLiveData.value = LoadingState.Loading
             try {
                 sessionRepository.toggleFavoriteWithWorker(session.id)
+                sessionAlarm.toggleRegister(session)
                 favoriteLoadingStateLiveData.value = LoadingState.Loaded
             } catch (e: Exception) {
                 favoriteLoadingStateLiveData.value = LoadingState.Error(e)
@@ -136,32 +148,56 @@ class SessionsViewModel @Inject constructor(
     fun filterChanged(category: Category, checked: Boolean) {
         val filters = filterLiveData.requireValue()
         filterLiveData.value = filters.copy(
-            categories = if (checked) filters.categories + category else filters.categories - category
+            categories = if (checked) {
+                filters.categories + category
+            } else {
+                filters.categories - category
+            }
         )
     }
 
     fun filterChanged(lang: Lang, checked: Boolean) {
         val filters = filterLiveData.requireValue()
         filterLiveData.value = filters.copy(
-            langs = if (checked) filters.langs + lang else filters.langs - lang
+            langs = if (checked) {
+                filters.langs + lang
+            } else {
+                filters.langs - lang
+            }
         )
     }
 
     fun filterChanged(langSupport: LangSupport, checked: Boolean) {
         val filters = filterLiveData.requireValue()
         filterLiveData.value = filters.copy(
-            langSupports = if (checked) filters.langSupports + langSupport else filters.langSupports - langSupport
+            langSupports = if (checked) {
+                filters.langSupports + langSupport
+            } else {
+                filters.langSupports - langSupport
+            }
         )
     }
 
-    fun filterChanged(audienceCategory: AudienceCategory, checked: Boolean) {
+    fun filterChanged(level: Level, checked: Boolean) {
         val filters = filterLiveData.requireValue()
         filterLiveData.value = filters.copy(
-            audienceCategories = if (checked) filters.audienceCategories + audienceCategory else filters.audienceCategories - audienceCategory
+            levels = if (checked) {
+                filters.levels + level
+            } else {
+                filters.levels - level
+            }
         )
     }
 
     fun resetFilter() {
         filterLiveData.value = Filters()
+    }
+
+    fun onScrolled() {
+        shouldScrollCurrentSessionLiveData.value = false
+    }
+
+    fun onTabReselected() {
+        shouldScrollCurrentSessionLiveData.value = true
     }
 }

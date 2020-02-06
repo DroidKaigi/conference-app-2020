@@ -8,8 +8,8 @@ import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
-import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Staff
 import io.github.droidkaigi.confsched2020.staff.R
 import io.github.droidkaigi.confsched2020.staff.databinding.ItemStaffBinding
@@ -18,8 +18,7 @@ class StaffItem @AssistedInject constructor(
     @Assisted private val staff: Staff,
     context: Context,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
-) : BindableItem<ItemStaffBinding>(staff.id.hashCode().toLong()),
-    EqualableContentsProvider {
+) : BindableItem<ItemStaffBinding>(staff.id.hashCode().toLong()) {
 
     private val placeHolder = VectorDrawableCompat.create(
         context.resources,
@@ -40,17 +39,7 @@ class StaffItem @AssistedInject constructor(
         }
     }
 
-    override fun providerEqualableContents(): Array<*> {
-        return arrayOf(staff)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return isSameContents(other)
-    }
-
-    override fun hashCode(): Int {
-        return contentsHash()
-    }
+    override fun hasSameContentAs(other: Item<*>): Boolean = staff == (other as? StaffItem)?.staff
 
     @AssistedInject.Factory
     interface Factory {
