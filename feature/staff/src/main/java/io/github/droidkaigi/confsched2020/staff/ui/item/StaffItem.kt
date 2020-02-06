@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched2020.staff.ui.item
 
 import android.content.Context
+import android.view.LayoutInflater
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
@@ -13,29 +14,31 @@ import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.model.Staff
 import io.github.droidkaigi.confsched2020.staff.R
 import io.github.droidkaigi.confsched2020.staff.databinding.ItemStaffBinding
+import io.github.droidkaigi.confsched2020.util.lazyWithParam
 
 class StaffItem @AssistedInject constructor(
     @Assisted private val staff: Staff,
-    context: Context,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
 ) : BindableItem<ItemStaffBinding>(staff.id.hashCode().toLong()) {
-
-    private val placeHolder = VectorDrawableCompat.create(
-        context.resources,
-        R.drawable.shape_staff_image_background,
-        null
-    )
 
     override fun getLayout(): Int = R.layout.item_staff
 
     override fun bind(viewBinding: ItemStaffBinding, position: Int) {
         viewBinding.title.text = staff.name
 
-        viewBinding.staffImage.load(staff.iconUrl) {
-            crossfade(true)
-            placeholder(placeHolder)
-            transformations(CircleCropTransformation())
-            lifecycle(lifecycleOwnerLiveData.value)
+        viewBinding.staffImage.run {
+            val placeHolder = VectorDrawableCompat.create(
+                context.resources,
+                R.drawable.shape_staff_image_background,
+                null
+            )
+
+            load(staff.iconUrl) {
+                crossfade(true)
+                placeholder(placeHolder)
+                transformations(CircleCropTransformation())
+                lifecycle(lifecycleOwnerLiveData.value)
+            }
         }
     }
 

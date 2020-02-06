@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched2020.staff.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.VisibleForTesting
@@ -160,6 +159,4 @@ interface StaffComponent {
     }
 
     fun inject(fragment: StaffsFragment)
-
-    fun appContext(): Context
 }
