@@ -1,0 +1,31 @@
+#!/bin/sh
+
+WORKDIR=$(cd $(dirname "$0")/../; pwd)
+
+# Build with option
+${WORKDIR}/gradlew clean :android-base:bundleDebug -PuseFakeSplit=true
+
+# create apks file
+java -jar ${WORKDIR}/bundletool-all.jar build-apks \
+             --bundle=${WORKDIR}/android-base/build/outputs/bundle/debug/android-base-debug.aab \
+             --output=${WORKDIR}/android-base/build/outputs/bundle/debug/android-base-debug.apks \
+             --ks=${WORKDIR}/android-base/debug.keystore \
+             --ks-pass=pass:android \
+             --ks-key-alias=androiddebugkey \
+             --key-pass=pass:android \
+             --connected-device
+
+# unzip
+unzip ${WORKDIR}/android-base/build/outputs/bundle/debug/android-base-debug.apks -d android-base/build/outputs/bundle/debug
+
+# Uninstall the app if needed
+adb uninstall io.github.droidkaigi.confsched2020.debug
+
+# Create directory for FakeInstallSplitManager
+adb shell mkdir -p /sdcard/Android/data/io.github.droidkaigi.confsched2020.debug/files
+
+# Push apks to device
+adb push ${WORKDIR}/android-base/build/outputs/bundle/debug/splits/* /sdcard/Android/data/io.github.droidkaigi.confsched2020.debug/files
+
+# Install the app
+java -jar ${WORKDIR}/bundletool-all.jar install-apks --apks=${WORKDIR}/android-base/build/outputs/bundle/debug/android-base-debug.apks

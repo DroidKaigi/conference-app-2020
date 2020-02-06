@@ -6,6 +6,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.GroupieViewHolder
@@ -18,6 +19,7 @@ import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentDirections.Compa
 import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentDirections.Companion.actionAboutToStaffs
 import io.github.droidkaigi.confsched2020.about.ui.item.AboutHeaderItem
 import io.github.droidkaigi.confsched2020.about.ui.item.AboutItem
+import io.github.droidkaigi.confsched2020.about.ui.item.AboutLaunchItem
 import io.github.droidkaigi.confsched2020.about.ui.item.AboutTextItem
 import io.github.droidkaigi.confsched2020.about.ui.viewmodel.AboutViewModel
 import io.github.droidkaigi.confsched2020.di.Injectable
@@ -34,6 +36,7 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
         const val TWITTER_URL = "https://twitter.com/DroidKaigi"
         const val YOUTUBE_URL = "https://www.youtube.com/channel/UCgK6L-PKx2OZBuhrQ6mmQZw"
         const val MEDIUM_URL = "https://medium.com/droidkaigi"
+        const val PRIVACY_URL = "http://www.association.droidkaigi.jp/privacy.html"
     }
 
     @Inject
@@ -54,6 +57,8 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
     lateinit var aboutHeaderItemFactory: AboutHeaderItem.Factory
     @Inject
     lateinit var aboutTextItemFactory: AboutTextItem.Factory
+    @Inject
+    lateinit var aboutLaunchItemFactory: AboutLaunchItem.Factory
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -83,10 +88,10 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                         findNavController().navigate(actionAboutToChrome(MEDIUM_URL))
                     }
                 ),
-                aboutItemFactory.create(
+                aboutLaunchItemFactory.create(
                     getString(R.string.about_item_access)
                 ) {
-                    // TODO go access-page
+                    systemViewModel.navigateToAccessMap(requireActivity())
                 },
                 aboutItemFactory.create(
                     getString(R.string.about_item_staff)
@@ -96,12 +101,15 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 aboutItemFactory.create(
                     getString(R.string.about_item_privacy_policy)
                 ) {
-                    // TODO go privacy-policy-page
+                    findNavController().navigate(actionAboutToChrome(PRIVACY_URL))
                 },
                 aboutItemFactory.create(
                     getString(R.string.about_item_licence)
                 ) {
-                    // TODO go licence-page
+                    OssLicensesMenuActivity.setActivityTitle(
+                        this.getString(R.string.licenses_label)
+                    )
+                    findNavController().navigate(R.id.licenses)
                 },
                 aboutTextItemFactory.create(
                     getString(R.string.about_item_app_version),
@@ -109,7 +117,6 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 )
             )
         )
-
         binding.progressBar.hide()
     }
 }

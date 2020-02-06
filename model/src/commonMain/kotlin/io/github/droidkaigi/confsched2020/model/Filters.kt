@@ -5,7 +5,7 @@ data class Filters(
     val categories: Set<Category> = mutableSetOf(),
     val langs: Set<Lang> = mutableSetOf(),
     val langSupports: Set<LangSupport> = mutableSetOf(),
-    val audienceCategories: Set<AudienceCategory> = mutableSetOf()
+    val levels: Set<Level> = mutableSetOf()
 ) {
     fun isPass(
         session: Session
@@ -31,10 +31,15 @@ data class Filters(
                 true
             }
         }
+        val levelsFilterOk = run {
+            if (levels.isEmpty()) return@run true
+            return@run session.levels.intersect(levels).isNotEmpty()
+        }
         return roomFilterOk &&
             categoryFilterOk &&
             langFilterOk &&
-            langSupportFilterOk
+            langSupportFilterOk &&
+            levelsFilterOk
     }
 
     fun isFiltered(): Boolean {
@@ -42,7 +47,7 @@ data class Filters(
             categories.isNotEmpty() ||
             langs.isNotEmpty() ||
             langSupports.isNotEmpty() ||
-            audienceCategories.isNotEmpty()
+            levels.isNotEmpty()
     }
 
     private fun Session.isNotFilterableServiceSession() =

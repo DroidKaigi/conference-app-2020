@@ -13,12 +13,19 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <nav-graph android:value="@navigation/navigation" />
         </activity>
         <receiver android:name=".session.broadcastreceiver.NotificationBroadcastReceiver" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/Theme.DroidKaigi.ActionBar"
+            />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/Theme.DroidKaigi.ActionBar"
+            />
     </application>
 
 </manifest>
