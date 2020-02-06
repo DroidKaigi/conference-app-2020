@@ -92,5 +92,6 @@ final class SessionCell: UICollectionViewCell {
         speakersStackView.arrangedSubviews.forEach { subview in
             speakersStackView.removeArrangedSubview(subview)
         }
+        dateLabelInFirstFavoriteSession.isHidden = true
     }
 }
