@@ -7,6 +7,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("com.google.firebase.crashlytics")
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 android {
