@@ -66,7 +66,7 @@ final class SessionViewController: UIViewController {
             .disposed(by: disposeBag)
 
         // TODO: Error handling for viewModel.sessions
-        let dataSource = SessionViewDataSource()
+        let dataSource = SessionViewDataSource(type: type)
         let filteredSessions = viewModel.sessions.asObservable()
             .map { [weak self] sessions -> [Session] in
                 guard let self = self else { return [] }
@@ -87,20 +87,30 @@ final class SessionViewController: UIViewController {
         filteredSessions
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
+
         filteredSessions
-            .filter { [weak self] sessions in
-                guard let self = self else { return false }
-                return sessions.count == 0 && self.type == .myPlan
-            }
-            .bind(to: Binder(self) { me, _ in
-                DispatchQueue.main.async {
+            .filter { [weak self] _ in self?.type == .myPlan }
+            .map { $0.isEmpty }
+            .bind(to: Binder(self) { me, isEmpty in
+                if isEmpty {
                     me.showSuggestView()
+                } else {
+                    me.removeSuggestView()
                 }
             })
             .disposed(by: disposeBag)
+
         dataSource.onTapSpeaker
             .emit(onNext: { [weak self] speaker, sessions in
                 self?.navigationController?.pushViewController(SpeakerViewController.instantiate(speaker: speaker, sessions: sessions), animated: true)
+            })
+            .disposed(by: disposeBag)
+        dataSource.onTapBookmark.emit(onNext: { [unowned self] session in
+            if session.isFavorited {
+                self.viewModel.resignBookingSession(session)
+            } else {
+                self.viewModel.bookSession(session)
+            }
             })
             .disposed(by: disposeBag)
         collectionView.rx.modelSelected(Session.self)
@@ -118,6 +128,12 @@ final class SessionViewController: UIViewController {
             suggestView.rightAnchor.constraint(equalTo: view.rightAnchor),
             suggestView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+    }
+
+    func removeSuggestView() {
+        if let suggestView = view.subviews.first(where: { $0 is SuggestView }) {
+            suggestView.removeFromSuperview()
+        }
     }
 }
 
