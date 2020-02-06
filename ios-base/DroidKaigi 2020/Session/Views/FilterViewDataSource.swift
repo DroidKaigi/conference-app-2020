@@ -18,8 +18,11 @@ final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
     var levels: [Level] = []
     var categories: [ios_combined.Category] = []
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 4
+    }
 
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let filterSection = FilterSections(rawValue: section)
         else { fatalError() }
         switch filterSection {
@@ -64,6 +67,7 @@ extension FilterViewDataSource: RxCollectionViewDataSourceType, SectionedViewDat
             dataSource.langs = sessionContents.langs
             dataSource.levels = sessionContents.levels
             dataSource.categories = sessionContents.category
+            collectionView.reloadData()
         }.on(observedEvent)
     }
 

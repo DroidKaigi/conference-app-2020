@@ -20,6 +20,7 @@ final class FilterViewController: UIViewController {
 
     private var embeddedView: UIView?
     private var embeddedViewController: SessionPageViewController?
+    private var filterView: FilterView!
     private let filterViewModel = FilterViewModel()
 
     private let embeddedViewAnimator = UIViewPropertyAnimator(duration: 0.8, curve: .easeInOut)
@@ -38,6 +39,7 @@ final class FilterViewController: UIViewController {
         setUpContainerView()
         bindToViewModel()
         view.bringSubviewToFront(containerView)
+        filterViewModel.viewDidLoad()
     }
 
     override func viewDidLayoutSubviews() {
@@ -169,7 +171,7 @@ final class FilterViewController: UIViewController {
     }
 
     private func setupFilterView() {
-        let filterView = FilterView()
+        filterView = FilterView()
         view.addSubview(filterView)
         filterView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -194,6 +196,10 @@ final class FilterViewController: UIViewController {
                     }
                 }
             }).disposed(by: disposeBag)
+        filterViewModel.sessionContents
+            .debug()
+            .drive(filterView.rx.items(dataSource: FilterViewDataSource()))
+            .disposed(by: disposeBag)
     }
 }
 
