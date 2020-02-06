@@ -3,10 +3,13 @@ package io.github.droidkaigi.confsched2020.floormap.ui
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.DrawableRes
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.navArgs
+import coil.ImageLoader
+import coil.api.load
 import dagger.Module
 import dagger.Provides
 import io.github.droidkaigi.confsched2020.di.Injectable
@@ -24,8 +27,28 @@ class FloorMapFragment : Fragment(R.layout.fragment_floormap), Injectable {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentFloormapBinding.bind(view)
 
+        val mapPlaceholderDrawable = ResourcesCompat.getDrawable(
+            resources,
+            R.drawable.ic_map_black,
+            null
+        )
+        val mapImageLoader = ImageLoader(requireContext()) {
+            crossfade(true)
+            placeholder(mapPlaceholderDrawable)
+            error(mapPlaceholderDrawable)
+        }
+
         navArgs.room?.getRoomTypeResource()?.let { resId ->
-            binding.floorMapImage.setImageResource(resId)
+            // handle navigation from session detail page
+            // TODO: change map url depends on room type
+            binding.floorMapImage.load(MAP_URL, mapImageLoader) {
+                lifecycle(viewLifecycleOwnerLiveData.value)
+            }
+        } ?: apply {
+            // handle navigation from drawer menu
+            binding.floorMapImage.load(MAP_URL, mapImageLoader) {
+                lifecycle(viewLifecycleOwnerLiveData.value)
+            }
         }
     }
 
@@ -42,6 +65,10 @@ class FloorMapFragment : Fragment(R.layout.fragment_floormap), Injectable {
                 return floorMapFragment.viewLifecycleOwnerLiveData
             }
         }
+    }
+
+    companion object {
+        const val MAP_URL = "https://api.droidkaigi.jp/images/2020/map.png"
     }
 }
 
