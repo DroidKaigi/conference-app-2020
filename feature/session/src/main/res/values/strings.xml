@@ -23,5 +23,5 @@
     <string name="empty_favorite_session">You choose your favorite sessions, then you can make a plan for you.</string>
     <string name="time_icon">Time Icon</string>
     <string name="favorite_icon">Favorite Icon</string>
-    <string name="session_share_url">https://droidkaigi.jp/2020/en/timetable/%d</string>
+    <string name="session_share_url">https://droidkaigi.jp/2020/en/timetable/%s</string>
 </resources>

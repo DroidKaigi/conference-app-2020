@@ -14,5 +14,5 @@
     <string name="empty_favorite_session">お気に入りのセッションを登録するとあなた専用のプランを作ることができます。</string>
     <string name="time_icon">時計アイコン</string>
     <string name="favorite_icon">お気に入りアイコン</string>
-    <string name="session_share_url">https://droidkaigi.jp/2020/timetable/%d</string>
+    <string name="session_share_url">https://droidkaigi.jp/2020/timetable/%s</string>
 </resources>
