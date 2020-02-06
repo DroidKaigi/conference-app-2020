@@ -34,8 +34,10 @@ final class FilterViewController: UIViewController {
         view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
         setUpAppBar()
         setUpTabBar()
+        setupFilterView()
         setUpContainerView()
         bindToViewModel()
+        view.bringSubviewToFront(containerView)
     }
 
     override func viewDidLayoutSubviews() {
@@ -164,6 +166,18 @@ final class FilterViewController: UIViewController {
                 }
             }).disposed(by: disposeBag)
         containerView.addGestureRecognizer(panGesture)
+    }
+
+    private func setupFilterView() {
+        let filterView = FilterView()
+        view.addSubview(filterView)
+        filterView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            filterView.topAnchor.constraint(equalTo: tabBar.bottomAnchor),
+            filterView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            filterView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            filterView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
     }
 
     private func bindToViewModel() {
