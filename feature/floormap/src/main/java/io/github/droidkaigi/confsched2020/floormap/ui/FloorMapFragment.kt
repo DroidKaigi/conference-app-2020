@@ -2,7 +2,6 @@ package io.github.droidkaigi.confsched2020.floormap.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.DrawableRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
