@@ -81,9 +81,9 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
             .disposed(by: cell.disposeBag)
 
         if session.isOnGoing {
-         cell.liveBadge.isHidden = false
+            cell.liveBadge.isHidden = false
         } else {
-         cell.liveBadge.isHidden = true
+            cell.liveBadge.isHidden = true
         }
         
         cell.bookmarkButton.isSelected = session.isFavorited
