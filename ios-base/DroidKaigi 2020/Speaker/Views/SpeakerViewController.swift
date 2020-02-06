@@ -28,7 +28,6 @@ final class SpeakerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupUI()
     }
 
@@ -52,7 +51,7 @@ final class SpeakerViewController: UIViewController {
         sessions.forEach { session in
             let sessionView = SpeakerSessionView.instantiate()
             sessionView.sessionTitleLabel.text = session.title.ja
-            sessionView.sessionDateLabel.text = session.timeSummary(lang: Lang.ja, timezoneOffset: TimeZoneOffsetKt.defaultTimeZoneOffset())
+            sessionView.sessionDateLabel.text = session.shortSummary(lang: .ja)
             stackView.insertArrangedSubview(sessionView, at: stackView.arrangedSubviews.count)
         }
     }
