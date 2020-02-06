@@ -7,16 +7,10 @@ final class SessionViewModel {
     private let disposeBag = DisposeBag()
 
     // input
-    private let toggleEmbeddedViewRelay = PublishRelay<Void>()
     private let sessionsFetchFromApiRelay: PublishRelay<[Session]>
     private let sessionsFetchFromLocalRelay: BehaviorRelay<[Session]>
 
-    func toggleEmbeddedView() {
-        toggleEmbeddedViewRelay.accept(())
-    }
-
     // output
-    let isFocusedOnEmbeddedView: Driver<Bool>
     let sessions: Driver<[Session]>
 
     // dependencies
@@ -26,8 +20,6 @@ final class SessionViewModel {
         sessionsFetchFromApiRelay = .init()
         sessionsFetchFromLocalRelay = .init(value: [])
         bookingSessionProvider = .init()
-        let isFocusedOnEmbeddedViewRelay = BehaviorRelay<Bool>(value: true)
-        isFocusedOnEmbeddedView = isFocusedOnEmbeddedViewRelay.asDriver()
 
         sessions = Driver.combineLatest(
             sessionsFetchFromApiRelay.asDriver(onErrorJustReturn: []),
@@ -46,12 +38,6 @@ final class SessionViewModel {
             .filter { !$0.isEmpty }
             .asObservable()
             .bind(to: sessionsFetchFromApiRelay)
-            .disposed(by: disposeBag)
-
-        toggleEmbeddedViewRelay.asObservable()
-            .withLatestFrom(isFocusedOnEmbeddedViewRelay)
-            .map { !$0 }
-            .bind(to: isFocusedOnEmbeddedViewRelay)
             .disposed(by: disposeBag)
 
         sessionsFetchFromApiRelay

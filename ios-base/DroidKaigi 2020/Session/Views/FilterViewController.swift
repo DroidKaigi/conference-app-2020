@@ -20,7 +20,7 @@ final class FilterViewController: UIViewController {
 
     private var embeddedView: UIView?
     private var embeddedViewController: SessionPageViewController?
-    private let viewModel = SessionViewModel()
+    private let filterViewModel = FilterViewModel()
 
     private let embeddedViewAnimator = UIViewPropertyAnimator(duration: 0.8, curve: .easeInOut)
 
@@ -121,7 +121,7 @@ final class FilterViewController: UIViewController {
     private func setUpContainerView() {
         view.addSubview(containerView)
 
-        let viewController = SessionPageViewController(viewModel: viewModel, transitionStyle: .scroll, navigationOrientation: .horizontal)
+        let viewController = SessionPageViewController(filterViewModel: filterViewModel, transitionStyle: .scroll, navigationOrientation: .horizontal)
         viewController.filterViewControllerDelegate = self
         insert(viewController)
 
@@ -130,7 +130,7 @@ final class FilterViewController: UIViewController {
 
         var baseY: CGFloat = 0
         panGesture.rx.event.asDriver()
-            .withLatestFrom(viewModel.isFocusedOnEmbeddedView) { ($0, $1) }
+            .withLatestFrom(filterViewModel.isFocusedOnEmbeddedView) { ($0, $1) }
             .drive(onNext: { [weak self] item in
                 let (recognizer, isFocused) = item
                 guard let containerView = self?.containerView else { return }
@@ -158,7 +158,7 @@ final class FilterViewController: UIViewController {
                     }
                     if abs(movePercentage) > thresholdPercentage {
                         UIView.animate(withDuration: 0.2) {
-                            self?.viewModel.toggleEmbeddedView()
+                            self?.filterViewModel.toggleEmbeddedView()
                         }
                     }
                 default:
@@ -181,7 +181,7 @@ final class FilterViewController: UIViewController {
     }
 
     private func bindToViewModel() {
-        viewModel.isFocusedOnEmbeddedView
+        filterViewModel.isFocusedOnEmbeddedView
             .skip(1)
             .drive(Binder(self) { me, isFocusedOnEmbeddedView in
                 if isFocusedOnEmbeddedView {
