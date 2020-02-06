@@ -56,6 +56,12 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
 
         cell.minutesAndRoomLabel.text = "\(session.timeInMinutes)min / \(session.room.name.ja)"
 
+        if session.isOnGoing {
+         cell.liveBadge.isHidden = false
+        } else {
+         cell.liveBadge.isHidden = true
+        }
+        
         return cell
     }
 }
