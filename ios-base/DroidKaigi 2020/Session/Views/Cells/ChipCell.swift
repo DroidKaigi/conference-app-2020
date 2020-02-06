@@ -20,5 +20,7 @@ final class ChipCell: CollectionViewCell {
 
         layer.cornerRadius = frame.height / 2
         clipsToBounds = true
+
+        backgroundColor = Asset.primary400.color
     }
 }

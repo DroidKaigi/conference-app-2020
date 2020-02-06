@@ -58,6 +58,27 @@ final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
 
         return cell
     }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader", for: indexPath) as? FilterSectionHeaderView else {
+            fatalError()
+        }
+
+        guard let filterSection = FilterSections(rawValue: indexPath.section)
+        else { fatalError() }
+        switch filterSection {
+        case .rooms:
+            header.titleLabel.text = "Room"
+        case .langs:
+            header.titleLabel.text = "Langage"
+        case .levels:
+            header.titleLabel.text = "Level"
+        case .categories:
+            header.titleLabel.text = "Category"
+        }
+
+        return header
+    }
 }
 
 extension FilterViewDataSource: RxCollectionViewDataSourceType, SectionedViewDataSourceType {
