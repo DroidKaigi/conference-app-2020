@@ -2,7 +2,7 @@ import Material
 import UIKit
 
 final class SidebarViewController: UITableViewController {
-    private enum SwitchViewControllerType: Int {
+    enum SwitchViewControllerType: Int {
         case timeline
         case about
         case info
@@ -14,8 +14,19 @@ final class SidebarViewController: UITableViewController {
 
     weak var rootViewController: UINavigationController?
 
-    static func instantiate(rootViewController: UINavigationController) -> SidebarViewController {
+    var switchType: SwitchViewControllerType?
+
+    struct Dependency {
+        let switchType: SwitchViewControllerType
+    }
+
+    func inject(with dependency: Dependency) {
+        switchType = dependency.switchType
+    }
+
+    static func instantiate(rootViewController: UINavigationController, dependency: Dependency = .init(switchType: .timeline)) -> SidebarViewController {
         guard let viewController = UIStoryboard(name: "SidebarViewController", bundle: .main).instantiateInitialViewController() as? SidebarViewController else { fatalError() }
+        viewController.inject(with: dependency)
         viewController.rootViewController = rootViewController
         return viewController
     }
@@ -31,7 +42,7 @@ final class SidebarViewController: UITableViewController {
         super.viewDidAppear(animated)
 
         // select default cell (timeline)
-        let indexPath = IndexPath(row: SwitchViewControllerType.timeline.rawValue, section: 0)
+        let indexPath = IndexPath(row: switchType?.rawValue ?? SwitchViewControllerType.timeline.rawValue, section: 0)
         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
     }
 
@@ -59,7 +70,12 @@ final class SidebarViewController: UITableViewController {
             let controller = AnnouncementsViewController.instantiate()
             transition(to: controller)
         case .map:
-            break
+            if rootViewController.viewControllers.first is FloorMapViewController {
+                break
+            }
+            let floorMapViewController = FloorMapViewController.instantiate()
+            transition(to: floorMapViewController)
+
         case .sponsor:
             let vc = SponsorViewController()
             rootViewController.pushViewController(vc, animated: true)
