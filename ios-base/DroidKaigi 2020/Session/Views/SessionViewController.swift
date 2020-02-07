@@ -108,6 +108,18 @@ final class SessionViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
+        filterViewModel.selectedSessionContents.asObservable()
+            .withLatestFrom(filteredSessions) { ($0, $1) }
+            .bind(to: Binder(self) { me, args in
+                let (sessionContents, sessions) = args
+                if sessionContents.isEmpty {
+                    me.filteredSessionCountLabel.isHidden = true
+                } else {
+                    me.filteredSessionCountLabel.isHidden = false
+                    me.filteredSessionCountLabel.text = "\(L10n.applicableSession): \(sessions.count)"
+                }
+            }).disposed(by: disposeBag)
+
         dataSource.onTapSpeaker
             .emit(onNext: { [weak self] speaker, sessions in
                 self?.navigationController?.pushViewController(SpeakerViewController.instantiate(speaker: speaker, sessions: sessions), animated: true)
