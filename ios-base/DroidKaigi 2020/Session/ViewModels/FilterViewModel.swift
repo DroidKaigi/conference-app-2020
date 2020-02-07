@@ -8,6 +8,7 @@ protocol FilterViewModelType {
     func selectChip()
     func resetSelected()
     func toggleEmbeddedView()
+    func turnBackEmbeddedView()
 
     // Output
     var sessionContents: Driver<SessionContents> { get }
@@ -21,6 +22,7 @@ final class FilterViewModel: FilterViewModelType {
     private let selectChipRelay = PublishRelay<Void>()
     private let resetSelectedRelay = PublishRelay<Void>()
     private let toggleEmbeddedViewRelay = PublishRelay<Void>()
+    private let turnBackEmbeddedViewRelay = PublishRelay<Void>()
     private let sessionContentsRelay = BehaviorRelay<SessionContents>(value: SessionContents.empty())
     let isFocusedOnEmbeddedViewRelay = BehaviorRelay<Bool>(value: true)
 
@@ -41,6 +43,11 @@ final class FilterViewModel: FilterViewModelType {
             .map { !$0 }
             .bind(to: isFocusedOnEmbeddedViewRelay)
             .disposed(by: disposeBag)
+
+        turnBackEmbeddedViewRelay.asObservable()
+            .withLatestFrom(isFocusedOnEmbeddedViewRelay)
+            .bind(to: isFocusedOnEmbeddedViewRelay)
+            .disposed(by: disposeBag)
     }
 
     func viewDidLoad() {
@@ -57,5 +64,9 @@ final class FilterViewModel: FilterViewModelType {
 
     func toggleEmbeddedView() {
         toggleEmbeddedViewRelay.accept(())
+    }
+
+    func turnBackEmbeddedView() {
+        turnBackEmbeddedViewRelay.accept(())
     }
 }

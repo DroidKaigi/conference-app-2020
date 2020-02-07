@@ -13,12 +13,7 @@ final class FilterViewController: UIViewController {
 
     private let tabBar = MDCTabBar()
 
-    private var containerView: UIView = {
-        let view = ShapedShadowedView(frame: .zero)
-        return view
-    }()
-
-    private var embeddedView: UIView?
+    private var embeddedView: UIView!
     private var embeddedViewController: SessionPageViewController?
     private var filterView: FilterView!
     private let filterViewModel = FilterViewModel()
@@ -38,7 +33,7 @@ final class FilterViewController: UIViewController {
         setupFilterView()
         setUpContainerView()
         bindToViewModel()
-        view.bringSubviewToFront(containerView)
+        view.bringSubviewToFront(embeddedView)
         filterViewModel.viewDidLoad()
     }
 
@@ -46,8 +41,7 @@ final class FilterViewController: UIViewController {
         super.viewDidLayoutSubviews()
 
         let embeddedFrame = frameForEmbeddedController()
-        containerView.frame = embeddedFrame
-        embeddedView?.frame = containerView.bounds
+        embeddedView?.frame = embeddedFrame
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -121,11 +115,11 @@ final class FilterViewController: UIViewController {
     }
 
     private func setUpContainerView() {
-        view.addSubview(containerView)
-
         let viewController = SessionPageViewController(filterViewModel: filterViewModel, transitionStyle: .scroll, navigationOrientation: .horizontal)
         viewController.filterViewControllerDelegate = self
         insert(viewController)
+
+        view.addSubview(embeddedView!)
 
         let panGesture = UIPanGestureRecognizer()
         panGesture.delegate = self
@@ -135,7 +129,7 @@ final class FilterViewController: UIViewController {
             .withLatestFrom(filterViewModel.isFocusedOnEmbeddedView) { ($0, $1) }
             .drive(onNext: { [weak self] item in
                 let (recognizer, isFocused) = item
-                guard let containerView = self?.containerView else { return }
+                guard let containerView = self?.embeddedView else { return }
 
                 switch recognizer.state {
                 case .began:
@@ -148,7 +142,7 @@ final class FilterViewController: UIViewController {
                         || nextY > baseY && !isFocused {
                         break
                     }
-                    self?.containerView.frame.origin.y = baseY + moved.y
+                    self?.embeddedView.frame.origin.y = baseY + moved.y
                 case .ended:
                     let thresholdPercentage: CGFloat = 0.1
                     let moved = recognizer.translation(in: containerView)
@@ -159,15 +153,15 @@ final class FilterViewController: UIViewController {
                         break
                     }
                     if abs(movePercentage) > thresholdPercentage {
-                        UIView.animate(withDuration: 0.2) {
-                            self?.filterViewModel.toggleEmbeddedView()
-                        }
+                        self?.filterViewModel.toggleEmbeddedView()
+                    } else {
+                        self?.filterViewModel.turnBackEmbeddedView()
                     }
                 default:
                     break
                 }
             }).disposed(by: disposeBag)
-        containerView.addGestureRecognizer(panGesture)
+        embeddedView.addGestureRecognizer(panGesture)
     }
 
     private func setupFilterView() {
@@ -188,11 +182,11 @@ final class FilterViewController: UIViewController {
             .drive(Binder(self) { me, isFocusedOnEmbeddedView in
                 if isFocusedOnEmbeddedView {
                     UIView.animate(withDuration: 0.2) {
-                        me.containerView.frame.origin.y = me.view.frame.height - (me.embeddedView?.frame.height)!
+                        me.embeddedView.frame.origin.y = me.view.frame.height - (me.embeddedView?.frame.height)!
                     }
                 } else {
                     UIView.animate(withDuration: 0.2) {
-                        me.containerView.frame.origin.y = me.view.frame.height - 100
+                        me.embeddedView.frame.origin.y = me.view.frame.height - 100
                     }
                 }
             }).disposed(by: disposeBag)
@@ -217,8 +211,6 @@ extension FilterViewController {
         controller.willMove(toParent: self)
         addChild(controller)
         embeddedViewController = controller
-
-        containerView.addSubview(controller.view)
         embeddedView = controller.view
         embeddedView?.backgroundColor = .white
     }
