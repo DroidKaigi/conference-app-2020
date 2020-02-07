@@ -191,9 +191,21 @@ final class FilterViewController: UIViewController {
                 }
             }).disposed(by: disposeBag)
         filterViewModel.sessionContents
-            .debug()
             .drive(filterView.collectionView.rx.items(dataSource: FilterViewDataSource()))
             .disposed(by: disposeBag)
+
+        filterView.collectionView.rx.itemSelected.asObservable()
+            .compactMap { [weak self] indexPath -> Any? in
+                guard let self = self else { return nil }
+                do {
+                    return try self.filterView.collectionView.rx.model(at: indexPath)
+                } catch {
+                    return nil
+                }
+            }
+            .bind(to: Binder(self) { me, chip in
+                me.filterViewModel.selectChip(chip: chip)
+            }).disposed(by: disposeBag)
     }
 }
 

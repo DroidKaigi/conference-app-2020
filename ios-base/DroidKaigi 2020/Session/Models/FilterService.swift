@@ -14,12 +14,22 @@ final class FilterService: FilterServiceProtocol {
             case is ServiceSession:
                 return true
             case let speakerSession as SpeechSession:
-                return sessionContents.rooms.map({ $0.id }).contains(speakerSession.room.id)
-                    || sessionContents.langs.contains(speakerSession.lang)
-                    || !sessionContents.levels.filter({ speakerSession.levels.contains($0) }).isEmpty
-                    || sessionContents.categories.map({ $0.id }).contains(speakerSession.category.id)
+                let roomsOk = sessionContents.rooms.isEmpty
+                    || sessionContents.rooms.map { $0.id }.contains(speakerSession.room.id)
+                let langsOk = sessionContents.langs.isEmpty
+                    || sessionContents.rooms.map { $0.id }.contains(speakerSession.room.id)
+                let levelOk = sessionContents.levels.isEmpty
+                    || !sessionContents.levels.filter { speakerSession.levels.contains($0) }.isEmpty
+                let categoryOk = sessionContents.categories.isEmpty
+                    || sessionContents.categories.map { $0.id }.contains(speakerSession.category.id)
+                let langSupportOk = sessionContents.langSupports.isEmpty
                     || sessionContents.langSupports.contains(LangSupport.interpretation)
-                        ? speakerSession.isInterpretationTarget : true
+                    ? speakerSession.isInterpretationTarget : true
+                return roomsOk
+                    && langsOk
+                    && levelOk
+                    && categoryOk
+                    && langSupportOk
             default:
                 return true
             }

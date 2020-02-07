@@ -67,6 +67,12 @@ final class SessionViewController: UIViewController {
             .drive(filterButton.rx.isSelected)
             .disposed(by: disposeBag)
 
+        filterViewModel.selectedSessionContents
+            .drive(Binder(self) { me, sessionContents in
+                me.sessionViewModel.selectedFilterSessionContents(sessionContents)
+            })
+            .disposed(by: disposeBag)
+
         // TODO: Error handling for viewModel.sessions
         let dataSource = SessionViewDataSource(type: type)
         let filteredSessions = sessionViewModel.sessions.asObservable()
