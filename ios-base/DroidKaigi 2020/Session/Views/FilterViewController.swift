@@ -219,6 +219,17 @@ final class FilterViewController: UIViewController {
             .bind(to: Binder(self) { me, chip in
                 me.filterViewModel.deselectChip(chip: chip)
             }).disposed(by: disposeBag)
+
+        filterView.headerView.resetButton.rx.tap.asObservable()
+            .bind(to: Binder(self) { me, _ in
+                me.filterView.collectionView.visibleCells.forEach { cell in
+                    guard let indexPath = me.filterView.collectionView.indexPath(for: cell) else {
+                        return
+                    }
+                    me.filterView.collectionView.deselectItem(at: indexPath, animated: false)
+                }
+                me.filterViewModel.resetSelected()
+            }).disposed(by: disposeBag)
     }
 }
 

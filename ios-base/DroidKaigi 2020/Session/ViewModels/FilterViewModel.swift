@@ -107,6 +107,11 @@ final class FilterViewModel: FilterViewModelType {
                 }
                 self?.selectedSessionContentsRelay.accept(sessionContents)
             }).disposed(by: disposeBag)
+
+        resetSelectedRelay.asObservable()
+            .map { FilterSessionContents.empty() }
+            .bind(to: selectedSessionContentsRelay)
+            .disposed(by: disposeBag)
     }
 
     func viewDidLoad() {
