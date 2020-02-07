@@ -40,5 +40,4 @@
         https://material.io/design/color/dark-theme.html#properties
       -->
     <color name="black_121212">#121212</color>
-    <color name="custom_tabs_toolbar">#FFFFFF</color>
 </resources>

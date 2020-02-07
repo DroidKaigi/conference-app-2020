@@ -8,11 +8,11 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Patterns
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
+import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.widget.component.R
 import timber.log.Timber
 import timber.log.debug
@@ -39,7 +39,7 @@ class ChromeCustomTabsNavigator(private val context: Context) :
         val builder = CustomTabsIntent.Builder()
             .setShowTitle(true)
             .enableUrlBarHiding()
-            .setToolbarColor(ContextCompat.getColor(context, R.color.custom_tabs_toolbar))
+            .setToolbarColor(context.getThemeColor(R.attr.colorSurface))
 
         val intent = builder.build()
         try {
