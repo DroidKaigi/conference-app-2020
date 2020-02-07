@@ -6,14 +6,23 @@ final class ChipCell: CollectionViewCell {
     static let cellHeight: CGFloat = 32
     static let estimatedCellWidth: CGFloat = 100
 
-    @IBOutlet weak var chipTitleLabel: UILabel!
-
-    @IBOutlet weak var removeIcon: UIButton! {
+    override var isSelected: Bool {
         didSet {
-            let image = removeIcon.imageView?.image?.withRenderingMode(.alwaysTemplate)
-            removeIcon.imageView?.image = image?.tint(with: Asset.onSurfaceMediumEmphasis.color)
+            if isSelected {
+                backgroundColor = Asset.secondary300.color
+                removeIcon.isHidden = false
+                badgeImageView.isHidden = true
+            } else {
+                backgroundColor = Asset.primary400.color
+                removeIcon.isHidden = true
+                badgeImageView.isHidden = false
+            }
         }
     }
+
+    @IBOutlet weak var badgeImageView: UIImageView!
+    @IBOutlet weak var chipTitleLabel: UILabel!
+    @IBOutlet weak var removeIcon: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
