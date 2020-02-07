@@ -37,7 +37,7 @@ final class FilterView: UIView {
         collectionView = CollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(UINib(nibName: "FilterSectionHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader")
         collectionView.register(UINib(nibName: "ChipCell", bundle: nil), forCellWithReuseIdentifier: "ChipCell")
-        collectionView.contentInset = .init(top: 0, left: 24, bottom: 0, right: 24)
+        collectionView.contentInset = .init(top: 0, left: 24, bottom: 100, right: 24)
         addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
