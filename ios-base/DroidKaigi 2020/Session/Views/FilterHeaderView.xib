@@ -21,13 +21,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="フィルター" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Qo-ks-nUW">
-                    <rect key="frame" x="24" y="24" width="122" height="46"/>
+                    <rect key="frame" x="24" y="12" width="122" height="70"/>
                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                     <color key="textColor" name="OnPrimary"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YhG-Ws-eJg" customClass="Button" customModule="Material">
-                    <rect key="frame" x="258" y="24" width="124" height="46"/>
+                    <rect key="frame" x="234" y="12" width="148" height="70"/>
                     <color key="backgroundColor" name="Primary500"/>
                     <inset key="contentEdgeInsets" minX="13" minY="11" maxX="13" maxY="11"/>
                     <state key="normal" title="リセット" image="close_24px_not_rounded">
