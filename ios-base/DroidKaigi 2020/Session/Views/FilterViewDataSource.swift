@@ -4,7 +4,7 @@ import RxSwift
 import UIKit
 
 final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
-    private enum FilterSections: Int {
+    private enum FilterSections: Int, CaseIterable {
         case rooms
         case langs
         case levels
@@ -19,7 +19,7 @@ final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
     var categories: [ios_combined.Category] = []
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 4
+        return FilterSections.allCases.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
