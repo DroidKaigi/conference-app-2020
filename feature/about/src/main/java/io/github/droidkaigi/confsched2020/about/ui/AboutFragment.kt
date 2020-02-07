@@ -6,6 +6,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import androidx.navigation.fragment.findNavController
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.GroupieViewHolder
@@ -17,8 +18,8 @@ import io.github.droidkaigi.confsched2020.about.databinding.FragmentAboutBinding
 import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentDirections.Companion.actionAboutToChrome
 import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentDirections.Companion.actionAboutToStaffs
 import io.github.droidkaigi.confsched2020.about.ui.item.AboutHeaderItem
-import io.github.droidkaigi.confsched2020.about.ui.item.AboutIconItem
 import io.github.droidkaigi.confsched2020.about.ui.item.AboutItem
+import io.github.droidkaigi.confsched2020.about.ui.item.AboutLaunchItem
 import io.github.droidkaigi.confsched2020.about.ui.item.AboutTextItem
 import io.github.droidkaigi.confsched2020.about.ui.viewmodel.AboutViewModel
 import io.github.droidkaigi.confsched2020.di.Injectable
@@ -57,7 +58,7 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
     @Inject
     lateinit var aboutTextItemFactory: AboutTextItem.Factory
     @Inject
-    lateinit var aboutIconItemFactory: AboutIconItem.Factory
+    lateinit var aboutLaunchItemFactory: AboutLaunchItem.Factory
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -87,7 +88,7 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                         findNavController().navigate(actionAboutToChrome(MEDIUM_URL))
                     }
                 ),
-                aboutIconItemFactory.create(
+                aboutLaunchItemFactory.create(
                     getString(R.string.about_item_access)
                 ) {
                     systemViewModel.navigateToAccessMap(requireActivity())
@@ -110,7 +111,10 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 aboutItemFactory.create(
                     getString(R.string.about_item_licence)
                 ) {
-                    // TODO go licence-page
+                    OssLicensesMenuActivity.setActivityTitle(
+                        this.getString(R.string.licenses_label)
+                    )
+                    findNavController().navigate(R.id.licenses)
                 },
                 aboutTextItemFactory.create(
                     getString(R.string.about_item_app_version),
@@ -118,7 +122,6 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                 )
             )
         )
-
         binding.progressBar.hide()
     }
 }

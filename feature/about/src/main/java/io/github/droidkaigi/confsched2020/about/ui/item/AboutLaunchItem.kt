@@ -4,15 +4,15 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.about.R
-import io.github.droidkaigi.confsched2020.about.databinding.ItemAboutIconBinding
+import io.github.droidkaigi.confsched2020.about.databinding.ItemAboutLaunchBinding
 
-class AboutIconItem @AssistedInject constructor(
+class AboutLaunchItem @AssistedInject constructor(
     @Assisted private val name: String,
     @Assisted private val onClick: () -> Unit
-) : BindableItem<ItemAboutIconBinding>() {
-    override fun getLayout(): Int = R.layout.item_about_icon
+) : BindableItem<ItemAboutLaunchBinding>() {
+    override fun getLayout(): Int = R.layout.item_about_launch
 
-    override fun bind(viewBinding: ItemAboutIconBinding, position: Int) {
+    override fun bind(viewBinding: ItemAboutLaunchBinding, position: Int) {
         viewBinding.title.text = name
         viewBinding.root.setOnClickListener {
             onClick()
@@ -24,6 +24,6 @@ class AboutIconItem @AssistedInject constructor(
         fun create(
             name: String,
             onClick: () -> Unit
-        ): AboutIconItem
+        ): AboutLaunchItem
     }
 }

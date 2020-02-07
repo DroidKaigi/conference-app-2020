@@ -16,7 +16,6 @@ import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.util.NotificationChannelInfo
 import io.github.droidkaigi.confsched2020.widget.component.R
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class SessionAlarm @Inject constructor(private val app: Application) {
@@ -112,7 +111,7 @@ class SessionAlarm @Inject constructor(private val app: Application) {
     companion object {
         private val NOTIFICATION_TIME_BEFORE_START_MILLS = 10.minutes.millisecondsLong
         private const val BROADCAST_RECEIVER_CLASS_NAME =
-            "io.github.droidkaigi.confsched2020.session.broadcastreceiver.NotificationBroadcastReceiver"
+            "io.github.droidkaigi.confsched2020.session.broadcastreceiver.NotificationBroadcastReceiver" // ktlint-disable max-line-length
         const val ACTION_FAVORITED_SESSION_START = "ACTION_FAVORITED_SESSION_START"
         const val EXTRA_SESSION_ID = "EXTRA_SESSION_ID"
         const val EXTRA_TITLE = "EXTRA_TITLE"

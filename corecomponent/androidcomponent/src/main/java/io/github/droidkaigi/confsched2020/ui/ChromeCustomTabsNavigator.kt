@@ -39,7 +39,7 @@ class ChromeCustomTabsNavigator(private val context: Context) :
         val builder = CustomTabsIntent.Builder()
             .setShowTitle(true)
             .enableUrlBarHiding()
-            .setToolbarColor(context.getThemeColor(R.attr.colorAccent))
+            .setToolbarColor(context.getThemeColor(R.attr.colorSurface))
 
         val intent = builder.build()
         try {
