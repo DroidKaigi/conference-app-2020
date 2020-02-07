@@ -192,7 +192,7 @@ final class FilterViewController: UIViewController {
             }).disposed(by: disposeBag)
         filterViewModel.sessionContents
             .debug()
-            .drive(filterView.rx.items(dataSource: FilterViewDataSource()))
+            .drive(filterView.collectionView.rx.items(dataSource: FilterViewDataSource()))
             .disposed(by: disposeBag)
     }
 }
