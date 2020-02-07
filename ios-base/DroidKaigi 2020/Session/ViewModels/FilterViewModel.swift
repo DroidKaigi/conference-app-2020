@@ -11,7 +11,7 @@ protocol FilterViewModelType {
     func turnBackEmbeddedView()
 
     // Output
-    var sessionContents: Driver<SessionContents> { get }
+    var sessionContents: Driver<FilterSessionContents> { get }
     var isFocusedOnEmbeddedView: Driver<Bool> { get }
 }
 
@@ -23,10 +23,10 @@ final class FilterViewModel: FilterViewModelType {
     private let resetSelectedRelay = PublishRelay<Void>()
     private let toggleEmbeddedViewRelay = PublishRelay<Void>()
     private let turnBackEmbeddedViewRelay = PublishRelay<Void>()
-    private let sessionContentsRelay = BehaviorRelay<SessionContents>(value: SessionContents.empty())
+    private let sessionContentsRelay = BehaviorRelay<FilterSessionContents>(value: FilterSessionContents.empty())
     let isFocusedOnEmbeddedViewRelay = BehaviorRelay<Bool>(value: true)
 
-    var sessionContents: Driver<SessionContents>
+    var sessionContents: Driver<FilterSessionContents>
     var isFocusedOnEmbeddedView: Driver<Bool>
 
     init(provider: SessionDataProvider = SessionDataProvider()) {
@@ -35,6 +35,7 @@ final class FilterViewModel: FilterViewModelType {
 
         viewDidLoadRelay
             .flatMap { provider.fetchSessionContents().asObservable() }
+            .map(FilterSessionContents.init)
             .bind(to: sessionContentsRelay)
             .disposed(by: disposeBag)
 
@@ -54,8 +55,8 @@ final class FilterViewModel: FilterViewModelType {
         viewDidLoadRelay.accept(())
     }
 
-    func selectChip() {
-        selectChipRelay.accept(())
+    func selectChip(chip: Any) {
+        selectChipRelay.accept(chip)
     }
 
     func resetSelected() {

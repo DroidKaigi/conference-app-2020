@@ -12,13 +12,9 @@ final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
         case langSupports
     }
 
-    typealias Element = SessionContents
+    typealias Element = FilterSessionContents
 
-    var rooms: [Room] = []
-    var langs: [Lang] = []
-    var levels: [Level] = []
-    var categories: [ios_combined.Category] = []
-    var langSupports: [LangSupport] = []
+    var element: Element = .empty()
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return FilterSections.allCases.count
@@ -29,15 +25,15 @@ final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
         else { fatalError() }
         switch filterSection {
         case .rooms:
-            return rooms.count
+            return element.rooms.count
         case .langs:
-            return langs.count
+            return element.langs.count
         case .levels:
-            return levels.count
+            return element.levels.count
         case .categories:
-            return categories.count
+            return element.categories.count
         case .langSupports:
-            return langSupports.count
+            return element.langSupports.count
         }
     }
 
@@ -51,15 +47,15 @@ final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
 
         switch filterSection {
         case .rooms:
-            cell.chipTitleLabel.text = rooms[indexPath.item].name.en
+            cell.chipTitleLabel.text = element.rooms[indexPath.item].name.en
         case .langs:
-            cell.chipTitleLabel.text = langs[indexPath.item].text.en
+            cell.chipTitleLabel.text = element.langs[indexPath.item].text.en
         case .levels:
-            cell.chipTitleLabel.text = levels[indexPath.item].name
+            cell.chipTitleLabel.text = element.levels[indexPath.item].name
         case .categories:
-            cell.chipTitleLabel.text = categories[indexPath.item].name.en
+            cell.chipTitleLabel.text = element.categories[indexPath.item].name.en
         case .langSupports:
-            cell.chipTitleLabel.text = langSupports[indexPath.item].text.en
+            cell.chipTitleLabel.text = element.langSupports[indexPath.item].text.en
         }
 
         return cell
@@ -92,11 +88,7 @@ final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
 extension FilterViewDataSource: RxCollectionViewDataSourceType, SectionedViewDataSourceType {
     func collectionView(_ collectionView: UICollectionView, observedEvent: Event<FilterViewDataSource.Element>) {
         Binder(self) { dataSource, sessionContents in
-            dataSource.rooms = sessionContents.rooms
-            dataSource.langs = sessionContents.langs
-            dataSource.levels = sessionContents.levels
-            dataSource.categories = sessionContents.category
-            dataSource.langSupports = sessionContents.langSupports
+            dataSource.element = sessionContents
             collectionView.reloadData()
         }.on(observedEvent)
     }
@@ -106,15 +98,15 @@ extension FilterViewDataSource: RxCollectionViewDataSourceType, SectionedViewDat
         else { fatalError() }
         switch filterSection {
         case .rooms:
-            return rooms[indexPath.item]
+            return element.rooms[indexPath.item]
         case .langs:
-            return langs[indexPath.item]
+            return element.langs[indexPath.item]
         case .levels:
-            return levels[indexPath.item]
+            return element.levels[indexPath.item]
         case .categories:
-            return categories[indexPath.item]
+            return element.categories[indexPath.item]
         case .langSupports:
-            return langSupports[indexPath.item]
+            return element.langSupports[indexPath.item]
         }
     }
 }
