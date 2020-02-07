@@ -13,13 +13,22 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
 import io.github.droidkaigi.confsched2020.data.firestore.Firestore
 import io.github.droidkaigi.confsched2020.model.SessionId
+import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.scan
+import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import timber.log.debug
@@ -27,6 +36,7 @@ import javax.inject.Inject
 import kotlin.math.floor
 
 internal class FirestoreImpl @Inject constructor() : Firestore {
+    private val thumbsUpEventChannel = BroadcastChannel<SessionId>(10000)
 
     override fun getFavoriteSessionIds(): Flow<List<String>> {
         val setupFavorites = flow {
@@ -68,6 +78,7 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
         Timber.debug { "toggleFavorite: end" }
     }
 
+    @Suppress("EXPERIMENTAL_API_USAGE")
     override fun getThumbsUpCount(sessionId: SessionId): Flow<Int> {
         val setupThumbsUp = flow {
             signInIfNeeded()
@@ -76,9 +87,41 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
             emit(counterRef)
         }
 
-        val thumbsUpSnapshot = setupThumbsUp.flatMapLatest {
-            it.toFlow()
-        }
+        var appliedCount = -1
+        val unappliedCountChannel = BroadcastChannel<Int>(10000)
+        val incrementFlow = thumbsUpEventChannel.asFlow()
+            .filter { it == sessionId }
+            .withIndex()
+            .onEach {
+                unappliedCountChannel.send(
+                    minOf(
+                        it.index - appliedCount,
+                        MAX_APPLY_COUNT
+                    )
+                )
+            }
+            // For firebase pricing
+            .debounce(INCREMENT_DEBOUNCE_MILLIS)
+            .map {
+                val result = minOf(it.index - appliedCount, MAX_APPLY_COUNT)
+                appliedCount = it.index
+                unappliedCountChannel.send(0)
+                it.value to result
+            }
+            .map { (sessionId, count) ->
+                Timber.debug { "thumb up increment:$count" }
+                incrementThumbsUpCountImpl(sessionId, count)
+                count
+            }
+            .onStart {
+                emit(0)
+                unappliedCountChannel.send(0)
+            }
+        val thumbsUpSnapshot = setupThumbsUp
+            .flatMapLatest {
+                it.toFlow()
+            }
+            .combine(incrementFlow) { thumbsCount, _ -> thumbsCount }
 
         return thumbsUpSnapshot.map { shards ->
             var count = 0
@@ -87,16 +130,33 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
             }
             count
         }
+            .combine(unappliedCountChannel.asFlow()) { firestoreCount, unappliedCount ->
+                firestoreCount + unappliedCount
+            }.scan(0) { prev, value ->
+                // Prevent counts from dropping due to calculations
+                if (prev < value) {
+                    value
+                } else {
+                    prev
+                }
+            }
     }
 
     override suspend fun incrementThumbsUpCount(sessionId: SessionId) {
+        thumbsUpEventChannel.send(sessionId)
+    }
+
+    private suspend fun incrementThumbsUpCountImpl(
+        sessionId: SessionId,
+        count: Int
+    ) {
         signInIfNeeded()
         val counterRef = getThumbsUpCounterRef(sessionId)
         createShardsIfNeeded(counterRef)
         val shardId = floor(Math.random() * NUM_SHARDS).toInt()
         counterRef
             .document(shardId.toString())
-            .update(SHARDS_COUNT_KEY, FieldValue.increment(1))
+            .update(SHARDS_COUNT_KEY, FieldValue.increment(count.toLong()))
             .await()
     }
 
@@ -153,6 +213,8 @@ internal class FirestoreImpl @Inject constructor() : Firestore {
 
     companion object {
         const val NUM_SHARDS = 5
+        const val MAX_APPLY_COUNT = 50
+        const val INCREMENT_DEBOUNCE_MILLIS = 500L
         const val SHARDS_COUNT_KEY = "shards"
         const val FAVORITE_VALUE_KEY = "favorite"
     }
