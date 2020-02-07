@@ -47,5 +47,6 @@ final class FilterView: UIView {
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
         collectionView.backgroundColor = .clear
+        collectionView.allowsMultipleSelection = true
     }
 }

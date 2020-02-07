@@ -206,6 +206,19 @@ final class FilterViewController: UIViewController {
             .bind(to: Binder(self) { me, chip in
                 me.filterViewModel.selectChip(chip: chip)
             }).disposed(by: disposeBag)
+
+        filterView.collectionView.rx.itemDeselected.asObservable()
+            .compactMap { [weak self] indexPath -> Any? in
+                guard let self = self else { return nil }
+                do {
+                    return try self.filterView.collectionView.rx.model(at: indexPath)
+                } catch {
+                    return nil
+                }
+            }
+            .bind(to: Binder(self) { me, chip in
+                me.filterViewModel.deselectChip(chip: chip)
+            }).disposed(by: disposeBag)
     }
 }
 

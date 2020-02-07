@@ -6,6 +6,7 @@ protocol FilterViewModelType {
     // Input
     func viewDidLoad()
     func selectChip(chip: Any)
+    func deselectChip(chip: Any)
     func resetSelected()
     func toggleEmbeddedView()
     func turnBackEmbeddedView()
@@ -21,6 +22,7 @@ final class FilterViewModel: FilterViewModelType {
 
     private let viewDidLoadRelay = PublishRelay<Void>()
     private let selectChipRelay = PublishRelay<Any>()
+    private let deselectChipRelay = PublishRelay<Any>()
     private let resetSelectedRelay = PublishRelay<Void>()
     private let toggleEmbeddedViewRelay = PublishRelay<Void>()
     private let turnBackEmbeddedViewRelay = PublishRelay<Void>()
@@ -74,6 +76,37 @@ final class FilterViewModel: FilterViewModelType {
                 }
                 self?.selectedSessionContentsRelay.accept(sessionContents)
             }).disposed(by: disposeBag)
+
+        deselectChipRelay.asObservable()
+            .withLatestFrom(selectedSessionContentsRelay) { ($0, $1) }
+            .subscribe(onNext: { [weak self] args in
+                var (chip, sessionContents) = args
+                switch chip {
+                case let room as Room:
+                    if let index = sessionContents.rooms.firstIndex(of: room) {
+                        sessionContents.rooms.remove(at: index)
+                    }
+                case let lang as Lang:
+                    if let index = sessionContents.langs.firstIndex(of: lang) {
+                        sessionContents.langs.remove(at: index)
+                    }
+                case let level as Level:
+                    if let index = sessionContents.levels.firstIndex(of: level) {
+                        sessionContents.levels.remove(at: index)
+                    }
+                case let category as ios_combined.Category:
+                    if let index = sessionContents.categories.firstIndex(of: category) {
+                        sessionContents.categories.remove(at: index)
+                    }
+                case let langSupport as LangSupport:
+                    if let index = sessionContents.langSupports.firstIndex(of: langSupport) {
+                        sessionContents.langSupports.remove(at: index)
+                    }
+                default:
+                    break
+                }
+                self?.selectedSessionContentsRelay.accept(sessionContents)
+            }).disposed(by: disposeBag)
     }
 
     func viewDidLoad() {
@@ -82,6 +115,10 @@ final class FilterViewModel: FilterViewModelType {
 
     func selectChip(chip: Any) {
         selectChipRelay.accept(chip)
+    }
+
+    func deselectChip(chip: Any) {
+        deselectChipRelay.accept(chip)
     }
 
     func resetSelected() {
