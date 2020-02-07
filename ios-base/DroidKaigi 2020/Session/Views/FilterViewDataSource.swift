@@ -9,6 +9,7 @@ final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
         case langs
         case levels
         case categories
+        case langSupports
     }
 
     typealias Element = SessionContents
@@ -17,6 +18,7 @@ final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
     var langs: [Lang] = []
     var levels: [Level] = []
     var categories: [ios_combined.Category] = []
+    var langSupports: [LangSupport] = []
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return FilterSections.allCases.count
@@ -34,6 +36,8 @@ final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
             return levels.count
         case .categories:
             return categories.count
+        case .langSupports:
+            return langSupports.count
         }
     }
 
@@ -54,6 +58,8 @@ final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
             cell.chipTitleLabel.text = levels[indexPath.item].name
         case .categories:
             cell.chipTitleLabel.text = categories[indexPath.item].name.en
+        case .langSupports:
+            cell.chipTitleLabel.text = langSupports[indexPath.item].text.en
         }
 
         return cell
@@ -70,11 +76,13 @@ final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
         case .rooms:
             header.titleLabel.text = "Room"
         case .langs:
-            header.titleLabel.text = "Langage"
+            header.titleLabel.text = "Language"
         case .levels:
             header.titleLabel.text = "Level"
         case .categories:
             header.titleLabel.text = "Category"
+        case .langSupports:
+            header.titleLabel.text = "Language Support"
         }
 
         return header
@@ -88,6 +96,7 @@ extension FilterViewDataSource: RxCollectionViewDataSourceType, SectionedViewDat
             dataSource.langs = sessionContents.langs
             dataSource.levels = sessionContents.levels
             dataSource.categories = sessionContents.category
+            dataSource.langSupports = sessionContents.langSupports
             collectionView.reloadData()
         }.on(observedEvent)
     }
@@ -104,6 +113,8 @@ extension FilterViewDataSource: RxCollectionViewDataSourceType, SectionedViewDat
             return levels[indexPath.item]
         case .categories:
             return categories[indexPath.item]
+        case .langSupports:
+            return langSupports[indexPath.item]
         }
     }
 }
