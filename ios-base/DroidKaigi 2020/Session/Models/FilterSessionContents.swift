@@ -26,4 +26,12 @@ struct FilterSessionContents {
     static func empty() -> FilterSessionContents {
         return self.init(rooms: [], langs: [], levels: [], categories: [], langSupports: [])
     }
+
+    var isEmpty: Bool {
+        return rooms.isEmpty
+            && langs.isEmpty
+            && levels.isEmpty
+            && categories.isEmpty
+            && langSupports.isEmpty
+    }
 }
