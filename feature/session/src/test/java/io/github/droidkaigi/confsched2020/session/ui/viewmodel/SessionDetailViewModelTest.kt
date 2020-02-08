@@ -35,8 +35,10 @@ class SessionDetailViewModelTest {
             .test()
 
         val valueHistory = testObserver.valueHistory()
-        valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true)
-        valueHistory[1].apply {
+        // Observer does not receive UiModel.EMPTY,
+        // because sessionRepository.sessionContents does not always emit
+        // before UiModel is observed
+        valueHistory[0].apply {
             isLoading shouldBe false
             session shouldBe Dummies.speachSession1
             error shouldBe null
@@ -59,8 +61,7 @@ class SessionDetailViewModelTest {
             .test()
 
         val valueHistory = testObserver.valueHistory()
-        valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true)
-        valueHistory[1].apply {
+        valueHistory[0].apply {
             isLoading shouldBe false
             session shouldBe null
             error shouldNotBe null
@@ -86,22 +87,21 @@ class SessionDetailViewModelTest {
 
         verify { sessionDetailViewModel.favorite(Dummies.speachSession1) }
         val valueHistory = testObserver.valueHistory()
-        valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true)
-        valueHistory[1].apply {
+        valueHistory[0].apply {
             isLoading shouldBe false
             session shouldBe Dummies.speachSession1
             error shouldBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
-        valueHistory[2].apply {
+        valueHistory[1].apply {
             isLoading shouldBe true
             session shouldBe Dummies.speachSession1
             error shouldBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
-        valueHistory[3].apply {
+        valueHistory[2].apply {
             isLoading shouldBe false
             session shouldBe Dummies.speachSession1
             error shouldBe null
@@ -147,12 +147,7 @@ class SessionDetailViewModelTest {
             .test()
 
         val valueHistory = testObserver.valueHistory()
-        valueHistory[0] shouldBe
-            SessionDetailViewModel.UiModel.EMPTY.copy(
-            isLoading = true,
-            searchQuery = "query"
-        )
-        valueHistory[1].apply {
+        valueHistory[0].apply {
             isLoading shouldBe false
             session shouldBe Dummies.speachSession1
             error shouldBe null
