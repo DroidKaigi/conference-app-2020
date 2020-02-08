@@ -14,8 +14,7 @@ import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailM
 class SessionDetailMaterialItem @AssistedInject constructor(
     @Assisted private val session: Session,
     @Assisted private val listener: Listener
-) :
-    BindableItem<ItemSessionDetailMaterialBinding>() {
+) : BindableItem<ItemSessionDetailMaterialBinding>(session.id.hashCode().toLong()) {
 
     interface Listener {
         fun onClickMovie(movieUrl: String)

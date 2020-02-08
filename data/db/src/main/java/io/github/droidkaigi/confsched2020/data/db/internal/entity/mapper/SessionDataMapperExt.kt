@@ -16,7 +16,8 @@ import io.github.droidkaigi.confsched2020.data.db.internal.entity.SessionSpeaker
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.SpeakerEntityImpl
 import io.github.droidkaigi.confsched2020.model.SessionFeedback
 
-internal fun List<SessionResponse>?.toSessionSpeakerJoinEntities(): List<SessionSpeakerJoinEntityImpl> {
+internal fun List<SessionResponse>?.toSessionSpeakerJoinEntities():
+    List<SessionSpeakerJoinEntityImpl> {
     val sessionSpeakerJoinEntity: MutableList<SessionSpeakerJoinEntityImpl> = arrayListOf()
     this?.forEach { responseSession ->
         responseSession.speakers.forEach { speakerId ->
@@ -72,7 +73,8 @@ internal fun SessionResponse.toSessionEntityImpl(
                 requireNotNull(room.name?.en),
                 requireNotNull(room.sort)
             ),
-            sessionType = sessionType
+            sessionType = sessionType,
+            level = levels.toLevelEntity()
         )
     } else {
         return SessionEntityImpl(
@@ -98,7 +100,8 @@ internal fun SessionResponse.toSessionEntityImpl(
             message = message?.let {
                 MessageEntityImpl(requireNotNull(it.ja), requireNotNull(it.en))
             },
-            sessionType = sessionType
+            sessionType = sessionType,
+            level = levels.toLevelEntity()
         )
     }
 }

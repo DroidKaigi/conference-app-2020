@@ -1,8 +1,7 @@
-import UIKit
 import MaterialComponents
+import UIKit
 
 final class ApplicationScheme: NSObject {
-
     static let shared: ApplicationScheme = ApplicationScheme()
 
     public let colorScheme: MDCColorScheming = {
@@ -34,11 +33,11 @@ final class ApplicationScheme: NSObject {
     private static let semanticColorScheme: MDCSemanticColorScheme = {
         let scheme = MDCSemanticColorScheme(defaults: .material201804)
 
-        scheme.primaryColor = UIColor(hex: "041E42")
-        scheme.onPrimaryColor = .white
-        scheme.secondaryColor = UIColor(hex: "041E42")
-        scheme.surfaceColor = UIColor(hex: "041E42")
+        scheme.primaryColor = UIColor(named: "Primary")!
+        scheme.onPrimaryColor = UIColor(named: "OnPrimary")!
+        scheme.secondaryColor = UIColor(named: "Secondary")!
+        scheme.surfaceColor = UIColor(named: "Surface")!
+        scheme.onSurfaceColor = UIColor(named: "OnSurface")!
         return scheme
     }()
-
 }

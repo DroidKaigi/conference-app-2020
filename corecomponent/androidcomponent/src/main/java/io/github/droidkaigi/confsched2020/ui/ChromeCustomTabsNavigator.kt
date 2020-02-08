@@ -18,7 +18,8 @@ import timber.log.Timber
 import timber.log.debug
 
 @Navigator.Name("chrome")
-class ChromeCustomTabsNavigator(private val context: Context) : Navigator<ChromeCustomTabsNavigator.Destination>() {
+class ChromeCustomTabsNavigator(private val context: Context) :
+    Navigator<ChromeCustomTabsNavigator.Destination>() {
 
     override fun createDestination() = Destination(this)
 
@@ -38,7 +39,7 @@ class ChromeCustomTabsNavigator(private val context: Context) : Navigator<Chrome
         val builder = CustomTabsIntent.Builder()
             .setShowTitle(true)
             .enableUrlBarHiding()
-            .setToolbarColor(context.getThemeColor(R.attr.colorAccent))
+            .setToolbarColor(context.getThemeColor(R.attr.colorSurface))
 
         val intent = builder.build()
         try {

@@ -8,13 +8,14 @@ import io.github.droidkaigi.confsched2020.data.firestore.Firestore
 import io.github.droidkaigi.confsched2020.data.repository.internal.mapper.toSession
 import io.github.droidkaigi.confsched2020.data.repository.internal.mapper.toSessionFeedback
 import io.github.droidkaigi.confsched2020.data.repository.internal.workmanager.FavoriteToggleWork
-import io.github.droidkaigi.confsched2020.model.AudienceCategory
 import io.github.droidkaigi.confsched2020.model.Lang
 import io.github.droidkaigi.confsched2020.model.LangSupport
+import io.github.droidkaigi.confsched2020.model.Level
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionFeedback
 import io.github.droidkaigi.confsched2020.model.SessionId
+import io.github.droidkaigi.confsched2020.model.SessionList
 import io.github.droidkaigi.confsched2020.model.SpeechSession
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import javax.inject.Inject
@@ -36,19 +37,19 @@ internal class DataSessionRepository @Inject constructor(
 
     override fun sessionContents(): Flow<SessionContents> {
         val sessionsFlow = sessions()
-            .map {
-                it.sortedBy { it.startTime }
+            .map { sessions ->
+                sessions.sortedBy { it.startTime }
             }
         return sessionsFlow.map { sessions ->
             val speechSessions = sessions.filterIsInstance<SpeechSession>()
             SessionContents(
-                sessions = sessions,
+                sessions = SessionList(sessions),
                 speakers = speechSessions.flatMap { it.speakers }.distinct(),
                 langs = Lang.values().toList(),
                 langSupports = LangSupport.values().toList(),
                 rooms = sessions.map { it.room }.sortedBy { it.sort }.distinct(),
                 category = speechSessions.map { it.category }.distinct(),
-                audienceCategories = AudienceCategory.values().toList()
+                levels = Level.values().toList()
             )
         }
     }

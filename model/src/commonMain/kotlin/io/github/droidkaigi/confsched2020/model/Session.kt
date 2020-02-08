@@ -12,11 +12,24 @@ sealed class Session(
     open val startTime: DateTime,
     open val endTime: DateTime,
     open val room: Room,
-    open val isFavorited: Boolean
+    open val isFavorited: Boolean,
+    open val levels: List<Level>
 ) {
     val startDayText by lazy { startTime.toOffset(defaultTimeZoneOffset()).format("yyyy.M.d") }
 
     val startTimeText by lazy { startTime.toOffset(defaultTimeZoneOffset()).format("HH:mm") }
+
+    fun minutesRoom(lang: Lang) = buildString {
+        val minutes = endTime.minus(startTime).minutes.toInt()
+        append(minutes)
+        if (lang == Lang.JA) {
+            append("分")
+        } else {
+            append("min")
+        }
+        append(" / ")
+        append(room.name.getByLang(lang))
+    }
 
     fun timeSummary(lang: Lang, timezoneOffset: TimezoneOffset) = buildString {
         val startTimeTZ = startTime.toOffset(timezoneOffset)
@@ -40,7 +53,10 @@ sealed class Session(
     }
 
     // See https://github.com/DroidKaigi/conference-app-2020/issues/419
-    fun timeSummary(lang: Lang, timezoneOffset: Double) = timeSummary(lang, TimezoneOffset(timezoneOffset))
+    fun timeSummary(lang: Lang, timezoneOffset: Double) = timeSummary(
+        lang,
+        TimezoneOffset(timezoneOffset)
+    )
 
     fun summary(lang: Lang, timezoneOffset: TimezoneOffset) = buildString {
         append(timeSummary(lang, timezoneOffset))
@@ -73,6 +89,7 @@ data class SpeechSession(
     override val title: LocaledString,
     override val desc: String,
     override val room: Room,
+    override val levels: List<Level>,
     val lang: Lang,
     val category: Category,
     val intendedAudience: String?,
@@ -82,7 +99,17 @@ data class SpeechSession(
     override val isFavorited: Boolean,
     val speakers: List<Speaker>,
     val message: LocaledString?
-) : Session(id, title, desc, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
+) : Session(
+    id,
+    title,
+    desc,
+    dayNumber,
+    startTime,
+    endTime,
+    room,
+    isFavorited,
+    levels
+), AndroidParcel {
 
     override fun shortSummary(lang: Lang) = buildString {
         append(timeInMinutes)
@@ -93,6 +120,7 @@ data class SpeechSession(
 
     val hasVideo: Boolean = videoUrl.isNullOrEmpty().not()
     val hasSlide: Boolean = slideUrl.isNullOrEmpty().not()
+    val hasMessage: Boolean get() = message?.getByLang(lang).isNullOrEmpty().not()
 }
 
 @AndroidParcelize
@@ -104,9 +132,20 @@ data class ServiceSession(
     override val title: LocaledString,
     override val desc: String,
     override val room: Room,
+    override val levels: List<Level>,
     val sessionType: SessionType,
     override val isFavorited: Boolean
-) : Session(id, title, desc, dayNumber, startTime, endTime, room, isFavorited), AndroidParcel {
+) : Session(
+    id,
+    title,
+    desc,
+    dayNumber,
+    startTime,
+    endTime,
+    room,
+    isFavorited,
+    levels
+), AndroidParcel {
 
     override fun shortSummary(lang: Lang) = buildString {
         append(timeInMinutes)

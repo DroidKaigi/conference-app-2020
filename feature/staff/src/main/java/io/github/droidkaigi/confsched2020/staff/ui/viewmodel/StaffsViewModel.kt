@@ -3,18 +3,19 @@ package io.github.droidkaigi.confsched2020.staff.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
+import com.dropbox.android.external.store4.Store
+import com.dropbox.android.external.store4.StoreRequest
+import com.dropbox.android.external.store4.StoreResponse
 import io.github.droidkaigi.confsched2020.ext.combine
 import io.github.droidkaigi.confsched2020.ext.toAppError
-import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
-import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.StaffContents
-import io.github.droidkaigi.confsched2020.model.repository.StaffRepository
+import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
 
+@FlowPreview
 class StaffsViewModel @Inject constructor(
-    private val staffRepository: StaffRepository
+    store: Store<Unit, StaffContents>
 ) : ViewModel() {
 
     data class UiModel(
@@ -27,21 +28,19 @@ class StaffsViewModel @Inject constructor(
         }
     }
 
-    private val staffContentsLoadState: LiveData<LoadState<StaffContents>> = liveData {
-        emitSource(
-            staffRepository.staffs()
-                .toLoadingState()
-                .asLiveData()
-        )
-        staffRepository.refresh()
-    }
+    // "stream" returns data along with the loading status.
+    private val staffContentsLoadState: LiveData<StoreResponse<StaffContents>> =
+        store.stream(StoreRequest.cached(key = Unit, refresh = true)).asLiveData()
+
+    // "get" and "fetch" gets data directly, so you need to express the loading state yourself.
+//    private val staffContents: LiveData<StaffContents> = liveData { store.get(Unit) }
 
     val uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
         liveData1 = staffContentsLoadState
     ) { _, loadState ->
         val staffContents = when (loadState) {
-            is LoadState.Loaded -> {
+            is StoreResponse.Data -> {
                 loadState.value
             }
             else -> {
@@ -49,10 +48,9 @@ class StaffsViewModel @Inject constructor(
             }
         }
         UiModel(
-            isLoading = loadState.isLoading,
-            error = loadState.getErrorIfExists().toAppError(),
+            isLoading = loadState is StoreResponse.Loading,
+            error = loadState.errorOrNull().toAppError(),
             staffContents = staffContents
         )
     }
-
 }
