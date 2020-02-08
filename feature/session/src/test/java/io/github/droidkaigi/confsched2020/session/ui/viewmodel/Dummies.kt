@@ -80,4 +80,6 @@ object Dummies {
         category = listOf(category),
         levels = listOf(Level.BEGINNER, Level.INTERMEDIATE, Level.ADVANCED)
     )
+
+    val thumbsUpCount = 10
 }

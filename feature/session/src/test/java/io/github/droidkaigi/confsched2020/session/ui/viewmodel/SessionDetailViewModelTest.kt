@@ -155,4 +155,30 @@ class SessionDetailViewModelTest {
             searchQuery shouldBe "query"
         }
     }
+
+    @Test
+    fun thumbsUpCount() {
+        coEvery {
+            sessionRepository.thumbsUpCounts(Dummies.speachSession1.id)
+        } returns flowOf(Dummies.thumbsUpCount)
+        val sessionDetailViewModel = SessionDetailViewModel(
+            sessionId = Dummies.speachSession1.id,
+            sessionRepository = sessionRepository,
+            searchQuery = null
+        )
+        val testObserver = sessionDetailViewModel
+            .uiModel
+            .test()
+
+        val valueHistory = testObserver.valueHistory()
+        valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true)
+        valueHistory[1].apply {
+            isLoading shouldBe true
+            session shouldBe null
+            error shouldBe null
+            showEllipsis shouldBe true
+            searchQuery shouldBe null
+            thumbsUpCount shouldBe Dummies.thumbsUpCount
+        }
+    }
 }
