@@ -32,7 +32,9 @@ abstract class AppModuleBinds {
 
     @Binds
     @IntoSet
-    abstract fun provideFirebaseMessagingInitializer(bind: FirebaseMessagingInitializer): AppInitializer
+    abstract fun provideFirebaseMessagingInitializer(
+        bind: FirebaseMessagingInitializer
+    ): AppInitializer
 
     @Binds
     @IntoSet

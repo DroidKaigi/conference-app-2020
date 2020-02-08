@@ -20,7 +20,7 @@ class MessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         try {
             Timber.debug {
-                "remoteMessage:${remoteMessage}"
+                "remoteMessage:$remoteMessage"
             }
             when (val notification = remoteMessage.notification) {
                 null -> {
@@ -96,7 +96,8 @@ class MessagingService : FirebaseMessagingService() {
             }
         }
         Timber.debug {
-            "getPendingIntent link activity not found. Choose url by notification channel ${channel.defaultLaunchUrl}"
+            "getPendingIntent link activity not found. " +
+                "Choose url by notification channel ${channel.defaultLaunchUrl}"
         }
 
         val intent = Intent(Intent.ACTION_VIEW)

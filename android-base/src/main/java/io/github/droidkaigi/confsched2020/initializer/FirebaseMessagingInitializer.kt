@@ -7,7 +7,7 @@ import io.github.droidkaigi.confsched2020.notification.Topic
 import io.github.droidkaigi.confsched2020.notification.worker.ManageTopicSubscriptionWorker
 import javax.inject.Inject
 
-class FirebaseMessagingInitializer @Inject constructor() :AppInitializer{
+class FirebaseMessagingInitializer @Inject constructor() : AppInitializer {
     override fun initialize(application: Application) {
         val allAnnouncementTopics = arrayOf(Topic.JaAnnouncement, Topic.EnAnnouncement)
 
