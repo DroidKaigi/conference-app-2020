@@ -1,10 +1,9 @@
 import Material
-import UIKit
 import RxCocoa
 import RxSwift
+import UIKit
 
 final class SearchViewController: SearchBarController {
-
     private let disposeBag = DisposeBag()
 
     var backButton: IconButton!
@@ -38,8 +37,4 @@ final class SearchViewController: SearchBarController {
             .withRenderingMode(.alwaysTemplate)
             .tint(with: Asset.primary.color)
     }
-}
-
-extension SearchViewController: SearchBarDelegate {
-
 }

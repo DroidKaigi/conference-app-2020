@@ -4,10 +4,9 @@ import RxSwift
 import UIKit
 
 final class SearchContentsDataSource: NSObject, UICollectionViewDataSource {
-
     private enum Sections: Int, CaseIterable {
-        case session
         case speaker
+        case session
     }
 
     typealias Element = SearchResult
@@ -18,9 +17,11 @@ final class SearchContentsDataSource: NSObject, UICollectionViewDataSource {
     var onTapSpeaker: Signal<(speaker: Speaker, sessions: [Session])> {
         return onTapSpeakerRelay.asSignal()
     }
+
     var onTapBookmark: Signal<Session> {
         onTapBookmarkRelay.asSignal()
     }
+
     private let onTapSpeakerRelay = PublishRelay<(speaker: Speaker, sessions: [Session])>()
     private let onTapBookmarkRelay = PublishRelay<Session>()
 
@@ -62,7 +63,7 @@ final class SearchContentsDataSource: NSObject, UICollectionViewDataSource {
                         .compactMap { $0 as? SpeechSession }
                         .filter { speechSession in
                             speechSession.speakers.contains(where: { $0.id.id == speaker.id.id })
-                    }
+                        }
                     self.onTapSpeakerRelay.accept((speaker: speaker, sessions: sessions))
                 }
             }
@@ -87,7 +88,11 @@ final class SearchContentsDataSource: NSObject, UICollectionViewDataSource {
 
             return cell
         case .speaker:
-            break
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ResultSpeakerCell.identifier, for: indexPath) as? ResultSpeakerCell else {
+                return UICollectionViewCell()
+            }
+            cell.configure(speaker: element.speakers[indexPath.item])
+            return cell
         }
     }
 }
@@ -106,7 +111,7 @@ extension SearchContentsDataSource: RxCollectionViewDataSourceType, SectionedVie
     }
 
     func collectionView(_ collectionView: UICollectionView, observedEvent: Event<SearchContentsDataSource.Element>) {
-        Binder(self) { dataSource, element in
+        Binder(self) { _, element in
             self.element = element
             collectionView.reloadData()
         }.on(observedEvent)
