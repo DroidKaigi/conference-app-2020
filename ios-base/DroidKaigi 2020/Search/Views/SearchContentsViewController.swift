@@ -52,6 +52,21 @@ final class SearchContentsViewController: UIViewController {
             }
             .drive(collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
+
+        // FIXME: - SpeakerView only shows empty sessions.
+        collectionView.rx.modelSelected(Speaker.self).asObservable()
+            .subscribe(onNext: { [weak self] speaker in
+                self?.navigationController?.pushViewController(
+                    SpeakerViewController.instantiate(speaker: speaker, sessions: []), animated: true
+                )
+            }).disposed(by: disposeBag)
+
+        dataSource.onTapSpeaker
+            .emit(onNext: { [weak self] speaker, sessions in
+                self?.navigationController?.pushViewController(
+                    SpeakerViewController.instantiate(speaker: speaker, sessions: sessions), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
