@@ -19,3 +19,4 @@
 -keepnames class io.github.droidkaigi.confsched2020.sponsor.ui.SponsorsFragment
 -keepnames class io.github.droidkaigi.confsched2020.staff.ui.StaffsFragment
 -keepnames class io.github.droidkaigi.confsched2020.ui.ChromeCustomTabsNavigator
+-keepnames class io.github.droidkaigi.confsched2020.wifi.WifiSetingFragment
