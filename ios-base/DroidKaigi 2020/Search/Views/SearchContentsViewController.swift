@@ -61,6 +61,15 @@ final class SearchContentsViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
+        dataSource.onTapBookmark
+            .emit(to: Binder(self) { me, session in
+                if session.isFavorited {
+                    me.viewModel.resignBookingSession(session)
+                } else {
+                    me.viewModel.bookSession(session)
+                }
+            }).disposed(by: disposeBag)
+
         collectionView.rx.itemSelected.asObservable()
             .bind(to: Binder(self) { me, indexPath in
                 do {
