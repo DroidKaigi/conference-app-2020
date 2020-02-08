@@ -53,20 +53,33 @@ final class SearchContentsViewController: UIViewController {
             .drive(collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
 
-        // FIXME: - SpeakerView only shows empty sessions.
-        collectionView.rx.modelSelected(Speaker.self).asObservable()
-            .subscribe(onNext: { [weak self] speaker in
-                self?.navigationController?.pushViewController(
-                    SpeakerViewController.instantiate(speaker: speaker, sessions: []), animated: true
-                )
-            }).disposed(by: disposeBag)
-
         dataSource.onTapSpeaker
             .emit(onNext: { [weak self] speaker, sessions in
                 self?.navigationController?.pushViewController(
-                    SpeakerViewController.instantiate(speaker: speaker, sessions: sessions), animated: true)
+                    SpeakerViewController.instantiate(speaker: speaker, sessions: sessions), animated: true
+                )
             })
             .disposed(by: disposeBag)
+
+        collectionView.rx.itemSelected.asObservable()
+            .bind(to: Binder(self) { me, indexPath in
+                do {
+                    let model = try dataSource.model(at: indexPath)
+                    switch model {
+                    case let speaker as Speaker:
+                        // FIXME: - SpeakerView only shows empty sessions.
+                        me.navigationController?.pushViewController(
+                            SpeakerViewController.instantiate(speaker: speaker, sessions: []), animated: true
+                        )
+                    case let session as Session:
+                        me.showDetail(forSession: session)
+                    default:
+                        fatalError()
+                    }
+                } catch {
+                    return
+                }
+            }).disposed(by: disposeBag)
     }
 }
 

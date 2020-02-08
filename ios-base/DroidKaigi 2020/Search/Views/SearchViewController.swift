@@ -11,12 +11,17 @@ final class SearchViewController: SearchBarController {
     override func prepare() {
         super.prepare()
         prepareSearchBar()
-        navigationController?.navigationBar.isHidden = true
 
         backButton.rx.tap
             .bind(to: Binder(self) { me, _ in
                 me.navigationController?.popViewController(animated: true)
             }).disposed(by: disposeBag)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.isHidden = true
     }
 
     override func viewWillDisappear(_ animated: Bool) {
