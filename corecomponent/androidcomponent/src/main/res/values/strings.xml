@@ -2,10 +2,10 @@
     <!-- Session -->
     <string name="session_label">Sessions</string>
     <!-- Speaker -->
-    <string name="speaker_label" translatable="false">Speaker</string>
+    <string name="speaker_label">Speaker</string>
 
     <!-- Material -->
-    <string name="material_label" translatable="false">Material</string>
+    <string name="material_label">Material</string>
     <!-- Announce -->
     <string name="announce_label">Announcements</string>
     <!-- About -->
