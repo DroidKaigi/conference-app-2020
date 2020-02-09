@@ -41,5 +41,6 @@ final class SearchViewController: SearchBarController {
         searchBar.clearButton.image = clearImage?
             .withRenderingMode(.alwaysTemplate)
             .tint(with: Asset.primary.color)
+        searchBar.placeholder = L10n.search
     }
 }

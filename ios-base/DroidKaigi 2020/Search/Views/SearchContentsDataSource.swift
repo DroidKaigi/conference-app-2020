@@ -51,7 +51,7 @@ final class SearchContentsDataSource: NSObject, UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             let session = element.sessions[indexPath.item]
-            cell.titleLabel.text = session.title.ja
+            cell.titleLabel.text = session.title.currentLangString
             var speakers: [Speaker] = []
             if let speechSession = session as? SpeechSession {
                 speakers = speechSession.speakers
