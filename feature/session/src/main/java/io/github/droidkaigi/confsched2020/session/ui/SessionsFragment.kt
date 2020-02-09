@@ -41,6 +41,7 @@ import io.github.droidkaigi.confsched2020.ui.widget.FilterChip
 import io.github.droidkaigi.confsched2020.ui.widget.onCheckedChanged
 import javax.inject.Inject
 import javax.inject.Provider
+import kotlin.math.abs
 
 class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjector {
 
@@ -119,23 +120,44 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjecto
         }
         sessionSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
+
+            // sheet is expanded by default
+            private var lastOffset = 1F
+            private var isDragging = false
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                if (isDragging.not()) return
+
+                val diff = slideOffset - lastOffset
+                if (abs(diff) < DRAG_FADE_THRESHOLD) {
+                    // diff is too small to change visible
+                    return
+                }
+
+                val isCollapse = diff < 0
+                lastOffset = slideOffset
+                sessionTabViewModel.setExpand(ExpandFilterState.CHANGING(isCollapse))
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                sessionTabViewModel.setExpand(
-                    when (newState) {
-                        BottomSheetBehavior.STATE_COLLAPSED -> {
-                            ExpandFilterState.COLLAPSED
-                        }
-                        BottomSheetBehavior.STATE_EXPANDED -> {
-                            ExpandFilterState.EXPANDED
-                        }
-                        else -> {
-                            ExpandFilterState.CHANGING
-                        }
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        isDragging = false
+                        lastOffset = 0F
+                        sessionTabViewModel.setExpand(ExpandFilterState.COLLAPSED)
                     }
-                )
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        isDragging = false
+                        lastOffset = 1F
+                        sessionTabViewModel.setExpand(ExpandFilterState.EXPANDED)
+                    }
+                    BottomSheetBehavior.STATE_DRAGGING -> {
+                        isDragging = true
+                    }
+                    else -> {
+                        // nop
+                    }
+                }
             }
         })
         binding.filterReset.setOnClickListener {
@@ -152,7 +174,7 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjecto
                     sessionSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     overrideBackPressedCallback.isEnabled = true
                 }
-                ExpandFilterState.CHANGING -> Unit
+                is ExpandFilterState.CHANGING -> Unit
             }
         }
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
@@ -323,6 +345,8 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjecto
     }
 
     companion object {
+        private const val DRAG_FADE_THRESHOLD = 0.1F
+
         fun newInstance(args: SessionsFragmentArgs): SessionsFragment {
             return SessionsFragment().apply {
                 arguments = args.toBundle()

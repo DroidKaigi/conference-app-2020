@@ -97,10 +97,9 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             val shouldBeCollapsed = when (uiModel.expandFilterState) {
-                ExpandFilterState.COLLAPSED ->
-                    true
-                else ->
-                    false
+                ExpandFilterState.COLLAPSED -> true
+                ExpandFilterState.EXPANDED -> false
+                is ExpandFilterState.CHANGING -> uiModel.expandFilterState.isCollapse
             }
             if (binding.isCollapsed != shouldBeCollapsed) {
                 TransitionManager.beginDelayedTransition(

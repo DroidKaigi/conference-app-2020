@@ -1,9 +1,10 @@
 package io.github.droidkaigi.confsched2020.model
 
-enum class ExpandFilterState {
-    EXPANDED,
-    CHANGING,
-    COLLAPSED;
+sealed class ExpandFilterState {
+    object EXPANDED : ExpandFilterState()
+    object COLLAPSED : ExpandFilterState()
+    data class CHANGING(val isCollapse: Boolean) : ExpandFilterState()
+
     fun toggledState(): ExpandFilterState {
         if (this == EXPANDED) {
             return COLLAPSED

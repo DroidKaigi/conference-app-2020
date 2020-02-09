@@ -10,7 +10,8 @@ import javax.inject.Inject
 class SessionTabViewModel @Inject constructor() : ViewModel() {
     data class UiModel(val expandFilterState: ExpandFilterState)
 
-    private val mutableExpandFilter = MutableLiveData(ExpandFilterState.EXPANDED)
+    private val mutableExpandFilter: MutableLiveData<ExpandFilterState> =
+        MutableLiveData(ExpandFilterState.EXPANDED)
 
     val uiModel = mutableExpandFilter.map {
         UiModel(it)
