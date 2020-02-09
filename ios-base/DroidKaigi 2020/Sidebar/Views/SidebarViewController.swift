@@ -12,6 +12,42 @@ final class SidebarViewController: UITableViewController {
         case setting
     }
 
+    @IBOutlet weak var timelineLabel: UILabel! {
+        didSet {
+            timelineLabel.text = L10n.timeline
+        }
+    }
+
+    @IBOutlet weak var aboutLabel: UILabel! {
+        didSet {
+            aboutLabel.text = L10n.about
+        }
+    }
+
+    @IBOutlet weak var infoLabel: UILabel! {
+        didSet {
+            infoLabel.text = L10n.announcements
+        }
+    }
+
+    @IBOutlet weak var floorMapLabel: UILabel! {
+        didSet {
+            floorMapLabel.text = L10n.floormap
+        }
+    }
+
+    @IBOutlet weak var sponsorLabel: UILabel! {
+        didSet {
+            sponsorLabel.text = L10n.sponsor
+        }
+    }
+
+    @IBOutlet weak var settingLabel: UILabel! {
+        didSet {
+            settingLabel.text = L10n.setting
+        }
+    }
+
     weak var rootViewController: UINavigationController?
 
     var switchType: SwitchViewControllerType?
