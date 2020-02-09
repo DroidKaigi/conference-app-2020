@@ -70,7 +70,7 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
             SessionsItemDecoration(
                 groupAdapter,
                 requireContext(),
-                args.page == SessionPage.Favorite
+                args.page.visibleSessionDate()
             )
         )
         binding.sessionRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {

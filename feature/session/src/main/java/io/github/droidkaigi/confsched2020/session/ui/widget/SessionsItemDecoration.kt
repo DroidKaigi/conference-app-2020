@@ -16,7 +16,7 @@ import io.github.droidkaigi.confsched2020.util.AndroidRAttr
 class SessionsItemDecoration(
     private val adapter: GroupAdapter<*>,
     private val context: Context,
-    private val isShowDate: Boolean
+    private val visibleSessionDate: Boolean
 ) : RecyclerView.ItemDecoration() {
 
     private val res: Resources = context.resources
@@ -48,14 +48,14 @@ class SessionsItemDecoration(
             if (position == RecyclerView.NO_POSITION) return
 
             val sessionItem = adapter.getItem(position) as SessionItem
-            val isShowDateText = if (position > 0) {
+            val shouldShowDateText = visibleSessionDate && if (position > 0) {
                 val lastSessionItem = adapter.getItem(position - 1) as SessionItem
                 sessionItem.startSessionDate() != lastSessionItem.startSessionDate()
             } else {
                 true
             }
             val startDateTimeText =
-                calcDateTimeText(position, view, this.isShowDate && isShowDateText)
+                calcDateTimeText(position, view, shouldShowDateText)
 
             // we need least first session's label, skip to check if time label is same as last item on first item.
             if (position > 0 && index > 0) {
@@ -86,7 +86,7 @@ class SessionsItemDecoration(
     private fun calcDateTimeText(
         position: Int,
         view: View,
-        isShowDate: Boolean
+        shouldShowDateText: Boolean
     ): StartDateTimeText {
         val sessionItem = adapter.getItem(position) as SessionItem
         val nextSessionItem = if (position < adapter.itemCount - 1) {
@@ -94,7 +94,7 @@ class SessionsItemDecoration(
         } else null
 
         // session date text
-        val dateText = if (isShowDate) {
+        val dateText = if (shouldShowDateText) {
 
             var sessionDateTextPositionY =
                 view.top.coerceAtLeast(sessionTimeTextMarginTopInPx.toInt()) +
@@ -105,7 +105,7 @@ class SessionsItemDecoration(
                     sessionDateTextPositionY.coerceAtMost(view.bottom.toFloat())
             }
 
-            DateText(
+            PositionalText(
                 value = sessionItem.startSessionDate(),
                 positionX = sessionTimeTextMarginStartInPx,
                 positionY = sessionDateTextPositionY.coerceAtMost(
@@ -116,7 +116,7 @@ class SessionsItemDecoration(
             )
         } else null
 
-        val sessionTimeTextMarginTop = if (isShowDate) {
+        val sessionTimeTextMarginTop = if (shouldShowDateText) {
             sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx + sessionTimeTextMarginTopInPx
         } else {
             sessionTimeTextMarginTopInPx
@@ -132,7 +132,7 @@ class SessionsItemDecoration(
             sessionTimeTextPositionY = sessionTimeTextPositionY.coerceAtMost(view.bottom.toFloat())
         }
 
-        val startTimeText = StartTimeText(
+        val startTimeText = PositionalText(
             value = sessionItem.startSessionTime(),
             positionX = sessionTimeTextMarginStartInPx,
             positionY = sessionTimeTextPositionY
@@ -142,17 +142,11 @@ class SessionsItemDecoration(
     }
 
     private data class StartDateTimeText(
-        val dateText: DateText?,
-        val startTimeText: StartTimeText
+        val dateText: PositionalText?,
+        val startTimeText: PositionalText
     )
 
-    private data class DateText(
-        val value: String,
-        val positionX: Float,
-        val positionY: Float
-    )
-
-    private data class StartTimeText(
+    private data class PositionalText(
         val value: String,
         val positionX: Float,
         val positionY: Float
