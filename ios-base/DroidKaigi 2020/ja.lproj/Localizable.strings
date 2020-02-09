@@ -1,12 +1,13 @@
 "Cancel" = "キャンセル";
 "About DroidKaigi" = "DroidKaigiとは";
-
+"What is DroidKaigi?" = "What is DroidKaigi?";
 "DroidKaigi Description" = "DroidKaigiはエンジニアが主役のAndroidカンファレンスです。\nAndroid技術情報の共有とコミュニケーションを目的に、2020年2月20日(木)、21日(金)の2日間開催します。";
 "Access" = "会場アクセス";
 "Toc Building" = "TOCビル";
 "Maps" = "マップ";
 "Floor Maps" = "フロアマップ";
 "Announcements" = "お知らせ";
+"Google Maps" = "Google Maps";
 "Staffs" = "スタッフリスト";
 "Privacy Policy" = "プライバシーポリシー";
 "Privacy Policy URL" = "http://www.association.droidkaigi.jp/privacy.html";
@@ -15,3 +16,11 @@
 "Session" = "セッション";
 "Speaker" = "スピーカー";
 "Search" = "検索する";
+"Sessions" = "セッション";
+
+// Sidebar
+"Timeline" = "タイムライン";
+"About" = "DroidKaigiとは";
+"Floormap" = "フロアマップ";
+"Sponsor" = "スポンサー";
+"Setting" = "設定";

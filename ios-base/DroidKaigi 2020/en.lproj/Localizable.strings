@@ -16,3 +16,11 @@
 "Session" = "Session";
 "Speaker" = "Speaker";
 "Search" = "Search";
+"Sessions" = "Sessions";
+
+// Sidebar
+"Timeline" = "Sessions";
+"About" = "About";
+"Floormap" = "Floormap";
+"Sponsor" = "Sponsors";
+"Setting" = "Settings";
