@@ -32,7 +32,7 @@ final class SearchContentsViewController: UIViewController {
             collectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
-        collectionView.contentInset = .init(top: 16, left: 16, bottom: 0, right: 0)
+        collectionView.contentInset = .init(top: 16, left: 16, bottom: 0, right: 16)
 
         // register cells
         collectionView.register(UINib(nibName: "SearchSectionHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SearchSectionHeaderView")
@@ -100,6 +100,7 @@ extension SearchContentsViewController: SearchBarDelegate {
             return
         }
         searchBar.delegate = self
+        searchBar.textField.delegate = self
     }
 
     func searchBar(searchBar: SearchBar, didClear textField: UITextField, with text: String?) {
@@ -109,5 +110,12 @@ extension SearchContentsViewController: SearchBarDelegate {
     func searchBar(searchBar: SearchBar, didChange textField: UITextField, with text: String?) {
         let text = text ?? ""
         viewModel.search(query: text)
+    }
+}
+
+extension SearchContentsViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
