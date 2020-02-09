@@ -166,6 +166,7 @@
                     </view>
                     <connections>
                         <outlet property="biographyLabel" destination="2FB-qi-ed3" id="3U1-yy-fiL"/>
+                        <outlet property="sessionSectionLabel" destination="bQI-bs-KLP" id="NDn-2d-9EG"/>
                         <outlet property="stackView" destination="TeD-BZ-Xsf" id="XMt-ts-F0S"/>
                         <outlet property="tagLabel" destination="O53-5d-nTd" id="NZF-B1-Qyg"/>
                         <outlet property="userImageView" destination="XWk-lo-a4J" id="WPy-yi-9in"/>

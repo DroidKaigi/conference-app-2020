@@ -15,6 +15,11 @@ final class SpeakerViewController: UIViewController {
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var tagLabel: UILabel!
     @IBOutlet weak var biographyLabel: UILabel!
+    @IBOutlet weak var sessionSectionLabel: UILabel! {
+        didSet {
+            sessionSectionLabel.text = L10n.sessions
+        }
+    }
 
     private var speaker: Speaker!
     private var sessions: [Session]!
