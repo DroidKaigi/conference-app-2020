@@ -21,6 +21,7 @@ final class SearchContentsViewController: UIViewController {
     private func setUpCollectionView() {
         let layout = CollectionViewFlowLayoutLeftAlign()
         layout.estimatedItemSize = .init(width: UIScreen.main.bounds.width, height: ResultSpeakerCell.rowHeight)
+        layout.headerReferenceSize = .init(width: UIScreen.main.bounds.width, height: 60)
         layout.minimumLineSpacing = 16
         collectionView = CollectionView(collectionViewLayout: layout)
         view.addSubview(collectionView)
@@ -31,9 +32,10 @@ final class SearchContentsViewController: UIViewController {
             collectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
-        collectionView.contentInset = .init(top: 16, left: 0, bottom: 0, right: 0)
+        collectionView.contentInset = .init(top: 16, left: 16, bottom: 0, right: 0)
 
         // register cells
+        collectionView.register(UINib(nibName: "SearchSectionHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SearchSectionHeaderView")
         collectionView.register(UINib(nibName: "SessionCell", bundle: nil), forCellWithReuseIdentifier: SessionCell.identifier)
         collectionView.register(UINib(nibName: "ResultSpeakerCell", bundle: nil), forCellWithReuseIdentifier: ResultSpeakerCell.identifier)
     }

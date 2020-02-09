@@ -86,6 +86,8 @@ final class SearchContentsDataSource: NSObject, UICollectionViewDataSource {
 
             cell.bookmarkButton.isSelected = session.isFavorited
 
+            cell.titleLeftConstraint.constant = 0
+
             return cell
         case .speaker:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ResultSpeakerCell.identifier, for: indexPath) as? ResultSpeakerCell else {
@@ -94,6 +96,23 @@ final class SearchContentsDataSource: NSObject, UICollectionViewDataSource {
             cell.configure(speaker: element.speakers[indexPath.item])
             return cell
         }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SearchSectionHeaderView", for: indexPath) as? SearchSectionHeaderView,
+            let sectionCase = Sections(rawValue: indexPath.section)
+        else {
+            return UICollectionReusableView()
+        }
+
+        switch sectionCase {
+        case .session:
+            header.titleLabel.text = L10n.session
+        case .speaker:
+            header.titleLabel.text = L10n.speaker
+        }
+        return header
     }
 }
 
