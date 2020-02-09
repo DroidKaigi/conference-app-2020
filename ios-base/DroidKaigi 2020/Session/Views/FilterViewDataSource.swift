@@ -47,15 +47,15 @@ final class FilterViewDataSource: NSObject, UICollectionViewDataSource {
 
         switch filterSection {
         case .rooms:
-            cell.chipTitleLabel.text = element.rooms[indexPath.item].name.en
+            cell.chipTitleLabel.text = element.rooms[indexPath.item].name.currentLangString
         case .langs:
-            cell.chipTitleLabel.text = element.langs[indexPath.item].text.en
+            cell.chipTitleLabel.text = element.langs[indexPath.item].text.currentLangString
         case .levels:
-            cell.chipTitleLabel.text = element.levels[indexPath.item].name
+            cell.chipTitleLabel.text = element.levels[indexPath.item].rawValue.currentLangString
         case .categories:
-            cell.chipTitleLabel.text = element.categories[indexPath.item].name.en
+            cell.chipTitleLabel.text = element.categories[indexPath.item].name.currentLangString
         case .langSupports:
-            cell.chipTitleLabel.text = element.langSupports[indexPath.item].text.en
+            cell.chipTitleLabel.text = element.langSupports[indexPath.item].text.currentLangString
         }
 
         return cell
