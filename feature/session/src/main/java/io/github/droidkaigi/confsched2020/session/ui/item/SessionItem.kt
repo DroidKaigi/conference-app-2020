@@ -222,6 +222,8 @@ class SessionItem @AssistedInject constructor(
         text = spannableStringBuilder
     }
 
+    fun startSessionDate(): String = session.startDayText
+
     fun startSessionTime(): String = session.startTimeText
 
     fun title(): LocaledString = session.title

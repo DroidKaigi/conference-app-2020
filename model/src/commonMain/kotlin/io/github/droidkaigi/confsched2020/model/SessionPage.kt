@@ -26,6 +26,8 @@ sealed class SessionPage : AndroidParcel {
 
     abstract val title: String
 
+    fun visibleSessionDate() = this is Event || this is Favorite
+
     companion object {
         val pages = listOf(Day1, Day2, Event, Favorite)
 
