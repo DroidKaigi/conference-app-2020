@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ndz-XA-9Kn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ndz-XA-9Kn">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -85,10 +85,10 @@
                                                                                 <rect key="frame" x="0.0" y="169.5" width="366" height="26"/>
                                                                                 <subviews>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gLt-H8-4Tf">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="159.5" height="26"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="199.5" height="26"/>
                                                                                         <subviews>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Application Architecture" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1xL-eT-i9z" customClass="CategoryLabel" customModule="DroidKaigi_2020" customModuleProvider="target">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="137" height="26"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="157" height="26"/>
                                                                                                 <color key="backgroundColor" red="0.89411764705882346" green="0.90980392156862744" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                                 <constraints>
                                                                                                     <constraint firstAttribute="height" constant="26" id="4DL-g5-FWq"/>
@@ -98,7 +98,7 @@
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="JA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z3x-av-Idp" customClass="CategoryLabel" customModule="DroidKaigi_2020" customModuleProvider="target">
-                                                                                                <rect key="frame" x="145" y="0.0" width="14.5" height="26"/>
+                                                                                                <rect key="frame" x="165" y="0.0" width="34.5" height="26"/>
                                                                                                 <color key="backgroundColor" red="0.86274509803921573" green="0.95294117647058818" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                                 <constraints>
                                                                                                     <constraint firstAttribute="height" constant="26" id="rZX-eo-Tky"/>
@@ -245,7 +245,7 @@
                                                                                 <rect key="frame" x="0.0" y="51" width="366" height="92"/>
                                                                                 <subviews>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CBY-jo-yAK">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="366" height="44"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="366" height="24"/>
                                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                                         <inset key="titleEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                                                         <inset key="imageEdgeInsets" minX="7" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -257,7 +257,7 @@
                                                                                         </state>
                                                                                     </button>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FP2-yF-dGx">
-                                                                                        <rect key="frame" x="0.0" y="72" width="366" height="20"/>
+                                                                                        <rect key="frame" x="0.0" y="52" width="366" height="40"/>
                                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                                         <inset key="titleEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                                                         <inset key="imageEdgeInsets" minX="7" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -387,9 +387,9 @@
         <image name="ic_event_white" width="18" height="20"/>
         <image name="ic_photo_library" width="20" height="20"/>
         <image name="ic_photo_library_disabled" width="20" height="20"/>
-        <image name="ic_place_white" width="24" height="24"/>
+        <image name="ic_place_white" width="14" height="20"/>
         <image name="ic_schedule" width="14" height="14"/>
-        <image name="ic_share_white" width="24" height="24"/>
+        <image name="ic_share_white" width="18" height="20"/>
         <image name="ic_videocam" width="18" height="12"/>
         <image name="ic_videocam_disabled" width="18" height="12"/>
         <namedColor name="Primary">

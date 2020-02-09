@@ -1,17 +1,30 @@
 package io.github.droidkaigi.confsched2020
 
 import android.annotation.SuppressLint
+import android.content.ComponentName
+import android.content.Intent
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
+import android.graphics.drawable.Icon
+import android.net.Uri
+import android.content.res.ColorStateList
+import android.graphics.drawable.RippleDrawable
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.view.menu.ActionMenuItemView
+import androidx.appcompat.widget.ActionMenuView
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.children
 import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -121,6 +134,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         setSupportActionBar(binding.toolbar)
         setupNavigation()
         setupStatusBarColors()
+        setupShortcuts()
 
         binding.drawerLayout.doOnApplyWindowInsets { _, insets, _ ->
             binding.drawerLayout.setChildInsetsWorkAround(insets)
@@ -202,6 +216,33 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        binding.toolbar.children.forEach {
+            when (it) {
+                is ActionMenuView -> {
+                    it.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+                        it.children.filterIsInstance<ActionMenuItemView>().forEach { menuItemView ->
+                            setRippleColor(menuItemView, binding.isIndigoBackground)
+                        }
+                    }
+                }
+                is AppCompatImageButton -> setRippleColor(it, binding.isIndigoBackground)
+            }
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun setRippleColor(view: View, isIndigoBackground: Boolean) {
+        (view.background as? RippleDrawable)?.setColor(
+            ColorStateList.valueOf(
+                this.getThemeColor(
+                    if (isIndigoBackground) {
+                        R.attr.colorOnPrimary
+                    } else {
+                        R.attr.colorControlHighlight
+                    })))
+    }
+
     private fun onDestinationChange(destination: NavDestination) {
         binding.navView.menu.findItem(destination.id)?.isChecked = true
 
@@ -248,6 +289,27 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         statusBarColors.navigationBarColor.distinctUntilChanged().observe(this) { color ->
             window.navigationBarColor = color
         }
+    }
+
+    private fun setupShortcuts() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return
+        val shortcutManager = getSystemService<ShortcutManager>(ShortcutManager::class.java)
+
+        val map = ShortcutInfo.Builder(this, "map")
+            .setShortLabel(getString(R.string.floor_map_shortcut_short_label1))
+            .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
+            .setIntent(Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://droidkaigi.jp/2020/floormap")
+            ).setComponent(ComponentName(this, MainActivity::class.java)))
+            .build()
+        val myPlan = ShortcutInfo.Builder(this, "my_plan")
+            .setShortLabel(getString(R.string.my_plan_shortcut_short_label1))
+            .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
+            .setIntent(Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://droidkaigi.jp/2020/main/3")
+            ).setComponent(ComponentName(this, MainActivity::class.java)))
+            .build()
+        shortcutManager?.addDynamicShortcuts(listOf(map, myPlan))
     }
 
     private fun handleNavigation(@IdRes itemId: Int): Boolean {

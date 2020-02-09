@@ -28,6 +28,7 @@
     <color name="light_blue_800">#0067a9</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="gray">#7B7B7B</color>
     <color name="black">#000000</color>
     <color name="black_alpha_87">#DE000000</color>
     <color name="black_alpha_38">#61000000</color>
