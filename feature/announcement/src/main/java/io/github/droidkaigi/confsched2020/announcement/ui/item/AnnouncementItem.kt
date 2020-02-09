@@ -17,24 +17,24 @@ import androidx.transition.TransitionManager
 import com.soywiz.klock.DateFormat
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.announcement.R
 import io.github.droidkaigi.confsched2020.announcement.databinding.ItemAnnouncementBinding
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
-import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.Announcement
 import io.github.droidkaigi.confsched2020.model.defaultTimeZoneOffset
 
 class AnnouncementItem @AssistedInject constructor(
-    @Assisted val announcement: Announcement
-) : BindableItem<ItemAnnouncementBinding>(announcement.id), EqualableContentsProvider {
+    @Assisted val announcement: Announcement,
+    @Assisted var showEllipsis: Boolean,
+    @Assisted val expandListener: () -> Unit
+) : BindableItem<ItemAnnouncementBinding>(announcement.id) {
 
     companion object {
         private const val ELLIPSIS_LINE_COUNT = 4
         private val dateFormatter = DateFormat("MM.dd HH:mm")
     }
-
-    private var showEllipsis: Boolean = true
 
     override fun getLayout(): Int = R.layout.item_announcement
 
@@ -61,17 +61,8 @@ class AnnouncementItem @AssistedInject constructor(
             )
     }
 
-    override fun providerEqualableContents(): Array<*> {
-        return arrayOf(announcement)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return isSameContents(other)
-    }
-
-    override fun hashCode(): Int {
-        return contentsHash()
-    }
+    override fun hasSameContentAs(other: Item<*>): Boolean =
+        announcement == (other as? AnnouncementItem)?.announcement
 
     private fun TextView.setEllipsis(line: Int, label: String) {
         doOnPreDraw {
@@ -92,6 +83,7 @@ class AnnouncementItem @AssistedInject constructor(
                     TransitionManager.beginDelayedTransition(rootView as ViewGroup)
                     text = fullText
                     showEllipsis = !showEllipsis
+                    expandListener()
                 }
                 val detailText = fullText.substring(0, lastLineStartPosition) + lastLineText
                 val text = buildSpannedString {
@@ -132,7 +124,9 @@ class AnnouncementItem @AssistedInject constructor(
     @AssistedInject.Factory
     interface Factory {
         fun create(
-            announcement: Announcement
+            announcement: Announcement,
+            showEllipsis: Boolean,
+            expandListener: () -> Unit
         ): AnnouncementItem
     }
 }

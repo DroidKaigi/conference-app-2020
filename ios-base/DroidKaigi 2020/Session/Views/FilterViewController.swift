@@ -1,3 +1,4 @@
+import Material
 import MaterialComponents
 import RxCocoa
 import RxSwift
@@ -10,7 +11,6 @@ protocol FilterViewControllerDelegate: AnyObject {
 final class FilterViewController: UIViewController {
     private let disposeBag = DisposeBag()
 
-    private let appBar = MDCAppBar()
     private let tabBar = MDCTabBar()
 
     private var containerView: UIView = {
@@ -24,10 +24,14 @@ final class FilterViewController: UIViewController {
 
     private let embeddedViewAnimator = UIViewPropertyAnimator(duration: 0.8, curve: .easeInOut)
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = ApplicationScheme.shared.colorScheme.surfaceColor
+        view.backgroundColor = ApplicationScheme.shared.colorScheme.primaryColor
         setUpAppBar()
         setUpTabBar()
         setUpContainerView()
@@ -42,12 +46,18 @@ final class FilterViewController: UIViewController {
         embeddedView?.frame = containerView.bounds
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.primaryColor
+        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onPrimaryColor
+    }
+
     private func frameForEmbeddedController() -> CGRect {
         var embeddedFrame = view.bounds
         var insetHeader = UIEdgeInsets()
         let bottomMargin: CGFloat = 24
-        insetHeader.top = appBar.headerViewController.view.frame.maxY
-            + tabBar.bounds.maxY + bottomMargin
+        insetHeader.top = tabBar.bounds.maxY + bottomMargin
         embeddedFrame = embeddedFrame.inset(by: insetHeader)
 
         if embeddedView == nil {
@@ -58,28 +68,31 @@ final class FilterViewController: UIViewController {
     }
 
     private func setUpAppBar() {
-        let menuImage = UIImage(named: "ic_menu")
-        let templateMenuImage = menuImage?.withRenderingMode(.alwaysTemplate)
+        let menuImage = Asset.icMenu.image
+        let templateMenuImage = menuImage.withRenderingMode(.alwaysTemplate)
         let menuItem = UIBarButtonItem(image: templateMenuImage,
                                        style: .plain,
                                        target: self,
                                        action: nil)
-        let logoImage = UIImage(named: "logo")
-        let templateLogoImage = logoImage?.withRenderingMode(.alwaysOriginal)
+        let logoImage = Asset.logo.image
+        let templateLogoImage = logoImage.withRenderingMode(.alwaysOriginal)
         let logoItem = UIBarButtonItem(image: templateLogoImage, style: .plain, target: nil, action: nil)
-        let searchImage = UIImage(named: "ic_search")
-        let templateSearchImage = searchImage?.withRenderingMode(.alwaysTemplate)
+        let searchImage = Asset.icSearch.image
+        let templateSearchImage = searchImage.withRenderingMode(.alwaysTemplate)
         let searchItem = UIBarButtonItem(image: templateSearchImage,
                                          style: .plain,
                                          target: self,
                                          action: nil)
         navigationItem.leftBarButtonItems = [menuItem, logoItem]
         navigationItem.rightBarButtonItems = [searchItem]
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        edgesForExtendedLayout = []
 
-        addChild(appBar.headerViewController)
-        appBar.addSubviewsToParent()
-        MDCAppBarColorThemer.applySemanticColorScheme(ApplicationScheme.shared.colorScheme, to: appBar)
-        appBar.navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        menuItem.rx.tap
+            .bind(to: Binder(self) { me, _ in
+                me.navigationDrawerController?.toggleLeftView()
+            }).disposed(by: disposeBag)
     }
 
     private func setUpTabBar() {
@@ -87,7 +100,8 @@ final class FilterViewController: UIViewController {
         tabBar.items = [
             UITabBarItem(title: "DAY1", image: nil, tag: 0),
             UITabBarItem(title: "DAY2", image: nil, tag: 1),
-            UITabBarItem(title: "MYPLAN", image: nil, tag: 2),
+            UITabBarItem(title: "EVENT", image: nil, tag: 2),
+            UITabBarItem(title: "MYPLAN", image: nil, tag: 3),
         ]
         tabBar.alignment = .justified
         tabBar.itemAppearance = .titles
@@ -97,7 +111,7 @@ final class FilterViewController: UIViewController {
         tabBar.sizeToFit()
         view.addSubview(tabBar)
         tabBar.translatesAutoresizingMaskIntoConstraints = false
-        tabBar.topAnchor.constraint(equalTo: appBar.headerViewController.view.bottomAnchor).isActive = true
+        tabBar.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tabBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tabBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
@@ -108,14 +122,6 @@ final class FilterViewController: UIViewController {
         let viewController = SessionPageViewController(viewModel: viewModel, transitionStyle: .scroll, navigationOrientation: .horizontal)
         viewController.filterViewControllerDelegate = self
         insert(viewController)
-
-        let height = UIScreen.main.bounds.height - 100
-        embeddedViewAnimator.addAnimations { [weak self] in
-            guard let self = self else { return }
-            self.containerView.frame.origin.y = height
-        }
-        embeddedViewAnimator.pausesOnCompletion = true
-        embeddedViewAnimator.isUserInteractionEnabled = true
 
         let panGesture = UIPanGestureRecognizer()
         panGesture.delegate = self
@@ -166,11 +172,11 @@ final class FilterViewController: UIViewController {
             .drive(Binder(self) { me, isFocusedOnEmbeddedView in
                 if isFocusedOnEmbeddedView {
                     UIView.animate(withDuration: 0.2) {
-                        me.containerView.frame.origin.y = 148
+                        me.containerView.frame.origin.y = me.view.frame.height - (me.embeddedView?.frame.height)!
                     }
                 } else {
                     UIView.animate(withDuration: 0.2) {
-                        me.containerView.frame.origin.y = UIScreen.main.bounds.height - 100
+                        me.containerView.frame.origin.y = me.view.frame.height - 100
                     }
                 }
             }).disposed(by: disposeBag)
@@ -217,6 +223,8 @@ extension FilterViewController: MDCTabBarDelegate {
         case 1:
             embeddedViewController?.setViewControllers(type: .day2)
         case 2:
+            embeddedViewController?.setViewControllers(type: .event)
+        case 3:
             embeddedViewController?.setViewControllers(type: .myPlan)
         default:
             break
