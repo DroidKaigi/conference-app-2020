@@ -31,14 +31,14 @@ class SessionsItemDecoration(
     private val sessionTimeTextSizeInPx by lazy {
         res.getDimensionPixelSize(R.dimen.session_time_text_size).toFloat()
     }
-    private val sessionTimeSpaceInPx by lazy {
-        res.getDimensionPixelSize(R.dimen.session_time_space)
-    }
     private val sessionTimeTextMarginTopInPx by lazy {
         res.getDimensionPixelSize(R.dimen.session_time_text_margin_top).toFloat()
     }
     private val sessionTimeTextMarginStartInPx by lazy {
         res.getDimensionPixelSize(R.dimen.session_time_text_margin_start).toFloat()
+    }
+    private val sessionTimeTextHeightInPx by lazy {
+        sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
     }
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
@@ -48,15 +48,6 @@ class SessionsItemDecoration(
             if (position == RecyclerView.NO_POSITION) return
 
             val sessionItem = adapter.getItem(position) as SessionItem
-            val shouldShowDateText = visibleSessionDate && if (position > 0) {
-                val lastSessionItem = adapter.getItem(position - 1) as SessionItem
-                sessionItem.startSessionDate() != lastSessionItem.startSessionDate()
-            } else {
-                true
-            }
-            val startDateTimeText =
-                calcDateTimeText(position, view, shouldShowDateText)
-
             // we need least first session's label, skip to check if time label is same as last item on first item.
             if (position > 0 && index > 0) {
                 val lastSessionItem = adapter.getItem(position - 1) as SessionItem
@@ -64,6 +55,9 @@ class SessionsItemDecoration(
                     return@forEachIndexed
                 }
             }
+
+            val startDateTimeText =
+                calcDateTimeText(position, view, shouldShowDateText(position))
 
             if (startDateTimeText.dateText != null) {
                 c.drawText(
@@ -83,6 +77,23 @@ class SessionsItemDecoration(
         }
     }
 
+    private fun shouldShowDateText(position: Int): Boolean {
+        if (!visibleSessionDate) {
+            return false
+        }
+        if (position <= 0) {
+            return true
+        }
+        val currentSessionItem = adapter.getItem(position) as SessionItem
+        val lastSessionItem = adapter.getItem(position - 1) as SessionItem
+        val isSameDateWithLastItem =
+            currentSessionItem.startSessionDate() == lastSessionItem.startSessionDate()
+        return when {
+            isSameDateWithLastItem -> false
+            else -> true
+        }
+    }
+
     private fun calcDateTimeText(
         position: Int,
         view: View,
@@ -97,27 +108,22 @@ class SessionsItemDecoration(
         val dateText = if (shouldShowDateText) {
 
             var sessionDateTextPositionY =
-                view.top.coerceAtLeast(sessionTimeTextMarginTopInPx.toInt()) +
-                        sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
+                view.top.coerceAtLeast(sessionTimeTextMarginTopInPx.toInt()) + sessionTimeTextHeightInPx
 
             if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
                 sessionDateTextPositionY =
-                    sessionDateTextPositionY.coerceAtMost(view.bottom.toFloat())
+                    sessionDateTextPositionY.coerceAtMost(view.bottom.toFloat() - sessionTimeTextHeightInPx)
             }
 
             PositionalText(
                 value = sessionItem.startSessionDate(),
                 positionX = sessionTimeTextMarginStartInPx,
-                positionY = sessionDateTextPositionY.coerceAtMost(
-                    view.bottom.toFloat() -
-                            sessionTimeTextMarginTopInPx -
-                            sessionTimeTextSizeInPx
-                )
+                positionY = sessionDateTextPositionY
             )
         } else null
 
         val sessionTimeTextMarginTop = if (shouldShowDateText) {
-            sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx + sessionTimeTextMarginTopInPx
+            sessionTimeTextMarginTopInPx + sessionTimeTextHeightInPx
         } else {
             sessionTimeTextMarginTopInPx
         }
@@ -125,8 +131,7 @@ class SessionsItemDecoration(
         // session time text
         var sessionTimeTextPositionY =
             (view.top + sessionTimeTextMarginTop.toInt() - sessionTimeTextMarginTopInPx.toInt())
-                .coerceAtLeast(sessionTimeTextMarginTop.toInt()) +
-                    sessionTimeTextMarginTopInPx + sessionTimeTextSizeInPx
+                .coerceAtLeast(sessionTimeTextMarginTop.toInt()) + sessionTimeTextHeightInPx
 
         if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
             sessionTimeTextPositionY = sessionTimeTextPositionY.coerceAtMost(view.bottom.toFloat())
