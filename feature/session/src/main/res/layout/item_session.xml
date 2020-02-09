@@ -73,20 +73,6 @@
             android:contentDescription="@string/favorite_icon"
             />
 
-        <TextView
-            android:id="@+id/session_message"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textAppearance="?textAppearanceBody1"
-            android:textColor="@color/red"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/guideline_end"
-            app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/room"
-            tools:text="セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
-            />
-
         <androidx.emoji.widget.EmojiAppCompatTextView
             android:id="@+id/title"
             android:layout_width="0dp"
@@ -99,7 +85,7 @@
             android:textColor="@color/session_title"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/session_message"
+            app:layout_constraintTop_toBottomOf="@id/room"
             tools:text="マルチモジュールなプロジェクトでテストはどう変わる？"
             />
 
@@ -115,6 +101,21 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/title"
+            />
+
+        <TextView
+            android:id="@+id/session_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="?textAppearanceBody1"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/title"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/speakers"
+            tools:text="セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
+            tools:visibility="visible"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,3 +16,11 @@
 "Filter" = "Filter";
 "Reset" = "RESET";
 "ApplicableSession" = "Applicable session";
+"Sessions" = "Sessions";
+
+// Sidebar
+"Timeline" = "Sessions";
+"About" = "About";
+"Floormap" = "Floormap";
+"Sponsor" = "Sponsors";
+"Setting" = "Settings";

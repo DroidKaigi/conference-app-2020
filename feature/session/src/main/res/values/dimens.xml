@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="session_time_text_size">16sp</dimen>
-    <dimen name="session_time_space">76dp</dimen>
+    <dimen name="session_time_space">70dp</dimen>
     <dimen name="session_time_text_margin_top">8dp</dimen>
+    <dimen name="session_time_text_margin_start">12dp</dimen>
     <dimen name="session_item_margin_bottom">16dp</dimen>
     <dimen name="session_item_speaker_margin">8dp</dimen>
     <dimen name="session_filter_chip_vertical_margin">8dp</dimen>

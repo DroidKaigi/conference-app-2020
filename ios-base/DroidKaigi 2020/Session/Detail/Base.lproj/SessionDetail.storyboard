@@ -245,7 +245,7 @@
                                                                                 <rect key="frame" x="0.0" y="51" width="366" height="92"/>
                                                                                 <subviews>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CBY-jo-yAK">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="366" height="24"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="366" height="44"/>
                                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                                         <inset key="titleEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                                                         <inset key="imageEdgeInsets" minX="7" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -257,7 +257,7 @@
                                                                                         </state>
                                                                                     </button>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FP2-yF-dGx">
-                                                                                        <rect key="frame" x="0.0" y="52" width="366" height="40"/>
+                                                                                        <rect key="frame" x="0.0" y="72" width="366" height="20"/>
                                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                                         <inset key="titleEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                                                         <inset key="imageEdgeInsets" minX="7" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -389,7 +389,7 @@
         <image name="ic_photo_library_disabled" width="20" height="20"/>
         <image name="ic_place_white" width="14" height="20"/>
         <image name="ic_schedule" width="14" height="14"/>
-        <image name="ic_share_white" width="18" height="20"/>
+        <image name="ic_share_white" width="24" height="24"/>
         <image name="ic_videocam" width="18" height="12"/>
         <image name="ic_videocam_disabled" width="18" height="12"/>
         <namedColor name="Primary">

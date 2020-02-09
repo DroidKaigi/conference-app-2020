@@ -293,6 +293,14 @@
                         </connections>
                     </tableView>
                     <size key="freeformSize" width="414" height="896"/>
+                    <connections>
+                        <outlet property="aboutLabel" destination="JtF-GG-evG" id="WLq-rG-vak"/>
+                        <outlet property="floorMapLabel" destination="CRA-KP-fCf" id="TCE-iR-6zc"/>
+                        <outlet property="infoLabel" destination="RMR-xd-cxl" id="3Ww-fa-1Lc"/>
+                        <outlet property="settingLabel" destination="1Yz-DM-qpc" id="03U-4g-8qN"/>
+                        <outlet property="sponsorLabel" destination="jsU-4x-J7y" id="ebr-cM-b5U"/>
+                        <outlet property="timelineLabel" destination="wlM-D0-wmL" id="ELe-qf-gbc"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DMK-JP-MZ5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
