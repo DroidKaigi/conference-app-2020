@@ -8,6 +8,7 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import com.squareup.inject.assisted.AssistedInject
 import io.github.droidkaigi.confsched2020.ext.combine
+import io.github.droidkaigi.confsched2020.ext.dropWhileIndexed
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.Announcement
@@ -40,6 +41,11 @@ class AnnouncementViewModel @AssistedInject constructor(
             liveData<LoadState<List<Announcement>>> {
                 emitSource(
                     announcementRepository.announcements()
+                        // Because the empty list is returned
+                        // when the initial refresh is not finished yet.
+                        .dropWhileIndexed { index, value ->
+                            index == 0 && value.isEmpty()
+                        }
                         .toLoadingState()
                         .asLiveData()
                 )

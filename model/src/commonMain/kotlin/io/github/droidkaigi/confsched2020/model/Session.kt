@@ -18,6 +18,18 @@ sealed class Session(
 
     val startTimeText by lazy { startTime.toOffset(defaultTimeZoneOffset()).format("HH:mm") }
 
+    fun minutesRoom(lang: Lang) = buildString {
+        val minutes = endTime.minus(startTime).minutes.toInt()
+        append(minutes)
+        if (lang == Lang.JA) {
+            append("分")
+        } else {
+            append("min")
+        }
+        append(" / ")
+        append(room.name.getByLang(lang))
+    }
+
     fun timeSummary(lang: Lang, timezoneOffset: TimezoneOffset) = buildString {
         val startTimeTZ = startTime.toOffset(timezoneOffset)
         val endTimeTZ = endTime.toOffset(timezoneOffset)

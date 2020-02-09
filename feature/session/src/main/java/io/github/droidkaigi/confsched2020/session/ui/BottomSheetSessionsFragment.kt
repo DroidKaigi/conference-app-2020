@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
@@ -91,8 +92,11 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                binding.dividerShadow.isVisible =
+                val isVisibleShadow =
                     binding.sessionRecycler.canScrollVertically(-1)
+
+                binding.divider.isVisible = !isVisibleShadow
+                binding.dividerShadow.isVisible = isVisibleShadow
             }
         })
         binding.startFilter.setOnClickListener {
@@ -108,12 +112,17 @@ class BottomSheetSessionsFragment : DaggerFragment() {
         }
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
-            binding.isCollapsed = when (uiModel.expandFilterState) {
+            val shouldBeCollapsed = when (uiModel.expandFilterState) {
                 ExpandFilterState.COLLAPSED ->
                     true
                 else ->
                     false
+            }
+            if (binding.isCollapsed != shouldBeCollapsed) {
+                TransitionManager.beginDelayedTransition(
+                    binding.sessionRecycler.parent as ViewGroup
+                )
+                binding.isCollapsed = shouldBeCollapsed
             }
         }
 
@@ -152,7 +161,17 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             uiModel.error?.let {
                 systemViewModel.onError(it)
             }
+
+            val position = uiModel.shouldScrollSessionPosition[page]
+            if (position != null) {
+                binding.sessionRecycler.smoothScrollToPositionWithLayoutManager(position)
+                sessionsViewModel.onScrolled()
+            }
         }
+    }
+
+    private fun RecyclerView.smoothScrollToPositionWithLayoutManager(position: Int) {
+        (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(position, 0)
     }
 
     companion object {

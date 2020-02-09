@@ -72,8 +72,7 @@ class SessionItem @AssistedInject constructor(
             }
             live.isVisible = session.isOnGoing
             title.text = session.title.ja
-            room.text = session.room.name.getByLang(defaultLang())
-            survey.isEnabled = session.isFinished
+            room.text = session.minutesRoom(defaultLang())
             imageRequestDisposables.clear()
             speakers.bindSpeaker()
         }

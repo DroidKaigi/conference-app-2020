@@ -19,6 +19,7 @@ import io.github.droidkaigi.confsched2020.model.ServiceSession
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionId
+import io.github.droidkaigi.confsched2020.model.SessionList
 import io.github.droidkaigi.confsched2020.model.SessionType
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeakerId
@@ -30,14 +31,14 @@ private val dateFormat: DateFormat =
 fun Response.toModel(): SessionContents {
     val firstDay = dateFormat.parse(requireNotNull(sessions.first().startsAt))
 
-    val sessions = sessions.map {
+    val sessions = SessionList(sessions.map {
         it.toSession(
             firstDay,
             requireNotNull(speakers),
             requireNotNull(rooms),
             requireNotNull(categories)
         )
-    }
+    })
     val speechSessions = sessions.filterIsInstance<SpeechSession>()
     return SessionContents(
         sessions = sessions,
