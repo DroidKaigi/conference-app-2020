@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2020.session.ui
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
+import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -128,35 +129,44 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                     }
             }
 
-        binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
-            val session = binding.session ?: return@setOnMenuItemClickListener true
-            when (menuItem.itemId) {
-                R.id.session_share -> {
-                    val sessionId = session.id.id
-                    val url = resources.getString(R.string.session_share_url).format(sessionId)
-                    systemViewModel.shareURL(
-                        activity = requireActivity(),
-                        url = url
-                    )
-                }
-                R.id.floormap -> {
-                    val directions = actionSessionToFloormap(session.room)
-                    findNavController().navigate(directions)
-                }
-                R.id.session_calendar -> {
-                    systemViewModel.sendEventToCalendar(
-                        activity = requireActivity(),
-                        title = session.title.getByLang(defaultLang()),
-                        location = session.room.name.getByLang(defaultLang()),
-                        startDateTime = session.startTime,
-                        endDateTime = session.endTime
-                    )
-                }
-                else -> {
-                    handleNavigation(menuItem.itemId)
-                }
+        binding.bottomAppBar.run {
+            doOnNextLayout {
+                measure(
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                )
             }
-            return@setOnMenuItemClickListener true
+            setOnMenuItemClickListener { menuItem ->
+                val session = binding.session ?: return@setOnMenuItemClickListener true
+
+                when (menuItem.itemId) {
+                    R.id.session_share -> {
+                        val sessionId = session.id.id
+                        val url = resources.getString(R.string.session_share_url).format(sessionId)
+                        systemViewModel.shareURL(
+                            activity = requireActivity(),
+                            url = url
+                        )
+                    }
+                    R.id.floormap -> {
+                        val directions = actionSessionToFloormap(session.room)
+                        findNavController().navigate(directions)
+                    }
+                    R.id.session_calendar -> {
+                        systemViewModel.sendEventToCalendar(
+                            activity = requireActivity(),
+                            title = session.title.getByLang(defaultLang()),
+                            location = session.room.name.getByLang(defaultLang()),
+                            startDateTime = session.startTime,
+                            endDateTime = session.endTime
+                        )
+                    }
+                    else -> {
+                        handleNavigation(menuItem.itemId)
+                    }
+                }
+                return@setOnMenuItemClickListener true
+            }
         }
     }
 
