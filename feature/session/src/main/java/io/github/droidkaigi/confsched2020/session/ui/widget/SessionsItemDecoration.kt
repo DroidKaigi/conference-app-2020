@@ -107,12 +107,14 @@ class SessionsItemDecoration(
         // session date text
         val dateText = if (shouldShowDateText) {
 
-            var sessionDateTextPositionY =
-                view.top.coerceAtLeast(sessionTimeTextMarginTopInPx.toInt()) + sessionTimeTextHeightInPx
+            var sessionDateTextPositionY = view.top.coerceAtLeast(
+                sessionTimeTextMarginTopInPx.toInt()
+            ) + sessionTimeTextHeightInPx
 
             if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
-                sessionDateTextPositionY =
-                    sessionDateTextPositionY.coerceAtMost(view.bottom.toFloat() - sessionTimeTextHeightInPx)
+                sessionDateTextPositionY = sessionDateTextPositionY.coerceAtMost(
+                    view.bottom.toFloat() - sessionTimeTextHeightInPx
+                )
             }
 
             PositionalText(
