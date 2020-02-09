@@ -50,8 +50,8 @@ final class SpeakerViewController: UIViewController {
 
         sessions.forEach { session in
             let sessionView = SpeakerSessionView.instantiate()
-            sessionView.sessionTitleLabel.text = session.title.ja
-            sessionView.sessionDateLabel.text = session.shortSummary(lang: .ja)
+            sessionView.sessionTitleLabel.text = session.title.currentLangString
+            sessionView.sessionDateLabel.text = session.currentLangShortSummary
             stackView.insertArrangedSubview(sessionView, at: stackView.arrangedSubviews.count)
         }
     }
