@@ -178,7 +178,7 @@ class SessionDetailViewModelTest {
             error shouldBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
-            thumbsUpCount shouldBe Dummies.thumbsUpCount
+            totalThumbsUpCount shouldBe Dummies.thumbsUpCount
         }
     }
 }

@@ -34,7 +34,6 @@ internal class DataSessionRepository @Inject constructor(
     private val firestore: Firestore,
     private val favoriteToggleWork: FavoriteToggleWork
 ) : SessionRepository {
-
     override fun sessionContents(): Flow<SessionContents> {
         val sessionsFlow = sessions()
             .map {
@@ -134,7 +133,13 @@ internal class DataSessionRepository @Inject constructor(
         return firestore.getThumbsUpCount(sessionId)
     }
 
-    override suspend fun incrementThumbsUpCount(sessionId: SessionId) {
-        firestore.incrementThumbsUpCount(sessionId)
+    override suspend fun incrementThumbsUpCount(
+        sessionId: SessionId,
+        count: Int
+    ) {
+        firestore.incrementThumbsUpCount(
+            sessionId = sessionId,
+            count = count
+        )
     }
 }

@@ -124,7 +124,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                             session,
                             uiModel.showEllipsis,
                             uiModel.searchQuery,
-                            uiModel.thumbsUpCount
+                            uiModel.totalThumbsUpCount
                         )
                     }
             }

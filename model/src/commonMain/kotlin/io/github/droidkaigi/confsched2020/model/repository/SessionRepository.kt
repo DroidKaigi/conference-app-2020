@@ -18,5 +18,5 @@ interface SessionRepository {
         sessionFeedback: SessionFeedback
     )
     fun thumbsUpCounts(sessionId: SessionId): Flow<Int>
-    suspend fun incrementThumbsUpCount(sessionId: SessionId)
+    suspend fun incrementThumbsUpCount(sessionId: SessionId, count: Int)
 }
