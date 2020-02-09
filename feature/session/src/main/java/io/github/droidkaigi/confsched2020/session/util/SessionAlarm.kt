@@ -62,7 +62,7 @@ class SessionAlarm @Inject constructor(private val app: Application) {
             R.string.notification_message_session_start_time,
             displaySTime,
             displayETime,
-            session.room.name
+            session.room.name.getByLang(defaultLang())
         )
         val title: String
         val text: String
