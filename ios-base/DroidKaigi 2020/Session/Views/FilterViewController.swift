@@ -91,6 +91,11 @@ final class FilterViewController: UIViewController {
             .bind(to: Binder(self) { me, _ in
                 me.navigationDrawerController?.toggleLeftView()
             }).disposed(by: disposeBag)
+
+        searchItem.rx.tap
+            .bind(to: Binder(self) { me, _ in
+                me.navigationController?.pushViewController(SearchViewController(rootViewController: SearchContentsViewController()), animated: true)
+            }).disposed(by: disposeBag)
     }
 
     private func setUpTabBar() {

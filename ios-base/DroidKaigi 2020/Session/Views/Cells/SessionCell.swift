@@ -32,6 +32,7 @@ final class SessionCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var minutesAndRoomLabel: UILabel!
     @IBOutlet weak var speakersStackView: UIStackView!
+    @IBOutlet weak var titleLeftConstraint: NSLayoutConstraint!
 
     var disposeBag = DisposeBag()
 

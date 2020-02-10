@@ -16,6 +16,9 @@
 "Filter" = "Filter";
 "Reset" = "RESET";
 "ApplicableSession" = "Applicable session";
+"Session" = "Session";
+"Speaker" = "Speaker";
+"Search" = "Search";
 "Sessions" = "Sessions";
 
 // Sidebar

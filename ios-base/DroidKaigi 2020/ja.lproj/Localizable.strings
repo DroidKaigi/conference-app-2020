@@ -16,6 +16,9 @@
 "Filter" = "フィルター";
 "Reset" = "リセット";
 "ApplicableSession" = "該当セッション";
+"Session" = "セッション";
+"Speaker" = "スピーカー";
+"Search" = "検索する";
 "Sessions" = "セッション";
 
 // Sidebar
