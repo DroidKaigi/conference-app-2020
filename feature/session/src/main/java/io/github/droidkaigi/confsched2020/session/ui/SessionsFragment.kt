@@ -96,9 +96,11 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjecto
             else 0
 
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
-            val peekHeight = insets.systemWindowInsetBottom + initialPeekHeight + gestureNavigationBottomSpace
-            sessionSheetBehavior.peekHeight = peekHeight
-            binding.filterView.updatePadding(bottom = peekHeight)
+            sessionSheetBehavior.peekHeight =
+                insets.systemWindowInsetBottom + initialPeekHeight + gestureNavigationBottomSpace
+            binding.filterView.updatePadding(
+                bottom = initialPeekHeight + resources.getDimensionPixelSize(R.dimen.session_filter_view_padding_bottom)
+            )
             // This block is the workaround to bottomSheetBehavior bug fix.
             // https://stackoverflow.com/questions/35685681/dynamically-change-height-of-bottomsheetbehavior
             if (sessionSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
