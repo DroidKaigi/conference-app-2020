@@ -13,6 +13,9 @@
 "Privacy Policy URL" = "http://www.association.droidkaigi.jp/en/privacy.html";
 "Licence" = "Licence";
 "Version" = "Version";
+"Filter" = "Filter";
+"Reset" = "RESET";
+"ApplicableSession" = "Applicable session";
 "Session" = "Session";
 "Speaker" = "Speaker";
 "Search" = "Search";
@@ -24,3 +27,6 @@
 "Floormap" = "Floormap";
 "Sponsor" = "Sponsors";
 "Setting" = "Settings";
+
+// Favorite suggest view
+"Suggest description" = "You choose your favorite sessions, then you can make a plan for you.";

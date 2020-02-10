@@ -13,6 +13,9 @@
 "Privacy Policy URL" = "http://www.association.droidkaigi.jp/privacy.html";
 "Licence" = "ライセンス";
 "Version" = "アプリバージョン";
+"Filter" = "フィルター";
+"Reset" = "リセット";
+"ApplicableSession" = "該当セッション";
 "Session" = "セッション";
 "Speaker" = "スピーカー";
 "Search" = "検索する";
@@ -24,3 +27,6 @@
 "Floormap" = "フロアマップ";
 "Sponsor" = "スポンサー";
 "Setting" = "設定";
+
+// Favorite suggest view
+"Suggest description" = "お気に入りのセッションを登録するとあなた専用のプランを作ることができます。";

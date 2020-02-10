@@ -22,15 +22,17 @@ enum SessionViewControllerType: Int {
 }
 
 final class SessionPageViewController: UIPageViewController {
-    private let viewModel: SessionViewModel
+    private let filterViewModel: FilterViewModel
+    private let sessionViewModel: SessionViewModel
 
     private var selectedViewControllerIndex: Int = 0
     private var sessionViewControllers: [UIViewController] = []
 
     weak var filterViewControllerDelegate: FilterViewControllerDelegate?
 
-    init(viewModel: SessionViewModel, transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey: Any]? = nil) {
-        self.viewModel = viewModel
+    init(filterViewModel: FilterViewModel, transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey: Any]? = nil) {
+        self.filterViewModel = filterViewModel
+        sessionViewModel = SessionViewModel()
         super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
     }
 
@@ -46,10 +48,10 @@ final class SessionPageViewController: UIPageViewController {
         view.layer.cornerRadius = 24
 
         sessionViewControllers = [
-            SessionViewController(viewModel: viewModel, sessionViewType: .day1),
-            SessionViewController(viewModel: viewModel, sessionViewType: .day2),
-            SessionViewController(viewModel: viewModel, sessionViewType: .event),
-            SessionViewController(viewModel: viewModel, sessionViewType: .myPlan),
+            SessionViewController(filterViewModel: filterViewModel, sessionViewModel: sessionViewModel, sessionViewType: .day1),
+            SessionViewController(filterViewModel: filterViewModel, sessionViewModel: sessionViewModel, sessionViewType: .day2),
+            SessionViewController(filterViewModel: filterViewModel, sessionViewModel: sessionViewModel, sessionViewType: .event),
+            SessionViewController(filterViewModel: filterViewModel, sessionViewModel: sessionViewModel, sessionViewType: .myPlan),
         ]
         setViewControllers([sessionViewControllers[0]], direction: .forward, animated: true)
         selectedViewControllerIndex = 0
