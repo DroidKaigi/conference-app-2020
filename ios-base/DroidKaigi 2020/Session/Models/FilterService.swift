@@ -17,14 +17,14 @@ final class FilterService: FilterServiceProtocol {
                 let roomsOk = sessionContents.rooms.isEmpty
                     || sessionContents.rooms.map { $0.id }.contains(speakerSession.room.id)
                 let langsOk = sessionContents.langs.isEmpty
-                    || sessionContents.rooms.map { $0.id }.contains(speakerSession.room.id)
+                    || sessionContents.langs.contains(speakerSession.lang)
                 let levelOk = sessionContents.levels.isEmpty
                     || !sessionContents.levels.filter { speakerSession.levels.contains($0) }.isEmpty
                 let categoryOk = sessionContents.categories.isEmpty
                     || sessionContents.categories.map { $0.id }.contains(speakerSession.category.id)
                 let langSupportOk = sessionContents.langSupports.isEmpty
-                    || sessionContents.langSupports.contains(LangSupport.interpretation)
-                    ? speakerSession.isInterpretationTarget : true
+                    || (sessionContents.langSupports.contains(LangSupport.interpretation)
+                        ? speakerSession.isInterpretationTarget : true)
                 return roomsOk
                     && langsOk
                     && levelOk
