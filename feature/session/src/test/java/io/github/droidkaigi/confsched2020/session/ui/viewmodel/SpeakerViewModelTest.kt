@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 import com.jraska.livedata.test
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionId
+import io.github.droidkaigi.confsched2020.model.SessionList
 import io.github.droidkaigi.confsched2020.model.SpeakerId
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.widget.component.MockkRule
@@ -28,7 +29,8 @@ class SpeakerViewModelTest {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
         val speakerViewModel = SpeakerViewModel(
             speakerId = Dummies.speakers.first().id,
-            sessionRepository = sessionRepository
+            sessionRepository = sessionRepository,
+            searchQuery = null
         )
 
         val testObserver = speakerViewModel
@@ -42,6 +44,7 @@ class SpeakerViewModelTest {
             error shouldBe null
             speaker shouldBe Dummies.speakers.first()
             sessions shouldBe listOf(Dummies.speachSession1)
+            searchQuery shouldBe null
         }
     }
 
@@ -53,16 +56,17 @@ class SpeakerViewModelTest {
 
         coEvery { sessionRepository.sessionContents() } returns flowOf(
             Dummies.sessionContents.copy(
-                sessions = listOf(
+                sessions = SessionList(listOf(
                     Dummies.serviceSession,
                     Dummies.speachSession1,
                     speachSession2
-                )
+                ))
             )
         )
         val speakerViewModel = SpeakerViewModel(
             speakerId = Dummies.speakers.first().id,
-            sessionRepository = sessionRepository
+            sessionRepository = sessionRepository,
+            searchQuery = null
         )
 
         val testObserver = speakerViewModel
@@ -76,6 +80,7 @@ class SpeakerViewModelTest {
             error shouldBe null
             speaker shouldBe Dummies.speakers.first()
             sessions shouldBe listOf(Dummies.speachSession1, speachSession2)
+            searchQuery shouldBe null
         }
     }
 
@@ -84,7 +89,8 @@ class SpeakerViewModelTest {
         coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
         val speakerViewModel = SpeakerViewModel(
             speakerId = SpeakerId("notExistId"),
-            sessionRepository = sessionRepository
+            sessionRepository = sessionRepository,
+            searchQuery = null
         )
 
         val testObserver = speakerViewModel
@@ -98,6 +104,7 @@ class SpeakerViewModelTest {
             error shouldNotBe null
             speaker shouldBe null
             sessions shouldBe listOf()
+            searchQuery shouldBe null
         }
     }
 
@@ -106,7 +113,8 @@ class SpeakerViewModelTest {
         coEvery { sessionRepository.sessionContents() } returns flowOf(SessionContents.EMPTY)
         val speakerViewModel = SpeakerViewModel(
             speakerId = SpeakerId("anyId"),
-            sessionRepository = sessionRepository
+            sessionRepository = sessionRepository,
+            searchQuery = null
         )
 
         val testObserver = speakerViewModel
@@ -120,6 +128,31 @@ class SpeakerViewModelTest {
             error shouldNotBe null
             speaker shouldBe null
             sessions shouldBe listOf()
+            searchQuery shouldBe null
+        }
+    }
+
+    @Test
+    fun uiModel_from_search() {
+        coEvery { sessionRepository.sessionContents() } returns flowOf(Dummies.sessionContents)
+        val speakerViewModel = SpeakerViewModel(
+            speakerId = Dummies.speakers.first().id,
+            sessionRepository = sessionRepository,
+            searchQuery = "query"
+        )
+
+        val testObserver = speakerViewModel
+            .uiModel
+            .test()
+
+        val valueHistory = testObserver.valueHistory()
+        valueHistory[0].isLoading shouldBe true // other properties are not deterministic.
+        valueHistory[1].apply {
+            isLoading shouldBe false
+            error shouldBe null
+            speaker shouldBe Dummies.speakers.first()
+            sessions shouldBe listOf(Dummies.speachSession1)
+            searchQuery shouldBe "query"
         }
     }
 }

@@ -1,17 +1,17 @@
 package io.github.droidkaigi.confsched2020.model
 
 data class SessionContents(
-    val sessions: List<Session>,
+    val sessions: SessionList,
     val speakers: List<Speaker>,
     val rooms: List<Room>,
     val langs: List<Lang>,
     val langSupports: List<LangSupport>,
     val category: List<Category>,
-    val audienceCategories: List<AudienceCategory>
+    val levels: List<Level>
 ) {
     companion object {
         val EMPTY = SessionContents(
-            listOf(),
+            SessionList.EMPTY,
             listOf(),
             listOf(),
             listOf(),

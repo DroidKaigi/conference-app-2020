@@ -2,14 +2,16 @@
 <resources>
     <string name="session_on_going">ON GOING</string>
     <string name="start_filter">Filter</string>
+    <string name="filter_now">Filtering</string>
     <string name="intended_audience_title">Intended audience</string>
     <string name="session_share" translatable="false">Share</string>
+    <string name="save_event_to_calendar" translatable="false">Save to Calendar</string>
     <string name="applicable_session">Applicable session: %1$d</string>
     <string name="filter_title" translatable="false">Filter</string>
     <string name="filter_reset">Reset</string>
     <string name="filter_room" translatable="false">Room</string>
     <string name="filter_language" translatable="false">Language</string>
-    <string name="filter_audience_category" translatable="false">Level</string>
+    <string name="filter_level" translatable="false">Level</string>
     <string name="filter_category" translatable="false">Category</string>
     <string name="filter_language_support" translatable="false">Language Support</string>
     <string name="ellipsis_label">Read more</string>
@@ -19,4 +21,7 @@
     <string name="movie" translatable="false">MOVIE</string>
     <string name="slide">SLIDE</string>
     <string name="empty_favorite_session">You choose your favorite sessions, then you can make a plan for you.</string>
+    <string name="time_icon">Time Icon</string>
+    <string name="favorite_icon">Favorite Icon</string>
+    <string name="session_share_url">https://droidkaigi.jp/2020/en/timetable/%s</string>
 </resources>

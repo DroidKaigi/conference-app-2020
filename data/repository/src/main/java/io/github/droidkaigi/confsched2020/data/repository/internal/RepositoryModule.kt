@@ -6,7 +6,6 @@ import io.github.droidkaigi.confsched2020.model.repository.AnnouncementRepositor
 import io.github.droidkaigi.confsched2020.model.repository.ContributorRepository
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.model.repository.SponsorRepository
-import io.github.droidkaigi.confsched2020.model.repository.StaffRepository
 
 @Module(includes = [RepositoryModule.Providers::class])
 internal abstract class RepositoryModule {
@@ -17,9 +16,9 @@ internal abstract class RepositoryModule {
     @Binds
     abstract fun announcementRepository(impl: DataAnnouncementRepository): AnnouncementRepository
 
-    @Binds abstract fun contributorRepository(impl: DataContributorRepository): ContributorRepository
-
-    @Binds abstract fun staffRepository(impl: DataStaffRepository): StaffRepository
+    @Binds abstract fun contributorRepository(
+        impl: DataContributorRepository
+    ): ContributorRepository
 
     @Module
     internal object Providers
