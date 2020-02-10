@@ -24,3 +24,6 @@
 "Floormap" = "Floormap";
 "Sponsor" = "Sponsors";
 "Setting" = "Settings";
+
+// Favorite suggest view
+"Suggest description" = "You choose your favorite sessions, then you can make a plan for you.";

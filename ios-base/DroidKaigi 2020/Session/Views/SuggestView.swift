@@ -7,6 +7,12 @@ final class SuggestView: UIView {
         }
     }
 
+    @IBOutlet weak var descriptionLabel: UILabel! {
+        didSet {
+            descriptionLabel.text = L10n.suggestDescription
+        }
+    }
+
     init() {
         super.init(frame: .zero)
         loadFromBundle()
