@@ -201,3 +201,17 @@ private extension SessionDetailViewController {
         UIApplication.shared.open(url)
     }
 }
+
+// MARK: - To show Detail view
+
+extension UIViewController {
+    func showDetail(forSession session: Session) {
+        // FIXME: Use coordinator?
+        guard let vc = UIStoryboard(name: "SessionDetail", bundle: nil)
+            .instantiateInitialViewController() as? SessionDetailViewController else {
+            return
+        }
+        vc.session = session
+        navigationController?.pushViewController(vc, animated: true)
+    }
+}

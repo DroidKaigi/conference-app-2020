@@ -114,6 +114,7 @@
                 <outlet property="speakersStackView" destination="rMR-Ci-Z50" id="7CN-YW-9II"/>
                 <outlet property="timeLabel" destination="pV1-fq-chY" id="GiX-kx-CnO"/>
                 <outlet property="titleLabel" destination="9um-YV-m4J" id="YlV-X6-UuE"/>
+                <outlet property="titleLeftConstraint" destination="CS0-Iy-yAT" id="1VV-aY-9Gh"/>
             </connections>
             <point key="canvasLocation" x="189" y="128"/>
         </collectionViewCell>
