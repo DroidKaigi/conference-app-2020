@@ -21,10 +21,10 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nmj-0q-Ox1">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="426"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="284"/>
                                         <subviews>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="afc-fp-2Tr">
-                                                <rect key="frame" x="197" y="203" width="20" height="20"/>
+                                                <rect key="frame" x="197" y="132" width="20" height="20"/>
                                             </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -34,7 +34,7 @@
                                         </constraints>
                                     </view>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="sxx-1J-93s">
-                                        <rect key="frame" x="0.0" y="426" width="414" height="426"/>
+                                        <rect key="frame" x="0.0" y="284" width="414" height="284"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="s5v-ME-UF0">
                                             <size key="itemSize" width="50" height="50"/>
@@ -53,6 +53,21 @@
                                             </collectionViewCell>
                                         </cells>
                                     </collectionView>
+                                    <view contentMode="scaleToFill" id="3RE-fh-mfp">
+                                        <rect key="frame" x="0.0" y="568" width="414" height="284"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yCb-AR-k77">
+                                                <rect key="frame" x="188.5" y="127" width="37" height="30"/>
+                                                <state key="normal" title="Retry"/>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <constraints>
+                                            <constraint firstItem="yCb-AR-k77" firstAttribute="centerY" secondItem="3RE-fh-mfp" secondAttribute="centerY" id="Vus-Ov-t2G"/>
+                                            <constraint firstItem="yCb-AR-k77" firstAttribute="centerX" secondItem="3RE-fh-mfp" secondAttribute="centerX" id="aC3-YN-bpN"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -67,7 +82,9 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="sxx-1J-93s" id="p3K-pV-94P"/>
+                        <outlet property="errorView" destination="3RE-fh-mfp" id="ufE-gk-zms"/>
                         <outlet property="loadingView" destination="nmj-0q-Ox1" id="yPN-iR-x1t"/>
+                        <outlet property="retryButton" destination="yCb-AR-k77" id="m4U-xd-WIV"/>
                         <outlet property="stackView" destination="tVc-BS-fyj" id="Fs4-hc-cui"/>
                     </connections>
                 </viewController>

@@ -7,6 +7,7 @@ final class ContributorViewController: UIViewController {
 
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var loadingView: UIView!
+    @IBOutlet weak var errorView: UIView!
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -21,6 +22,16 @@ final class ContributorViewController: UIViewController {
         }
     }
 
+    @IBOutlet private weak var retryButton: UIButton! {
+        didSet {
+            retryButton.rx.tap
+                .bind(to: Binder(self) { me, _ in
+                    me.viewModel.retry()
+                })
+                .disposed(by: disposeBag)
+        }
+    }
+
     private let viewModel = ContributorViewModel()
 
     override func viewDidLoad() {
@@ -32,9 +43,9 @@ final class ContributorViewController: UIViewController {
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
 
-        viewModel.isLoading
-            .drive(Binder(self) { me, isLoading in
-                me.updateContentView(isLoading: isLoading)
+        Driver.combineLatest(viewModel.isLoading, viewModel.error)
+            .drive(Binder(self) { me, element in
+                me.updateContentView(isLoading: element.0, error: element.1)
             })
             .disposed(by: disposeBag)
 
@@ -48,11 +59,13 @@ final class ContributorViewController: UIViewController {
         navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onSurfaceColor
     }
 
-    private func updateContentView(isLoading: Bool) {
+    private func updateContentView(isLoading: Bool, error: KotlinError?) {
         stackView.arrangedSubviews.forEach { $0.isHidden = true }
 
         if isLoading {
             loadingView.isHidden = false
+        } else if error != nil {
+            errorView.isHidden = false
         } else {
             collectionView.isHidden = false
         }
