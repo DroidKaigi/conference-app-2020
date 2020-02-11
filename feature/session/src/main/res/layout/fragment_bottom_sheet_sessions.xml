@@ -23,8 +23,9 @@
             type="Boolean" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <io.github.droidkaigi.confsched2020.session.ui.widget.BottomSheetMotionLayout
         android:id="@+id/session"
+        app:layoutDescription="@xml/fragment_bottom_sheet_sessions_scene"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
@@ -120,13 +121,12 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingTop="8dp"
-            app:isInvisible="@{isCollapsed || isEmptyFavoritePage}"
             android:splitMotionEvents="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/start_filter"
+            app:layout_constraintTop_toBottomOf="@id/divider_shadow"
             tools:listitem="@layout/item_session"
             />
 
@@ -135,6 +135,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:isInvisible="@{isCollapsed || !isEmptyFavoritePage || isFiltered}"
+            app:visibilityMode="ignore"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -171,5 +172,5 @@
                 app:layout_constraintTop_toBottomOf="@+id/empty_icon"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </io.github.droidkaigi.confsched2020.session.ui.widget.BottomSheetMotionLayout>
 </layout>
