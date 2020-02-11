@@ -1,7 +1,11 @@
 import ios_combined
 import RxSwift
 
-final class ContributorDataProvider {
+protocol ContributorDataProviderProtocol {
+    func fetchContributors() -> Single<[ContributorIndex]>
+}
+
+final class ContributorDataProvider: ContributorDataProviderProtocol {
     func fetchContributors() -> Single<[ContributorIndex]> {
         return Single.create { observer -> Disposable in
             ApiComponentKt.generateDroidKaigiApi().getContributorList(callback: { response in

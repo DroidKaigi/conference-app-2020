@@ -2,7 +2,18 @@ import ios_combined
 import RxCocoa
 import RxSwift
 
-final class ContributorViewModel {
+protocol ContributorViewModelType {
+    // input
+    func viewDidLoad()
+    func retry()
+
+    // output
+    var contributorIndices: Driver<[ContributorIndex]> { get }
+    var isLoading: Driver<Bool> { get }
+    var error: Driver<KotlinError?> { get }
+}
+
+final class ContributorViewModel: ContributorViewModelType {
     private let disposeBag = DisposeBag()
 
     // input
@@ -22,7 +33,9 @@ final class ContributorViewModel {
     let isLoading: Driver<Bool>
     let error: Driver<KotlinError?>
 
-    init() {
+    init(
+        dataProvider: ContributorDataProviderProtocol = ContributorDataProvider()
+    ) {
         let contributorIndicesRelay = BehaviorRelay<[ContributorIndex]>(value: [])
         let isLoadingRelay = BehaviorRelay<Bool>(value: false)
         let errorRelay = BehaviorRelay<KotlinError?>(value: nil)
@@ -30,8 +43,6 @@ final class ContributorViewModel {
         contributorIndices = contributorIndicesRelay.asDriver()
         isLoading = isLoadingRelay.asDriver()
         error = errorRelay.asDriver()
-
-        let dataProvider = ContributorDataProvider()
 
         let fetchResult = Observable.merge(viewDidLoadRelay.asObservable(), retryRelay.asObservable())
             .do(onNext: { isLoadingRelay.accept(true) })
