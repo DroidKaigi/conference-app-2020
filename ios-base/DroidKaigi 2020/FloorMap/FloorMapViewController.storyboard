@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map" translatesAutoresizingMaskIntoConstraints="NO" id="eba-aI-51s">
-                                <rect key="frame" x="36.5" y="316.5" width="341" height="273"/>
+                                <rect key="frame" x="20" y="303.5" width="374" height="299"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="eba-aI-51s" secondAttribute="height" multiplier="300:240" id="xzl-2M-4ai"/>
                                 </constraints>
@@ -26,7 +26,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="eba-aI-51s" firstAttribute="centerX" secondItem="g3H-nY-odz" secondAttribute="centerX" id="Zcg-Zf-yET"/>
+                            <constraint firstItem="eba-aI-51s" firstAttribute="leading" secondItem="g3H-nY-odz" secondAttribute="leading" constant="20" id="cp1-Xm-JEZ"/>
                             <constraint firstItem="eba-aI-51s" firstAttribute="centerY" secondItem="g3H-nY-odz" secondAttribute="centerY" id="dvm-v1-Gb0"/>
+                            <constraint firstItem="g3H-nY-odz" firstAttribute="trailing" secondItem="eba-aI-51s" secondAttribute="trailing" constant="20" id="vQW-Yq-RpW"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="g3H-nY-odz"/>
                     </view>
