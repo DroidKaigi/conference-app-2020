@@ -1,5 +1,7 @@
+import ios_combined
 import RxCocoa
 import RxSwift
+import SafariServices
 import UIKit
 
 final class ContributorViewController: UIViewController {
@@ -27,6 +29,12 @@ final class ContributorViewController: UIViewController {
             layout.headerReferenceSize = CGSize(width: UIScreen.main.bounds.width, height: .leastNormalMagnitude)
             layout.minimumLineSpacing = .zero
             collectionView.collectionViewLayout = layout
+
+            collectionView.rx.modelSelected(Contributor.self)
+                .bind(to: Binder(self) { me, contributor in
+                    me.openProfileURL(for: contributor)
+                })
+                .disposed(by: disposeBag)
         }
     }
 
@@ -77,6 +85,14 @@ final class ContributorViewController: UIViewController {
         } else {
             collectionView.isHidden = false
         }
+    }
+
+    private func openProfileURL(for contributor: Contributor) {
+        guard let url = URL(string: contributor.profileUrl) else {
+            return
+        }
+        let viewController = SFSafariViewController(url: url)
+        present(viewController, animated: true)
     }
 }
 
