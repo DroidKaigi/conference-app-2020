@@ -41,7 +41,8 @@ fun SessionWithSpeakers.toSession(
                 Room(room.id, LocaledString(room.name, room.enName), room.sort)
             },
             sessionType = SessionType.of(session.sessionType),
-            isFavorited = favList!!.contains(session.id)
+            isFavorited = favList!!.contains(session.id),
+            levels = session.level.toLevels()
         )
     } else {
         require(speakerIdList.isNotEmpty())
@@ -81,7 +82,8 @@ fun SessionWithSpeakers.toSession(
             speakers = speakers,
             message = session.message?.let {
                 LocaledString(it.ja, it.en)
-            }
+            },
+            levels = session.level.toLevels()
         )
     }
 }

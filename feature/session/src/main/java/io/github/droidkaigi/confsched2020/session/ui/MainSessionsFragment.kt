@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -31,7 +30,6 @@ import io.github.droidkaigi.confsched2020.session.ui.MainSessionsFragmentDirecti
 import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -50,6 +48,9 @@ class MainSessionsFragment : Fragment(R.layout.fragment_main_sessions), HasAndro
 
     @Inject
     lateinit var sessionItemFactory: SessionItem.Factory
+    private val args: MainSessionsFragmentArgs by lazy {
+        MainSessionsFragmentArgs.fromBundle(arguments ?: Bundle())
+    }
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
@@ -73,13 +74,9 @@ class MainSessionsFragment : Fragment(R.layout.fragment_main_sessions), HasAndro
         // TODO: apply margin design
 //        binding.sessionsViewpager.pageMargin =
 //            resources.getDimensionPixelSize(R.dimen.session_pager_horizontal_padding)
-        val progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.sessionsProgressBar.isVisible = showProgress
-        }.apply {
-            loading = true
-        }
+        binding.sessionsProgressBar.show()
         sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            progressTimeLatch.loading = uiModel.isLoading
+            with(binding.sessionsProgressBar) { if (uiModel.isLoading) show() else hide() }
         }
         binding.sessionsViewpager.adapter = object : FragmentStateAdapter(
             this
@@ -112,6 +109,10 @@ class MainSessionsFragment : Fragment(R.layout.fragment_main_sessions), HasAndro
         if (jstNow.yearInt == 2020 && jstNow.month1 == 2 && jstNow.dayOfMonth == 21) {
             binding.sessionsViewpager.currentItem = 1
         }
+        // Switch the tab to be displayed when an argument is specified in args
+        if (args.tabIndex > 0) {
+            binding.sessionsViewpager.currentItem = args.tabIndex
+        }
 
         tabLayoutMediator.attach()
     }
@@ -137,10 +138,8 @@ abstract class MainSessionsFragmentModule {
     @ContributesAndroidInjector(modules = [SessionsFragmentModule::class])
     abstract fun contributeSessionPageFragment(): SessionsFragment
 
-    @Module
     companion object {
         @PageScope
-        @JvmStatic
         @Provides
         fun providesLifecycleOwnerLiveData(
             mainSessionsFragment: MainSessionsFragment

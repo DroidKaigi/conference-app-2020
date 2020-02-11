@@ -24,9 +24,8 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
-import io.github.droidkaigi.confsched2020.item.EqualableContentsProvider
 import io.github.droidkaigi.confsched2020.model.LocaledString
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
@@ -47,8 +46,7 @@ class SessionItem @AssistedInject constructor(
     @Assisted private val sessionsViewModel: SessionsViewModel,
     @Assisted private val searchQuery: String?,
     private val lifecycleOwnerLiveData: LiveData<LifecycleOwner>
-) : BindableItem<ItemSessionBinding>(session.id.hashCode().toLong()),
-    EqualableContentsProvider {
+) : BindableItem<ItemSessionBinding>(session.id.hashCode().toLong()) {
 
     private val imageRequestDisposables = mutableListOf<RequestDisposable>()
 
@@ -203,7 +201,7 @@ class SessionItem @AssistedInject constructor(
         }
     }
 
-    override fun unbind(viewHolder: ViewHolder<ItemSessionBinding>) {
+    override fun unbind(viewHolder: GroupieViewHolder<ItemSessionBinding>) {
         super.unbind(viewHolder)
         imageRequestDisposables.forEach { it.dispose() }
     }
@@ -224,11 +222,13 @@ class SessionItem @AssistedInject constructor(
         text = spannableStringBuilder
     }
 
+    fun startSessionDate(): String = session.startDayText
+
     fun startSessionTime(): String = session.startTimeText
 
     fun title(): LocaledString = session.title
 
-    override fun getChangePayload(newItem: Item<*>?): Any? {
+    override fun getChangePayload(newItem: Item<*>): Any? {
         return when {
             newItem !is SessionItem -> null
             isChangeFavorited(newItem) -> ItemPayload.FavoritePayload(newItem.session.isFavorited)
@@ -236,21 +236,12 @@ class SessionItem @AssistedInject constructor(
         }
     }
 
-    override fun providerEqualableContents(): Array<*> {
-        return arrayOf(session)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return isSameContents(other)
-    }
-
     private fun isChangeFavorited(newItem: SessionItem): Boolean {
         return session.isFavorited != newItem.session.isFavorited
     }
 
-    override fun hashCode(): Int {
-        return contentsHash()
-    }
+    override fun hasSameContentAs(other: Item<*>): Boolean =
+        session == (other as? SessionItem)?.session
 
     private sealed class ItemPayload {
         data class FavoritePayload(val isFavorited: Boolean) : ItemPayload()

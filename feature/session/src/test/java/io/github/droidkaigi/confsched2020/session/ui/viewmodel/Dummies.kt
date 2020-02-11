@@ -1,10 +1,10 @@
 package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 
 import com.soywiz.klock.DateTime
-import io.github.droidkaigi.confsched2020.model.AudienceCategory
 import io.github.droidkaigi.confsched2020.model.Category
 import io.github.droidkaigi.confsched2020.model.Lang
 import io.github.droidkaigi.confsched2020.model.LangSupport
+import io.github.droidkaigi.confsched2020.model.Level
 import io.github.droidkaigi.confsched2020.model.LocaledString
 import io.github.droidkaigi.confsched2020.model.Room
 import io.github.droidkaigi.confsched2020.model.ServiceSession
@@ -33,15 +33,16 @@ object Dummies {
         name = LocaledString(ja = "category ja", en = "category en")
     )
     val serviceSession = ServiceSession(
-        SessionId("service_session_id"),
-        1,
-        DateTime(2020, 2, 10, 10, 10, 10),
-        DateTime(2020, 2, 10, 11, 10, 10),
-        LocaledString("キーノート", "KeyNote"),
-        "Keynote of droidkaigi",
-        hall,
-        SessionType.WELCOME_TALK,
-        true
+        id = SessionId("service_session_id"),
+        dayNumber = 1,
+        startTime = DateTime(2020, 2, 10, 10, 10, 10),
+        endTime = DateTime(2020, 2, 10, 11, 10, 10),
+        title = LocaledString("キーノート", "KeyNote"),
+        desc = "Keynote of droidkaigi",
+        room = hall,
+        levels = listOf(Level.BEGINNER),
+        sessionType = SessionType.WELCOME_TALK,
+        isFavorited = true
     )
 
     val speachSession1 = SpeechSession(
@@ -62,6 +63,7 @@ object Dummies {
         isInterpretationTarget = false,
         isFavorited = false,
         speakers = speakers,
+        levels = listOf(Level.BEGINNER),
         message = null,
         lang = Lang.JA
     )
@@ -76,6 +78,6 @@ object Dummies {
         langs = listOf(Lang.JA, Lang.EN),
         langSupports = listOf(LangSupport.INTERPRETATION),
         category = listOf(category),
-        audienceCategories = listOf(AudienceCategory.BEGINNERS, AudienceCategory.UNSPECIFIED)
+        levels = listOf(Level.BEGINNER, Level.INTERMEDIATE, Level.ADVANCED)
     )
 }

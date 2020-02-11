@@ -26,6 +26,7 @@ dependencies {
     implementation Dep.AndroidX.emoji
     implementation Dep.AndroidX.design
 
+    implementation Dep.PlayServices.licensesPlugin
 
     implementation Dep.Dagger.core
     implementation Dep.Dagger.androidSupport

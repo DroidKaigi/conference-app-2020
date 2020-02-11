@@ -28,6 +28,14 @@ dependencies {
     api Dep.AndroidX.Navigation.fragmentKtx
     api Dep.AndroidX.Navigation.uiKtx
 
+    api Dep.Play.core
+    api(Dep.AndroidX.Navigation.dynamicFeaturesFragment) {
+        transitive = false
+    }
+    api(Dep.AndroidX.Navigation.dynamicFeaturesRuntime) {
+        transitive = false
+    }
+
     implementation Dep.Ktor.clientAndroid
     implementation Dep.Firebase.firestoreKtx
     implementation Dep.Firebase.auth
@@ -37,6 +45,7 @@ dependencies {
     api Dep.AndroidX.coreKtx
     api Dep.AndroidX.liveDataKtx
     api Dep.AndroidX.liveDataCoreKtx
+    api Dep.AndroidX.preference
     implementation Dep.AndroidX.Work.runtimeKtx
     implementation Dep.liveEvent
 

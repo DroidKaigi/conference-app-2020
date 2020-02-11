@@ -15,7 +15,6 @@
             android:id="@+id/floorMapImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_floor_map"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:tint="?attr/colorPrimary"

@@ -2,7 +2,6 @@ package io.github.droidkaigi.confsched2020.contributor.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -27,11 +26,11 @@ import io.github.droidkaigi.confsched2020.contributor.ui.viewmodel.ContributorsV
 import io.github.droidkaigi.confsched2020.di.AppComponent
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedViewModels
+import io.github.droidkaigi.confsched2020.ext.isShow
 import io.github.droidkaigi.confsched2020.ext.stringRes
 import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.model.Contributor
 import io.github.droidkaigi.confsched2020.ui.transition.Stagger
-import io.github.droidkaigi.confsched2020.util.ProgressTimeLatch
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -48,7 +47,7 @@ class ContributorsFragment : Fragment(R.layout.fragment_contributors) {
         inject()
         val binding = FragmentContributorsBinding.bind(view)
 
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.contributorRecycler.adapter = groupAdapter
         binding.contributorRecycler.doOnApplyWindowInsets { recyclerView, insets, initialState ->
             // Set a bottom padding due to the system UI is enabled.
@@ -68,11 +67,7 @@ class ContributorsFragment : Fragment(R.layout.fragment_contributors) {
             }
         }
 
-        val progressTimeLatch = ProgressTimeLatch { showProgress ->
-            binding.progressBar.isVisible = showProgress
-        }.apply {
-            loading = true
-        }
+        binding.progressBar.show()
         binding.retryButton.setOnClickListener {
             contributorsViewModel.onRetry()
         }
@@ -80,7 +75,7 @@ class ContributorsFragment : Fragment(R.layout.fragment_contributors) {
         // This is the transition for the stagger effect.
         val stagger = Stagger()
         contributorsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            progressTimeLatch.loading = uiModel.isLoading
+            binding.progressBar.isShow = uiModel.isLoading
 
             // Delay the stagger effect until the list is updated.
             TransitionManager.beginDelayedTransition(binding.contributorRecycler, stagger)

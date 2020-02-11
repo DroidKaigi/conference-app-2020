@@ -17,11 +17,11 @@ final class SessionViewController: UIViewController {
         didSet {
             filterButton.isSelected = true
             filterButton.applyTextTheme(withScheme: ApplicationScheme.shared.buttonScheme)
-            let filterListImage = UIImage(named: "ic_filter_list")
-            let templateFilterListImage = filterListImage?.withRenderingMode(.alwaysTemplate)
+            let filterListImage = Asset.icFilterList.image
+            let templateFilterListImage = filterListImage.withRenderingMode(.alwaysTemplate)
             filterButton.setImage(templateFilterListImage, for: .selected)
-            let arrowUpImage = UIImage(named: "ic_keyboard_arrow_up")
-            let templateArrowUpImage = arrowUpImage?.withRenderingMode(.alwaysTemplate)
+            let arrowUpImage = Asset.icKeyboardArrowUp.image
+            let templateArrowUpImage = arrowUpImage.withRenderingMode(.alwaysTemplate)
             filterButton.setImage(templateArrowUpImage, for: .normal)
             filterButton.setTitle("Filter", for: .selected)
             filterButton.setTitle("", for: .normal)
@@ -37,11 +37,13 @@ final class SessionViewController: UIViewController {
         }
     }
 
-    private let viewModel: SessionViewModel
+    private let filterViewModel: FilterViewModel
+    private let sessionViewModel: SessionViewModel
     private let type: SessionViewControllerType
 
-    init(viewModel: SessionViewModel, sessionViewType: SessionViewControllerType) {
-        self.viewModel = viewModel
+    init(filterViewModel: FilterViewModel, sessionViewModel: SessionViewModel, sessionViewType: SessionViewControllerType) {
+        self.filterViewModel = filterViewModel
+        self.sessionViewModel = sessionViewModel
         type = sessionViewType
         super.init(nibName: nil, bundle: nil)
     }
@@ -53,40 +55,82 @@ final class SessionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        filteredSessionCountLabel.isHidden = type == .event
+        filterButton.isHidden = type == .event
+
         filterButton.rx.tap.asSignal()
             .emit(to: Binder(self) { me, _ in
-                me.viewModel.toggleEmbeddedView()
+                me.filterViewModel.toggleEmbeddedView()
             })
             .disposed(by: disposeBag)
-        viewModel.isFocusedOnEmbeddedView
+        filterViewModel.isFocusedOnEmbeddedView
             .drive(filterButton.rx.isSelected)
             .disposed(by: disposeBag)
 
+        filterViewModel.selectedSessionContents
+            .drive(Binder(self) { me, sessionContents in
+                me.sessionViewModel.selectedFilterSessionContents(sessionContents)
+            })
+            .disposed(by: disposeBag)
+
         // TODO: Error handling for viewModel.sessions
-        let dataSource = SessionViewDataSource()
-        let filteredSessions = viewModel.sessions.asObservable()
-            .map { sessions -> [Session] in
-                sessions.filter { Int($0.dayNumber) == self.type.rawValue }
+        let dataSource = SessionViewDataSource(type: type)
+        let filteredSessions = sessionViewModel.sessions.asObservable()
+            .map { [weak self] sessions -> [Session] in
+                guard let self = self else { return [] }
+                switch self.type {
+                case .day1, .day2:
+                    return sessions.filter {
+                        Int($0.dayNumber) == self.type.rawValue
+                            && $0.room.roomType != .exhibition
+                    }
+                case .event:
+                    return sessions.filter { $0.room.roomType == .exhibition }
+                case .myPlan:
+                    return sessions.filter { $0.isFavorited }
+                }
             }
             .share(replay: 1, scope: .whileConnected)
 
         filteredSessions
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
+
         filteredSessions
-            .filter { [weak self] sessions in
-                guard let self = self else { return false }
-                return sessions.count == 0 && self.type == .myPlan
-            }
-            .bind(to: Binder(self) { me, _ in
-                DispatchQueue.main.async {
+            .filter { [weak self] _ in self?.type == .myPlan }
+            .map { $0.isEmpty }
+            .bind(to: Binder(self) { me, isEmpty in
+                if isEmpty {
                     me.showSuggestView()
+                } else {
+                    me.removeSuggestView()
                 }
             })
             .disposed(by: disposeBag)
+
+        filterViewModel.selectedSessionContents.asObservable()
+            .withLatestFrom(filteredSessions) { ($0, $1) }
+            .bind(to: Binder(self) { me, args in
+                let (sessionContents, sessions) = args
+                if sessionContents.isEmpty {
+                    me.filteredSessionCountLabel.isHidden = true
+                } else {
+                    me.filteredSessionCountLabel.isHidden = false
+                    me.filteredSessionCountLabel.text = "\(L10n.applicableSession): \(sessions.count)"
+                }
+            }).disposed(by: disposeBag)
+
         dataSource.onTapSpeaker
             .emit(onNext: { [weak self] speaker, sessions in
                 self?.navigationController?.pushViewController(SpeakerViewController.instantiate(speaker: speaker, sessions: sessions), animated: true)
+            })
+            .disposed(by: disposeBag)
+        dataSource.onTapBookmark.emit(onNext: { [unowned self] session in
+            if session.isFavorited {
+                self.sessionViewModel.resignBookingSession(session)
+            } else {
+                self.sessionViewModel.bookSession(session)
+            }
             })
             .disposed(by: disposeBag)
         collectionView.rx.modelSelected(Session.self)
@@ -105,18 +149,10 @@ final class SessionViewController: UIViewController {
             suggestView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
-}
 
-// MARK: -
-
-private extension SessionViewController {
-    func showDetail(forSession session: Session) {
-        // FIXME: Use coordinator?
-        guard let vc = UIStoryboard(name: "SessionDetail", bundle: nil)
-            .instantiateInitialViewController() as? SessionDetailViewController else {
-            return
+    func removeSuggestView() {
+        if let suggestView = view.subviews.first(where: { $0 is SuggestView }) {
+            suggestView.removeFromSuperview()
         }
-        vc.session = session
-        navigationController?.pushViewController(vc, animated: true)
     }
 }

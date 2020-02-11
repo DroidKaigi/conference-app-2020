@@ -8,6 +8,8 @@ apply from: rootProject.file('gradle/android.gradle')
 android.dataBinding.enabled = true
 
 dependencies {
+    implementation project(":model")
+
     implementation project(':corecomponent:androidcomponent')
     implementation project(':ext:log')
 
@@ -25,6 +27,8 @@ dependencies {
     kapt Dep.Dagger.androidProcessor
     compileOnly Dep.Dagger.assistedInjectAnnotations
     kapt Dep.Dagger.assistedInjectProcessor
+
+    implementation Dep.Coil.coil
 
     testImplementation project(':corecomponent:androidtestcomponent')
     testImplementation Dep.Test.junit

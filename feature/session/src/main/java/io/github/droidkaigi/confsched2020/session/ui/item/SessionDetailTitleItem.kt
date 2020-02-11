@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
+import androidx.appcompat.content.res.AppCompatResources
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.BackgroundColorSpan
@@ -9,7 +10,6 @@ import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.Session
@@ -22,8 +22,7 @@ import java.util.regex.Pattern
 class SessionDetailTitleItem @AssistedInject constructor(
     @Assisted private val session: Session,
     @Assisted private val searchQuery: String?
-) :
-    BindableItem<ItemSessionDetailTitleBinding>() {
+) : BindableItem<ItemSessionDetailTitleBinding>(session.id.hashCode().toLong()) {
     override fun getLayout() = R.layout.item_session_detail_title
 
     override fun bind(binding: ItemSessionDetailTitleBinding, position: Int) {
@@ -42,12 +41,26 @@ class SessionDetailTitleItem @AssistedInject constructor(
                     Chip(context).apply {
                         text = categoryLabel
                         isClickable = false
+                        setTextColor(
+                            AppCompatResources.getColorStateList(
+                                context,
+                                R.color.session_detail_label
+                            )
+                        )
+                        setChipBackgroundColorResource(R.color.session_detail_chip_category)
                     }
                 )
                 binding.tags.addView(
                     Chip(context).apply {
                         text = langLabel
                         isClickable = false
+                        setTextColor(
+                            AppCompatResources.getColorStateList(
+                                context,
+                                R.color.session_detail_label
+                            )
+                        )
+                        setChipBackgroundColorResource(R.color.session_detail_chip_level)
                     }
                 )
                 binding.tags.tag = newTag
@@ -61,8 +74,6 @@ class SessionDetailTitleItem @AssistedInject constructor(
 //            binding.sessionMessage.isVisible = true
         }
     }
-
-    override fun isSameAs(other: Item<*>?) = other is SessionDetailTitleItem
 
     private fun TextView.setSearchHighlight() {
         doOnPreDraw {

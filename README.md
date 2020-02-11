@@ -1,4 +1,6 @@
-# ![DroidKaigi Logo](corecomponent/androidcomponent/src/main/res/drawable-xxhdpi/ic_logo.png)DroidKaigi 2020 official Android app ![GitHub Actions](https://github.com/DroidKaigi/conference-app-2020/workflows/.github/workflows/on_release_branch.yml/badge.svg)
+# ![DroidKaigi Logo](corecomponent/androidcomponent/src/main/res/drawable-xxhdpi/ic_logo.png)DroidKaigi 2020 official Android app
+
+[![GitHub Actions](https://github.com/DroidKaigi/conference-app-2020/workflows/On%20release%20branch/badge.svg)](https://github.com/DroidKaigi/conference-app-2020/actions?query=workflow%3A%22On+release+branch%22)
 
 We are currently working on the event. We are looking for contributors!
 
@@ -232,6 +234,7 @@ This project uses some modern Android libraries and source codes.
   * [AutoClearedValue](https://github.com/android/architecture-components-samples/blob/9826b59956eb93c9e627bdf16a19a1c8bc28ce14/GithubBrowserSample/app/src/main/java/com/android/example/github/util/AutoClearedValue.kt)
 * [Android Animation Samples Repository](https://github.com/android/animation-samples) (Google)
   * [Motion](https://github.com/android/animation-samples/tree/master/Motion)
+* [Store4](https://github.com/dropbox/Store) (Dropbox)
 
 ### iOS
 * [Mint](https://github.com/yonaskolb/Mint)
@@ -241,3 +244,7 @@ This project uses some modern Android libraries and source codes.
 * [GNU Make](https://www.gnu.org/software/make/)
 * [Material](https://github.com/CosmicMind/Material)
 * [Nuke](https://github.com/kean/Nuke)
+* [SwiftGen](https://github.com/SwiftGen/SwiftGen)
+* [RealmSwift](https://github.com/realm/realm-cocoa)
+* [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing)
+* [RxRealm](https://github.com/RxSwiftCommunity/RxRealm)
