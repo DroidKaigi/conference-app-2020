@@ -40,7 +40,7 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <TextView
+        <androidx.emoji.widget.EmojiAppCompatTextView
             android:id="@+id/name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

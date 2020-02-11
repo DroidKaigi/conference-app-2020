@@ -38,6 +38,10 @@ allprojects {
         google()
         jcenter()
 
+        maven {
+            // https://issuetracker.google.com/issues/148316337#comment5
+            url "https://ci.android.com/builds/submitted/6167672/androidx_snapshot/latest/repository/"
+        }
         maven { url 'https://dl.bintray.com/kotlin/kotlin-dev' }
         maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
         maven { url "https://dl.bintray.com/soywiz/soywiz" }
@@ -70,12 +74,9 @@ allprojects {
             task ktlint(type: JavaExec, group: "verification") {
                 def parameters = [
                         "--android",
-                        "--reporter=checkstyle,output=${buildDir}/ktlint/checkstyle.xml"
+                        "--reporter=checkstyle,output=${buildDir}/ktlint/checkstyle.xml",
+                        "--reporter=html,output=${buildDir}/ktlint/checkstyle.html"
                 ]
-
-                if (!isCi) {
-                    parameters += "--reporter=html,output=${buildDir}/ktlint/checkstyle.html"
-                }
 
                 parameters += ['src/**/*.kt', '**/*.gradle.kts']
 
@@ -102,7 +103,7 @@ allprojects {
                 }
             }
         }
-        if (it.class.name == "org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin"){
+        if (it.class.name == "org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin") {
             // Reference for 'kapt' DSL: https://kotlinlang.org/docs/reference/kapt.html#java-compiler-options
             kapt {
                 // we expect this closure to run over a org.jetbrains.kotlin.gradle.plugin.KaptExtension

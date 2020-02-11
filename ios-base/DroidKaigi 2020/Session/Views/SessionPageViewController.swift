@@ -3,7 +3,8 @@ import UIKit
 enum SessionViewControllerType: Int {
     case day1 = 1
     case day2 = 2
-    case myPlan = 3
+    case event = 3
+    case myPlan = 4
 
     var date: Date? {
         let calendar = Calendar(identifier: .gregorian)
@@ -12,6 +13,8 @@ enum SessionViewControllerType: Int {
             return calendar.date(from: .init(year: 2020, month: 2, day: 20))
         case .day2:
             return calendar.date(from: .init(year: 2020, month: 2, day: 21))
+        case .event:
+            return nil
         case .myPlan:
             return nil
         }
@@ -19,16 +22,17 @@ enum SessionViewControllerType: Int {
 }
 
 final class SessionPageViewController: UIPageViewController {
-
-    private let viewModel: SessionViewModel
+    private let filterViewModel: FilterViewModel
+    private let sessionViewModel: SessionViewModel
 
     private var selectedViewControllerIndex: Int = 0
     private var sessionViewControllers: [UIViewController] = []
 
     weak var filterViewControllerDelegate: FilterViewControllerDelegate?
 
-    init(viewModel: SessionViewModel, transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
-        self.viewModel = viewModel
+    init(filterViewModel: FilterViewModel, transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey: Any]? = nil) {
+        self.filterViewModel = filterViewModel
+        sessionViewModel = SessionViewModel()
         super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
     }
 
@@ -38,24 +42,27 @@ final class SessionPageViewController: UIPageViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.layer.masksToBounds = true
+        view.layer.maskedCorners = [.layerMinXMinYCorner]
+        view.layer.cornerRadius = 24
+
         sessionViewControllers = [
-            SessionViewController(viewModel: viewModel, sessionViewType: .day1),
-            SessionViewController(viewModel: viewModel, sessionViewType: .day2),
-            SessionViewController(viewModel: viewModel, sessionViewType: .myPlan),
+            SessionViewController(filterViewModel: filterViewModel, sessionViewModel: sessionViewModel, sessionViewType: .day1),
+            SessionViewController(filterViewModel: filterViewModel, sessionViewModel: sessionViewModel, sessionViewType: .day2),
+            SessionViewController(filterViewModel: filterViewModel, sessionViewModel: sessionViewModel, sessionViewType: .event),
+            SessionViewController(filterViewModel: filterViewModel, sessionViewModel: sessionViewModel, sessionViewType: .myPlan),
         ]
         setViewControllers([sessionViewControllers[0]], direction: .forward, animated: true)
         selectedViewControllerIndex = 0
         dataSource = self
         delegate = self
-
-        // rx
-        viewModel.viewDidLoad()
     }
 
     func setViewControllers(type: SessionViewControllerType) {
         let direction: UIPageViewController.NavigationDirection =
             selectedViewControllerIndex < type.rawValue
-            ? .forward : .reverse
+                ? .forward : .reverse
         selectedViewControllerIndex = type.rawValue
         setViewControllers([sessionViewControllers[type.rawValue - 1]], direction: direction, animated: true)
     }
@@ -72,10 +79,14 @@ extension SessionPageViewController: UIPageViewControllerDataSource {
         case sessionViewControllers[2]:
             selectedViewControllerIndex = 1
             return sessionViewControllers[1]
+        case sessionViewControllers[3]:
+            selectedViewControllerIndex = 2
+            return sessionViewControllers[2]
         default:
             return nil
         }
     }
+
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         switch viewController {
         case sessionViewControllers[0]:
@@ -85,6 +96,9 @@ extension SessionPageViewController: UIPageViewControllerDataSource {
             selectedViewControllerIndex = 2
             return sessionViewControllers[2]
         case sessionViewControllers[2]:
+            selectedViewControllerIndex = 3
+            return sessionViewControllers[3]
+        case sessionViewControllers[3]:
             return nil
         default:
             return nil
@@ -94,8 +108,7 @@ extension SessionPageViewController: UIPageViewControllerDataSource {
 
 extension SessionPageViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        guard let changedVC = pageViewController.viewControllers?.first,
-            let changedIndex = sessionViewControllers.firstIndex(of: changedVC) else {
+        guard let changedVC = pageViewController.viewControllers?.first, let changedIndex = sessionViewControllers.firstIndex(of: changedVC) else {
             return
         }
         filterViewControllerDelegate?.shouldChangeTab(index: changedIndex)

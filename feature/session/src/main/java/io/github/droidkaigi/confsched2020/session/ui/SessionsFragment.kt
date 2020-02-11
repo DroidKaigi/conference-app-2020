@@ -3,16 +3,14 @@ package io.github.droidkaigi.confsched2020.session.ui
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.children
 import androidx.core.view.updatePadding
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
@@ -23,8 +21,10 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.Module
 import dagger.Provides
+import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
-import dagger.android.support.DaggerFragment
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
@@ -39,21 +39,12 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewMod
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.ui.widget.FilterChip
 import io.github.droidkaigi.confsched2020.ui.widget.onCheckedChanged
-import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
-class SessionsFragment : DaggerFragment() {
+class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjector {
 
-    private var binding: FragmentSessionsBinding by autoCleared()
     private lateinit var overrideBackPressedCallback: OnBackPressedCallback
-
-    private val sessionSheetBehavior: BottomSheetBehavior<*>
-        get() {
-            val layoutParams = binding.sessionsSheet.layoutParams as CoordinatorLayout.LayoutParams
-            val behavior = layoutParams.behavior
-            return (behavior as BottomSheetBehavior)
-        }
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -75,6 +66,11 @@ class SessionsFragment : DaggerFragment() {
         SessionsFragmentArgs.fromBundle(arguments ?: Bundle())
     }
 
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> = androidInjector
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
@@ -86,24 +82,13 @@ class SessionsFragment : DaggerFragment() {
             }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_sessions,
-            container,
-            false
-        )
-        setHasOptionsMenu(true)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initBottomSheetShapeAppearance()
+        setHasOptionsMenu(true)
+        val binding = FragmentSessionsBinding.bind(view)
+        val sessionSheetBehavior = BottomSheetBehavior.from(binding.sessionsSheet)
+
+        initBottomSheetShapeAppearance(binding)
         val initialPeekHeight = sessionSheetBehavior.peekHeight
         val gestureNavigationBottomSpace =
             if (isEdgeToEdgeEnabled())
@@ -113,32 +98,51 @@ class SessionsFragment : DaggerFragment() {
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight =
                 insets.systemWindowInsetBottom + initialPeekHeight + gestureNavigationBottomSpace
+            binding.filterView.updatePadding(
+                bottom = initialPeekHeight + resources.getDimensionPixelSize(
+                    R.dimen.session_filter_view_padding_bottom
+                )
+            )
+            // This block is the workaround to bottomSheetBehavior bug fix.
+            // https://stackoverflow.com/questions/35685681/dynamically-change-height-of-bottomsheetbehavior
+            if (sessionSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
+                sessionSheetBehavior.onLayoutChild(
+                    binding.fragmentSessionsCoordinator,
+                    binding.sessionsSheet,
+                    View.LAYOUT_DIRECTION_LTR
+                )
         }
-        binding.fragmentSessionsScrollView.doOnApplyWindowInsets { scrollView, insets, initialState ->
+        binding.fragmentSessionsScrollView.doOnApplyWindowInsets { scrollView,
+            insets,
+            initialState ->
             // Set a bottom padding due to the system UI is enabled.
-            scrollView.updatePadding(bottom = insets.systemWindowInsetBottom + initialPeekHeight + initialState.paddings.bottom)
+            scrollView.updatePadding(
+                bottom = insets.systemWindowInsetBottom +
+                    initialPeekHeight +
+                    initialState.paddings.bottom
+            )
         }
         sessionSheetBehavior.addBottomSheetCallback(object :
-                BottomSheetBehavior.BottomSheetCallback() {
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                }
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
 
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    sessionTabViewModel.setExpand(
-                        when (newState) {
-                            BottomSheetBehavior.STATE_COLLAPSED -> {
-                                ExpandFilterState.COLLAPSED
-                            }
-                            BottomSheetBehavior.STATE_EXPANDED -> {
-                                ExpandFilterState.EXPANDED
-                            }
-                            else -> {
-                                ExpandFilterState.CHANGING
-                            }
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                sessionTabViewModel.setExpand(
+                    when (newState) {
+                        BottomSheetBehavior.STATE_COLLAPSED -> {
+                            ExpandFilterState.COLLAPSED
                         }
-                    )
-                }
-            })
+                        BottomSheetBehavior.STATE_EXPANDED -> {
+                            ExpandFilterState.EXPANDED
+                        }
+                        else -> {
+                            ExpandFilterState.CHANGING
+                        }
+                    }
+                )
+            }
+        })
         binding.filterReset.setOnClickListener {
             sessionsViewModel.resetFilter()
         }
@@ -156,7 +160,7 @@ class SessionsFragment : DaggerFragment() {
                 ExpandFilterState.CHANGING -> Unit
             }
         }
-        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
+        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             binding.roomFilters.setupFilter(
                 allFilterSet = uiModel.allFilters.rooms,
                 currentFilterSet = uiModel.filters.rooms,
@@ -178,12 +182,12 @@ class SessionsFragment : DaggerFragment() {
             ) { checked, category ->
                 sessionsViewModel.filterChanged(category, checked)
             }
-            binding.audienceCategoryFilters.setupFilter(
-                allFilterSet = uiModel.allFilters.audienceCategories,
-                currentFilterSet = uiModel.filters.audienceCategories,
-                filterName = { it.name }
-            ) { checked, audienceCategory ->
-                sessionsViewModel.filterChanged(audienceCategory, checked)
+            binding.levelFilters.setupFilter(
+                allFilterSet = uiModel.allFilters.levels,
+                currentFilterSet = uiModel.filters.levels,
+                filterName = { it.rawValue.getByLang(defaultLang()) }
+            ) { checked, level ->
+                sessionsViewModel.filterChanged(level, checked)
             }
             binding.languageSupportFilters.setupFilter(
                 allFilterSet = uiModel.allFilters.langSupports,
@@ -209,13 +213,14 @@ class SessionsFragment : DaggerFragment() {
                 fragmentContainerView(binding.root)?.requestLayout()
             }
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
-        // override back button iff front layer collapsed (filter is shown)
-        overrideBackPressedCallback.isEnabled =
-            sessionSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED
+        viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onResume(owner: LifecycleOwner) {
+                // override back button iff front layer collapsed (filter is shown)
+                overrideBackPressedCallback.isEnabled =
+                    sessionSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED
+            }
+        })
     }
 
     override fun onPause() {
@@ -301,7 +306,7 @@ class SessionsFragment : DaggerFragment() {
      * Override Widget.MaterialComponents.BottomSheet shapeAppearance
      * see: https://github.com/DroidKaigi/conference-app-2020/issues/104
      */
-    private fun initBottomSheetShapeAppearance() {
+    private fun initBottomSheetShapeAppearance(binding: FragmentSessionsBinding) {
         val shapeAppearanceModel =
             ShapeAppearanceModel.Builder()
                 .setTopLeftCorner(
@@ -338,10 +343,8 @@ abstract class SessionsFragmentModule {
     )
     abstract fun contributeBottomSheetSessionsFragment(): BottomSheetSessionsFragment
 
-    @Module
     companion object {
         @PageScope
-        @JvmStatic
         @Provides
         fun providesLifecycleOwnerLiveData(
             mainSessionsFragment: MainSessionsFragment

@@ -1,10 +1,15 @@
 import UIKit
 
 final class SuggestView: UIView {
-
     @IBOutlet weak var bookmarkImage: UIImageView! {
         didSet {
             bookmarkImage.image = bookmarkImage.image?.withRenderingMode(.alwaysTemplate)
+        }
+    }
+
+    @IBOutlet weak var descriptionLabel: UILabel! {
+        didSet {
+            descriptionLabel.text = L10n.suggestDescription
         }
     }
 
@@ -12,15 +17,17 @@ final class SuggestView: UIView {
         super.init(frame: .zero)
         loadFromBundle()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         loadFromBundle()
     }
-    
+
     private func loadFromBundle() {
-        let view = Bundle.main.loadNibNamed("SuggestView", owner: self, options: nil)!.first as! UIView
-        self.addSubview(view)
+        guard let view = Bundle.main.loadNibNamed("SuggestView", owner: self, options: nil)?.first as? UIView else {
+            fatalError("can't load SuggestView.xib")
+        }
+        addSubview(view)
 
         view.translatesAutoresizingMaskIntoConstraints = false
         view.topAnchor.constraint(equalTo: topAnchor).isActive = true

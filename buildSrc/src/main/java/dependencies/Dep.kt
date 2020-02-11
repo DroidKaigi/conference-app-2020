@@ -3,14 +3,14 @@ package dependencies
 @Suppress("unused")
 object Dep {
     object GradlePlugin {
-        val android = "com.android.tools.build:gradle:3.6.0-rc01"
+        val android = "com.android.tools.build:gradle:3.6.0-rc02"
         val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}"
         val playServices = "com.google.gms:google-services:4.3.3"
         val safeArgs =
             "androidx.navigation:navigation-safe-args-gradle-plugin:${AndroidX.Navigation.version}"
         val jetifier = "com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta05"
-        val licensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.9.5"
+        val licensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.10.0"
         val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.0.0-beta01"
         val iconRibbonPlugin = "com.akaita.android:easylauncher:1.3.1"
         val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.22.0"
@@ -43,21 +43,20 @@ object Dep {
 
     object AndroidX {
         val jetifier = "com.android.tools.build.jetifier:jetifier-core:1.0.0-beta02"
-        val appCompat = "androidx.appcompat:appcompat:1.1.0-rc01"
-        val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
+        val appCompat = "androidx.appcompat:appcompat:1.1.0"
+        val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
         val constraint = "androidx.constraintlayout:constraintlayout:2.0.0-beta2"
         val emoji = "androidx.emoji:emoji-appcompat:1.0.0"
         val design = "com.google.android.material:material:1.1.0-rc01"
-        val coreKtx = "androidx.core:core-ktx:1.2.0-alpha03"
-        val preference = "androidx.preference:preference:1.1.0-rc01"
-        val browser = "androidx.browser:browser:1.0.0"
-        val activityKtx = "androidx.activity:activity-ktx:1.1.0-alpha03"
-        val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.0-alpha02"
+        val coreKtx = "androidx.core:core-ktx:1.2.0-rc01"
+        val preference = "androidx.preference:preference:1.1.0"
+        val browser = "androidx.browser:browser:1.2.0"
+        val activityKtx = "androidx.activity:activity-ktx:1.1.0"
+        val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.0"
 
-        val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
-        val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:2.2.0-rc03"
-        val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0-rc03"
-        val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc03"
+        val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:2.2.0"
+        val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0"
+        val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
 
         object Room {
             val version = "2.2.3"
@@ -67,14 +66,16 @@ object Dep {
         }
 
         object Navigation {
-            val version = "2.2.0-rc04"
+            val version = "2.2.0"
             val runtimeKtx = "androidx.navigation:navigation-runtime-ktx:$version"
             val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
+            val dynamicFeaturesFragment = "androidx.navigation:navigation-dynamic-features-fragment:2.3.0-SNAPSHOT"
+            val dynamicFeaturesRuntime = "androidx.navigation:navigation-dynamic-features-runtime:2.3.0-SNAPSHOT"
         }
 
         object Work {
-            val version = "2.3.0-beta02"
+            val version = "2.3.0"
             val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
         }
     }
@@ -123,11 +124,15 @@ object Dep {
 
     object PlayServices {
         val auth = "com.google.android.gms:play-services-auth:16.0.1"
-        val licensesPlugin = "com.google.android.gms:play-services-oss-licenses:16.0.1"
+        val licensesPlugin = "com.google.android.gms:play-services-oss-licenses:17.0.0"
+    }
+
+    object Play {
+        val core = "com.google.android.play:core:1.6.4"
     }
 
     object Dagger {
-        val version = "2.25.4"
+        val version = "2.26"
         val core = "com.google.dagger:dagger:$version"
         val compiler = "com.google.dagger:dagger-compiler:$version"
         val androidSupport = "com.google.dagger:dagger-android-support:$version"
@@ -187,12 +192,13 @@ object Dep {
             "com.willowtreeapps.hyperion:hyperion-crash:$version",
             "com.willowtreeapps.hyperion:hyperion-shared-preferences:$version",
             "com.willowtreeapps.hyperion:hyperion-geiger-counter:$version",
-            "com.willowtreeapps.hyperion:hyperion-build-config:$version"
+            "com.willowtreeapps.hyperion:hyperion-build-config:$version",
+            "com.willowtreeapps.hyperion:hyperion-plugin:$version"
         )
     }
 
     object Groupie {
-        val version = "2.4.0-alpha1"
+        val version = "2.7.2"
         val groupie = "com.xwray:groupie:$version"
         val databinding = "com.xwray:groupie-databinding:$version"
     }
@@ -224,5 +230,14 @@ object Dep {
 
     object PhotoView {
         val photoview =  "com.github.chrisbanes:PhotoView:2.3.0"
+    }
+
+    object Google {
+        val autoservice = "com.google.auto.service:auto-service:1.0-rc6"
+    }
+
+    object Store {
+        val version = "4.0.0-alpha01"
+        val store = "com.dropbox.mobile.store:store4:$version"
     }
 }

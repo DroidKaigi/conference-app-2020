@@ -1,5 +1,8 @@
-import UIKit
 import MaterialComponents
+import Nuke
+import RxCocoa
+import RxSwift
+import UIKit
 
 final class SessionCell: UICollectionViewCell {
     static let identifier = "SessionCell"
@@ -11,21 +14,27 @@ final class SessionCell: UICollectionViewCell {
             liveBadge.clipsToBounds = true
         }
     }
+
     @IBOutlet weak var bookmarkButton: UIButton! {
         didSet {
-            let bookmarkImage = UIImage(named: "ic_bookmark")
-            let templatedBookmarkImage = bookmarkImage?.withRenderingMode(.alwaysTemplate)
+            let bookmarkImage = Asset.icBookmark.image
+            let templatedBookmarkImage = bookmarkImage.withRenderingMode(.alwaysTemplate)
             bookmarkButton.setImage(templatedBookmarkImage, for: .selected)
-            let bookmarkBorderImage = UIImage(named: "ic_bookmark_border")
-            let templatedBookmarkBorderImage = bookmarkBorderImage?.withRenderingMode(.alwaysTemplate)
+            let bookmarkBorderImage = Asset.icBookmarkBorder.image
+            let templatedBookmarkBorderImage = bookmarkBorderImage.withRenderingMode(.alwaysTemplate)
             bookmarkButton.setImage(templatedBookmarkBorderImage, for: .normal)
             bookmarkButton.tintColor = UIColor(hex: "00B5E2")
         }
     }
+
+    @IBOutlet weak var dateLabelInFirstFavoriteSession: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var minutesAndRoomLabel: UILabel!
     @IBOutlet weak var speakersStackView: UIStackView!
+    @IBOutlet weak var titleLeftConstraint: NSLayoutConstraint!
+
+    var disposeBag = DisposeBag()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,10 +42,13 @@ final class SessionCell: UICollectionViewCell {
         widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
     }
 
-    func addSpeakerView(imageURL: URL?, speakerName: String) {
-        let view = UIView()
+    func addSpeakerView(imageURL: URL?, speakerName: String, speakerTapHandler: @escaping () -> Void) {
+        let view = UIControl()
         let speakerIconView = UIImageView()
-        speakerIconView.loadImage(url: imageURL)
+        if let imageURL = imageURL {
+            let options = ImageLoadingOptions(transition: .fadeIn(duration: 0.3))
+            Nuke.loadImage(with: imageURL, options: options, into: speakerIconView)
+        }
         view.addSubview(speakerIconView)
         speakerIconView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -62,16 +74,25 @@ final class SessionCell: UICollectionViewCell {
 
         speakerIconView.layer.cornerRadius = 16
         speakerIconView.clipsToBounds = true
+
+        view.rx.controlEvent(.touchDown)
+            .subscribe(onNext: {
+                speakerTapHandler()
+            })
+            .disposed(by: disposeBag)
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        self.speakersStackView.subviews.forEach { subview in
+        disposeBag = DisposeBag()
+
+        speakersStackView.subviews.forEach { subview in
             subview.removeFromSuperview()
         }
-        self.speakersStackView.arrangedSubviews.forEach { subview in
+        speakersStackView.arrangedSubviews.forEach { subview in
             speakersStackView.removeArrangedSubview(subview)
         }
+        dateLabelInFirstFavoriteSession.isHidden = true
     }
 }

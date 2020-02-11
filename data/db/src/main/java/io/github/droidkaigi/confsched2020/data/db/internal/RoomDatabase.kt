@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.data.db.internal
 
+import androidx.room.withTransaction
 import io.github.droidkaigi.confsched2020.data.api.response.AnnouncementResponse
 import io.github.droidkaigi.confsched2020.data.api.response.ContributorResponse
 import io.github.droidkaigi.confsched2020.data.api.response.Response
@@ -34,10 +35,8 @@ import io.github.droidkaigi.confsched2020.data.db.internal.entity.mapper.toSpeak
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.mapper.toSponsorEntities
 import io.github.droidkaigi.confsched2020.data.db.internal.entity.mapper.toStaffEntities
 import io.github.droidkaigi.confsched2020.model.SessionFeedback
-import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 internal class RoomDatabase @Inject constructor(
     private val cacheDatabase: CacheDatabase,
@@ -45,7 +44,6 @@ internal class RoomDatabase @Inject constructor(
     private val speakerDao: SpeakerDao,
     private val sessionSpeakerJoinDao: SessionSpeakerJoinDao,
     private val sessionFeedbackDao: SessionFeedbackDao,
-    private val coroutineContext: CoroutineContext,
     private val sponsorDao: SponsorDao,
     private val announcementDao: AnnouncementDao,
     private val staffDao: StaffDao,
@@ -62,23 +60,21 @@ internal class RoomDatabase @Inject constructor(
     override fun allSpeaker(): Flow<List<SpeakerEntity>> = speakerDao.getAllSpeakerFlow()
 
     override suspend fun save(apiResponse: Response) {
-        withContext(coroutineContext) {
+        cacheDatabase.withTransaction {
             // FIXME: SQLiteDatabaseLockedException
-            cacheDatabase.runInTransaction {
-                cacheDatabase.sqlite().execSQL("PRAGMA defer_foreign_keys = TRUE")
-                sessionSpeakerJoinDao.deleteAll()
-                speakerDao.deleteAll()
-                sessionDao.deleteAll()
-                val speakers = apiResponse.speakers.orEmpty().toSpeakerEntities()
-                speakerDao.insert(speakers)
-                val sessions = apiResponse.sessions
-                val sessionEntities = sessions.toSessionEntities(
-                    apiResponse.categories.orEmpty(),
-                    apiResponse.rooms.orEmpty()
-                )
-                sessionDao.insert(sessionEntities)
-                sessionSpeakerJoinDao.insert(sessions.toSessionSpeakerJoinEntities())
-            }
+            cacheDatabase.sqlite().execSQL("PRAGMA defer_foreign_keys = TRUE")
+            sessionSpeakerJoinDao.deleteAll()
+            speakerDao.deleteAll()
+            sessionDao.deleteAll()
+            val speakers = apiResponse.speakers.orEmpty().toSpeakerEntities()
+            speakerDao.insert(speakers)
+            val sessions = apiResponse.sessions
+            val sessionEntities = sessions.toSessionEntities(
+                apiResponse.categories.orEmpty(),
+                apiResponse.rooms.orEmpty()
+            )
+            sessionDao.insert(sessionEntities)
+            sessionSpeakerJoinDao.insert(sessions.toSessionSpeakerJoinEntities())
         }
     }
 
@@ -95,12 +91,10 @@ internal class RoomDatabase @Inject constructor(
     }
 
     override suspend fun saveSponsors(apiResponse: SponsorListResponse) {
-        withContext(coroutineContext) {
-            cacheDatabase.runInTransaction {
-                val sponsors = apiResponse.toSponsorEntities()
-                sponsorDao.deleteAll()
-                sponsorDao.insert(sponsors)
-            }
+        cacheDatabase.withTransaction {
+            val sponsors = apiResponse.toSponsorEntities()
+            sponsorDao.deleteAll()
+            sponsorDao.insert(sponsors)
         }
     }
 
@@ -108,24 +102,20 @@ internal class RoomDatabase @Inject constructor(
         announcementDao.announcementsByLang(lang)
 
     override suspend fun save(apiResponse: List<AnnouncementResponse>) {
-        withContext(coroutineContext) {
-            cacheDatabase.runInTransaction {
-                val announcements = apiResponse.toAnnouncementEntities()
-                announcementDao.deleteAll()
-                announcementDao.insert(announcements)
-            }
+        cacheDatabase.withTransaction {
+            val announcements = apiResponse.toAnnouncementEntities()
+            announcementDao.deleteAll()
+            announcementDao.insert(announcements)
         }
     }
 
     override fun staffs(): Flow<List<StaffEntity>> = staffDao.allStaffs()
 
     override suspend fun save(apiResponse: StaffResponse) {
-        withContext(coroutineContext) {
-            cacheDatabase.runInTransaction {
-                val staffs = apiResponse.staffs.toStaffEntities()
-                staffDao.deleteAll()
-                staffDao.insert(staffs)
-            }
+        cacheDatabase.withTransaction {
+            val staffs = apiResponse.staffs.toStaffEntities()
+            staffDao.deleteAll()
+            staffDao.insert(staffs)
         }
     }
 
@@ -133,12 +123,10 @@ internal class RoomDatabase @Inject constructor(
         contributorDao.allContributors()
 
     override suspend fun save(apiResponse: ContributorResponse) {
-        withContext(coroutineContext) {
-            cacheDatabase.runInTransaction {
-                val contributors = apiResponse.contributors.toContributorEntities()
-                contributorDao.deleteAll()
-                contributorDao.insert(contributors)
-            }
+        cacheDatabase.withTransaction {
+            val contributors = apiResponse.contributors.toContributorEntities()
+            contributorDao.deleteAll()
+            contributorDao.insert(contributors)
         }
     }
 }

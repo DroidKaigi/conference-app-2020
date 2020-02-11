@@ -1,22 +1,24 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
+import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.databinding.ViewHolder
+import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
 import dagger.Provides
-import dagger.android.support.DaggerFragment
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
+import io.github.droidkaigi.confsched2020.di.Injectable
 import io.github.droidkaigi.confsched2020.di.PageScope
 import io.github.droidkaigi.confsched2020.ext.assistedActivityViewModels
 import io.github.droidkaigi.confsched2020.model.ExpandFilterState
@@ -28,13 +30,10 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewMod
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.session.ui.widget.SessionsItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
-import io.github.droidkaigi.confsched2020.util.autoCleared
 import javax.inject.Inject
 import javax.inject.Provider
 
-class BottomSheetSessionsFragment : DaggerFragment() {
-
-    private var binding: FragmentBottomSheetSessionsBinding by autoCleared()
+class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sessions), Injectable {
 
     @Inject
     lateinit var sessionsViewModelProvider: Provider<SessionsViewModel>
@@ -61,30 +60,30 @@ class BottomSheetSessionsFragment : DaggerFragment() {
         BottomSheetSessionsFragmentArgs.fromBundle(arguments ?: Bundle())
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_bottom_sheet_sessions,
-            container,
-            false
-        )
-        return binding.apply { isEmptyFavoritePage = false }.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val groupAdapter = GroupAdapter<ViewHolder<*>>()
+        val binding = FragmentBottomSheetSessionsBinding.bind(view)
+        binding.isEmptyFavoritePage = false
+        val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter
         binding.sessionRecycler.addItemDecoration(
             SessionsItemDecoration(
                 groupAdapter,
-                requireContext()
+                requireContext(),
+                args.page.visibleSessionDate()
             )
         )
+        binding.sessionRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val isVisibleShadow =
+                    binding.sessionRecycler.canScrollVertically(-1)
+
+                binding.divider.isVisible = !isVisibleShadow
+                binding.dividerShadow.isVisible = isVisibleShadow
+            }
+        })
         binding.startFilter.setOnClickListener {
             sessionTabViewModel.toggleExpand()
         }
@@ -92,30 +91,44 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             sessionTabViewModel.toggleExpand()
         }
         binding.sessionRecycler.doOnApplyWindowInsets { sessionRecycler, insets, initialState ->
-            sessionRecycler.updatePadding(bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom)
+            sessionRecycler.updatePadding(
+                bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
+            )
         }
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
-            TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
-            binding.isCollapsed = when (uiModel.expandFilterState) {
+            val shouldBeCollapsed = when (uiModel.expandFilterState) {
                 ExpandFilterState.COLLAPSED ->
                     true
                 else ->
                     false
             }
+            if (binding.isCollapsed != shouldBeCollapsed) {
+                TransitionManager.beginDelayedTransition(
+                    binding.sessionRecycler.parent as ViewGroup
+                )
+                binding.isCollapsed = shouldBeCollapsed
+            }
         }
 
-        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel: SessionsViewModel.UiModel ->
+        sessionsViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             val page = args.page
             val sessions = when (page) {
                 is SessionPage.Day -> uiModel.dayToSessionsMap[page].orEmpty()
+                SessionPage.Event -> uiModel.events
                 SessionPage.Favorite -> uiModel.favoritedSessions
             }
             val count = sessions.filter { it.shouldCountForFilter }.count()
 
             if (page == SessionPage.Favorite) {
-                TransitionManager.beginDelayedTransition(binding.sessionRecycler.parent as ViewGroup)
+                TransitionManager.beginDelayedTransition(
+                    binding.sessionRecycler.parent as ViewGroup
+                )
                 binding.isEmptyFavoritePage = sessions.isEmpty()
+            }
+
+            if (page == SessionPage.Event) {
+                binding.isEventPage = true
             }
 
             // For Android Lint
@@ -126,19 +139,28 @@ class BottomSheetSessionsFragment : DaggerFragment() {
             )
             binding.isFiltered = uiModel.filters.isFiltered()
             binding.filteredSessionCount.isVisible = uiModel.filters.isFiltered()
-            val startFilterTextRes = if (uiModel.filters.isFiltered()) {
-                R.string.filter_now
-            } else {
-                R.string.start_filter
-            }
-            binding.startFilter.text = getString(startFilterTextRes)
             groupAdapter.update(sessions.map {
                 sessionItemFactory.create(it, sessionsViewModel)
             })
             uiModel.error?.let {
                 systemViewModel.onError(it)
             }
+
+            val position = uiModel.shouldScrollSessionPosition[page]
+            if (position != null) {
+                binding.sessionRecycler.smoothScrollToPositionWithLayoutManager(position)
+                sessionsViewModel.onScrolled()
+            }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                // Work around for fixing issue that sessions are not displayed on Android 5.0
+                // https://github.com/DroidKaigi/conference-app-2020/issues/117#issuecomment-581151289
+                binding.sessionRecycler.scrollBy(0, 0)
+            }
         }
+    }
+
+    private fun RecyclerView.smoothScrollToPositionWithLayoutManager(position: Int) {
+        (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(position, 0)
     }
 
     companion object {
@@ -154,10 +176,8 @@ class BottomSheetSessionsFragment : DaggerFragment() {
 
 @Module
 abstract class BottomSheetSessionsFragmentModule {
-    @Module
     companion object {
         @PageScope
-        @JvmStatic
         @Provides
         fun providesLifecycleOwnerLiveData(
             mainBottomSheetSessionsFragment: BottomSheetSessionsFragment

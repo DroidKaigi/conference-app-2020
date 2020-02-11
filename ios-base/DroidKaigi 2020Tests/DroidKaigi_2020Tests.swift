@@ -1,8 +1,7 @@
-import XCTest
 @testable import DroidKaigi_2020
+import XCTest
 
 class DroidKaigi_2020Tests: XCTestCase {
-
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -18,9 +17,8 @@ class DroidKaigi_2020Tests: XCTestCase {
 
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measure {
+        measure {
             // Put the code you want to measure the time of here.
         }
     }
-
 }
