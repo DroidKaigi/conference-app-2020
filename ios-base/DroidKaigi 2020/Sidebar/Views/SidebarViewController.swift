@@ -113,8 +113,11 @@ final class SidebarViewController: UITableViewController {
             transition(to: floorMapViewController)
 
         case .sponsor:
+            if rootViewController.viewControllers.first is SponsorViewController {
+                break
+            }
             let vc = SponsorViewController()
-            rootViewController.pushViewController(vc, animated: true)
+            transition(to: vc)
         case .contributor:
             break
         case .setting:
