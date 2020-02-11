@@ -218,7 +218,7 @@
                                             <outlet property="titleLabel" destination="jsU-4x-J7y" id="xx9-NU-Tb9"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" tag="5" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="dbw-8e-edi" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                    <tableViewCell hidden="YES" clipsSubviews="YES" tag="5" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="dbw-8e-edi" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="428" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dbw-8e-edi" id="R23-kl-TPJ">
@@ -251,7 +251,7 @@
                                             <outlet property="titleLabel" destination="urg-1V-e7f" id="Vnm-V6-45H"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" tag="6" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zAm-EE-XpB" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                    <tableViewCell hidden="YES" clipsSubviews="YES" tag="6" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zAm-EE-XpB" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="472" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zAm-EE-XpB" id="4Hb-MJ-txg">

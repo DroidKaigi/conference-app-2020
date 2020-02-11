@@ -9,7 +9,9 @@ final class AboutViewController: ContentTableViewController {
     }
 
     private let disposeBag = DisposeBag()
-    private let cells: [CellType] = [.description, .access, .staff, .policy, .license, .version]
+    // TODO: - Uncomment this after implemented `staff` and `license`.
+//    private let cells: [CellType] = [.description, .access, .staff, .policy, .license, .version]
+    private let cells: [CellType] = [.description, .access, .policy, .version]
 
     static func instantiate() -> AboutViewController {
         guard let viewController = UIStoryboard(name: "AboutViewController", bundle: .main).instantiateInitialViewController() as? AboutViewController else { fatalError() }
