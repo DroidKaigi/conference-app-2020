@@ -1,9 +1,8 @@
-import RxCocoa
 import RxSwift
+import RxCocoa
 import UIKit
 
-// this is base contentViewController in NavigationDrawerController
-class ContentViewController: UIViewController {
+class ContentTableViewController: UITableViewController {
     private let disposeBag = DisposeBag()
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
