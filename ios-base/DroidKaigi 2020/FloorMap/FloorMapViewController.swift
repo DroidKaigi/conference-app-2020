@@ -31,7 +31,9 @@ private extension FloorMapViewController {
                 url: url,
                 processors: [ImageProcessor.Resize(size: CGSize(width: width!, height: height!))] // Set target size in pixels
             )
-            Nuke.loadImage(with: request, into: imageView)
+            let options = ImageLoadingOptions(
+                failureImage: UIImage(named: "map")) // The set image is applied when reading from the server fails
+            Nuke.loadImage(with: request, options: options, into: imageView)
         }
     }
 }
