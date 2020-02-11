@@ -17,9 +17,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map" translatesAutoresizingMaskIntoConstraints="NO" id="eba-aI-51s">
-                                <rect key="frame" x="47" y="313" width="320" height="280"/>
+                                <rect key="frame" x="36.5" y="316.5" width="341" height="273"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="eba-aI-51s" secondAttribute="height" multiplier="301:263" id="xzl-2M-4ai"/>
+                                    <constraint firstAttribute="width" secondItem="eba-aI-51s" secondAttribute="height" multiplier="300:240" id="xzl-2M-4ai"/>
                                 </constraints>
                             </imageView>
                         </subviews>
