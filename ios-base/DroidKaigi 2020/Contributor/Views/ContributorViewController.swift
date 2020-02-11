@@ -16,8 +16,16 @@ final class ContributorViewController: UIViewController {
                 forCellWithReuseIdentifier: ContributorCell.identifier
             )
 
+            collectionView.register(
+                UINib(nibName: ContributorIndexHeaderView.identifier, bundle: nil),
+                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                withReuseIdentifier: ContributorIndexHeaderView.identifier
+            )
+
             let layout = UICollectionViewFlowLayout()
             layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: ContributorCell.rowHeight)
+            layout.headerReferenceSize = CGSize(width: UIScreen.main.bounds.width, height: .leastNormalMagnitude)
+            layout.minimumLineSpacing = .zero
             collectionView.collectionViewLayout = layout
         }
     }

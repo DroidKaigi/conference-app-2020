@@ -13,6 +13,27 @@ final class ContributorViewDataSource: NSObject, UICollectionViewDataSource {
         return items.count
     }
 
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            guard let view = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: ContributorIndexHeaderView.identifier,
+                for: indexPath
+            ) as? ContributorIndexHeaderView else {
+                preconditionFailure()
+            }
+            view.indexLabel.text = items[indexPath.section].index.uppercased()
+            // for overlapping cells
+            view.frame.size = CGSize(width: UIScreen.main.bounds.width, height: ContributorCell.rowHeight)
+            view.clipsToBounds = false
+            return view
+
+        default:
+            preconditionFailure()
+        }
+    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items[section].contributors.count
     }
