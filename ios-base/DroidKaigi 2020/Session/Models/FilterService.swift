@@ -1,4 +1,4 @@
-import ios_combined
+import ioscombined
 
 protocol FilterServiceProtocol {
     func filterSessions(_ sessions: [Session], by sessionContents: FilterSessionContents) -> [Session]

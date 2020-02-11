@@ -1,4 +1,4 @@
-import ios_combined
+import ioscombined
 
 final class RealmToModelMapper {
     static func toModel(sessionEntity session: SessionEntity, firstSessionSTime firstSTime: TimeInterval) -> Session? {

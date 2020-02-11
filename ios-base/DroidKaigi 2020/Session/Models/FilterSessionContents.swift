@@ -1,13 +1,13 @@
-import ios_combined
+import ioscombined
 
 struct FilterSessionContents {
     var rooms: [Room]
     var langs: [Lang]
     var levels: [Level]
-    var categories: [ios_combined.Category]
+    var categories: [ioscombined.Category]
     var langSupports: [LangSupport]
 
-    init(rooms: [Room], langs: [Lang], levels: [Level], categories: [ios_combined.Category], langSupports: [LangSupport]) {
+    init(rooms: [Room], langs: [Lang], levels: [Level], categories: [ioscombined.Category], langSupports: [LangSupport]) {
         self.rooms = rooms
         self.langs = langs
         self.levels = levels
@@ -16,11 +16,11 @@ struct FilterSessionContents {
     }
 
     init(sessionContents: SessionContents) {
-        self.rooms = sessionContents.rooms
-        self.langs = sessionContents.langs
-        self.levels = sessionContents.levels
-        self.categories = sessionContents.category
-        self.langSupports = sessionContents.langSupports
+        rooms = sessionContents.rooms
+        langs = sessionContents.langs
+        levels = sessionContents.levels
+        categories = sessionContents.category
+        langSupports = sessionContents.langSupports
     }
 
     static func empty() -> FilterSessionContents {
