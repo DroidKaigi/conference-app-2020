@@ -1,5 +1,5 @@
 @testable import DroidKaigi_2020
-import ios_combined
+import ioscombined
 import RxCocoa
 import RxSwift
 import SnapshotTesting

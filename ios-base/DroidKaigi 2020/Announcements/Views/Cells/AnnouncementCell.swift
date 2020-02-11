@@ -1,4 +1,4 @@
-import ios_combined
+import ioscombined
 import UIKit
 
 private extension Announcement.Type_ {

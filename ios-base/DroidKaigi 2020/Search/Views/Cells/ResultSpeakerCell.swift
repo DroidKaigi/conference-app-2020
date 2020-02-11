@@ -1,9 +1,8 @@
-import ios_combined
+import ioscombined
 import Nuke
 import UIKit
 
 final class ResultSpeakerCell: UICollectionViewCell {
-
     static let rowHeight: CGFloat = 60
     static let identifier = "ResultSpeakerCell"
 
@@ -13,6 +12,7 @@ final class ResultSpeakerCell: UICollectionViewCell {
             speakerIcon.clipsToBounds = true
         }
     }
+
     @IBOutlet weak var speakerNameLabel: UILabel!
 
     func configure(speaker: Speaker) {

@@ -1,4 +1,4 @@
-import ios_combined
+import ioscombined
 
 extension LocaledString {
     var currentLangString: String {

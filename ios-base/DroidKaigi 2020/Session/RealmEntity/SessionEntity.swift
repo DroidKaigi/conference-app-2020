@@ -1,4 +1,4 @@
-import ios_combined
+import ioscombined
 import RealmSwift
 
 final class SessionEntity: Object {

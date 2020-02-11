@@ -1,4 +1,4 @@
-import ios_combined
+import ioscombined
 import RxCocoa
 import RxSwift
 
@@ -67,7 +67,7 @@ final class FilterViewModel: FilterViewModelType {
                     sessionContents.langs.append(lang)
                 case let level as Level:
                     sessionContents.levels.append(level)
-                case let category as ios_combined.Category:
+                case let category as ioscombined.Category:
                     sessionContents.categories.append(category)
                 case let langSupport as LangSupport:
                     sessionContents.langSupports.append(langSupport)
@@ -94,7 +94,7 @@ final class FilterViewModel: FilterViewModelType {
                     if let index = sessionContents.levels.firstIndex(of: level) {
                         sessionContents.levels.remove(at: index)
                     }
-                case let category as ios_combined.Category:
+                case let category as ioscombined.Category:
                     if let index = sessionContents.categories.firstIndex(of: category) {
                         sessionContents.categories.remove(at: index)
                     }

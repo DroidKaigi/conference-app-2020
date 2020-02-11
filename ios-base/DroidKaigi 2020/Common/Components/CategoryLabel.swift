@@ -1,9 +1,8 @@
+import ioscombined
 import UIKit
-import ios_combined
 
 @IBDesignable
 class CategoryLabel: UILabel {
-
     private var padding: UIEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
 
     override func drawText(in rect: CGRect) {
