@@ -132,11 +132,13 @@ extension AboutViewController {
             }
             presentSafariViewController(with: url)
         case .license:
-            guard let url = URL(string: "app-settings:root=General&path=io.github.droidkaigi.confsched2020.DroidKaigi-2020") else {
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                 tableView.deselectRow(at: indexPath, animated: true)
                 return
             }
-            UIApplication.shared.open(url)
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl)
+            }
         default:
             break
         }
