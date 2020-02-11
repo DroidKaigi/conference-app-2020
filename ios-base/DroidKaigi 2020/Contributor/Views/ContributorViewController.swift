@@ -5,6 +5,9 @@ import UIKit
 final class ContributorViewController: UIViewController {
     private let disposeBag = DisposeBag()
 
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var loadingView: UIView!
+
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.register(
@@ -17,7 +20,7 @@ final class ContributorViewController: UIViewController {
             collectionView.collectionViewLayout = layout
         }
     }
-    
+
     private let viewModel = ContributorViewModel()
 
     override func viewDidLoad() {
@@ -29,7 +32,13 @@ final class ContributorViewController: UIViewController {
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
 
-        viewModel.viewDidLoad()        
+        viewModel.isLoading
+            .drive(Binder(self) { me, isLoading in
+                me.updateContentView(isLoading: isLoading)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -37,6 +46,16 @@ final class ContributorViewController: UIViewController {
 
         navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.surfaceColor
         navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onSurfaceColor
+    }
+
+    private func updateContentView(isLoading: Bool) {
+        stackView.arrangedSubviews.forEach { $0.isHidden = true }
+
+        if isLoading {
+            loadingView.isHidden = false
+        } else {
+            collectionView.isHidden = false
+        }
     }
 }
 
