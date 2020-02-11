@@ -126,6 +126,23 @@
             app:layout_constraintTop_toBottomOf="@id/session_message"
             />
 
+        <TextView
+            android:id="@+id/incremented_thumbs_up_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textColor="@color/white"
+            android:textAppearance="?textAppearanceBody2"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:background="@drawable/shape_incremented_thumbs_up_count_background"
+            app:layout_constraintBottom_toTopOf="@id/thumbs_up"
+            app:layout_constraintStart_toStartOf="@id/thumbs_up"
+            app:layout_constraintEnd_toEndOf="@id/thumbs_up"
+            tools:text="+50"
+            tools:visibility="visible"
+            />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/thumbs_up"
             android:layout_width="wrap_content"

@@ -1,10 +1,11 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
-import androidx.appcompat.content.res.AppCompatResources
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.BackgroundColorSpan
+import android.view.View
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
@@ -22,7 +23,8 @@ import java.util.regex.Pattern
 class SessionDetailTitleItem @AssistedInject constructor(
     @Assisted private val session: Session,
     @Assisted private val searchQuery: String?,
-    @Assisted private val thumbsUpCount: Int,
+    @Assisted private val totalThumbsUpCount: Int,
+    @Assisted private val incrementThumbsUpCount: Int,
     @Assisted private val thumbsUpListener: () -> Unit
 ) : BindableItem<ItemSessionDetailTitleBinding>(session.id.hashCode().toLong()) {
     override fun getLayout() = R.layout.item_session_detail_title
@@ -75,9 +77,17 @@ class SessionDetailTitleItem @AssistedInject constructor(
 //            binding.sessionMessage.text = "セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
 //            binding.sessionMessage.isVisible = true
 
-            binding.thumbsUpCount = thumbsUpCount
+            binding.thumbsUpCount = totalThumbsUpCount
             binding.thumbsUp.setOnClickListener {
                 thumbsUpListener.invoke()
+            }
+            binding.incrementedThumbsUpCount.apply {
+                text = "+${incrementThumbsUpCount}"
+                visibility = if (incrementThumbsUpCount > 0) {
+                    View.VISIBLE
+                } else {
+                    View.INVISIBLE
+                }
             }
         }
     }
@@ -106,7 +116,8 @@ class SessionDetailTitleItem @AssistedInject constructor(
         fun create(
             session: Session,
             searchQuery: String? = null,
-            thumbsUpCount: Int,
+            totalThumbsUpCount: Int,
+            incrementThumbsUpCount: Int,
             thumbsUpListener: () -> Unit
         ): SessionDetailTitleItem
     }

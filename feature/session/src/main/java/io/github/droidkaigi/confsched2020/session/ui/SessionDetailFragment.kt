@@ -124,7 +124,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                             session,
                             uiModel.showEllipsis,
                             uiModel.searchQuery,
-                            uiModel.totalThumbsUpCount
+                            uiModel.totalThumbsUpCount,
+                            uiModel.incrementThumbsUpCount
                         )
                     }
             }
@@ -185,7 +186,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         session: Session,
         showEllipsis: Boolean,
         searchQuery: String?,
-        thumbsUpCount: Int
+        totalThumbsUpCount: Int,
+        incrementThumbsUpCount: Int
     ) {
         binding.sessionDetailRecycler.transitionName =
             "${session.id}-${navArgs.transitionNameSuffix}"
@@ -194,7 +196,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         items += sessionDetailTitleItemFactory.create(
             session,
             searchQuery,
-            thumbsUpCount
+            totalThumbsUpCount,
+            incrementThumbsUpCount
         ) {
             sessionDetailViewModel.thumbsUp(session)
         }
