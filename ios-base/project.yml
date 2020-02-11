@@ -1,6 +1,6 @@
 name: DroidKaigi 2020
 settings:
-    PRODUCT_BUNDLE_IDENTIFIER: io.github.droidkaigi.confsched2020.DroidKaigi-2020
+    PRODUCT_BUNDLE_IDENTIFIER: io.github.droidkaigi.confsched2020.DroidKaigi2020
 schemes:
   DroidKaigi 2020-Debug:
     build:
