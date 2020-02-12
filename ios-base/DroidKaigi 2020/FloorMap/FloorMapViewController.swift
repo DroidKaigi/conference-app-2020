@@ -1,4 +1,4 @@
-import ios_combined
+import ioscombined
 import Nuke
 import UIKit
 
@@ -10,11 +10,19 @@ final class FloorMapViewController: ContentViewController {
 
     @IBOutlet var imageView: UIImageView!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        title = L10n.floorMaps
+    }
 
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
         title = L10n.floorMaps
         loadMap()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
 }
 

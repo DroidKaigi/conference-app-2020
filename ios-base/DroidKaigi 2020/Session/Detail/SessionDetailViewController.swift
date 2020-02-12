@@ -1,4 +1,4 @@
-import ios_combined
+import ioscombined
 import Nuke
 import RxCocoa
 import RxSwift
@@ -199,5 +199,19 @@ private extension SessionDetailViewController {
 
     func openURL(_ url: URL) {
         UIApplication.shared.open(url)
+    }
+}
+
+// MARK: - To show Detail view
+
+extension UIViewController {
+    func showDetail(forSession session: Session) {
+        // FIXME: Use coordinator?
+        guard let vc = UIStoryboard(name: "SessionDetail", bundle: nil)
+            .instantiateInitialViewController() as? SessionDetailViewController else {
+            return
+        }
+        vc.session = session
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

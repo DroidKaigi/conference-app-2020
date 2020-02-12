@@ -21,7 +21,13 @@ class ContentViewController: UIViewController {
                                        style: .plain,
                                        target: self,
                                        action: nil)
-        navigationItem.leftBarButtonItems = [menuItem]
+        let titleItem = UIBarButtonItem(title: title,
+                                        style: .plain,
+                                        target: nil,
+                                        action: nil)
+        titleItem.setTitleTextAttributes([.foregroundColor: UIColor.black], for: .disabled)
+        titleItem.isEnabled = false
+        navigationItem.leftBarButtonItems = [menuItem, titleItem]
 
         navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.backgroundColor
         navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onBackgroundColor

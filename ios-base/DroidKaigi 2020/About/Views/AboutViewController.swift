@@ -3,7 +3,7 @@ import RxSwift
 import SafariServices
 import UIKit
 
-final class AboutViewController: UITableViewController {
+final class AboutViewController: ContentTableViewController {
     private enum CellType {
         case description, access, staff, policy, license, version
     }
@@ -16,22 +16,18 @@ final class AboutViewController: UITableViewController {
         return viewController
     }
 
-    override func viewDidLoad() {
-        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.backgroundColor
-        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onBackgroundColor
-        let menuImage = Asset.icMenu.image
-        let templateMenuImage = menuImage.withRenderingMode(.alwaysTemplate)
-        let menuItem = UIBarButtonItem(image: templateMenuImage,
-                                       style: .plain,
-                                       target: self,
-                                       action: nil)
-        navigationItem.leftBarButtonItems = [menuItem]
+    init() {
+        super.init(nibName: nil, bundle: nil)
         title = L10n.aboutDroidKaigi
+    }
 
-        menuItem.rx.tap
-            .bind(to: Binder(self) { me, _ in
-                me.navigationDrawerController?.toggleLeftView()
-            }).disposed(by: disposeBag)
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        title = L10n.aboutDroidKaigi
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
 }
 
@@ -136,7 +132,13 @@ extension AboutViewController {
             }
             presentSafariViewController(with: url)
         case .license:
-            break
+            tableView.deselectRow(at: indexPath, animated: true)
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl)
+            }
         default:
             break
         }
