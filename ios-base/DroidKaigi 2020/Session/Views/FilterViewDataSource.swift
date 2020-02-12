@@ -1,4 +1,4 @@
-import ios_combined
+import ioscombined
 import RxCocoa
 import RxSwift
 import UIKit

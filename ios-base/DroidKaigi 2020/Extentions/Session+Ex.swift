@@ -1,5 +1,5 @@
 import Foundation
-import ios_combined
+import ioscombined
 
 extension Session {
     var timeRoomText: String {
