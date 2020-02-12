@@ -23,9 +23,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="eba-aI-51s" firstAttribute="bottom" secondItem="g3H-nY-odz" secondAttribute="bottom" id="5SQ-dv-cJ6"/>
-                            <constraint firstItem="g3H-nY-odz" firstAttribute="trailing" secondItem="eba-aI-51s" secondAttribute="trailing" constant="8" id="TWo-j3-OSg"/>
+                            <constraint firstItem="g3H-nY-odz" firstAttribute="trailing" secondItem="eba-aI-51s" secondAttribute="trailing" constant="20" id="TWo-j3-OSg"/>
                             <constraint firstItem="g3H-nY-odz" firstAttribute="top" secondItem="eba-aI-51s" secondAttribute="top" id="w3Z-so-9SG"/>
-                            <constraint firstItem="eba-aI-51s" firstAttribute="leading" secondItem="g3H-nY-odz" secondAttribute="leading" constant="8" id="wiq-ZW-GIp"/>
+                            <constraint firstItem="eba-aI-51s" firstAttribute="leading" secondItem="g3H-nY-odz" secondAttribute="leading" constant="20" id="wiq-ZW-GIp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="g3H-nY-odz"/>
                     </view>
