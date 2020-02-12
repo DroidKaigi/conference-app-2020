@@ -120,6 +120,11 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjecto
         sessionSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                sessionsViewModel.slideOffSetLiveData.value = if (isEdgeToEdgeEnabled()) {
+                    1.0f - slideOffset
+                } else {
+                    0.0f
+                }
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {

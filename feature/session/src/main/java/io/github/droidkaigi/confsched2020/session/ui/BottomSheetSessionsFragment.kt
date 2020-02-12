@@ -156,6 +156,10 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
                 binding.sessionRecycler.scrollBy(0, 0)
             }
         }
+
+        sessionsViewModel.slideOffSetLiveData.observe(viewLifecycleOwner) {
+            binding.motionLayout.progress = it
+        }
     }
 
     private fun RecyclerView.smoothScrollToPositionWithLayoutManager(position: Int) {

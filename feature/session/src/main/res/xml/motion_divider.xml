@@ -1,0 +1,53 @@
+<MotionScene
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto"
+    >
+
+    <Transition
+        motion:constraintSetEnd="@id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1000">
+
+        <OnClick
+            motion:dragDirection="dragDown"
+            motion:touchAnchorId="@id/session"
+            motion:touchAnchorSide="bottom"
+            />
+
+    </Transition>
+
+    <ConstraintSet
+        android:id="@+id/start"
+        >
+
+        <Constraint
+            android:id="@id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/black_alpha_12"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            />
+
+    </ConstraintSet>
+
+    <ConstraintSet
+        android:id="@+id/end"
+        >
+
+        <Constraint
+            android:id="@id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="48dp"
+            android:background="@color/black_alpha_12"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            />
+
+    </ConstraintSet>
+
+</MotionScene>

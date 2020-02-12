@@ -91,15 +91,28 @@
             app:tint="?attr/colorPrimary"
             />
 
-        <View
-            android:id="@+id/divider"
+        <androidx.constraintlayout.motion.widget.MotionLayout
+            android:id="@+id/motion_layout"
             android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/black_alpha_12"
+            android:layout_height="wrap_content"
+            app:layoutDescription="@xml/motion_divider"
+            app:layout_constraintTop_toBottomOf="@id/start_filter"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/start_filter"
-            />
+            >
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@color/black_alpha_12"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+        </androidx.constraintlayout.motion.widget.MotionLayout>
 
         <View
             android:id="@+id/divider_shadow"
@@ -109,7 +122,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintTop_toBottomOf="@id/motion_layout"
             />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -126,7 +139,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/start_filter"
+            app:layout_constraintTop_toBottomOf="@id/motion_layout"
             tools:listitem="@layout/item_session"
             />
 

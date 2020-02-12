@@ -80,6 +80,8 @@ class SessionsViewModel @Inject constructor(
 
     private val shouldScrollCurrentSessionLiveData = MutableLiveData(true)
 
+    val slideOffSetLiveData: MutableLiveData<Float> = MutableLiveData(0.0f)
+
     // Produce UiModel
     val uiModel: LiveData<UiModel> = combine(
         initialValue = UiModel.EMPTY,
