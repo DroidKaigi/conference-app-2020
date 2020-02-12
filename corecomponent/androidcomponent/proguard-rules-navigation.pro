@@ -1,3 +1,4 @@
+-keepnames class com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 -keepnames class io.github.droidkaigi.confsched2020.about.ui.AboutFragment
 -keepnames class io.github.droidkaigi.confsched2020.announcement.ui.AnnouncementFragment
 -keepnames class io.github.droidkaigi.confsched2020.contributor.ui.ContributorsFragment

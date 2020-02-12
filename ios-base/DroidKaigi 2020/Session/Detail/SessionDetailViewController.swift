@@ -1,4 +1,4 @@
-import ios_combined
+import ioscombined
 import Nuke
 import RxCocoa
 import RxSwift
@@ -62,8 +62,7 @@ final class SessionDetailViewController: UIViewController {
 
 private extension SessionDetailViewController {
     func loadSession(_ session: Session) {
-        // FIXME: How to detect current lang?
-        titleLabel.text = session.title.ja
+        titleLabel.text = session.title.currentLangString
         dateLabel.text = "\(session.startDayText) \(session.startTimeText)-"
         timeRoomLabel.text = session.timeRoomText
         descriptionLabel.text = session.desc
@@ -80,8 +79,8 @@ private extension SessionDetailViewController {
 
     func loadSpeechSession(_ session: SpeechSession) {
         // FIXME: How to detect current lang?
-        categoryLabel.text = session.category.name.ja
-        langLabel.text = session.lang.text.ja
+        categoryLabel.text = session.category.name.currentLangString
+        langLabel.text = session.lang.text.currentLangString
 
         if let intendedAudience = session.intendedAudience {
             intendedAudienceLabel.text = intendedAudience
@@ -200,5 +199,19 @@ private extension SessionDetailViewController {
 
     func openURL(_ url: URL) {
         UIApplication.shared.open(url)
+    }
+}
+
+// MARK: - To show Detail view
+
+extension UIViewController {
+    func showDetail(forSession session: Session) {
+        // FIXME: Use coordinator?
+        guard let vc = UIStoryboard(name: "SessionDetail", bundle: nil)
+            .instantiateInitialViewController() as? SessionDetailViewController else {
+            return
+        }
+        vc.session = session
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

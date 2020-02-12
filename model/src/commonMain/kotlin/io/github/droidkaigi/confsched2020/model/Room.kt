@@ -11,7 +11,7 @@ data class Room(
         get() = RoomType.fromId(id)
 
     enum class RoomType(val id: Int) {
-        EXHIBITION(0),
+        EXHIBITION(12203),
         APP_BAR(11511),
         BACKDROP(11512),
         CARDS(11513),

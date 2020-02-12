@@ -27,12 +27,14 @@ final class SessionCell: UICollectionViewCell {
         }
     }
 
+    @IBOutlet weak var dateLabelInFirstFavoriteSession: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var minutesAndRoomLabel: UILabel!
     @IBOutlet weak var speakersStackView: UIStackView!
+    @IBOutlet weak var titleLeftConstraint: NSLayoutConstraint!
 
-    private var disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -91,5 +93,6 @@ final class SessionCell: UICollectionViewCell {
         speakersStackView.arrangedSubviews.forEach { subview in
             speakersStackView.removeArrangedSubview(subview)
         }
+        dateLabelInFirstFavoriteSession.isHidden = true
     }
 }

@@ -1,0 +1,145 @@
+name: Material, nameSpecified: 
+body: The MIT License (MIT…
+version: 3.1.8
+
+name: Material, nameSpecified: 
+body: The MIT License (MIT…
+version: 3.1.8
+
+name: MaterialComponents, nameSpecified: 
+body: 
+                   …
+version: 101.0.1
+
+name: MaterialComponents, nameSpecified: 
+body: 
+                   …
+version: 101.0.1
+
+name: MDFInternationalization, nameSpecified: 
+body: 
+                   …
+version: 2.0.0
+
+name: MDFInternationalization, nameSpecified: 
+body: 
+                   …
+version: 2.0.0
+
+name: MDFTextAccessibility, nameSpecified: 
+body: 
+                   …
+version: 2.0.0
+
+name: MDFTextAccessibility, nameSpecified: 
+body: 
+                   …
+version: 2.0.0
+
+name: Motion, nameSpecified: 
+body: The MIT License (MIT…
+version: 3.1.3
+
+name: Motion, nameSpecified: 
+body: The MIT License (MIT…
+version: 3.1.3
+
+name: MotionAnimator, nameSpecified: 
+body: 
+                   …
+version: 2.8.1
+
+name: MotionAnimator, nameSpecified: 
+body: 
+                   …
+version: 2.8.1
+
+name: MotionInterchange, nameSpecified: 
+body: 
+                   …
+version: 1.6.0
+
+name: MotionInterchange, nameSpecified: 
+body: 
+                   …
+version: 1.6.0
+
+name: Nuke, nameSpecified: 
+body: The MIT License (MIT…
+version: 8.4.0
+
+name: Nuke, nameSpecified: 
+body: The MIT License (MIT…
+version: 8.4.0
+
+name: Realm, nameSpecified: 
+body: TABLE OF CONTENTS
+
+1…
+version: 4.3.1
+
+name: Realm, nameSpecified: 
+body: TABLE OF CONTENTS
+
+1…
+version: 4.3.1
+
+name: RealmSwift, nameSpecified: 
+body: TABLE OF CONTENTS
+
+1…
+version: 4.3.1
+
+name: RealmSwift, nameSpecified: 
+body: TABLE OF CONTENTS
+
+1…
+version: 4.3.1
+
+name: RxCocoa, nameSpecified: 
+body: **The MIT License**
+…
+version: 5.0.1
+
+name: RxCocoa, nameSpecified: 
+body: **The MIT License**
+…
+version: 5.0.1
+
+name: RxRealm, nameSpecified: 
+body: Copyright (c) 2016 R…
+version: 2.0.0
+
+name: RxRealm, nameSpecified: 
+body: Copyright (c) 2016 R…
+version: 2.0.0
+
+name: RxRelay, nameSpecified: 
+body: **The MIT License**
+…
+version: 5.0.1
+
+name: RxRelay, nameSpecified: 
+body: **The MIT License**
+…
+version: 5.0.1
+
+name: RxSwift, nameSpecified: 
+body: **The MIT License**
+…
+version: 5.0.1
+
+name: RxSwift, nameSpecified: 
+body: **The MIT License**
+…
+version: 5.0.1
+
+name: SnapshotTesting, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 1.7.0
+
+add-version-numbers: false
+
+LicensePlist Version: 2.12.0

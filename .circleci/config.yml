@@ -58,13 +58,13 @@ jobs:
       - run: .circleci/android/deploy-to-deploygate.bash
       - restore_and_save_bundler_cache
       - run: .circleci/android/try-it.bash
-  
+
   test_android:
     executor: android
     steps:
       - checkout
       - restore_and_save_gradle_cache
-      - run: ./gradlew lintDebug testDebugUnitTest ktlint --continue --offline || true
+      - run: ./gradlew lintDebug testDebugUnitTest jvmTest ktlint --continue
       - run: .ci/scripts/collect-test-artifacts.bash
       - run: .ci/scripts/collect-ktlint-artifacts.bash
       - store_test_results:

@@ -5,9 +5,28 @@
 "Access" = "Access";
 "Toc Building" = "Toc Building";
 "Maps" = "Maps";
+"Floor Maps" = "Floor Maps";
+"Announcements" = "Announcements";
 "Google Maps" = "Google Maps";
 "Staffs" = "Staffs";
 "Privacy Policy" = "Privacy Policy";
 "Privacy Policy URL" = "http://www.association.droidkaigi.jp/en/privacy.html";
 "Licence" = "Licence";
 "Version" = "Version";
+"Filter" = "Filter";
+"Reset" = "RESET";
+"ApplicableSession" = "Applicable session";
+"Session" = "Session";
+"Speaker" = "Speaker";
+"Search" = "Search";
+"Sessions" = "Sessions";
+
+// Sidebar
+"Timeline" = "Sessions";
+"About" = "About";
+"Floormap" = "Floormap";
+"Sponsor" = "Sponsors";
+"Setting" = "Settings";
+
+// Favorite suggest view
+"Suggest description" = "You choose your favorite sessions, then you can make a plan for you.";

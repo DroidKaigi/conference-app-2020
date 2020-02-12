@@ -98,6 +98,11 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjecto
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight =
                 insets.systemWindowInsetBottom + initialPeekHeight + gestureNavigationBottomSpace
+            binding.filterView.updatePadding(
+                bottom = initialPeekHeight + resources.getDimensionPixelSize(
+                    R.dimen.session_filter_view_padding_bottom
+                )
+            )
             // This block is the workaround to bottomSheetBehavior bug fix.
             // https://stackoverflow.com/questions/35685681/dynamically-change-height-of-bottomsheetbehavior
             if (sessionSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
@@ -177,12 +182,12 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjecto
             ) { checked, category ->
                 sessionsViewModel.filterChanged(category, checked)
             }
-            binding.audienceCategoryFilters.setupFilter(
-                allFilterSet = uiModel.allFilters.audienceCategories,
-                currentFilterSet = uiModel.filters.audienceCategories,
-                filterName = { it.name }
-            ) { checked, audienceCategory ->
-                sessionsViewModel.filterChanged(audienceCategory, checked)
+            binding.levelFilters.setupFilter(
+                allFilterSet = uiModel.allFilters.levels,
+                currentFilterSet = uiModel.filters.levels,
+                filterName = { it.rawValue.getByLang(defaultLang()) }
+            ) { checked, level ->
+                sessionsViewModel.filterChanged(level, checked)
             }
             binding.languageSupportFilters.setupFilter(
                 allFilterSet = uiModel.allFilters.langSupports,
