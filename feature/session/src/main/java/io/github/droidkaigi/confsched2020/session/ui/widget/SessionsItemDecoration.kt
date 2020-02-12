@@ -59,21 +59,58 @@ class SessionsItemDecoration(
             val startDateTimeText =
                 calcDateTimeText(position, view, shouldShowDateText(position))
 
-            if (startDateTimeText.dateText != null) {
-                c.drawText(
-                    startDateTimeText.dateText.value,
-                    startDateTimeText.dateText.positionX,
-                    startDateTimeText.dateText.positionY,
-                    textPaint
-                )
-            }
+            when {
+                startDateTimeText.dateText.value.isNotEmpty() -> {
+                    c.drawText(
+                        startDateTimeText.dateText.value,
+                        startDateTimeText.dateText.positionX,
+                        startDateTimeText.dateText.positionY,
+                        textPaint
+                    )
 
-            c.drawText(
-                startDateTimeText.startTimeText.value,
-                startDateTimeText.startTimeText.positionX,
-                startDateTimeText.startTimeText.positionY,
-                textPaint
-            )
+                    c.drawText(
+                        startDateTimeText.startTimeText.value,
+                        startDateTimeText.startTimeText.positionX,
+                        startDateTimeText.startTimeText.positionY,
+                        textPaint
+                    )
+                }
+                visibleSessionDate -> {
+                    when (index) {
+                        0 -> {
+                            c.drawText(
+                                sessionItem.startSessionDate(),
+                                startDateTimeText.dateText.positionX,
+                                startDateTimeText.dateText.positionY,
+                                textPaint
+                            )
+
+                            c.drawText(
+                                startDateTimeText.startTimeText.value,
+                                startDateTimeText.startTimeText.positionX,
+                                (startDateTimeText.startTimeText.positionY + sessionTimeTextHeightInPx),
+                                textPaint
+                            )
+                        }
+                        else -> {
+                            c.drawText(
+                                startDateTimeText.startTimeText.value,
+                                startDateTimeText.startTimeText.positionX,
+                                startDateTimeText.startTimeText.positionY,
+                                textPaint
+                            )
+                        }
+                    }
+                }
+                else -> {
+                    c.drawText(
+                        startDateTimeText.startTimeText.value,
+                        startDateTimeText.startTimeText.positionX,
+                        startDateTimeText.startTimeText.positionY,
+                        textPaint
+                    )
+                }
+            }
         }
     }
 
@@ -105,24 +142,29 @@ class SessionsItemDecoration(
         } else null
 
         // session date text
+        var sessionDateTextPositionY = view.top.coerceAtLeast(
+            sessionTimeTextMarginTopInPx.toInt()
+        ) + sessionTimeTextHeightInPx
+
+        if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
+            sessionDateTextPositionY = sessionDateTextPositionY.coerceAtMost(
+                view.bottom.toFloat() - sessionTimeTextHeightInPx
+            )
+        }
+
         val dateText = if (shouldShowDateText) {
-
-            var sessionDateTextPositionY = view.top.coerceAtLeast(
-                sessionTimeTextMarginTopInPx.toInt()
-            ) + sessionTimeTextHeightInPx
-
-            if (sessionItem.startSessionTime() != nextSessionItem?.startSessionTime()) {
-                sessionDateTextPositionY = sessionDateTextPositionY.coerceAtMost(
-                    view.bottom.toFloat() - sessionTimeTextHeightInPx
-                )
-            }
-
             PositionalText(
                 value = sessionItem.startSessionDate(),
                 positionX = sessionTimeTextMarginStartInPx,
                 positionY = sessionDateTextPositionY
             )
-        } else null
+        } else {
+            PositionalText(
+                value = "",
+                positionX = sessionTimeTextMarginStartInPx,
+                positionY = sessionDateTextPositionY
+            )
+        }
 
         val sessionTimeTextMarginTop = if (shouldShowDateText) {
             sessionTimeTextMarginTopInPx + sessionTimeTextHeightInPx
@@ -149,7 +191,7 @@ class SessionsItemDecoration(
     }
 
     private data class StartDateTimeText(
-        val dateText: PositionalText?,
+        val dateText: PositionalText,
         val startTimeText: PositionalText
     )
 
