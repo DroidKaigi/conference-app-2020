@@ -6,6 +6,7 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -25,6 +26,7 @@ import io.github.droidkaigi.confsched2020.ext.isShow
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
+import io.github.droidkaigi.confsched2020.model.ThumbsUpCount
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
@@ -124,8 +126,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                             session,
                             uiModel.showEllipsis,
                             uiModel.searchQuery,
-                            uiModel.totalThumbsUpCount,
-                            uiModel.incrementThumbsUpCount
+                            uiModel.thumbsUpCount
                         )
                     }
             }
@@ -186,8 +187,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         session: Session,
         showEllipsis: Boolean,
         searchQuery: String?,
-        totalThumbsUpCount: Int,
-        incrementThumbsUpCount: Int
+        thumbsUpCount: ThumbsUpCount
     ) {
         binding.sessionDetailRecycler.transitionName =
             "${session.id}-${navArgs.transitionNameSuffix}"
@@ -196,8 +196,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         items += sessionDetailTitleItemFactory.create(
             session,
             searchQuery,
-            totalThumbsUpCount,
-            incrementThumbsUpCount
+            viewLifecycleOwner.lifecycleScope,
+            thumbsUpCount
         ) {
             sessionDetailViewModel.thumbsUp(session)
         }

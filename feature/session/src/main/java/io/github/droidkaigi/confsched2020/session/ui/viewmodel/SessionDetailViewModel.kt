@@ -16,6 +16,7 @@ import io.github.droidkaigi.confsched2020.model.LoadingState
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.TextExpandState
+import io.github.droidkaigi.confsched2020.model.ThumbsUpCount
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
@@ -40,8 +41,7 @@ class SessionDetailViewModel @AssistedInject constructor(
         val session: Session?,
         val showEllipsis: Boolean,
         val searchQuery: String?,
-        val totalThumbsUpCount: Int,
-        val incrementThumbsUpCount: Int
+        val thumbsUpCount: ThumbsUpCount
     ) {
         companion object {
             val EMPTY = UiModel(
@@ -50,8 +50,7 @@ class SessionDetailViewModel @AssistedInject constructor(
                 session = null,
                 showEllipsis = true,
                 searchQuery = null,
-                totalThumbsUpCount = 0,
-                incrementThumbsUpCount = 0
+                thumbsUpCount = ThumbsUpCount.ZERO
             )
         }
     }
@@ -116,9 +115,15 @@ class SessionDetailViewModel @AssistedInject constructor(
                 totalThumbsUpCountLoadState.value
             }
             else -> {
-                current.totalThumbsUpCount
+                current.thumbsUpCount.total
             }
         }
+
+        val thumbsUpCount = ThumbsUpCount(
+            total = totalThumbsUpCount,
+            incremented = incrementThumbsUpCount,
+            incrementedUpdated = current.thumbsUpCount.incremented != incrementThumbsUpCount
+        )
 
         UiModel(
             isLoading = isLoading,
@@ -134,8 +139,7 @@ class SessionDetailViewModel @AssistedInject constructor(
             session = sessions,
             showEllipsis = showEllipsis,
             searchQuery = searchQuery,
-            totalThumbsUpCount = totalThumbsUpCount,
-            incrementThumbsUpCount = incrementThumbsUpCount
+            thumbsUpCount = thumbsUpCount
         )
     }
 

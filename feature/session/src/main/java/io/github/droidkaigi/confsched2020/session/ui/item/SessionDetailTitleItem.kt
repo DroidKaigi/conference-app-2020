@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
+import android.animation.ObjectAnimator
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.BackgroundColorSpan
@@ -8,23 +9,29 @@ import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.google.android.material.chip.Chip
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
+import io.github.droidkaigi.confsched2020.ext.awaitEnd
+import io.github.droidkaigi.confsched2020.ext.awaitNextLayout
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SpeechSession
+import io.github.droidkaigi.confsched2020.model.ThumbsUpCount
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailTitleBinding
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 class SessionDetailTitleItem @AssistedInject constructor(
     @Assisted private val session: Session,
     @Assisted private val searchQuery: String?,
-    @Assisted private val totalThumbsUpCount: Int,
-    @Assisted private val incrementThumbsUpCount: Int,
+    @Assisted private val lifecycleCoroutineScope: LifecycleCoroutineScope,
+    @Assisted private val thumbsUpCount: ThumbsUpCount,
     @Assisted private val thumbsUpListener: () -> Unit
 ) : BindableItem<ItemSessionDetailTitleBinding>(session.id.hashCode().toLong()) {
     override fun getLayout() = R.layout.item_session_detail_title
@@ -77,17 +84,19 @@ class SessionDetailTitleItem @AssistedInject constructor(
 //            binding.sessionMessage.text = "セッション部屋がRoom1からRoom3に変更になりました（サンプル）"
 //            binding.sessionMessage.isVisible = true
 
-            binding.thumbsUpCount = totalThumbsUpCount
             binding.thumbsUp.setOnClickListener {
                 thumbsUpListener.invoke()
             }
-            binding.incrementedThumbsUpCount.apply {
-                text = "+${incrementThumbsUpCount}"
-                visibility = if (incrementThumbsUpCount > 0) {
-                    View.VISIBLE
-                } else {
-                    View.INVISIBLE
-                }
+
+
+            binding.thumbsUpCount = thumbsUpCount
+            if (!thumbsUpCount.incrementedUpdated) {
+                return
+            } else if (thumbsUpCount.incremented > 0) {
+                binding.incrementedThumbsUpCount.text = "+${thumbsUpCount.incremented}"
+                binding.incrementedThumbsUpCount.showWithPopUpAnimation()
+            } else {
+                binding.incrementedThumbsUpCount.hideWithDropOutAnimation()
             }
         }
     }
@@ -111,13 +120,86 @@ class SessionDetailTitleItem @AssistedInject constructor(
         }
     }
 
+    private fun View.showWithPopUpAnimation() {
+        val target = this
+
+        lifecycleCoroutineScope.launch {
+            target.isVisible = true
+            target.awaitNextLayout()
+            val popupHeight = (target.height / 2).toFloat()
+            target.translationY = popupHeight
+
+            val fadeIn = async {
+                ObjectAnimator.ofFloat(
+                    target,
+                    View.ALPHA,
+                    1f
+                ).run {
+                    start()
+                    awaitEnd()
+                }
+            }
+
+            val up = async {
+                ObjectAnimator.ofFloat(
+                    target,
+                    View.TRANSLATION_Y,
+                    -popupHeight
+                ).run {
+                    duration = 100
+                    start()
+                    awaitEnd()
+                }
+            }
+
+            fadeIn.await()
+            up.await()
+        }
+    }
+
+    private fun View.hideWithDropOutAnimation() {
+        val target = this
+
+        lifecycleCoroutineScope.launch {
+            val popupHeight = (target.height / 2).toFloat()
+
+            val fadeOut = async {
+                ObjectAnimator.ofFloat(
+                    target,
+                    View.ALPHA,
+                    0f
+                ).run {
+                    duration = 100
+                    start()
+                    awaitEnd()
+                }
+            }
+
+            val down = async {
+                ObjectAnimator.ofFloat(
+                    target,
+                    View.TRANSLATION_Y,
+                    popupHeight
+                ).run {
+                    duration = 100
+                    start()
+                    awaitEnd()
+                }
+            }
+
+            fadeOut.await()
+            down.await()
+            target.isVisible = false
+        }
+    }
+
     @AssistedInject.Factory
     interface Factory {
         fun create(
             session: Session,
             searchQuery: String? = null,
-            totalThumbsUpCount: Int,
-            incrementThumbsUpCount: Int,
+            lifecycleCoroutineScope: LifecycleCoroutineScope,
+            thumbsUpCount: ThumbsUpCount,
             thumbsUpListener: () -> Unit
         ): SessionDetailTitleItem
     }
