@@ -244,6 +244,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                 }
             }
         )
+        adapter.clear()
         adapter.update(items)
         startPostponedEnterTransition()
 
