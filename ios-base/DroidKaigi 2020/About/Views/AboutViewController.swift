@@ -132,7 +132,13 @@ extension AboutViewController {
             }
             presentSafariViewController(with: url)
         case .license:
-            break
+            tableView.deselectRow(at: indexPath, animated: true)
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl)
+            }
         default:
             break
         }
