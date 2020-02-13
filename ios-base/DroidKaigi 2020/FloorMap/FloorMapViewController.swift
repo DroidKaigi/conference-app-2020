@@ -18,11 +18,11 @@ final class FloorMapViewController: ContentViewController {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         title = L10n.floorMaps
-        loadMap()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadMap()
     }
 }
 
