@@ -119,7 +119,11 @@ final class SidebarViewController: UITableViewController {
             let vc = SponsorViewController()
             transition(to: vc)
         case .contributor:
-            break
+            if rootViewController.viewControllers.first is ContributorViewController {
+                break
+            }
+            let contributorViewController = ContributorViewController.instantiate()
+            transition(to: contributorViewController)
         case .setting:
             break
         }
