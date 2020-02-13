@@ -4,7 +4,7 @@ import RxSwift
 import SafariServices
 import UIKit
 
-final class ContributorViewController: UIViewController {
+final class ContributorViewController: ContentViewController {
     private let disposeBag = DisposeBag()
 
     @IBOutlet weak var stackView: UIStackView!

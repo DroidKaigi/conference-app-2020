@@ -123,7 +123,7 @@ final class SidebarViewController: UITableViewController {
                 break
             }
             let contributorViewController = ContributorViewController.instantiate()
-            rootViewController.pushViewController(contributorViewController, animated: true)
+            transition(to: contributorViewController)
         case .setting:
             break
         }
