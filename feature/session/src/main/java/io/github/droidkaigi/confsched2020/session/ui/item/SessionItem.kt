@@ -87,7 +87,7 @@ class SessionItem @AssistedInject constructor(
             itemRoot.transitionName = "${session.id}-$TRANSITION_NAME_SUFFIX"
             live.isVisible = session.isOnGoing
             bindSessionMessage(session, viewBinding)
-            title.text = session.title.ja
+            title.text = session.title.getByLang(defaultLang())
             title.setSearchHighlight()
             room.text = session.minutesRoom(defaultLang())
             imageRequestDisposables.clear()
