@@ -15,6 +15,15 @@
             <PropertySet android:alpha="1.0" />
             <Transform android:translationY="0dp" />
         </Constraint>
+        <Constraint android:id="@+id/filtered_session_count">
+            <PropertySet app:visibilityMode="ignore" />
+        </Constraint>
+        <Constraint android:id="@+id/start_filter">
+            <PropertySet app:visibilityMode="ignore" />
+        </Constraint>
+        <Constraint android:id="@+id/expand_less">
+            <PropertySet app:visibilityMode="ignore" />
+        </Constraint>
         <Constraint android:id="@+id/empty_session">
             <PropertySet app:visibilityMode="ignore" />
         </Constraint>
@@ -30,6 +39,12 @@
         <Constraint android:id="@+id/session_recycler">
             <PropertySet android:alpha="0.0" />
             <Transform android:translationY="64dp" />
+        </Constraint>
+        <Constraint android:id="@+id/start_filter">
+            <PropertySet app:visibilityMode="ignore" />
+        </Constraint>
+        <Constraint android:id="@+id/expand_less">
+            <PropertySet app:visibilityMode="ignore" />
         </Constraint>
         <Constraint android:id="@+id/empty_session">
             <PropertySet app:visibilityMode="ignore" />

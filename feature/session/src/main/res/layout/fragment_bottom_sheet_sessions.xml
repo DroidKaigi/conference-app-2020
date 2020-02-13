@@ -24,7 +24,7 @@
     </data>
 
     <io.github.droidkaigi.confsched2020.session.ui.widget.BottomSheetMotionLayout
-        android:id="@+id/session"
+        android:id="@+id/session_motion_layout"
         app:layoutDescription="@xml/fragment_bottom_sheet_sessions_scene"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -135,7 +135,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:isInvisible="@{isCollapsed || !isEmptyFavoritePage || isFiltered}"
-            app:visibilityMode="ignore"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
