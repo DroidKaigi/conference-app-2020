@@ -88,6 +88,12 @@ final class SearchContentsDataSource: NSObject, UICollectionViewDataSource {
 
             cell.titleLeftConstraint.constant = 0
 
+            if let speechSession = session as? SpeechSession, let message = speechSession.message {
+                cell.sessionMessageLabel.text = message.currentLangString
+            } else {
+                cell.sessionMessageLabel.text = nil
+            }
+
             return cell
         case .speaker:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ResultSpeakerCell.identifier, for: indexPath) as? ResultSpeakerCell else {
