@@ -33,8 +33,8 @@ private extension FloorMapViewController {
     /// This method caches the floor map image in LRU memory when loading from server.
     func loadMap() {
         // Configure cache
-        ImageCache.shared.costLimit = 1024 * 1024 * 100 // 100 MB
-        ImageCache.shared.countLimit = 100
+        ImageCache.shared.costLimit = 1024 * 1024 * 5 // 5 MB
+        ImageCache.shared.countLimit = 10
         ImageCache.shared.ttl = 120 // Invalidate image after 120 sec
         
         ImageLoadingOptions.shared.failureImage = UIImage(named: "map") // The set image is applied when reading from the server fails
