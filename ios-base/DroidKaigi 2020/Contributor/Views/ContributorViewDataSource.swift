@@ -49,7 +49,6 @@ final class ContributorViewDataSource: NSObject, UICollectionViewDataSource {
             let options = ImageLoadingOptions(transition: .fadeIn(duration: 0.3))
             Nuke.loadImage(with: url, options: options, into: cell.iconImageView)
         }
-        cell.iconImageView.layer.cornerRadius = cell.iconImageView.frame.height / 2
 
         cell.nameLabel.text = contributor.name
 
