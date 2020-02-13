@@ -93,7 +93,11 @@ class SessionDetailTitleItem @AssistedInject constructor(
             if (!thumbsUpCount.incrementedUpdated) {
                 return
             } else if (thumbsUpCount.incremented > 0) {
-                binding.incrementedThumbsUpCount.text = "+${thumbsUpCount.incremented}"
+                val context = binding.incrementedThumbsUpCount.context
+                binding.incrementedThumbsUpCount.text = context.getString(
+                    R.string.thumbs_up_increment_label,
+                    thumbsUpCount.incremented
+                )
                 binding.incrementedThumbsUpCount.showWithPopUpAnimation()
             } else {
                 binding.incrementedThumbsUpCount.hideWithDropOutAnimation()
