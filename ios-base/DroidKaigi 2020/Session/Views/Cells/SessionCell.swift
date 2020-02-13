@@ -6,7 +6,7 @@ import UIKit
 
 final class SessionCell: UICollectionViewCell {
     static let identifier = "SessionCell"
-    static let rowHeight: CGFloat = 500
+    static let rowHeight: CGFloat = 120
 
     @IBOutlet weak var liveBadge: UIView! {
         didSet {
