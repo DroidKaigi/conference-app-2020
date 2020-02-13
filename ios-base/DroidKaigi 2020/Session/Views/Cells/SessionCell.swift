@@ -6,7 +6,7 @@ import UIKit
 
 final class SessionCell: UICollectionViewCell {
     static let identifier = "SessionCell"
-    static let rowHeight: CGFloat = 120
+    static let rowHeight: CGFloat = 500
 
     @IBOutlet weak var liveBadge: UIView! {
         didSet {
@@ -31,6 +31,7 @@ final class SessionCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var minutesAndRoomLabel: UILabel!
+    @IBOutlet weak var sessionMessageLabel: UILabel!
     @IBOutlet weak var speakersStackView: UIStackView!
     @IBOutlet weak var titleLeftConstraint: NSLayoutConstraint!
 
