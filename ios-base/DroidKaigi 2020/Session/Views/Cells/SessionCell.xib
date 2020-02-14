@@ -82,7 +82,7 @@
                             <constraint firstAttribute="height" priority="250" id="PQ4-Ov-b0v"/>
                         </constraints>
                     </stackView>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="95m-vg-Q5m" userLabel="Labels Stack View">
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="95m-vg-Q5m" userLabel="Supplementary Stack View">
                         <rect key="frame" x="76" y="92.5" width="119" height="36.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SWs-Ey-qQE" userLabel="Description Label">
