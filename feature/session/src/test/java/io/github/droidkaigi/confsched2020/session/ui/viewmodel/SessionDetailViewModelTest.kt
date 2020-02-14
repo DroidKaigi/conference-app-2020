@@ -160,7 +160,7 @@ class SessionDetailViewModelTest {
     fun thumbsUpCount() {
         coEvery {
             sessionRepository.thumbsUpCounts(Dummies.speachSession1.id)
-        } returns flowOf(Dummies.thumbsUpCount)
+        } returns flowOf(Dummies.thumbsUpCount.total)
         val sessionDetailViewModel = SessionDetailViewModel(
             sessionId = Dummies.speachSession1.id,
             sessionRepository = sessionRepository,
@@ -178,7 +178,7 @@ class SessionDetailViewModelTest {
             error shouldBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
-            totalThumbsUpCount shouldBe Dummies.thumbsUpCount
+            thumbsUpCount.total shouldBe Dummies.thumbsUpCount.total
         }
     }
 }
