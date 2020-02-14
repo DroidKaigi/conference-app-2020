@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.map
 import com.hadilq.liveevent.LiveEvent
+import io.github.droidkaigi.confsched2020.model.AppError
+import io.github.droidkaigi.confsched2020.model.errorGettable
 
 fun <T : Any> LiveData<T>.requireValue() = requireNotNull(value)
 
@@ -160,4 +162,20 @@ fun <T : Any> LiveData<T?>.toNonNullSingleEvent(): LiveData<T> {
         }
     }
     return result
+}
+
+fun <T> merge(vararg liveDatas: LiveData<T>): LiveData<T> {
+    return MediatorLiveData<T>().apply {
+        liveDatas.forEach { liveData ->
+            addSource(liveData) {value ->
+                this.value = value
+            }
+        }
+    }
+}
+
+fun <T: errorGettable> LiveData<T>.toAppError(): LiveData<AppError?> {
+    return map {
+        it.getErrorIfExists().toAppError()
+    }
 }
