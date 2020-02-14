@@ -95,7 +95,7 @@ class SessionDetailTitleItem @AssistedInject constructor(
                 val context = binding.incrementedThumbsUpCount.context
                 binding.incrementedThumbsUpCount.text = context.getString(
                     R.string.thumbs_up_increment_label,
-                    thumbsUpCount.incremented
+                    thumbsUpCount.incremented as Int // Need to specify a type for lintDebug task
                 )
                 binding.incrementedThumbsUpCount.showWithPopUpAnimation()
             } else {
