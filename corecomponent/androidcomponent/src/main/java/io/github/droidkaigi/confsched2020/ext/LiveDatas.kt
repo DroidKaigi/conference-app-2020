@@ -179,3 +179,9 @@ fun <T: errorGettable> LiveData<T>.toAppError(): LiveData<AppError?> {
         it.getErrorIfExists().toAppError()
     }
 }
+
+fun <T, R: Result<T>> LiveData<R>.fromResultToAppError(): LiveData<AppError?> {
+    return map {
+        it.exceptionOrNull()?.toAppError()
+    }
+}

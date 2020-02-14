@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.github.droidkaigi.confsched2020.ext.combine
+import io.github.droidkaigi.confsched2020.ext.fromResultToAppError
 import io.github.droidkaigi.confsched2020.ext.merge
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
@@ -77,11 +78,8 @@ class SessionDetailViewModel @AssistedInject constructor(
             }
     }
 
-    private val incrementThumbsUpCountLiveData: MutableLiveData<Int> =
-        MutableLiveData(0)
-
-    private val incrementThumbsUpCountErrorLiveData: MutableLiveData<AppError?> =
-        MutableLiveData(null)
+    private val incrementThumbsUpCountResultLiveData: MutableLiveData<Result<Int>> =
+        MutableLiveData(Result.success(0))
 
     private val incrementThumbsUpCountEvent: BroadcastChannel<Pair<SessionId, Int>> =
         BroadcastChannel(Channel.BUFFERED)
@@ -93,13 +91,13 @@ class SessionDetailViewModel @AssistedInject constructor(
         liveData2 = favoriteLoadingStateLiveData,
         liveData3 = descriptionTextExpandStateLiveData,
         liveData4 = totalThumbsUpCountLoadStateLiveData,
-        liveData5 = incrementThumbsUpCountLiveData
+        liveData5 = incrementThumbsUpCountResultLiveData
     ) { current: UiModel,
         sessionLoadState: LoadState<Session>,
         favoriteState: LoadingState,
         descriptionTextExpandState: TextExpandState,
         totalThumbsUpCountLoadState: LoadState<Int>,
-        incrementThumbsUpCount: Int ->
+        incrementThumbsUpCountResult: Result<Int> ->
         val isLoading =
             sessionLoadState.isLoading || favoriteState.isLoading
         val sessions = when (sessionLoadState) {
@@ -120,6 +118,8 @@ class SessionDetailViewModel @AssistedInject constructor(
             }
         }
 
+        val incrementThumbsUpCount = incrementThumbsUpCountResult.getOrDefault(0)
+
         val thumbsUpCount = ThumbsUpCount(
             total = totalThumbsUpCount,
             incremented = incrementThumbsUpCount,
@@ -139,7 +139,7 @@ class SessionDetailViewModel @AssistedInject constructor(
         sessionLoadStateLiveData.toAppError(),
         favoriteLoadingStateLiveData.toAppError(),
         totalThumbsUpCountLoadStateLiveData.toAppError(),
-        incrementThumbsUpCountErrorLiveData
+        incrementThumbsUpCountResultLiveData.fromResultToAppError()
     )
 
     init {
@@ -147,7 +147,7 @@ class SessionDetailViewModel @AssistedInject constructor(
             setupIncrementThumbsUpEvent()
         }
         // For debug
-        incrementThumbsUpCountLiveData.observeForever {
+        incrementThumbsUpCountResultLiveData.observeForever {
             Timber.debug { "⭐ increment livedata $it" }
         }
     }
@@ -169,9 +169,13 @@ class SessionDetailViewModel @AssistedInject constructor(
     }
 
     fun thumbsUp(session: Session) {
-        val now = incrementThumbsUpCountLiveData.value ?: 0
-        val incremented = minOf(now + 1, MAX_APPLY_COUNT)
-        incrementThumbsUpCountLiveData.value = incremented
+        val liveDataValue = incrementThumbsUpCountResultLiveData.value
+        // Result type cannot be use as la left operand of '?.'
+        val currentIncremented = if (liveDataValue != null) {
+            liveDataValue.getOrDefault(0)
+        } else { 0 }
+        val incremented = minOf(currentIncremented + 1, MAX_APPLY_COUNT)
+        incrementThumbsUpCountResultLiveData.value = Result.success(incremented)
 
         viewModelScope.launch {
             incrementThumbsUpCountEvent.send(session.id to incremented)
@@ -189,11 +193,12 @@ class SessionDetailViewModel @AssistedInject constructor(
                         count = count
                     )
                     Timber.debug { "⭐ increment $count posted" }
+                    // Return initial value
+                    incrementThumbsUpCountResultLiveData.value = Result.success(0)
                 } catch (e: Exception) {
                     Timber.debug { "⭐ error $e" }
-                    incrementThumbsUpCountErrorLiveData.value = e.toAppError()
+                    incrementThumbsUpCountResultLiveData.value = Result.failure(e)
                 }
-                incrementThumbsUpCountLiveData.value = 0
             }
     }
 
