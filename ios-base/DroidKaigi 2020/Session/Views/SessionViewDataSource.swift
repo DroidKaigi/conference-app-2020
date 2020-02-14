@@ -87,10 +87,12 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
         }
 
         cell.bookmarkButton.isSelected = session.isFavorited
+        cell.descriptionText = type == .event ? session.desc : ""
 
-        if let speechSession = session as? SpeechSession {
-            cell.sessionMessage = speechSession.message?.currentLangString ?? ""
-            cell.descriptionText = type == .event ? speechSession.desc : ""
+        if let speechSession = session as? SpeechSession, let message = speechSession.message {
+            cell.sessionMessage = message.currentLangString
+        } else {
+            cell.sessionMessage = ""
         }
 
         return cell
