@@ -31,6 +31,7 @@ final class SessionCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var minutesAndRoomLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var sessionMessageLabel: UILabel!
     @IBOutlet weak var speakersStackView: UIStackView!
     @IBOutlet weak var titleLeftConstraint: NSLayoutConstraint!

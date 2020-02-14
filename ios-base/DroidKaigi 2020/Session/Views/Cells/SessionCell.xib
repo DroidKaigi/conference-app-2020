@@ -11,10 +11,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="SessionCell" customModule="DroidKaigi_2020" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="333" height="127"/>
+            <rect key="frame" x="0.0" y="0.0" width="333" height="191"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="333" height="127"/>
+                <rect key="frame" x="0.0" y="0.0" width="333" height="191"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cao-qe-aav">
@@ -77,13 +77,19 @@
                         <state key="normal" image="ic_bookmark_border"/>
                     </button>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="rMR-Ci-Z50">
-                        <rect key="frame" x="76" y="63" width="187.5" height="25"/>
+                        <rect key="frame" x="76" y="63" width="187.5" height="66.5"/>
                         <constraints>
                             <constraint firstAttribute="height" priority="250" id="PQ4-Ov-b0v"/>
                         </constraints>
                     </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SWs-Ey-qQE" userLabel="Description Label">
+                        <rect key="frame" x="76" y="133.5" width="65" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.015686274509803921" green="0.11764705882352941" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Session Message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p04-rT-1az">
-                        <rect key="frame" x="76" y="88" width="119" height="18"/>
+                        <rect key="frame" x="76" y="152" width="119" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -95,10 +101,11 @@
                 <constraint firstItem="UDC-5H-VPQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9um-YV-m4J" secondAttribute="trailing" priority="750" constant="10" id="5hl-OH-p22"/>
                 <constraint firstItem="9um-YV-m4J" firstAttribute="leading" secondItem="dzM-Ka-b3H" secondAttribute="leading" id="860-Da-CXl"/>
                 <constraint firstItem="dzM-Ka-b3H" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="76" id="CS0-Iy-yAT"/>
+                <constraint firstItem="UDC-5H-VPQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="SWs-Ey-qQE" secondAttribute="trailing" priority="750" constant="10" id="CZ7-3y-xPW"/>
                 <constraint firstItem="p04-rT-1az" firstAttribute="leading" secondItem="9um-YV-m4J" secondAttribute="leading" id="FQj-N7-Ngr"/>
                 <constraint firstItem="UDC-5H-VPQ" firstAttribute="centerY" secondItem="IOg-3L-cDY" secondAttribute="centerY" id="Hss-oV-oVM"/>
                 <constraint firstItem="rMR-Ci-Z50" firstAttribute="trailing" secondItem="9um-YV-m4J" secondAttribute="trailing" id="NKT-UD-I2j"/>
-                <constraint firstItem="p04-rT-1az" firstAttribute="top" secondItem="rMR-Ci-Z50" secondAttribute="bottom" id="Pfa-jg-7Sh"/>
+                <constraint firstItem="p04-rT-1az" firstAttribute="top" secondItem="SWs-Ey-qQE" secondAttribute="bottom" constant="4" id="Pfa-jg-7Sh"/>
                 <constraint firstItem="im2-JF-3n2" firstAttribute="centerY" secondItem="dzM-Ka-b3H" secondAttribute="centerY" id="Pl1-FK-vVo"/>
                 <constraint firstItem="cao-qe-aav" firstAttribute="top" secondItem="dzM-Ka-b3H" secondAttribute="top" id="ZGW-Rb-ks3"/>
                 <constraint firstAttribute="bottom" secondItem="p04-rT-1az" secondAttribute="bottom" constant="21" id="cHJ-lG-2Z8"/>
@@ -108,16 +115,19 @@
                 <constraint firstItem="cao-qe-aav" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="heg-Ai-umh"/>
                 <constraint firstItem="IOg-3L-cDY" firstAttribute="centerY" secondItem="dzM-Ka-b3H" secondAttribute="centerY" id="jlV-6L-K6A"/>
                 <constraint firstItem="pV1-fq-chY" firstAttribute="centerY" secondItem="dzM-Ka-b3H" secondAttribute="centerY" priority="250" id="rEq-Z5-aEl"/>
+                <constraint firstItem="SWs-Ey-qQE" firstAttribute="top" secondItem="rMR-Ci-Z50" secondAttribute="bottom" constant="4" id="tQ8-dH-YzV"/>
+                <constraint firstItem="SWs-Ey-qQE" firstAttribute="leading" secondItem="9um-YV-m4J" secondAttribute="leading" id="uaz-Ha-fBO"/>
                 <constraint firstItem="rMR-Ci-Z50" firstAttribute="leading" secondItem="9um-YV-m4J" secondAttribute="leading" id="wiI-uw-rU2"/>
                 <constraint firstItem="UDC-5H-VPQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="p04-rT-1az" secondAttribute="trailing" priority="750" constant="10" id="xVd-F0-ZDj"/>
                 <constraint firstItem="9um-YV-m4J" firstAttribute="top" secondItem="dzM-Ka-b3H" secondAttribute="bottom" constant="10" id="xjr-fn-0T4"/>
                 <constraint firstAttribute="trailing" secondItem="UDC-5H-VPQ" secondAttribute="trailing" constant="21" id="zid-fH-gpB"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
-            <size key="customSize" width="333" height="145"/>
+            <size key="customSize" width="333" height="209"/>
             <connections>
                 <outlet property="bookmarkButton" destination="UDC-5H-VPQ" id="fKW-9Z-1uA"/>
                 <outlet property="dateLabelInFirstFavoriteSession" destination="im2-JF-3n2" id="SsM-jz-U4N"/>
+                <outlet property="descriptionLabel" destination="SWs-Ey-qQE" id="x4G-ta-F9e"/>
                 <outlet property="liveBadge" destination="IOg-3L-cDY" id="ba8-0h-X3w"/>
                 <outlet property="minutesAndRoomLabel" destination="dzM-Ka-b3H" id="MOZ-21-mYg"/>
                 <outlet property="sessionMessageLabel" destination="p04-rT-1az" id="0vo-aa-h0P"/>
@@ -126,7 +136,7 @@
                 <outlet property="titleLabel" destination="9um-YV-m4J" id="YlV-X6-UuE"/>
                 <outlet property="titleLeftConstraint" destination="CS0-Iy-yAT" id="1VV-aY-9Gh"/>
             </connections>
-            <point key="canvasLocation" x="189" y="128"/>
+            <point key="canvasLocation" x="187.68115942028987" y="148.99553571428569"/>
         </collectionViewCell>
     </objects>
     <resources>

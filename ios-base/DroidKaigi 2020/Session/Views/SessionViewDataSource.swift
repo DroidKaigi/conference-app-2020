@@ -94,6 +94,12 @@ final class SessionViewDataSource: NSObject, UICollectionViewDataSource {
             cell.sessionMessageLabel.text = nil
         }
 
+        if let speechSession = session as? SpeechSession, type == .event {
+            cell.descriptionLabel.text = speechSession.desc
+        } else {
+            cell.descriptionLabel.text = nil
+        }
+
         return cell
     }
 }
