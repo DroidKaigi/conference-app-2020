@@ -88,7 +88,6 @@ class SessionDetailTitleItem @AssistedInject constructor(
                 thumbsUpListener.invoke()
             }
 
-
             binding.thumbsUpCount = thumbsUpCount
             if (!thumbsUpCount.incrementedUpdated) {
                 return
