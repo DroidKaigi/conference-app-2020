@@ -167,20 +167,20 @@ fun <T : Any> LiveData<T?>.toNonNullSingleEvent(): LiveData<T> {
 fun <T> merge(vararg liveDatas: LiveData<T>): LiveData<T> {
     return MediatorLiveData<T>().apply {
         liveDatas.forEach { liveData ->
-            addSource(liveData) {value ->
+            addSource(liveData) { value ->
                 this.value = value
             }
         }
     }
 }
 
-fun <T: errorGettable> LiveData<T>.toAppError(): LiveData<AppError?> {
+fun <T : errorGettable> LiveData<T>.toAppError(): LiveData<AppError?> {
     return map {
         it.getErrorIfExists().toAppError()
     }
 }
 
-fun <T, R: Result<T>> LiveData<R>.fromResultToAppError(): LiveData<AppError?> {
+fun <T, R : Result<T>> LiveData<R>.fromResultToAppError(): LiveData<AppError?> {
     return map {
         it.exceptionOrNull()?.toAppError()
     }
