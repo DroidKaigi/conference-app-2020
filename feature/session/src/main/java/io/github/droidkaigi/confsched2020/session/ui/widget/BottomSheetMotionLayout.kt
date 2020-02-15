@@ -45,7 +45,6 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
         if (parent == null) return null
         return (parent as? View)?.findParentImpl<T>(clazz)
     }
-    // NestedScrollingParent3
 
     // NestedScrollingParent3
     override fun onNestedScroll(
@@ -62,8 +61,6 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
             consumed
         )
     }
-
-    // NestedScrollingParent2
 
     // NestedScrollingParent2
     override fun onStartNestedScroll(
@@ -120,8 +117,6 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
             type
         )
     }
-
-    // NestedScrollingParent
 
     // NestedScrollingParent
     override fun onStartNestedScroll(
