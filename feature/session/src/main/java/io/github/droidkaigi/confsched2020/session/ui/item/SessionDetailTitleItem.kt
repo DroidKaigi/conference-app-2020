@@ -5,6 +5,8 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.BackgroundColorSpan
 import android.view.View
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.doOnPreDraw
@@ -129,15 +131,17 @@ class SessionDetailTitleItem @AssistedInject constructor(
         lifecycleCoroutineScope.launch {
             target.isVisible = true
             target.awaitNextLayout()
-            val popupHeight = (target.height / 2).toFloat()
+            val popupHeight = (target.height / 3).toFloat()
             target.translationY = popupHeight
 
             val fadeIn = async {
+                target.alpha = 0f
                 ObjectAnimator.ofFloat(
                     target,
                     View.ALPHA,
                     1f
                 ).run {
+                    interpolator = DecelerateInterpolator()
                     start()
                     awaitEnd()
                 }
@@ -149,6 +153,7 @@ class SessionDetailTitleItem @AssistedInject constructor(
                     View.TRANSLATION_Y,
                     -popupHeight
                 ).run {
+                    interpolator = DecelerateInterpolator()
                     duration = 100
                     start()
                     awaitEnd()
@@ -164,7 +169,7 @@ class SessionDetailTitleItem @AssistedInject constructor(
         val target = this
 
         lifecycleCoroutineScope.launch {
-            val popupHeight = (target.height / 2).toFloat()
+            val popupHeight = (target.height / 3).toFloat()
 
             val fadeOut = async {
                 ObjectAnimator.ofFloat(
@@ -172,6 +177,7 @@ class SessionDetailTitleItem @AssistedInject constructor(
                     View.ALPHA,
                     0f
                 ).run {
+                    interpolator = AccelerateInterpolator()
                     duration = 100
                     start()
                     awaitEnd()
@@ -184,6 +190,7 @@ class SessionDetailTitleItem @AssistedInject constructor(
                     View.TRANSLATION_Y,
                     popupHeight
                 ).run {
+                    interpolator = AccelerateInterpolator()
                     duration = 100
                     start()
                     awaitEnd()
