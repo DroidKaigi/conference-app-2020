@@ -185,6 +185,7 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
             searchView.setQuery("", true)
             true
         }
+        searchView.maxWidth = Int.MAX_VALUE
     }
 
     companion object {
