@@ -98,6 +98,9 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="height" priority="250" id="pKC-Ud-QYX"/>
+                        </constraints>
                     </stackView>
                 </subviews>
             </view>
