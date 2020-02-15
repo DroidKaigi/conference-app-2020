@@ -106,24 +106,28 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
         binding.sessionMotionLayout.doOnApplyWindowInsets { _, insets, initialState ->
             lifecycleScope.launchWhenStarted {
                 binding.startFilter.awaitNextLayout()
-                val filterButton = binding.startFilter.measuredHeight
-                binding.sessionMotionLayout.getConstraintSet(R.id.collapsed)?.let { constraintSet ->
-                    constraintSet.setTranslationY(
-                        R.id.divider,
-                        gestureSpace.gestureSpaceSize + insets.systemWindowInsetBottom.toFloat() + peekHeight - filterButton
-                    )
-                    constraintSet.setTranslationY(
-                        R.id.divider_shadow,
-                        gestureSpace.gestureSpaceSize + insets.systemWindowInsetBottom.toFloat() + peekHeight - filterButton
-                    )
-                    constraintSet.setTranslationY(
-                        R.id.session_recycler,
-                        gestureSpace.gestureSpaceSize + insets.systemWindowInsetBottom.toFloat() + peekHeight - filterButton
-                    )
-                }
+                val filterButtonHeight = binding.startFilter.measuredHeight
+                binding.sessionMotionLayout
+                    .getConstraintSet(R.id.collapsed)?.let { constraintSet ->
+                        val topSpace = peekHeight - filterButtonHeight
+                        val y = gestureSpace.gestureSpaceSize +
+                            insets.systemWindowInsetBottom.toFloat() +
+                            topSpace
+                        constraintSet.setTranslationY(
+                            R.id.divider,
+                            y
+                        )
+                        constraintSet.setTranslationY(
+                            R.id.divider_shadow,
+                            y
+                        )
+                        constraintSet.setTranslationY(
+                            R.id.session_recycler,
+                            y
+                        )
+                    }
             }
         }
-
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             val shouldBeCollapsed = when (uiModel.expandFilterState) {
