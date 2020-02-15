@@ -89,6 +89,7 @@ class SessionDetailTitleItem @AssistedInject constructor(
                 return
             } else if (thumbsUpCount.incremented > 0) {
                 val context = binding.incrementedThumbsUpCount.context
+                @Suppress("USELESS_CAST")
                 binding.incrementedThumbsUpCount.text = context.getString(
                     R.string.thumbs_up_increment_label,
                     thumbsUpCount.incremented as Int // Need to specify a type for lintDebug task
