@@ -111,6 +111,7 @@ dependencies {
     implementation(Dep.AndroidX.coreKtx)
     implementation(Dep.AndroidX.constraint)
     implementation(Dep.AndroidX.activityKtx)
+    implementation(Dep.AndroidX.Work.runtimeKtx)
     implementation(Dep.Firebase.firestoreKtx)
     implementation(Dep.Firebase.crashlytics)
     implementation(Dep.Firebase.analytics)

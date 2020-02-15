@@ -2,10 +2,10 @@
     <!-- Session -->
     <string name="session_label">Sessions</string>
     <!-- Speaker -->
-    <string name="speaker_label" translatable="false">Speaker</string>
+    <string name="speaker_label">Speaker</string>
 
     <!-- Material -->
-    <string name="material_label" translatable="false">Material</string>
+    <string name="material_label">Material</string>
     <!-- Announce -->
     <string name="announce_label">Announcements</string>
     <!-- About -->
@@ -36,6 +36,7 @@
     <string name="notification_message_session_title">%1$s will start soon</string>
     <string name="notification_message_session_start_time">%1$s to %2$s @ %3$s</string>
     <string name="notification_channel_name_start_favorite_session">start favorite session</string>
+    <string name="notification_channel_name_announcement">Announcement</string>
     <!-- Tabular Form -->
     <string name="tabular_form_label">Timetable</string>
     <!-- Preference -->

@@ -119,7 +119,7 @@ object Dep {
         val auth = "com.google.firebase:firebase-auth:18.1.0"
         val crashlytics = "com.google.firebase:firebase-crashlytics:17.0.0-beta01"
         val analytics = "com.google.firebase:firebase-analytics:17.2.2"
-        val messaging = "com.google.firebase:firebase-messaging:17.3.3"
+        val messaging = "com.google.firebase:firebase-messaging:20.1.0"
     }
 
     object PlayServices {

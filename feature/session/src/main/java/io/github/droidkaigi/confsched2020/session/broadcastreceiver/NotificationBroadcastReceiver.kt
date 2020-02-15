@@ -6,12 +6,12 @@ import android.content.Context
 import android.content.Intent
 import androidx.navigation.NavDeepLinkBuilder
 import io.github.droidkaigi.confsched2020.model.SessionId
+import io.github.droidkaigi.confsched2020.notification.NotificationUtil
 import io.github.droidkaigi.confsched2020.session.ui.SessionDetailFragmentArgs
 import io.github.droidkaigi.confsched2020.session.util.SessionAlarm.Companion.EXTRA_CHANNEL_ID
 import io.github.droidkaigi.confsched2020.session.util.SessionAlarm.Companion.EXTRA_SESSION_ID
 import io.github.droidkaigi.confsched2020.session.util.SessionAlarm.Companion.EXTRA_TEXT
 import io.github.droidkaigi.confsched2020.session.util.SessionAlarm.Companion.EXTRA_TITLE
-import io.github.droidkaigi.confsched2020.util.NotificationUtil.showNotification
 import io.github.droidkaigi.confsched2020.widget.component.R
 
 class NotificationBroadcastReceiver : BroadcastReceiver() {
@@ -29,6 +29,6 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
             .setArguments(SessionDetailFragmentArgs(SessionId(sessionId), "").toBundle())
             .createTaskStackBuilder()
             .getPendingIntent(sessionId.hashCode(), PendingIntent.FLAG_UPDATE_CURRENT) ?: return
-        showNotification(context, title, text, pendingIntent, channelId)
+        NotificationUtil.showNotification(context, title, text, pendingIntent, channelId)
     }
 }
