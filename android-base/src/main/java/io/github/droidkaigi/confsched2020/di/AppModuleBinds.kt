@@ -7,6 +7,7 @@ import io.github.droidkaigi.confsched2020.initializer.AppInitializer
 import io.github.droidkaigi.confsched2020.initializer.AppInjector
 import io.github.droidkaigi.confsched2020.initializer.CoilInitializer
 import io.github.droidkaigi.confsched2020.initializer.EmojiInitializer
+import io.github.droidkaigi.confsched2020.initializer.FirebaseMessagingInitializer
 import io.github.droidkaigi.confsched2020.initializer.FirestoreInitializer
 import io.github.droidkaigi.confsched2020.initializer.ThemeInitializer
 import io.github.droidkaigi.confsched2020.initializer.TimberInitializer
@@ -28,6 +29,12 @@ abstract class AppModuleBinds {
     @Binds
     @IntoSet
     abstract fun provideFirestoreInitializer(bind: FirestoreInitializer): AppInitializer
+
+    @Binds
+    @IntoSet
+    abstract fun provideFirebaseMessagingInitializer(
+        bind: FirebaseMessagingInitializer
+    ): AppInitializer
 
     @Binds
     @IntoSet

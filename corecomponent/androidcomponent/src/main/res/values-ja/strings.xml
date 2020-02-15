@@ -20,6 +20,7 @@
     <string name="notification_message_session_title">%1$s がもうすぐ始まります。</string>
     <string name="notification_message_session_start_time">%1$s ~ %2$s @ %3$s</string>
     <string name="notification_channel_name_start_favorite_session">マイセッションの開始</string>
+    <string name="notification_channel_name_announcement">運営からの広報</string>
     <string name="tabular_form_label">タイムテーブル</string>
     <!-- Preference -->
     <string name="pref_theme_entry_default">端末設定に従う</string>

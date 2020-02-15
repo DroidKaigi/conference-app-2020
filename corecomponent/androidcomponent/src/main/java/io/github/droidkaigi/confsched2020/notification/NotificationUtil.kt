@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2020.util
+package io.github.droidkaigi.confsched2020.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -19,9 +19,16 @@ object NotificationUtil {
         pendingIntent: PendingIntent,
         channelId: String
     ) {
-        val notificationBuilder = notificationBuilder(context, channelId).apply {
+        val notificationBuilder = notificationBuilder(
+            context,
+            channelId
+        ).apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                showBundleNotification(context, title, channelId)
+                showBundleNotification(
+                    context,
+                    title,
+                    channelId
+                )
                 setGroup(channelId)
             } else {
                 setContentTitle(title)
@@ -34,7 +41,7 @@ object NotificationUtil {
             setContentIntent(pendingIntent)
             setAutoCancel(true)
             // FIXME: Please replace with transparent icon
-            setSmallIcon(R.mipmap.notification_icon)
+            setSmallIcon(R.drawable.ic_logo)
         }
 
         val notificationManagerCompat = NotificationManagerCompat.from(context)
@@ -44,13 +51,15 @@ object NotificationUtil {
     @RequiresApi(Build.VERSION_CODES.N)
     private fun showBundleNotification(context: Context, title: String, channelId: String) {
         val notificationManager = context.getSystemService(NotificationManager::class.java)
-        val notification = notificationBuilder(context, channelId)
+        val notification = notificationBuilder(
+            context,
+            channelId
+        )
             .setStyle(
                 NotificationCompat.BigTextStyle()
                     .setSummaryText(title)
             )
-            // FIXME: Please replace with transparent icon
-            .setSmallIcon(R.mipmap.notification_icon)
+            .setSmallIcon(R.drawable.ic_logo)
             .setGroup(channelId)
             .setGroupSummary(true)
             .setAutoCancel(true)
@@ -63,7 +72,12 @@ object NotificationUtil {
         channelId: String
     ): NotificationCompat.Builder {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createDefaultNotificationChannel(context, NotificationChannelInfo.of(channelId))
+            createDefaultNotificationChannel(
+                context,
+                NotificationChannelInfo.of(
+                    channelId
+                )
+            )
         }
         val builder = NotificationCompat.Builder(context, channelId)
         builder.setChannelId(channelId)
@@ -87,15 +101,23 @@ object NotificationUtil {
 
 enum class NotificationChannelInfo(
     val channelId: String,
-    private val channelNameResId: Int
+    private val channelNameResId: Int,
+    val defaultLaunchUrl: String
 ) {
     DEFAULT(
         "default_channel",
-        R.string.app_name
+        R.string.app_name,
+        "https://droidkaigi.jp/2020"
     ),
     FAVORITE_SESSION_START(
         "favorite_session_start_channel",
-        R.string.notification_channel_name_start_favorite_session
+        R.string.notification_channel_name_start_favorite_session,
+        "https://droidkaigi.jp/2020"
+    ),
+    ANNOUNCEMENT(
+        "announcement",
+        R.string.notification_channel_name_announcement,
+        "https://droidkaigi.jp/2020/announcement"
     );
 
     fun channelName(context: Context): String = context.getString(channelNameResId)

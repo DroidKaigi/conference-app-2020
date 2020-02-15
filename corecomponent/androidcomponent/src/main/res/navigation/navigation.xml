@@ -49,6 +49,9 @@
             app:exitAnim="@anim/fade_out"
             app:popExitAnim="@anim/fade_out"
             />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="https://droidkaigi.jp/2020" />
     </fragment>
     <fragment
         android:id="@+id/sessions"

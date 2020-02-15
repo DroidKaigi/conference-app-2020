@@ -27,15 +27,42 @@ final class SessionCell: UICollectionViewCell {
         }
     }
 
+    @IBOutlet private weak var descriptionLabel: UILabel! {
+        didSet {
+            descriptionLabel.isHidden = true
+        }
+    }
+
+    @IBOutlet private weak var sessionMessageLabel: UILabel! {
+        didSet {
+            sessionMessageLabel.isHidden = true
+        }
+    }
+
     @IBOutlet weak var dateLabelInFirstFavoriteSession: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var minutesAndRoomLabel: UILabel!
-    @IBOutlet weak var sessionMessageLabel: UILabel!
     @IBOutlet weak var speakersStackView: UIStackView!
     @IBOutlet weak var titleLeftConstraint: NSLayoutConstraint!
 
     var disposeBag = DisposeBag()
+
+    var descriptionText: String {
+        get { descriptionLabel.text ?? "" }
+        set {
+            descriptionLabel.text = newValue
+            descriptionLabel.isHidden = newValue.isEmpty
+        }
+    }
+
+    var sessionMessage: String {
+        get { sessionMessageLabel.text ?? "" }
+        set {
+            sessionMessageLabel.text = newValue
+            sessionMessageLabel.isHidden = newValue.isEmpty
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -95,5 +122,7 @@ final class SessionCell: UICollectionViewCell {
             speakersStackView.removeArrangedSubview(subview)
         }
         dateLabelInFirstFavoriteSession.isHidden = true
+        descriptionLabel.isHidden = true
+        sessionMessageLabel.isHidden = true
     }
 }
