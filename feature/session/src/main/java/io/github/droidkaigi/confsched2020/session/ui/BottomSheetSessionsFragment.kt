@@ -185,6 +185,26 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
                 // https://github.com/DroidKaigi/conference-app-2020/issues/117#issuecomment-581151289
                 binding.sessionRecycler.scrollBy(0, 0)
             }
+
+            binding.sessionMotionLayout.getConstraintSet(R.id.expaned)
+                .setVisibility(
+                    R.id.start_filter,
+                    when (page) {
+                        is SessionPage.Day -> {
+                            View.VISIBLE
+                        }
+                        SessionPage.Event -> {
+                            View.INVISIBLE
+                        }
+                        SessionPage.Favorite -> {
+                            if (sessions.isEmpty() && !uiModel.filters.isFiltered()) {
+                                View.INVISIBLE
+                            } else {
+                                View.VISIBLE
+                            }
+                        }
+                    }
+                )
         }
     }
 

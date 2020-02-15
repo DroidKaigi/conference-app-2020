@@ -70,7 +70,6 @@
             android:text="@{isFiltered ? @string/filter_now : @string/start_filter}"
             android:textAppearance="@style/TextAppearance.DroidKaigi.Body2"
             app:icon="@drawable/ic_filter_list_black_24dp"
-            app:isInvisible="@{(isEmptyFavoritePage &amp;&amp; !isFiltered) || isCollapsed || isEventPage}"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toTopOf="parent"
             />
@@ -85,7 +84,6 @@
             android:padding="16dp"
             android:src="@drawable/ic_expand_less_12dp"
             android:visibility="invisible"
-            app:isInvisible="@{!isCollapsed}"
             app:layout_constraintBottom_toBottomOf="@id/start_filter"
             app:layout_constraintEnd_toEndOf="@id/start_filter"
             app:layout_constraintTop_toTopOf="@id/start_filter"
