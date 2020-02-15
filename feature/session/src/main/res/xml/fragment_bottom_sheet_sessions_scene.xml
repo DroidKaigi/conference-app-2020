@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <ConstraintSet android:id="@+id/expaned">
+        <Constraint android:id="@+id/divider">
+            <Transform android:translationY="0dp" />
+            <PropertySet app:visibilityMode="ignore" />
+        </Constraint>
+        <Constraint android:id="@+id/divider_shadow">
+            <Transform android:translationY="0dp" />
+            <PropertySet app:visibilityMode="ignore" />
+        </Constraint>
+        <Constraint android:id="@+id/session_recycler">
+            <PropertySet android:alpha="1.0" />
+            <Transform android:translationY="0dp" />
+        </Constraint>
+        <Constraint android:id="@+id/expand_less">
+            <PropertySet android:visibility="invisible" />
+        </Constraint>
+        <Constraint android:id="@+id/filtered_session_count">
+            <PropertySet app:visibilityMode="ignore" />
+        </Constraint>
+        <Constraint android:id="@+id/empty_session">
+            <PropertySet app:visibilityMode="ignore" />
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/collapsed">
+        <Constraint android:id="@+id/divider">
+            <Transform android:translationY="64dp" />
+            <PropertySet app:visibilityMode="ignore" />
+        </Constraint>
+        <Constraint android:id="@+id/divider_shadow">
+            <Transform android:translationY="64dp" />
+            <PropertySet app:visibilityMode="ignore" />
+        </Constraint>
+        <Constraint android:id="@+id/session_recycler">
+            <PropertySet android:alpha="0.0" />
+            <Transform android:translationY="64dp" />
+        </Constraint>
+        <Constraint android:id="@+id/start_filter">
+            <PropertySet android:visibility="invisible" />
+        </Constraint>
+        <Constraint android:id="@+id/expand_less">
+            <PropertySet android:visibility="visible" />
+        </Constraint>
+        <Constraint android:id="@+id/filtered_session_count">
+            <PropertySet app:visibilityMode="ignore" />
+        </Constraint>>
+        <Constraint android:id="@+id/empty_session">
+            <PropertySet app:visibilityMode="ignore" />
+        </Constraint>
+    </ConstraintSet>
+
+
+    <Transition
+        app:constraintSetEnd="@id/collapsed"
+        app:constraintSetStart="@+id/expaned"
+        />
+</MotionScene>

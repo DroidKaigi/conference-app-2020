@@ -203,7 +203,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="bottom"
                 app:behavior_hideable="false"
-                app:behavior_peekHeight="64dp"
+                app:behavior_peekHeight="@dimen/bottom_sheet_default_peek_height"
                 app:behavior_skipCollapsed="true"
                 app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
                 tools:layout="@layout/fragment_bottom_sheet_sessions"

@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
-import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -38,6 +37,7 @@ import io.github.droidkaigi.confsched2020.session.ui.item.SessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewModel
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.ui.widget.FilterChip
+import io.github.droidkaigi.confsched2020.ui.widget.BottomGestureSpace
 import io.github.droidkaigi.confsched2020.ui.widget.onCheckedChanged
 import javax.inject.Inject
 import javax.inject.Provider
@@ -90,14 +90,11 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjecto
 
         initBottomSheetShapeAppearance(binding)
         val initialPeekHeight = sessionSheetBehavior.peekHeight
-        val gestureNavigationBottomSpace =
-            if (isEdgeToEdgeEnabled())
-                resources.getDimension(R.dimen.gesture_navigation_bottom_space).toInt()
-            else 0
+        val gestureSpace = BottomGestureSpace(resources)
 
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight =
-                insets.systemWindowInsetBottom + initialPeekHeight + gestureNavigationBottomSpace
+                insets.systemWindowInsetBottom + initialPeekHeight + gestureSpace.gestureSpaceSize
             binding.filterView.updatePadding(
                 bottom = initialPeekHeight + resources.getDimensionPixelSize(
                     R.dimen.session_filter_view_padding_bottom
@@ -226,23 +223,6 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjecto
     override fun onPause() {
         super.onPause()
         overrideBackPressedCallback.isEnabled = false
-    }
-
-    /**
-     * judge gesture navigation is enabled
-     * https://android.googlesource.com/platform/packages/apps/Settings.git/+/refs/heads/master/src/com/android/settings/gestures/SystemNavigationPreferenceController.java#97
-     *
-     * If configNavBarInteractionMode is equal to "2", it means gesture navigation
-     * https://android.googlesource.com/platform/frameworks/base/+/refs/heads/android10-mainline-release/core/java/android/view/WindowManagerPolicyConstants.java#60
-     * */
-    private fun isEdgeToEdgeEnabled(): Boolean {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) return false
-        val configNavBarInteractionMode = Resources.getSystem().getIdentifier(
-            "config_navBarInteractionMode",
-            "integer",
-            "android"
-        )
-        return (context?.resources?.getInteger(configNavBarInteractionMode) == 2)
     }
 
     private inline fun <reified T> ChipGroup.setupFilter(

@@ -23,8 +23,9 @@
             type="Boolean" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/session"
+    <io.github.droidkaigi.confsched2020.session.ui.widget.BottomSheetMotionLayout
+        android:id="@+id/session_motion_layout"
+        app:layoutDescription="@xml/fragment_bottom_sheet_sessions_scene"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
@@ -69,7 +70,6 @@
             android:text="@{isFiltered ? @string/filter_now : @string/start_filter}"
             android:textAppearance="@style/TextAppearance.DroidKaigi.Body2"
             app:icon="@drawable/ic_filter_list_black_24dp"
-            app:isInvisible="@{(isEmptyFavoritePage &amp;&amp; !isFiltered) || isCollapsed || isEventPage}"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toTopOf="parent"
             />
@@ -84,7 +84,6 @@
             android:padding="16dp"
             android:src="@drawable/ic_expand_less_12dp"
             android:visibility="invisible"
-            app:isInvisible="@{!isCollapsed}"
             app:layout_constraintBottom_toBottomOf="@id/start_filter"
             app:layout_constraintEnd_toEndOf="@id/start_filter"
             app:layout_constraintTop_toTopOf="@id/start_filter"
@@ -120,13 +119,12 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingTop="8dp"
-            app:isInvisible="@{isCollapsed || isEmptyFavoritePage}"
             android:splitMotionEvents="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/start_filter"
+            app:layout_constraintTop_toBottomOf="@id/divider_shadow"
             tools:listitem="@layout/item_session"
             />
 
@@ -171,5 +169,5 @@
                 app:layout_constraintTop_toBottomOf="@+id/empty_icon"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </io.github.droidkaigi.confsched2020.session.ui.widget.BottomSheetMotionLayout>
 </layout>

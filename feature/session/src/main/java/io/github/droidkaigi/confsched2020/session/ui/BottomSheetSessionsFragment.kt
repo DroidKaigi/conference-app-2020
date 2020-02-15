@@ -9,6 +9,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,8 +31,11 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionTabViewMod
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.session.ui.widget.SessionsItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
+import io.github.droidkaigi.confsched2020.ui.widget.BottomGestureSpace
+import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import javax.inject.Provider
+import kotlin.coroutines.resume
 
 class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sessions), Injectable {
 
@@ -95,6 +99,35 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
                 bottom = insets.systemWindowInsetBottom + initialState.paddings.bottom
             )
         }
+        val gestureSpace = BottomGestureSpace(resources)
+        val peekHeight =
+            resources.getDimensionPixelSize(R.dimen.bottom_sheet_default_peek_height)
+
+        binding.sessionMotionLayout.doOnApplyWindowInsets { _, insets, initialState ->
+            lifecycleScope.launchWhenStarted {
+                binding.startFilter.awaitNextLayout()
+                val filterButtonHeight = binding.startFilter.measuredHeight
+                binding.sessionMotionLayout
+                    .getConstraintSet(R.id.collapsed)?.let { constraintSet ->
+                        val bottomSpace = peekHeight - filterButtonHeight
+                        val y = gestureSpace.gestureSpaceSize +
+                            insets.systemWindowInsetBottom.toFloat() +
+                            bottomSpace
+                        constraintSet.setTranslationY(
+                            R.id.divider,
+                            y
+                        )
+                        constraintSet.setTranslationY(
+                            R.id.divider_shadow,
+                            y
+                        )
+                        constraintSet.setTranslationY(
+                            R.id.session_recycler,
+                            y
+                        )
+                    }
+            }
+        }
 
         sessionTabViewModel.uiModel.observe(viewLifecycleOwner) { uiModel ->
             val shouldBeCollapsed = when (uiModel.expandFilterState) {
@@ -156,7 +189,62 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
                 // https://github.com/DroidKaigi/conference-app-2020/issues/117#issuecomment-581151289
                 binding.sessionRecycler.scrollBy(0, 0)
             }
+
+            binding.sessionMotionLayout.getConstraintSet(R.id.expaned)
+                .setVisibility(
+                    R.id.start_filter,
+                    when (page) {
+                        is SessionPage.Day -> {
+                            View.VISIBLE
+                        }
+                        SessionPage.Event -> {
+                            View.INVISIBLE
+                        }
+                        SessionPage.Favorite -> {
+                            if (sessions.isEmpty() && !uiModel.filters.isFiltered()) {
+                                View.INVISIBLE
+                            } else {
+                                View.VISIBLE
+                            }
+                        }
+                    }
+                )
         }
+    }
+
+    // from: https://medium.com/androiddevelopers/suspending-over-views-19de9ebd7020
+    private suspend fun View.awaitNextLayout() = suspendCancellableCoroutine<Unit> { cont ->
+        // This lambda is invoked immediately, allowing us to create
+        // a callback/listener
+
+        val listener = object : View.OnLayoutChangeListener {
+
+            override fun onLayoutChange(
+                v: View?,
+                left: Int,
+                top: Int,
+                right: Int,
+                bottom: Int,
+                oldLeft: Int,
+                oldTop: Int,
+                oldRight: Int,
+                oldBottom: Int
+            ) {
+                // The next layout has happened!
+                // First remove the listener to not leak the coroutine
+                v?.removeOnLayoutChangeListener(this)
+                // Finally resume the continuation, and
+                // wake the coroutine up
+                cont.resume(Unit)
+            }
+        }
+        // If the coroutine is cancelled, remove the listener
+        cont.invokeOnCancellation { removeOnLayoutChangeListener(listener) }
+        // And finally add the listener to view
+        addOnLayoutChangeListener(listener)
+
+        // The coroutine will now be suspended. It will only be resumed
+        // when calling cont.resume() in the listener above
     }
 
     private fun RecyclerView.smoothScrollToPositionWithLayoutManager(position: Int) {

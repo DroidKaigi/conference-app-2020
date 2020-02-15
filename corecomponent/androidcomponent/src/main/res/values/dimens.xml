@@ -3,4 +3,6 @@
     <dimen name="bottom_sheet_corner_radius">16dp</dimen>
     <dimen name="bottom_sheet_top_padding">8dp</dimen>
     <dimen name="bottom_sheet_elevation">1dp</dimen>
+    <dimen name="bottom_sheet_default_peek_height">64dp</dimen>
+    <dimen name="gesture_navigation_bottom_space">48dp</dimen>
 </resources>
