@@ -90,11 +90,11 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions), HasAndroidInjecto
 
         initBottomSheetShapeAppearance(binding)
         val initialPeekHeight = sessionSheetBehavior.peekHeight
-        val space = BottomGestureSpace(resources)
+        val gestureSpace = BottomGestureSpace(resources)
 
         binding.sessionsSheet.doOnApplyWindowInsets { _, insets, _ ->
             sessionSheetBehavior.peekHeight =
-                insets.systemWindowInsetBottom + initialPeekHeight + space.gestureSpaceSize
+                insets.systemWindowInsetBottom + initialPeekHeight + gestureSpace.gestureSpaceSize
             binding.filterView.updatePadding(
                 bottom = initialPeekHeight + resources.getDimensionPixelSize(
                     R.dimen.session_filter_view_padding_bottom
