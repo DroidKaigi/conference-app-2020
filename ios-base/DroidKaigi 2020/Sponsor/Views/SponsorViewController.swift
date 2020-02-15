@@ -1,10 +1,10 @@
-import ios_combined
+import ioscombined
 import RxCocoa
 import RxSwift
 import SafariServices
 import UIKit
 
-final class SponsorViewController: UIViewController {
+final class SponsorViewController: ContentViewController {
     private let disposeBag = DisposeBag()
 
     @IBOutlet private weak var collectionView: UICollectionView! {
@@ -24,6 +24,15 @@ final class SponsorViewController: UIViewController {
                 withReuseIdentifier: SponsorDividerView.identifier
             )
         }
+    }
+
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        title = L10n.sponsor
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     @IBOutlet private weak var loadingIndicatorView: UIActivityIndicatorView!
@@ -52,8 +61,6 @@ final class SponsorViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupNavigationBar()
 
         let dataSource = SponsorViewDataSource()
 
@@ -84,16 +91,6 @@ final class SponsorViewController: UIViewController {
 
         navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.surfaceColor
         navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onSurfaceColor
-    }
-
-    private func setupNavigationBar() {
-        if LangKt.defaultLang() == .ja {
-            navigationItem.title = "スポンサー"
-        } else {
-            navigationItem.title = "Sponsors"
-        }
-
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
 
     private func updateBackgroudView(isLoading: Bool, error: KotlinError?) {

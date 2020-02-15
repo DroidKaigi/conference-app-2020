@@ -123,6 +123,20 @@ internal open class KtorDroidKaigiApi constructor(
         return StaffResponseImpl(json.parse(StaffItemResponseImpl.serializer().list, rawResponse))
     }
 
+    override fun getContributorList(
+        callback: (response: ContributorResponse) -> Unit,
+        onError: (error: Exception) -> Unit
+    ) {
+        GlobalScope.launch(requireNotNull(coroutineDispatcherForCallback)) {
+            try {
+                val response = getContributorList()
+                callback(response)
+            } catch (ex: Exception) {
+                onError(ex)
+            }
+        }
+    }
+
     override suspend fun getContributorList(): ContributorResponse {
         val rawResponse = httpClient.get<String> {
             url("$apiEndpoint/contributors")

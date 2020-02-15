@@ -3,5 +3,5 @@
 #include "Pods/Target Support Files/Pods-DroidKaigi 2020/Pods-DroidKaigi 2020.release.xcconfig"
 KN_LIBRARY_BUILD_TASK[sdk=iphonesimulator*] = linkIosX64
 KN_LIBRARY_BUILD_TASK[sdk=iphoneos*] = linkIosArm64
-KN_LIBRARY_BUILD_PATH[sdk=iphonesimulator*] = $SRCROOT/../ios-combined/build/bin/iosX64/releaseFramework/ios_combined.framework
-KN_LIBRARY_BUILD_PATH[sdk=iphoneos*] = $SRCROOT/../ios-combined/build/bin/iosArm64/releaseFramework/ios_combined.framework
+KN_LIBRARY_BUILD_PATH[sdk=iphonesimulator*] = $SRCROOT/../ioscombined/build/bin/iosX64/releaseFramework/ioscombined.framework
+KN_LIBRARY_BUILD_PATH[sdk=iphoneos*] = $SRCROOT/../ioscombined/build/bin/iosArm64/releaseFramework/ioscombined.framework

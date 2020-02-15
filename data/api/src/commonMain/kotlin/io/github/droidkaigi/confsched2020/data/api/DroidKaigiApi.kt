@@ -34,5 +34,10 @@ interface DroidKaigiApi {
 
     suspend fun getStaffs(): StaffResponse
 
+    fun getContributorList(
+        callback: (response: ContributorResponse) -> Unit,
+        onError: (error: Exception) -> Unit
+    )
+
     suspend fun getContributorList(): ContributorResponse
 }
