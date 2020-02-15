@@ -57,6 +57,14 @@ allprojects {
     }
     plugins.whenPluginAdded {
         if (it.isAndroidApp() || it.isAndroidLibrary() || it.isDynamicFeature()) {
+            gradle.projectsEvaluated {
+                if(android.defaultConfig.minSdkVersion == null){
+                    throw IllegalStateException("minSdkVersion is not correct")
+                }
+                if(android.defaultConfig.targetSdkVersion == null){
+                    throw IllegalStateException("targetSdkVersion is not correct")
+                }
+            }
             android.compileOptions {
                 sourceCompatibility JavaVersion.VERSION_1_8
                 targetCompatibility JavaVersion.VERSION_1_8
