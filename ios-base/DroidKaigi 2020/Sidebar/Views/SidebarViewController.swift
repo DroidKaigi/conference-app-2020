@@ -1,15 +1,17 @@
 import Material
+import SafariServices
 import UIKit
 
 final class SidebarViewController: UITableViewController {
     enum SwitchViewControllerType: Int {
-        case timeline
-        case about
-        case info
-        case map
-        case sponsor
-        case contributor
-        case setting
+        case timeline = 0
+        case about = 1
+        case info = 2
+        case map = 3
+        case sponsor = 4
+        case contributor = 5
+        case setting = 6
+        case survey = 7
     }
 
     @IBOutlet weak var timelineLabel: UILabel! {
@@ -45,6 +47,12 @@ final class SidebarViewController: UITableViewController {
     @IBOutlet weak var settingLabel: UILabel! {
         didSet {
             settingLabel.text = L10n.setting
+        }
+    }
+
+    @IBOutlet weak var entireSurveyLabel: UILabel! {
+        didSet {
+            entireSurveyLabel.text = L10n.survey
         }
     }
 
@@ -126,6 +134,11 @@ final class SidebarViewController: UITableViewController {
             transition(to: contributorViewController)
         case .setting:
             break
+        case .survey:
+            let urlString = "https://docs.google.com/forms/d/1pm-47edcdP3BYp59_cImgrvXiEOWYTxtXYUUb8CpeE8/viewform"
+            if let url = URL(string: urlString) {
+                presentSafariViewController(with: url)
+            }
         }
 
         rootViewController.navigationDrawerController?.toggleLeftView()
@@ -139,5 +152,10 @@ final class SidebarViewController: UITableViewController {
             self.rootViewController = navigationController
         }
         navigationDrawerController.toggleLeftView()
+    }
+
+    private func presentSafariViewController(with url: URL) {
+        let safariViewController = SFSafariViewController(url: url)
+        present(safariViewController, animated: true)
     }
 }
