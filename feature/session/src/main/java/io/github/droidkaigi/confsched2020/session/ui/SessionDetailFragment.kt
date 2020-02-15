@@ -130,10 +130,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                             uiModel.thumbsUpCount
                         )
                     }
-            }
-
-        sessionDetailViewModel.appError.observe(viewLifecycleOwner) { appError: AppError? ->
-            appError?.let { systemViewModel.onError(it) }
+            uiModel.error?.let { systemViewModel.onError(it) }
         }
 
         binding.bottomAppBar.run {

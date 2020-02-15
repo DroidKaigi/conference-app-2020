@@ -10,6 +10,7 @@ sealed class AppError : RuntimeException {
     sealed class ApiException(cause: Throwable?) : AppError(cause) {
         class NetworkException(cause: Throwable?) : ApiException(cause)
         class ServerException(cause: Throwable?) : ApiException(cause)
+        class SessionNotFoundException(cause: Throwable?) : AppError(cause)
         class UnknownException(cause: Throwable?) : AppError(cause)
     }
 

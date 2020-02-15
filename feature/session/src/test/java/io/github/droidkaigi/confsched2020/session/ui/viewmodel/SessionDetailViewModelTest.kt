@@ -1,13 +1,16 @@
 package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 
 import com.jraska.livedata.test
+import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.widget.component.MockkRule
 import io.github.droidkaigi.confsched2020.widget.component.ViewModelTestRule
+import io.kotlintest.matchers.beOfType
+import io.kotlintest.should
 import io.kotlintest.shouldBe
-import io.kotlintest.shouldNotBe
+import io.kotlintest.shouldHave
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.verify
@@ -47,7 +50,7 @@ class SessionDetailViewModelTest {
     }
 
     @Test
-    fun load_NotFoundSpeaker() {
+    fun load_NotFoundSession() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(SessionContents.EMPTY)
         val sessionDetailViewModel = SessionDetailViewModel(
             sessionId = SessionId("1"),
@@ -59,20 +62,14 @@ class SessionDetailViewModelTest {
             .uiModel
             .test()
 
-        val appErrorTestObserver = sessionDetailViewModel
-            .appError
-            .test()
-
         val uiModelValueHistory = uiModelTestObserver.valueHistory()
         uiModelValueHistory[0].apply {
             isLoading shouldBe false
+            error should beOfType<AppError.ApiException.SessionNotFoundException>()
             session shouldBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
-
-        val appErrorValueHistory = appErrorTestObserver.valueHistory()
-        appErrorValueHistory[0] shouldNotBe null
     }
 
     @Test

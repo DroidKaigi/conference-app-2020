@@ -8,17 +8,17 @@ import androidx.lifecycle.viewModelScope
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.github.droidkaigi.confsched2020.ext.combine
-import io.github.droidkaigi.confsched2020.ext.fromResultToAppError
-import io.github.droidkaigi.confsched2020.ext.merge
 import io.github.droidkaigi.confsched2020.ext.toAppError
 import io.github.droidkaigi.confsched2020.ext.toLoadingState
 import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.model.LoadState
 import io.github.droidkaigi.confsched2020.model.LoadingState
+import io.github.droidkaigi.confsched2020.model.ResultState
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.TextExpandState
 import io.github.droidkaigi.confsched2020.model.ThumbsUpCount
+import io.github.droidkaigi.confsched2020.model.firstErrorOrNull
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
@@ -38,6 +38,7 @@ class SessionDetailViewModel @AssistedInject constructor(
     // UiModel definition
     data class UiModel(
         val isLoading: Boolean,
+        val error: AppError?,
         val session: Session?,
         val showEllipsis: Boolean,
         val searchQuery: String?,
@@ -46,6 +47,7 @@ class SessionDetailViewModel @AssistedInject constructor(
         companion object {
             val EMPTY = UiModel(
                 isLoading = false,
+                error = null,
                 session = null,
                 showEllipsis = true,
                 searchQuery = null,
@@ -57,7 +59,10 @@ class SessionDetailViewModel @AssistedInject constructor(
     // LiveDatas
     private val sessionLoadStateLiveData: LiveData<LoadState<Session>> = liveData {
         sessionRepository.sessionContents()
-            .map { it.sessions.first { session -> sessionId == session.id } }
+            .map {
+                it.sessions.firstOrNull { session -> sessionId == session.id }
+                    ?: throw AppError.ApiException.SessionNotFoundException(null)
+            }
             .toLoadingState()
             .collect { loadState: LoadState<Session> ->
                 emit(loadState)
@@ -78,8 +83,8 @@ class SessionDetailViewModel @AssistedInject constructor(
             }
     }
 
-    private val incrementThumbsUpCountResultLiveData: MutableLiveData<Result<Int>> =
-        MutableLiveData(Result.success(0))
+    private val incrementThumbsUpCountResultLiveData: MutableLiveData<ResultState<Int>> =
+        MutableLiveData(ResultState.Success(0))
 
     private val incrementThumbsUpCountEvent: BroadcastChannel<Pair<SessionId, Int>> =
         BroadcastChannel(Channel.BUFFERED)
@@ -97,7 +102,7 @@ class SessionDetailViewModel @AssistedInject constructor(
         favoriteState: LoadingState,
         descriptionTextExpandState: TextExpandState,
         totalThumbsUpCountLoadState: LoadState<Int>,
-        incrementThumbsUpCountResult: Result<Int> ->
+        incrementThumbsUpCountResult: ResultState<Int> ->
         val isLoading =
             sessionLoadState.isLoading || favoriteState.isLoading
         val sessions = when (sessionLoadState) {
@@ -126,21 +131,23 @@ class SessionDetailViewModel @AssistedInject constructor(
             incrementedUpdated = current.thumbsUpCount.incremented != incrementThumbsUpCount
         )
 
+        val appError = listOf(
+            sessionLoadState,
+            favoriteState,
+            totalThumbsUpCountLoadState,
+            incrementThumbsUpCountResult
+        )
+            .firstErrorOrNull()
+            .toAppError()
         UiModel(
             isLoading = isLoading,
+            error = appError,
             session = sessions,
             showEllipsis = showEllipsis,
             searchQuery = searchQuery,
             thumbsUpCount = thumbsUpCount
         )
     }
-
-    val appError: LiveData<AppError?> = merge(
-        sessionLoadStateLiveData.toAppError(),
-        favoriteLoadingStateLiveData.toAppError(),
-        totalThumbsUpCountLoadStateLiveData.toAppError(),
-        incrementThumbsUpCountResultLiveData.fromResultToAppError()
-    )
 
     init {
         viewModelScope.launch {
@@ -170,12 +177,14 @@ class SessionDetailViewModel @AssistedInject constructor(
 
     fun thumbsUp(session: Session) {
         val liveDataValue = incrementThumbsUpCountResultLiveData.value
-        // Result type cannot be use as la left operand of '?.'
+        // ResultState type cannot be use as la left operand of '?.'
         val currentIncremented = if (liveDataValue != null) {
             liveDataValue.getOrDefault(0)
-        } else { 0 }
+        } else {
+            0
+        }
         val incremented = minOf(currentIncremented + 1, MAX_APPLY_COUNT)
-        incrementThumbsUpCountResultLiveData.value = Result.success(incremented)
+        incrementThumbsUpCountResultLiveData.value = ResultState.Success(incremented)
 
         viewModelScope.launch {
             incrementThumbsUpCountEvent.send(session.id to incremented)
@@ -194,10 +203,10 @@ class SessionDetailViewModel @AssistedInject constructor(
                     )
                     Timber.debug { "⭐ increment $count posted" }
                     // Return initial value
-                    incrementThumbsUpCountResultLiveData.value = Result.success(0)
+                    incrementThumbsUpCountResultLiveData.value = ResultState.Success(0)
                 } catch (e: Exception) {
                     Timber.debug { "⭐ error $e" }
-                    incrementThumbsUpCountResultLiveData.value = Result.failure(e)
+                    incrementThumbsUpCountResultLiveData.value = ResultState.Error(e)
                 }
             }
     }

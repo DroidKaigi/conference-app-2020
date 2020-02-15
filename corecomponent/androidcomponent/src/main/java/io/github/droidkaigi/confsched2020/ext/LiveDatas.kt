@@ -7,7 +7,7 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.map
 import com.hadilq.liveevent.LiveEvent
 import io.github.droidkaigi.confsched2020.model.AppError
-import io.github.droidkaigi.confsched2020.model.errorGettable
+import io.github.droidkaigi.confsched2020.model.ErrorGettable
 
 fun <T : Any> LiveData<T>.requireValue() = requireNotNull(value)
 
@@ -110,7 +110,7 @@ inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any, LIVE4 : Any> combine
     }.distinctUntilChanged()
 }
 
-inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any, LIVE4 : Any, LIVE5> combine(
+inline fun <T : Any, LIVE1 : Any, LIVE2 : Any, LIVE3 : Any, LIVE4 : Any, LIVE5 : Any> combine(
     initialValue: T,
     liveData1: LiveData<LIVE1>,
     liveData2: LiveData<LIVE2>,
@@ -174,7 +174,7 @@ fun <T> merge(vararg liveDatas: LiveData<T>): LiveData<T> {
     }
 }
 
-fun <T : errorGettable> LiveData<T>.toAppError(): LiveData<AppError?> {
+fun <T : ErrorGettable> LiveData<T>.toAppError(): LiveData<AppError?> {
     return map {
         it.getErrorIfExists().toAppError()
     }
