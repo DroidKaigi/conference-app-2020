@@ -351,7 +351,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
     companion object {
         const val ENTIRE_SURVEY =
-            "https://docs.google.com/forms/d/1pm-47edcdP3BYp59_cImgrvXiEOWYTxtXYUUb8CpeE8/viewform"
+            "https://docs.google.com/forms/d/e/1FAIpQLSfQHIwT0lf-20tx5xgUFSm7PPy_EjD5lI8SHuxV3DHN4D9pkA/viewform"
     }
 }
 
