@@ -3,7 +3,6 @@ package io.github.droidkaigi.confsched2020.session.ui.widget
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.FrameLayout
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.NestedScrollingParent
@@ -20,9 +19,9 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        nestedScrollParent = findParent<NestedScrollingParent>()
-        val frameLayout = parent as? FrameLayout
-        val layoutParams = frameLayout?.layoutParams as? CoordinatorLayout.LayoutParams
+        nestedScrollParent = findParent()
+        val parent = parent as? View
+        val layoutParams = parent?.layoutParams as? CoordinatorLayout.LayoutParams
         val bottomSheetBehavior = layoutParams?.behavior as? BottomSheetBehavior<*>
         bottomSheetBehavior?.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
@@ -35,12 +34,13 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
         })
     }
 
-    inline fun <reified T : Any> View.findParent(): T? {
+    private inline fun <reified T : Any> View.findParent(): T? {
         return this.findParentImpl(T::class)
     }
 
     tailrec fun <T : Any> View.findParentImpl(clazz: KClass<T>): T? {
         val parent = parent
+        @Suppress("UNCHECKED_CAST")
         if (parent::class == clazz) return parent as T
         if (parent == null) return null
         return (parent as? View)?.findParentImpl<T>(clazz)
