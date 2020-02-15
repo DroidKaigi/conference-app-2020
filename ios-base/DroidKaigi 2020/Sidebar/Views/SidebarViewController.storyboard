@@ -284,6 +284,39 @@
                                             <outlet property="titleLabel" destination="1Yz-DM-qpc" id="PT9-Ll-JTU"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" tag="7" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="n81-ml-4yM" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="516" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="n81-ml-4yM" id="hgi-pD-bEw">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="feedback_black_24dp" translatesAutoresizingMaskIntoConstraints="NO" id="5gB-LL-9zB">
+                                                    <rect key="frame" x="25" y="11" width="19" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="19" id="3Ej-0J-8ZU"/>
+                                                        <constraint firstAttribute="height" constant="22" id="hoY-xu-QTd"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="全体アンケート" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AVY-BF-74M">
+                                                    <rect key="frame" x="80" y="12" width="98" height="20"/>
+                                                    <fontDescription key="fontDescription" name="NotoSansOriya" family="Noto Sans Oriya" pointSize="14"/>
+                                                    <color key="textColor" red="0.6584423184" green="0.658539176" blue="0.65842115879999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="AVY-BF-74M" firstAttribute="centerY" secondItem="5gB-LL-9zB" secondAttribute="centerY" id="68R-rc-igU"/>
+                                                <constraint firstItem="5gB-LL-9zB" firstAttribute="leading" secondItem="hgi-pD-bEw" secondAttribute="leading" constant="25" id="6zT-zM-hSN"/>
+                                                <constraint firstItem="AVY-BF-74M" firstAttribute="leading" secondItem="5gB-LL-9zB" secondAttribute="trailing" constant="36" id="Ikz-O5-5fL"/>
+                                                <constraint firstItem="5gB-LL-9zB" firstAttribute="centerY" secondItem="hgi-pD-bEw" secondAttribute="centerY" id="Jrm-7O-7N8"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconImageView" destination="5gB-LL-9zB" id="1hg-YQ-rXN"/>
+                                            <outlet property="titleLabel" destination="AVY-BF-74M" id="XUi-5V-dII"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -295,6 +328,7 @@
                     <size key="freeformSize" width="414" height="896"/>
                     <connections>
                         <outlet property="aboutLabel" destination="JtF-GG-evG" id="WLq-rG-vak"/>
+                        <outlet property="entireSurveyLabel" destination="AVY-BF-74M" id="c53-sd-B8o"/>
                         <outlet property="floorMapLabel" destination="CRA-KP-fCf" id="TCE-iR-6zc"/>
                         <outlet property="infoLabel" destination="RMR-xd-cxl" id="3Ww-fa-1Lc"/>
                         <outlet property="settingLabel" destination="1Yz-DM-qpc" id="03U-4g-8qN"/>
@@ -311,6 +345,7 @@
         <image name="android_24px" width="20" height="24"/>
         <image name="domain_24px" width="20" height="18"/>
         <image name="event_24px" width="18" height="20"/>
+        <image name="feedback_black_24dp" width="24" height="24"/>
         <image name="group_24px" width="20" height="14"/>
         <image name="info_24px" width="20" height="20"/>
         <image name="logo_title" width="230" height="61"/>

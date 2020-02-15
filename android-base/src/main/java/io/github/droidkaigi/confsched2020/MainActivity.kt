@@ -2,15 +2,15 @@ package io.github.droidkaigi.confsched2020
 
 import android.annotation.SuppressLint
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
-import android.graphics.drawable.Icon
-import android.net.Uri
 import android.content.res.ColorStateList
-import android.graphics.drawable.RippleDrawable
-import android.content.Context
 import android.content.res.Configuration
+import android.graphics.drawable.Icon
+import android.graphics.drawable.RippleDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -83,10 +83,10 @@ import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.PageConfiguration
 import io.github.droidkaigi.confsched2020.ui.widget.SystemUiManager
 import io.github.droidkaigi.confsched2020.widget.component.NavigationDirections.Companion.actionGlobalToChrome
-import javax.inject.Inject
-import javax.inject.Provider
 import timber.log.Timber
 import timber.log.warn
+import javax.inject.Inject
+import javax.inject.Provider
 
 class MainActivity : AppCompatActivity(), HasAndroidInjector {
     private val binding: ActivityMainBinding by lazy {
@@ -240,7 +240,10 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
                         R.attr.colorOnPrimary
                     } else {
                         R.attr.colorControlHighlight
-                    })))
+                    }
+                )
+            )
+        )
     }
 
     private fun onDestinationChange(destination: NavDestination) {
@@ -298,16 +301,22 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         val map = ShortcutInfo.Builder(this, "map")
             .setShortLabel(getString(R.string.floor_map_shortcut_short_label1))
             .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
-            .setIntent(Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://droidkaigi.jp/2020/floormap")
-            ).setComponent(ComponentName(this, MainActivity::class.java)))
+            .setIntent(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://droidkaigi.jp/2020/floormap")
+                ).setComponent(ComponentName(this, MainActivity::class.java))
+            )
             .build()
         val myPlan = ShortcutInfo.Builder(this, "my_plan")
             .setShortLabel(getString(R.string.my_plan_shortcut_short_label1))
             .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
-            .setIntent(Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://droidkaigi.jp/2020/main/3")
-            ).setComponent(ComponentName(this, MainActivity::class.java)))
+            .setIntent(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://droidkaigi.jp/2020/main/3")
+                ).setComponent(ComponentName(this, MainActivity::class.java))
+            )
             .build()
         shortcutManager?.addDynamicShortcuts(listOf(map, myPlan))
     }
@@ -317,8 +326,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
         when (itemId) {
             R.id.entire_survey -> {
-                // TODO: Change to the correct URL
-                navController.navigate(actionGlobalToChrome("https://google.com"))
+                navController.navigate(actionGlobalToChrome(ENTIRE_SURVEY))
                 return true
             }
         }
@@ -339,6 +347,11 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         } catch (e: IllegalArgumentException) {
             false
         }
+    }
+
+    companion object {
+        const val ENTIRE_SURVEY =
+            "https://docs.google.com/forms/d/1pm-47edcdP3BYp59_cImgrvXiEOWYTxtXYUUb8CpeE8/viewform"
     }
 }
 

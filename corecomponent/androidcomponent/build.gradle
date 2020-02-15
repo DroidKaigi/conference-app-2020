@@ -17,6 +17,8 @@ dependencies {
     implementation Dep.AndroidX.constraint
     implementation Dep.AndroidX.design
     implementation Dep.AndroidX.browser
+    implementation Dep.AndroidX.Work.runtimeKtx
+    implementation Dep.Kotlin.coroutinesPlayServices
     implementation Dep.Kotlin.stdlibJvm
 
     api Dep.Insetter.insetter
@@ -39,6 +41,7 @@ dependencies {
     implementation Dep.Ktor.clientAndroid
     implementation Dep.Firebase.firestoreKtx
     implementation Dep.Firebase.auth
+    implementation Dep.Firebase.messaging
 
     api Dep.AndroidX.activityKtx
     api Dep.AndroidX.fragmentKtx
