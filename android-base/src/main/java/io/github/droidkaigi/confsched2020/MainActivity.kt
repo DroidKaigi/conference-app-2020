@@ -317,8 +317,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
         when (itemId) {
             R.id.entire_survey -> {
-                // TODO: Change to the correct URL
-                navController.navigate(actionGlobalToChrome("https://google.com"))
+                navController.navigate(actionGlobalToChrome("https://docs.google.com/forms/d/1pm-47edcdP3BYp59_cImgrvXiEOWYTxtXYUUb8CpeE8/viewform"))
                 return true
             }
         }
