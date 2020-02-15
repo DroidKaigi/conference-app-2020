@@ -21,6 +21,8 @@ final class SessionEntity: Object {
     @objc dynamic var isFavorited: Bool = false
 
     let speakers: List<SpeakerEntity>
+    @objc dynamic var message: String?
+    @objc dynamic var enMessage: String?
 
     init(session: Session) {
         let sessionTypeIds: [(String, SessionType)] = [
@@ -56,6 +58,8 @@ final class SessionEntity: Object {
             let speakers: List<SpeakerEntity> = List()
             speakers.append(objectsIn: speech.speakers.map { SpeakerEntity(speaker: $0) })
             self.speakers = speakers
+            message = speech.message?.ja
+            enMessage = speech.message?.en
         } else if let service = session as? ServiceSession {
             sessionType = sessionTypeIds.first(where: { $0.1 == service.sessionType })?.0
             speakers = .init()
