@@ -109,10 +109,10 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
                 val filterButtonHeight = binding.startFilter.measuredHeight
                 binding.sessionMotionLayout
                     .getConstraintSet(R.id.collapsed)?.let { constraintSet ->
-                        val topSpace = peekHeight - filterButtonHeight
+                        val bottomSpace = peekHeight - filterButtonHeight
                         val y = gestureSpace.gestureSpaceSize +
                             insets.systemWindowInsetBottom.toFloat() +
-                            topSpace
+                            bottomSpace
                         constraintSet.setTranslationY(
                             R.id.divider,
                             y
