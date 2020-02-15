@@ -15,12 +15,6 @@ final class ResultSpeakerCell: UICollectionViewCell {
 
     @IBOutlet weak var speakerNameLabel: UILabel!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        if #available(iOS 12, *) { setupSelfSizingForiOS12(contentView: contentView) }
-    }
-
     func configure(speaker: Speaker) {
         if let imageURL = URL(string: speaker.imageUrl ?? "") {
             let options = ImageLoadingOptions(transition: .fadeIn(duration: 0.3))
