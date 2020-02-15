@@ -37,7 +37,8 @@ class SessionDetailDescriptionItem @AssistedInject constructor(
     override fun getLayout() = R.layout.item_session_detail_description
 
     override fun bind(binding: ItemSessionDetailDescriptionBinding, position: Int) {
-        val fullDescription = session.desc
+        // FIXME: When session description is empty and back from the floor map, the layout is broken without this.
+        val fullDescription = if (session.desc.isEmpty()) "\n" else session.desc
         val textView = binding.sessionDescription
         textView.doOnPreDraw {
             textView.text = fullDescription
