@@ -4,6 +4,16 @@ import RxRealm
 import RxSwift
 
 final class BookingSessionProvider {
+    init() {
+        let config = Realm.Configuration(
+            schemaVersion: 1,
+            migrationBlock: { _, oldSchemaVersion in
+                if oldSchemaVersion < 1 {}
+            }
+        )
+        Realm.Configuration.defaultConfiguration = config
+    }
+
     func bookSession(_ session: Session) {
         do {
             let realm = try Realm()
