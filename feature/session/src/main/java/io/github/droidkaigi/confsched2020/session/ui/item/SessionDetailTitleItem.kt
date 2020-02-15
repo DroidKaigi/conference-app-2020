@@ -1,10 +1,8 @@
 package io.github.droidkaigi.confsched2020.session.ui.item
 
-import android.animation.ObjectAnimator
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.BackgroundColorSpan
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.doOnPreDraw
@@ -14,8 +12,6 @@ import com.google.android.material.chip.Chip
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.xwray.groupie.databinding.BindableItem
-import io.github.droidkaigi.confsched2020.ext.awaitEnd
-import io.github.droidkaigi.confsched2020.ext.awaitNextLayout
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.SpeechSession
@@ -23,8 +19,8 @@ import io.github.droidkaigi.confsched2020.model.ThumbsUpCount
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailTitleBinding
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import io.github.droidkaigi.confsched2020.session.ui.animation.dropOut
+import io.github.droidkaigi.confsched2020.session.ui.animation.popUp
 import java.util.regex.Pattern
 
 class SessionDetailTitleItem @AssistedInject constructor(
@@ -97,9 +93,9 @@ class SessionDetailTitleItem @AssistedInject constructor(
                     R.string.thumbs_up_increment_label,
                     thumbsUpCount.incremented as Int // Need to specify a type for lintDebug task
                 )
-                binding.incrementedThumbsUpCount.showWithPopUpAnimation()
+                binding.incrementedThumbsUpCount.popUp(lifecycleCoroutineScope)
             } else {
-                binding.incrementedThumbsUpCount.hideWithDropOutAnimation()
+                binding.incrementedThumbsUpCount.dropOut(lifecycleCoroutineScope)
             }
         }
     }
@@ -120,79 +116,6 @@ class SessionDetailTitleItem @AssistedInject constructor(
                 )
             }
             text = spannableStringBuilder
-        }
-    }
-
-    private fun View.showWithPopUpAnimation() {
-        val target = this
-
-        lifecycleCoroutineScope.launch {
-            target.isVisible = true
-            target.awaitNextLayout()
-            val popupHeight = (target.height / 2).toFloat()
-            target.translationY = popupHeight
-
-            val fadeIn = async {
-                ObjectAnimator.ofFloat(
-                    target,
-                    View.ALPHA,
-                    1f
-                ).run {
-                    start()
-                    awaitEnd()
-                }
-            }
-
-            val up = async {
-                ObjectAnimator.ofFloat(
-                    target,
-                    View.TRANSLATION_Y,
-                    -popupHeight
-                ).run {
-                    duration = 100
-                    start()
-                    awaitEnd()
-                }
-            }
-
-            fadeIn.await()
-            up.await()
-        }
-    }
-
-    private fun View.hideWithDropOutAnimation() {
-        val target = this
-
-        lifecycleCoroutineScope.launch {
-            val popupHeight = (target.height / 2).toFloat()
-
-            val fadeOut = async {
-                ObjectAnimator.ofFloat(
-                    target,
-                    View.ALPHA,
-                    0f
-                ).run {
-                    duration = 100
-                    start()
-                    awaitEnd()
-                }
-            }
-
-            val down = async {
-                ObjectAnimator.ofFloat(
-                    target,
-                    View.TRANSLATION_Y,
-                    popupHeight
-                ).run {
-                    duration = 100
-                    start()
-                    awaitEnd()
-                }
-            }
-
-            fadeOut.await()
-            down.await()
-            target.isVisible = false
         }
     }
 
