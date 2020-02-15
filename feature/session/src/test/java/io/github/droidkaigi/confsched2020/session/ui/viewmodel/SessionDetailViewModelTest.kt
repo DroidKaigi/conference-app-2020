@@ -41,7 +41,6 @@ class SessionDetailViewModelTest {
         valueHistory[0].apply {
             isLoading shouldBe false
             session shouldBe Dummies.speachSession1
-            error shouldBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
@@ -56,18 +55,24 @@ class SessionDetailViewModelTest {
             searchQuery = null
         )
 
-        val testObserver = sessionDetailViewModel
+        val uiModelTestObserver = sessionDetailViewModel
             .uiModel
             .test()
 
-        val valueHistory = testObserver.valueHistory()
-        valueHistory[0].apply {
+        val appErrorTestObserver = sessionDetailViewModel
+            .appError
+            .test()
+
+        val uiModelValueHistory = uiModelTestObserver.valueHistory()
+        uiModelValueHistory[0].apply {
             isLoading shouldBe false
             session shouldBe null
-            error shouldNotBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
+
+        val appErrorValueHistory = appErrorTestObserver.valueHistory()
+        appErrorValueHistory[0] shouldNotBe null
     }
 
     @Test
@@ -90,21 +95,18 @@ class SessionDetailViewModelTest {
         valueHistory[0].apply {
             isLoading shouldBe false
             session shouldBe Dummies.speachSession1
-            error shouldBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
         valueHistory[1].apply {
             isLoading shouldBe true
             session shouldBe Dummies.speachSession1
-            error shouldBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
         valueHistory[2].apply {
             isLoading shouldBe false
             session shouldBe Dummies.speachSession1
-            error shouldBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
@@ -127,7 +129,6 @@ class SessionDetailViewModelTest {
         valueHistory[1].apply {
             isLoading shouldBe true
             session shouldBe null
-            error shouldBe null
             showEllipsis shouldBe false
             searchQuery shouldBe null
         }
@@ -150,7 +151,6 @@ class SessionDetailViewModelTest {
         valueHistory[0].apply {
             isLoading shouldBe false
             session shouldBe Dummies.speachSession1
-            error shouldBe null
             showEllipsis shouldBe true
             searchQuery shouldBe "query"
         }
@@ -175,7 +175,6 @@ class SessionDetailViewModelTest {
         valueHistory[1].apply {
             isLoading shouldBe true
             session shouldBe null
-            error shouldBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
             thumbsUpCount.total shouldBe Dummies.thumbsUpCount.total
