@@ -6,13 +6,21 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.NestedScrollingParent
+import androidx.core.view.NestedScrollingParent2
+import androidx.core.view.NestedScrollingParent3
+import androidx.core.view.ViewCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlin.reflect.KClass
 
 class BottomSheetMotionLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : MotionLayout(context, attrs, defStyleAttr) {
+    private var nestedScrollParent: NestedScrollingParent? = null
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        nestedScrollParent = findParent<NestedScrollingParent>()
         val frameLayout = parent as? FrameLayout
         val layoutParams = frameLayout?.layoutParams as? CoordinatorLayout.LayoutParams
         val bottomSheetBehavior = layoutParams?.behavior as? BottomSheetBehavior<*>
@@ -27,39 +35,164 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
         })
     }
 
-
-    private var undergoingMotion: Boolean = false
-
-    override fun onNestedScroll(
-        target: View,
-        dxConsumed: Int,
-        dyConsumed: Int,
-        dxUnconsumed: Int,
-        dyUnconsumed: Int,
-        type: Int,
-        consumed: IntArray
-    ) {
-        // super.onNestedScroll(...) {
-        //     consumed[0] += dxUnconsumed;
-        //     consumed[1] += dyUnconsumed;
-        // }
-
-        // Only add to consumed if we are still undergoing motion, or a child is consuming the scroll
-        if (undergoingMotion || dxConsumed != 0 || dyConsumed != 0) {
-            consumed[0] += dxUnconsumed
-            consumed[1] += dyUnconsumed
-        }
-        // Reset undergoingMotion, as onNestedPreScroll will always set this back to true if we are still undergoing
-        // motion
-        undergoingMotion = false
-
+    inline fun <reified T : Any> View.findParent(): T? {
+        return this.findParentImpl(T::class)
     }
 
-    override fun onNestedPreScroll(target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
-        super.onNestedPreScroll(target, dx, dy, consumed, type)
-        // If consumed is non-zero, then this MotionLayout is changing its progress
-        if (consumed[0] != 0 || consumed[1] != 0) {
-            undergoingMotion = true
-        }
+    tailrec fun <T : Any> View.findParentImpl(clazz: KClass<T>): T? {
+        val parent = parent
+        if (parent::class == clazz) return parent as T
+        if (parent == null) return null
+        return (parent as? View)?.findParentImpl<T>(clazz)
+    }
+    // NestedScrollingParent3
+
+    // NestedScrollingParent3
+    override fun onNestedScroll(
+        target: View, dxConsumed: Int, dyConsumed: Int,
+        dxUnconsumed: Int, dyUnconsumed: Int, type: Int, consumed: IntArray
+    ) {
+        (nestedScrollParent as? NestedScrollingParent3)?.onNestedScroll(
+            target,
+            dxConsumed,
+            dyConsumed,
+            dxUnconsumed,
+            dyUnconsumed,
+            type,
+            consumed
+        )
+    }
+
+    // NestedScrollingParent2
+
+    // NestedScrollingParent2
+    override fun onStartNestedScroll(
+        child: View, target: View, axes: Int,
+        type: Int
+    ): Boolean {
+        return (nestedScrollParent as? NestedScrollingParent2)?.onStartNestedScroll(
+            child,
+            target,
+            axes,
+            type
+        ) ?: false
+    }
+
+    override fun onNestedScrollAccepted(
+        child: View, target: View, axes: Int,
+        type: Int
+    ) {
+        (nestedScrollParent as? NestedScrollingParent2)?.onNestedScrollAccepted(
+            child,
+            target,
+            axes,
+            type
+        )
+    }
+
+    override fun onStopNestedScroll(target: View, type: Int) {
+        (nestedScrollParent as? NestedScrollingParent2)?.onStopNestedScroll(target, type)
+    }
+
+    override fun onNestedScroll(
+        target: View, dxConsumed: Int, dyConsumed: Int,
+        dxUnconsumed: Int, dyUnconsumed: Int, type: Int
+    ) {
+        (nestedScrollParent as? NestedScrollingParent2)?.onNestedScroll(
+            target,
+            dxConsumed,
+            dyConsumed,
+            dxUnconsumed,
+            dyUnconsumed,
+            type
+        )
+    }
+
+    override fun onNestedPreScroll(
+        target: View, dx: Int, dy: Int, consumed: IntArray,
+        type: Int
+    ) {
+        (nestedScrollParent as? NestedScrollingParent2)?.onNestedPreScroll(
+            target,
+            dx,
+            dy,
+            consumed,
+            type
+        )
+    }
+
+    // NestedScrollingParent
+
+    // NestedScrollingParent
+    override fun onStartNestedScroll(
+        child: View, target: View, nestedScrollAxes: Int
+    ): Boolean {
+        return nestedScrollParent?.onStartNestedScroll(
+            child,
+            target,
+            nestedScrollAxes
+        ) ?: false
+    }
+
+    override fun onNestedScrollAccepted(
+        child: View, target: View, nestedScrollAxes: Int
+    ) {
+        nestedScrollParent?.onNestedScrollAccepted(
+            child,
+            target,
+            nestedScrollAxes
+        )
+    }
+
+    override fun onStopNestedScroll(target: View) {
+        nestedScrollParent?.onStopNestedScroll(target)
+    }
+
+    override fun onNestedScroll(
+        target: View, dxConsumed: Int, dyConsumed: Int,
+        dxUnconsumed: Int, dyUnconsumed: Int
+    ) {
+        nestedScrollParent?.onNestedScroll(
+            target,
+            dxConsumed,
+            dyConsumed,
+            dxUnconsumed,
+            dyUnconsumed
+        )
+    }
+
+    override fun onNestedPreScroll(
+        target: View,
+        dx: Int,
+        dy: Int,
+        consumed: IntArray
+    ) {
+        nestedScrollParent?.onNestedPreScroll(
+            target,
+            dx,
+            dy,
+            consumed
+        )
+    }
+
+    override fun onNestedFling(
+        target: View,
+        velocityX: Float,
+        velocityY: Float,
+        consumed: Boolean
+    ): Boolean {
+        return nestedScrollParent?.onNestedFling(target, velocityX, velocityY, consumed) ?: false
+    }
+
+    override fun onNestedPreFling(
+        target: View,
+        velocityX: Float,
+        velocityY: Float
+    ): Boolean {
+        return nestedScrollParent?.onNestedPreFling(target, velocityX, velocityY) ?: false
+    }
+
+    override fun getNestedScrollAxes(): Int {
+        return nestedScrollParent?.nestedScrollAxes ?: ViewCompat.SCROLL_AXIS_NONE
     }
 }
