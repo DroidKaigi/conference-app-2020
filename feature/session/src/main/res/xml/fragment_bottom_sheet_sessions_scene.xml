@@ -7,9 +7,11 @@
     <ConstraintSet android:id="@+id/expaned">
         <Constraint android:id="@+id/divider">
             <Transform android:translationY="0dp" />
+            <PropertySet app:visibilityMode="ignore" />
         </Constraint>
         <Constraint android:id="@+id/divider_shadow">
             <Transform android:translationY="0dp" />
+            <PropertySet app:visibilityMode="ignore" />
         </Constraint>
         <Constraint android:id="@+id/session_recycler">
             <PropertySet android:alpha="1.0" />
@@ -29,9 +31,11 @@
     <ConstraintSet android:id="@+id/collapsed">
         <Constraint android:id="@+id/divider">
             <Transform android:translationY="64dp" />
+            <PropertySet app:visibilityMode="ignore" />
         </Constraint>
         <Constraint android:id="@+id/divider_shadow">
             <Transform android:translationY="64dp" />
+            <PropertySet app:visibilityMode="ignore" />
         </Constraint>
         <Constraint android:id="@+id/session_recycler">
             <PropertySet android:alpha="0.0" />
