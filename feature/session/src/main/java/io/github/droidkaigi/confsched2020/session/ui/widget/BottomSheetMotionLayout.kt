@@ -13,7 +13,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlin.reflect.KClass
 
 class BottomSheetMotionLayout @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : MotionLayout(context, attrs, defStyleAttr) {
     private var nestedScrollParent: NestedScrollingParent? = null
 
@@ -48,8 +50,13 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
 
     // NestedScrollingParent3
     override fun onNestedScroll(
-        target: View, dxConsumed: Int, dyConsumed: Int,
-        dxUnconsumed: Int, dyUnconsumed: Int, type: Int, consumed: IntArray
+        target: View,
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int,
+        type: Int,
+        consumed: IntArray
     ) {
         (nestedScrollParent as? NestedScrollingParent3)?.onNestedScroll(
             target,
@@ -64,7 +71,9 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
 
     // NestedScrollingParent2
     override fun onStartNestedScroll(
-        child: View, target: View, axes: Int,
+        child: View,
+        target: View,
+        axes: Int,
         type: Int
     ): Boolean {
         return (nestedScrollParent as? NestedScrollingParent2)?.onStartNestedScroll(
@@ -76,7 +85,9 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
     }
 
     override fun onNestedScrollAccepted(
-        child: View, target: View, axes: Int,
+        child: View,
+        target: View,
+        axes: Int,
         type: Int
     ) {
         (nestedScrollParent as? NestedScrollingParent2)?.onNestedScrollAccepted(
@@ -92,8 +103,12 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
     }
 
     override fun onNestedScroll(
-        target: View, dxConsumed: Int, dyConsumed: Int,
-        dxUnconsumed: Int, dyUnconsumed: Int, type: Int
+        target: View,
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int,
+        type: Int
     ) {
         (nestedScrollParent as? NestedScrollingParent2)?.onNestedScroll(
             target,
@@ -106,7 +121,10 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
     }
 
     override fun onNestedPreScroll(
-        target: View, dx: Int, dy: Int, consumed: IntArray,
+        target: View,
+        dx: Int,
+        dy: Int,
+        consumed: IntArray,
         type: Int
     ) {
         (nestedScrollParent as? NestedScrollingParent2)?.onNestedPreScroll(
@@ -120,7 +138,9 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
 
     // NestedScrollingParent
     override fun onStartNestedScroll(
-        child: View, target: View, nestedScrollAxes: Int
+        child: View,
+        target: View,
+        nestedScrollAxes: Int
     ): Boolean {
         return nestedScrollParent?.onStartNestedScroll(
             child,
@@ -130,7 +150,9 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
     }
 
     override fun onNestedScrollAccepted(
-        child: View, target: View, nestedScrollAxes: Int
+        child: View,
+        target: View,
+        nestedScrollAxes: Int
     ) {
         nestedScrollParent?.onNestedScrollAccepted(
             child,
@@ -144,8 +166,11 @@ class BottomSheetMotionLayout @JvmOverloads constructor(
     }
 
     override fun onNestedScroll(
-        target: View, dxConsumed: Int, dyConsumed: Int,
-        dxUnconsumed: Int, dyUnconsumed: Int
+        target: View,
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int
     ) {
         nestedScrollParent?.onNestedScroll(
             target,
