@@ -27,6 +27,7 @@ import com.xwray.groupie.databinding.BindableItem
 import com.xwray.groupie.databinding.GroupieViewHolder
 import io.github.droidkaigi.confsched2020.ext.getThemeColor
 import io.github.droidkaigi.confsched2020.model.LocaledString
+import io.github.droidkaigi.confsched2020.model.ServiceSession
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
@@ -125,10 +126,15 @@ class SessionItem @AssistedInject constructor(
         session: Session,
         viewBinding: ItemSessionBinding
     ) {
-        (session as? SpeechSession)?.let {
-            viewBinding.sessionMessage.text = it.message?.getByLang(defaultLang())
-            viewBinding.sessionMessage.setSearchHighlight()
-            viewBinding.sessionMessage.isVisible = it.hasMessage
+        when (session) {
+            is SpeechSession -> {
+                viewBinding.sessionMessage.text = session.message?.getByLang(defaultLang())
+                viewBinding.sessionMessage.setSearchHighlight()
+                viewBinding.sessionMessage.isVisible = session.hasMessage
+            }
+            is ServiceSession -> {
+                viewBinding.sessionMessage.isVisible = false
+            }
         }
 //        Test Code
 //        viewBinding.sessionMessage.text = "セッション部屋がRoom1からRoom3に変更になりました（サンプル）"

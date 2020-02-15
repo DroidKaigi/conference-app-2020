@@ -68,6 +68,8 @@ final class SessionCell: UICollectionViewCell {
         super.awakeFromNib()
         translatesAutoresizingMaskIntoConstraints = false
         widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
+
+        if #available(iOS 12, *) { setupSelfSizingForiOS12(contentView: contentView) }
     }
 
     func addSpeakerView(imageURL: URL?, speakerName: String, speakerTapHandler: @escaping () -> Void) {
