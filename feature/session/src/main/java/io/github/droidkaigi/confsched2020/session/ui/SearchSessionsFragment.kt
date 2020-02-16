@@ -2,9 +2,9 @@ package io.github.droidkaigi.confsched2020.session.ui
 
 import android.app.Activity
 import android.app.SearchManager
-import android.content.Context.SEARCH_SERVICE
 import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.getSystemService
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -155,15 +156,15 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
 
     override fun onResume() {
         super.onResume()
-        val intent = requireActivity().intent
-        if (intent.action == Intent.ACTION_SEARCH) {
+        val activity = requireActivity()
+        val intent = activity.intent
+        if (intent.action == Intent.ACTION_SEARCH &&
+            intent.hasExtra(RecognizerIntent.EXTRA_RESULTS)
+        ) {
             val query: String = requireNotNull(intent.getStringExtra(SearchManager.QUERY))
-            val searchResult = searchSessionsViewModel.uiModel.requireValue().searchResult
             val searchView: SearchView? =
                 menu?.findItem(R.id.search_view)?.actionView as SearchView?
-            if (searchView != null && query != searchResult.query) {
-                searchView.setQuery(query, true)
-            }
+            searchView?.setQuery(query, true)
         }
     }
 
@@ -172,17 +173,19 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
         inflater.inflate(R.menu.menu_search_sessions, menu)
         this.menu = menu
         val searchView = menu.findItem(R.id.search_view).actionView as SearchView
-        val searchManager = activity!!.getSystemService(SEARCH_SERVICE) as SearchManager
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
+        val context = requireContext()
+        context.getSystemService<SearchManager>()?.let { searchManager ->
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
+        }
         (searchView.findViewById(AppcompatRId.search_button) as ImageView).setColorFilter(
             AppCompatResources.getColorStateList(
-                requireContext(),
+                context,
                 R.color.search_icon
             ).defaultColor
         )
         (searchView.findViewById(AppcompatRId.search_close_btn) as ImageView).setColorFilter(
             AppCompatResources.getColorStateList(
-                requireContext(),
+                context,
                 R.color.search_close_icon
             ).defaultColor
         )
