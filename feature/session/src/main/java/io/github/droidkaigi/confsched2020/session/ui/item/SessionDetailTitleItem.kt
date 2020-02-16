@@ -128,10 +128,9 @@ class SessionDetailTitleItem @AssistedInject constructor(
     }
 
     private fun TextView.setIncrementedText(count: Int) {
-        @Suppress("USELESS_CAST")
         text = context.getString(
             R.string.thumbs_up_increment_label,
-            count as Int // Need to specify a type for lintDebug task
+            count
         )
     }
 
