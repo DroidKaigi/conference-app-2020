@@ -175,7 +175,9 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
         val searchView = menu.findItem(R.id.search_view).actionView as SearchView
         val context = requireContext()
         context.getSystemService<SearchManager>()?.let { searchManager ->
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
+            searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(requireActivity().componentName)
+            )
         }
         (searchView.findViewById(AppcompatRId.search_button) as ImageView).setColorFilter(
             AppCompatResources.getColorStateList(
