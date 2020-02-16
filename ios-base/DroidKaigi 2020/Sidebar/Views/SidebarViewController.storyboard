@@ -251,41 +251,8 @@
                                             <outlet property="titleLabel" destination="urg-1V-e7f" id="Vnm-V6-45H"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" tag="6" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zAm-EE-XpB" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="472" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zAm-EE-XpB" id="4Hb-MJ-txg">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings_24px" translatesAutoresizingMaskIntoConstraints="NO" id="pSX-y6-PeN">
-                                                    <rect key="frame" x="25" y="11" width="19" height="22"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="19" id="Hge-iL-bfC"/>
-                                                        <constraint firstAttribute="height" constant="22" id="Wgm-Id-aQf"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Yz-DM-qpc">
-                                                    <rect key="frame" x="80" y="12" width="44" height="20"/>
-                                                    <fontDescription key="fontDescription" name="NotoSansOriya" family="Noto Sans Oriya" pointSize="14"/>
-                                                    <color key="textColor" red="0.6584423184" green="0.658539176" blue="0.65842115879999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="pSX-y6-PeN" firstAttribute="centerY" secondItem="4Hb-MJ-txg" secondAttribute="centerY" id="0Zf-82-haF"/>
-                                                <constraint firstItem="pSX-y6-PeN" firstAttribute="leading" secondItem="4Hb-MJ-txg" secondAttribute="leading" constant="25" id="3Ze-b4-6jh"/>
-                                                <constraint firstItem="1Yz-DM-qpc" firstAttribute="leading" secondItem="pSX-y6-PeN" secondAttribute="trailing" constant="36" id="jKp-y6-TaH"/>
-                                                <constraint firstItem="1Yz-DM-qpc" firstAttribute="centerY" secondItem="pSX-y6-PeN" secondAttribute="centerY" id="mhc-3G-YPE"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="iconImageView" destination="pSX-y6-PeN" id="76X-6N-DMJ"/>
-                                            <outlet property="titleLabel" destination="1Yz-DM-qpc" id="PT9-Ll-JTU"/>
-                                        </connections>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" tag="7" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="n81-ml-4yM" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="516" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="472" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="n81-ml-4yM" id="hgi-pD-bEw">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
@@ -315,6 +282,39 @@
                                         <connections>
                                             <outlet property="iconImageView" destination="5gB-LL-9zB" id="1hg-YQ-rXN"/>
                                             <outlet property="titleLabel" destination="AVY-BF-74M" id="XUi-5V-dII"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell hidden="YES" clipsSubviews="YES" tag="6" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zAm-EE-XpB" customClass="SidebarCell" customModule="DroidKaigi_2020" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="516" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zAm-EE-XpB" id="4Hb-MJ-txg">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings_24px" translatesAutoresizingMaskIntoConstraints="NO" id="pSX-y6-PeN">
+                                                    <rect key="frame" x="25" y="11" width="19" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="19" id="Hge-iL-bfC"/>
+                                                        <constraint firstAttribute="height" constant="22" id="Wgm-Id-aQf"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Yz-DM-qpc">
+                                                    <rect key="frame" x="80" y="12" width="44" height="20"/>
+                                                    <fontDescription key="fontDescription" name="NotoSansOriya" family="Noto Sans Oriya" pointSize="14"/>
+                                                    <color key="textColor" red="0.6584423184" green="0.658539176" blue="0.65842115879999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="pSX-y6-PeN" firstAttribute="centerY" secondItem="4Hb-MJ-txg" secondAttribute="centerY" id="0Zf-82-haF"/>
+                                                <constraint firstItem="pSX-y6-PeN" firstAttribute="leading" secondItem="4Hb-MJ-txg" secondAttribute="leading" constant="25" id="3Ze-b4-6jh"/>
+                                                <constraint firstItem="1Yz-DM-qpc" firstAttribute="leading" secondItem="pSX-y6-PeN" secondAttribute="trailing" constant="36" id="jKp-y6-TaH"/>
+                                                <constraint firstItem="1Yz-DM-qpc" firstAttribute="centerY" secondItem="pSX-y6-PeN" secondAttribute="centerY" id="mhc-3G-YPE"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconImageView" destination="pSX-y6-PeN" id="76X-6N-DMJ"/>
+                                            <outlet property="titleLabel" destination="1Yz-DM-qpc" id="PT9-Ll-JTU"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
