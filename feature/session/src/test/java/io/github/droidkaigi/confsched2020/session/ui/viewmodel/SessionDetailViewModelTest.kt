@@ -10,7 +10,6 @@ import io.github.droidkaigi.confsched2020.widget.component.ViewModelTestRule
 import io.kotlintest.matchers.beOfType
 import io.kotlintest.should
 import io.kotlintest.shouldBe
-import io.kotlintest.shouldHave
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.verify

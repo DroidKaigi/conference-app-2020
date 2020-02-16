@@ -90,7 +90,7 @@ class SessionDetailTitleItem @AssistedInject constructor(
                 return
             }
 
-            when(thumbsUpCount.incremented) {
+            when (thumbsUpCount.incremented) {
                 0 -> binding.incrementedThumbsUpCount.dropOut(lifecycleCoroutineScope)
                 1 -> {
                     binding.incrementedThumbsUpCount.setIncrementedText(
