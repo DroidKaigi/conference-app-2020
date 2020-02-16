@@ -84,7 +84,7 @@ internal open class KtorDroidKaigiApi constructor(
 
     override suspend fun getAnnouncements(lang: LangParameter): AnnouncementListResponse {
         val rawResponse = httpClient.get<String> {
-            url("$apiEndpoint/announcements/${lang.value}")
+            url("$apiEndpoint/announcements/${lang.value}/")
             accept(ContentType.Application.Json)
         }
 
@@ -93,7 +93,7 @@ internal open class KtorDroidKaigiApi constructor(
 
     override suspend fun getSponsors(): SponsorListResponse {
         val rawResponse = httpClient.get<String> {
-            url("$apiEndpoint/sponsors")
+            url("$apiEndpoint/sponsors/")
             accept(ContentType.Application.Json)
         }
 
@@ -116,7 +116,7 @@ internal open class KtorDroidKaigiApi constructor(
 
     override suspend fun getStaffs(): StaffResponse {
         val rawResponse = httpClient.get<String> {
-            url("$apiEndpoint/committee_members")
+            url("$apiEndpoint/committee_members/")
             accept(ContentType.Application.Json)
         }
 
@@ -139,7 +139,7 @@ internal open class KtorDroidKaigiApi constructor(
 
     override suspend fun getContributorList(): ContributorResponse {
         val rawResponse = httpClient.get<String> {
-            url("$apiEndpoint/contributors")
+            url("$apiEndpoint/contributors/")
             accept(ContentType.Application.Json)
         }
 
