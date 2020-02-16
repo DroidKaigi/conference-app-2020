@@ -135,7 +135,7 @@ final class SidebarViewController: UITableViewController {
         case .setting:
             break
         case .survey:
-            let urlString = "https://docs.google.com/forms/d/1pm-47edcdP3BYp59_cImgrvXiEOWYTxtXYUUb8CpeE8/viewform"
+            let urlString = "https://docs.google.com/forms/d/e/1FAIpQLSfQHIwT0lf-20tx5xgUFSm7PPy_EjD5lI8SHuxV3DHN4D9pkA/viewform"
             if let url = URL(string: urlString) {
                 presentSafariViewController(with: url)
             }
