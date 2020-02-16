@@ -158,7 +158,7 @@
             app:iconTint="@{ thumbsUpCount.total > 0 ? @color/white: @color/indigo_900 }"
             app:iconPadding="4dp"
             app:iconSize="16dp"
-            app:strokeColor="@{ thumbsUpCount.total > 0 ? @color/white : @color/indigo_900 }"
+            app:strokeColor="@color/indigo_900"
             app:strokeWidth="1dp"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tags"
