@@ -17,4 +17,6 @@ interface SessionRepository {
         session: SpeechSession,
         sessionFeedback: SessionFeedback
     )
+    fun thumbsUpCounts(sessionId: SessionId): Flow<Int>
+    suspend fun incrementThumbsUpCount(sessionId: SessionId, count: Int)
 }

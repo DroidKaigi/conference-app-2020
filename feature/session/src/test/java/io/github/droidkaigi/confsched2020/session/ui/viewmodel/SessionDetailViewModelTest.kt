@@ -1,13 +1,15 @@
 package io.github.droidkaigi.confsched2020.session.ui.viewmodel
 
 import com.jraska.livedata.test
+import io.github.droidkaigi.confsched2020.model.AppError
 import io.github.droidkaigi.confsched2020.model.SessionContents
 import io.github.droidkaigi.confsched2020.model.SessionId
 import io.github.droidkaigi.confsched2020.model.repository.SessionRepository
 import io.github.droidkaigi.confsched2020.widget.component.MockkRule
 import io.github.droidkaigi.confsched2020.widget.component.ViewModelTestRule
+import io.kotlintest.matchers.beOfType
+import io.kotlintest.should
 import io.kotlintest.shouldBe
-import io.kotlintest.shouldNotBe
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.verify
@@ -35,18 +37,19 @@ class SessionDetailViewModelTest {
             .test()
 
         val valueHistory = testObserver.valueHistory()
-        valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true)
-        valueHistory[1].apply {
+        // Observer does not receive UiModel.EMPTY,
+        // because sessionRepository.sessionContents does not always emit
+        // before UiModel is observed
+        valueHistory[0].apply {
             isLoading shouldBe false
             session shouldBe Dummies.speachSession1
-            error shouldBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
     }
 
     @Test
-    fun load_NotFoundSpeaker() {
+    fun load_NotFoundSession() {
         coEvery { sessionRepository.sessionContents() } returns flowOf(SessionContents.EMPTY)
         val sessionDetailViewModel = SessionDetailViewModel(
             sessionId = SessionId("1"),
@@ -54,16 +57,15 @@ class SessionDetailViewModelTest {
             searchQuery = null
         )
 
-        val testObserver = sessionDetailViewModel
+        val uiModelTestObserver = sessionDetailViewModel
             .uiModel
             .test()
 
-        val valueHistory = testObserver.valueHistory()
-        valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true)
-        valueHistory[1].apply {
+        val uiModelValueHistory = uiModelTestObserver.valueHistory()
+        uiModelValueHistory[0].apply {
             isLoading shouldBe false
+            error should beOfType<AppError.ApiException.SessionNotFoundException>()
             session shouldBe null
-            error shouldNotBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
@@ -86,25 +88,24 @@ class SessionDetailViewModelTest {
 
         verify { sessionDetailViewModel.favorite(Dummies.speachSession1) }
         val valueHistory = testObserver.valueHistory()
-        valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true)
-        valueHistory[1].apply {
+        valueHistory[0].apply {
             isLoading shouldBe false
-            session shouldBe Dummies.speachSession1
             error shouldBe null
+            session shouldBe Dummies.speachSession1
+            showEllipsis shouldBe true
+            searchQuery shouldBe null
+        }
+        valueHistory[1].apply {
+            isLoading shouldBe true
+            error shouldBe null
+            session shouldBe Dummies.speachSession1
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
         valueHistory[2].apply {
-            isLoading shouldBe true
-            session shouldBe Dummies.speachSession1
-            error shouldBe null
-            showEllipsis shouldBe true
-            searchQuery shouldBe null
-        }
-        valueHistory[3].apply {
             isLoading shouldBe false
-            session shouldBe Dummies.speachSession1
             error shouldBe null
+            session shouldBe Dummies.speachSession1
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
@@ -126,8 +127,8 @@ class SessionDetailViewModelTest {
         valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true)
         valueHistory[1].apply {
             isLoading shouldBe true
-            session shouldBe null
             error shouldBe null
+            session shouldBe null
             showEllipsis shouldBe false
             searchQuery shouldBe null
         }
@@ -147,17 +148,38 @@ class SessionDetailViewModelTest {
             .test()
 
         val valueHistory = testObserver.valueHistory()
-        valueHistory[0] shouldBe
-            SessionDetailViewModel.UiModel.EMPTY.copy(
-            isLoading = true,
-            searchQuery = "query"
-        )
-        valueHistory[1].apply {
+        valueHistory[0].apply {
             isLoading shouldBe false
-            session shouldBe Dummies.speachSession1
             error shouldBe null
+            session shouldBe Dummies.speachSession1
             showEllipsis shouldBe true
             searchQuery shouldBe "query"
+        }
+    }
+
+    @Test
+    fun thumbsUpCount() {
+        coEvery {
+            sessionRepository.thumbsUpCounts(Dummies.speachSession1.id)
+        } returns flowOf(Dummies.thumbsUpCount.total)
+        val sessionDetailViewModel = SessionDetailViewModel(
+            sessionId = Dummies.speachSession1.id,
+            sessionRepository = sessionRepository,
+            searchQuery = null
+        )
+        val testObserver = sessionDetailViewModel
+            .uiModel
+            .test()
+
+        val valueHistory = testObserver.valueHistory()
+        valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true)
+        valueHistory[1].apply {
+            isLoading shouldBe true
+            error shouldBe null
+            session shouldBe null
+            showEllipsis shouldBe true
+            searchQuery shouldBe null
+            thumbsUpCount.total shouldBe Dummies.thumbsUpCount.total
         }
     }
 }

@@ -52,6 +52,14 @@ kotlin {
             implementation Dep.Test.KotlinMultiPlatform.commonModuleTestAnnotations
             implementation Dep.MockK.common
         }
+        test {
+            dependsOn commonMain
+            dependencies {
+                implementation Dep.Test.KotlinMultiPlatform.jvmModuleTest
+                implementation Dep.Test.KotlinMultiPlatform.jvmModuleTestJunit
+                implementation Dep.MockK.jvm
+            }
+        }
         androidTest {
             dependsOn commonMain
             dependencies {

@@ -50,4 +50,10 @@
         <item name="android:textColor">?colorOnBackground</item>
     </style>
 
+    <!-- Notosans Medium 14sp -->
+    <style name="TextAppearance.DroidKaigi.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/notosans_medium</item>
+        <item name="fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">?colorOnBackground</item>
+    </style>
 </resources>

@@ -18,6 +18,11 @@
             name="lang"
             type="io.github.droidkaigi.confsched2020.model.Lang"
             />
+
+        <variable
+            name="thumbsUpCount"
+            type="io.github.droidkaigi.confsched2020.model.ThumbsUpCount"
+            />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -121,15 +126,56 @@
             app:layout_constraintTop_toBottomOf="@id/session_message"
             />
 
+        <TextView
+            android:id="@+id/incremented_thumbs_up_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:textColor="@color/white"
+            android:textAppearance="?textAppearanceBody1"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:background="@drawable/shape_incremented_thumbs_up_count_background"
+            app:layout_constraintBottom_toTopOf="@id/thumbs_up"
+            app:layout_constraintStart_toStartOf="@id/thumbs_up"
+            app:layout_constraintEnd_toEndOf="@id/thumbs_up"
+            tools:text="+50"
+            tools:visibility="visible"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/thumbs_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="56dp"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@{ thumbsUpCount.total > 0 ? @color/indigo_900 : @color/white }"
+            android:text="@{ thumbsUpCount.total > 0 ? String.valueOf(thumbsUpCount.total) : @string/thumbs_up_default_label }"
+            android:textColor="@{ thumbsUpCount.total > 0 ? @color/white: @color/indigo_900 }"
+            android:textAppearance="?textAppearanceButton"
+            style="@style/Widget.DroidKaigi.Button.OvalButton"
+            app:icon="@drawable/ic_thumbs_up_black_24dp"
+            app:iconTint="@{ thumbsUpCount.total > 0 ? @color/white: @color/indigo_900 }"
+            app:iconPadding="4dp"
+            app:iconSize="16dp"
+            app:strokeColor="@color/indigo_900"
+            app:strokeWidth="1dp"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/tags"
+            app:layout_constraintBottom_toTopOf="@id/divider_survey_and_text"
+            app:layout_constraintWidth_max="200dp"
+            tools:text="thumbs-up"
+            />
+
         <View
             android:id="@+id/divider_survey_and_text"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="24dp"
             android:background="@color/black_alpha_12"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/tags"
+            app:layout_constraintTop_toBottomOf="@id/thumbs_up"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

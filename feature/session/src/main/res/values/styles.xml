@@ -7,4 +7,13 @@
     <style name="Widget.DroidKaigi.Backdrop.BackLayer" parent="">
         <item name="android:background">?colorPrimary</item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.DroidKaigi.Button.Oval" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
+
+    <style name="Widget.DroidKaigi.Button.OvalButton" parent="Widget.MaterialComponents.Button">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.DroidKaigi.Button.Oval</item>
+    </style>
 </resources>

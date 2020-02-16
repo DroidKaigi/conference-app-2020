@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface Firestore {
     fun getFavoriteSessionIds(): Flow<List<String>>
     suspend fun toggleFavorite(sessionId: SessionId)
+    fun getThumbsUpCount(sessionId: SessionId): Flow<Int>
+    suspend fun incrementThumbsUpCount(sessionId: SessionId, count: Int)
 }

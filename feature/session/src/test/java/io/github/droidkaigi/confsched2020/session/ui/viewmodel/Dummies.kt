@@ -16,6 +16,7 @@ import io.github.droidkaigi.confsched2020.model.SessionType
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeakerId
 import io.github.droidkaigi.confsched2020.model.SpeechSession
+import io.github.droidkaigi.confsched2020.model.ThumbsUpCount
 
 object Dummies {
     val hall = Room(1, LocaledString("JA App bar", "EN App bar"), 1)
@@ -79,5 +80,11 @@ object Dummies {
         langSupports = listOf(LangSupport.INTERPRETATION),
         category = listOf(category),
         levels = listOf(Level.BEGINNER, Level.INTERMEDIATE, Level.ADVANCED)
+    )
+
+    val thumbsUpCount = ThumbsUpCount(
+        total = 10,
+        incremented = 0,
+        incrementedUpdated = false
     )
 }

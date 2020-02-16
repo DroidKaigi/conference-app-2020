@@ -7,6 +7,7 @@ import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,7 @@ import io.github.droidkaigi.confsched2020.ext.isShow
 import io.github.droidkaigi.confsched2020.model.Session
 import io.github.droidkaigi.confsched2020.model.Speaker
 import io.github.droidkaigi.confsched2020.model.SpeechSession
+import io.github.droidkaigi.confsched2020.model.ThumbsUpCount
 import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.FragmentSessionDetailBinding
@@ -115,7 +117,6 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
 
         sessionDetailViewModel.uiModel
             .observe(viewLifecycleOwner) { uiModel: SessionDetailViewModel.UiModel ->
-                uiModel.error?.let { systemViewModel.onError(it) }
                 binding.progressBar.isShow = uiModel.isLoading
                 uiModel.session
                     ?.let { session ->
@@ -124,10 +125,12 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                             adapter,
                             session,
                             uiModel.showEllipsis,
-                            uiModel.searchQuery
+                            uiModel.searchQuery,
+                            uiModel.thumbsUpCount
                         )
                     }
-            }
+            uiModel.error?.let { systemViewModel.onError(it) }
+        }
 
         binding.bottomAppBar.run {
             doOnNextLayout {
@@ -193,13 +196,21 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         adapter: GroupAdapter<GroupieViewHolder<*>>,
         session: Session,
         showEllipsis: Boolean,
-        searchQuery: String?
+        searchQuery: String?,
+        thumbsUpCount: ThumbsUpCount
     ) {
         binding.sessionDetailRecycler.transitionName =
             "${session.id}-${navArgs.transitionNameSuffix}"
 
         val items = mutableListOf<Group>()
-        items += sessionDetailTitleItemFactory.create(session, searchQuery)
+        items += sessionDetailTitleItemFactory.create(
+            session,
+            searchQuery,
+            viewLifecycleOwner.lifecycleScope,
+            thumbsUpCount
+        ) {
+            sessionDetailViewModel.thumbsUp(session)
+        }
         items += sessionDetailDescriptionItemFactory.create(
             session,
             showEllipsis,

@@ -10,6 +10,7 @@
         <item name="textAppearanceBody1">@style/TextAppearance.DroidKaigi.Body1</item>
         <item name="textAppearanceBody2">@style/TextAppearance.DroidKaigi.Body2</item>
         <item name="textAppearanceCaption">@style/TextAppearance.DroidKaigi.Caption</item>
+        <item name="textAppearanceButton">@style/TextAppearance.DroidKaigi.Button</item>
 
         <!-- Widget styles -->
         <item name="filterChipStyle">@style/Widget.DroidKaigi.FilterChip</item>
