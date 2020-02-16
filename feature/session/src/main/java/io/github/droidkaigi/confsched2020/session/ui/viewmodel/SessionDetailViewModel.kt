@@ -153,10 +153,6 @@ class SessionDetailViewModel @AssistedInject constructor(
         viewModelScope.launch {
             setupIncrementThumbsUpEvent()
         }
-        // For debug
-        incrementThumbsUpCountResultLiveData.observeForever {
-            Timber.debug { "⭐ increment livedata $it" }
-        }
     }
 
     fun favorite(session: Session) {
@@ -201,11 +197,11 @@ class SessionDetailViewModel @AssistedInject constructor(
                         sessionId = sessionId,
                         count = count
                     )
-                    Timber.debug { "⭐ increment $count posted" }
+                    Timber.debug { "increment thumbs-up: $count posted" }
                     // Return initial value
                     incrementThumbsUpCountResultLiveData.value = ResultState.Success(0)
                 } catch (e: Exception) {
-                    Timber.debug { "⭐ error $e" }
+                    Timber.debug { "increment thumbs-up error: $e" }
                     incrementThumbsUpCountResultLiveData.value = ResultState.Error(e)
                 }
             }
