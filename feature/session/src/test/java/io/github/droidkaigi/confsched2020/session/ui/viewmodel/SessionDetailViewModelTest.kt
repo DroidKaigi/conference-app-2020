@@ -90,18 +90,21 @@ class SessionDetailViewModelTest {
         val valueHistory = testObserver.valueHistory()
         valueHistory[0].apply {
             isLoading shouldBe false
+            error shouldBe null
             session shouldBe Dummies.speachSession1
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
         valueHistory[1].apply {
             isLoading shouldBe true
+            error shouldBe null
             session shouldBe Dummies.speachSession1
             showEllipsis shouldBe true
             searchQuery shouldBe null
         }
         valueHistory[2].apply {
             isLoading shouldBe false
+            error shouldBe null
             session shouldBe Dummies.speachSession1
             showEllipsis shouldBe true
             searchQuery shouldBe null
@@ -124,6 +127,7 @@ class SessionDetailViewModelTest {
         valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true)
         valueHistory[1].apply {
             isLoading shouldBe true
+            error shouldBe null
             session shouldBe null
             showEllipsis shouldBe false
             searchQuery shouldBe null
@@ -146,6 +150,7 @@ class SessionDetailViewModelTest {
         val valueHistory = testObserver.valueHistory()
         valueHistory[0].apply {
             isLoading shouldBe false
+            error shouldBe null
             session shouldBe Dummies.speachSession1
             showEllipsis shouldBe true
             searchQuery shouldBe "query"
@@ -170,6 +175,7 @@ class SessionDetailViewModelTest {
         valueHistory[0] shouldBe SessionDetailViewModel.UiModel.EMPTY.copy(isLoading = true)
         valueHistory[1].apply {
             isLoading shouldBe true
+            error shouldBe null
             session shouldBe null
             showEllipsis shouldBe true
             searchQuery shouldBe null
