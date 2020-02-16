@@ -37,7 +37,7 @@ internal open class KtorDroidKaigiApi constructor(
     override suspend fun getSessions(): Response {
         // We are separate getting response string and parsing for Kotlin Native
         val rawResponse = httpClient.get<String> {
-            url("$apiEndpoint/timetable")
+            url("$apiEndpoint/timetable/")
             accept(ContentType.Application.Json)
         }
         return json.parse(ResponseImpl.serializer(), rawResponse)
