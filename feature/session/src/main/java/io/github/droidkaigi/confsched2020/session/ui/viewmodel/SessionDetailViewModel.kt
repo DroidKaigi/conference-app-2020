@@ -220,7 +220,7 @@ class SessionDetailViewModel @AssistedInject constructor(
     }
 
     companion object {
-        private const val INCREMENT_DEBOUNCE_MILLIS = 500L
+        private const val INCREMENT_DEBOUNCE_MILLIS = 1000L
         private const val MAX_APPLY_COUNT = 50
     }
 }

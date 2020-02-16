@@ -163,6 +163,7 @@
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tags"
             app:layout_constraintBottom_toTopOf="@id/divider_survey_and_text"
+            app:layout_constraintWidth_max="200dp"
             tools:text="thumbs-up"
             />
 
