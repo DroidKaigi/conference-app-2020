@@ -7,6 +7,7 @@ import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -44,6 +45,7 @@ import io.github.droidkaigi.confsched2020.session.ui.widget.SessionDetailItemDec
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.animation.MEDIUM_EXPAND_DURATION
 import io.github.droidkaigi.confsched2020.ui.transition.fadeThrough
+import io.github.droidkaigi.confsched2020.ui.widget.SystemUiManager
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -83,10 +85,19 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
     @Inject
     lateinit var sessionDetailMaterialItemFactory: SessionDetailMaterialItem.Factory
 
+    private val navigationBarColors: SystemUiManager by lazy {
+        SystemUiManager(context!!)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = fadeThrough().apply {
             duration = MEDIUM_EXPAND_DURATION
+        }
+
+        navigationBarColors.systemUiVisibility.distinctUntilChanged().observe(this) {
+            activity?.window?.decorView?.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
     }
 
