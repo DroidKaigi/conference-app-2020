@@ -189,6 +189,14 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
                 R.color.search_close_icon
             ).defaultColor
         )
+        val searchVoiceButton = searchView.findViewById(AppcompatRId.search_voice_btn) as ImageView
+        searchVoiceButton.setImageResource(R.drawable.ic_keyboard_voice_24px)
+        searchVoiceButton.setColorFilter(
+            AppCompatResources.getColorStateList(
+                context,
+                R.color.search_voice_icon
+            ).defaultColor
+        )
         searchView.isIconified = false
         searchView.clearFocus()
         val searchResult = searchSessionsViewModel.uiModel.requireValue().searchResult
