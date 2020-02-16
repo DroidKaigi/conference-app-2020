@@ -157,7 +157,7 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
         super.onResume()
         val intent = activity!!.intent
         if (intent.action == Intent.ACTION_SEARCH) {
-            val query: String = intent.getStringExtra(SearchManager.QUERY)!!
+            val query: String = requrireNotNull(intent.getStringExtra(SearchManager.QUERY))
             val searchResult = searchSessionsViewModel.uiModel.requireValue().searchResult
             val searchView: SearchView? =
                 menu?.findItem(R.id.search_view)?.actionView as SearchView?
