@@ -10,11 +10,15 @@
         android:supportsRtl="false"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.DroidKaigi.DayNight">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.SEARCH" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
             <nav-graph android:value="@navigation/navigation" />
         </activity>
         <receiver android:name=".session.broadcastreceiver.NotificationBroadcastReceiver" />

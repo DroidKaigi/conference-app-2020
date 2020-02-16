@@ -1,7 +1,10 @@
 package io.github.droidkaigi.confsched2020.session.ui
 
 import android.app.Activity
+import android.app.SearchManager
+import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -9,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.getSystemService
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -64,6 +68,8 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
 
     @Inject
     lateinit var sectionHeaderItemFactory: SectionHeaderItem.Factory
+
+    private var menu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,20 +154,49 @@ class SearchSessionsFragment : Fragment(R.layout.fragment_search_sessions), Inje
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        val activity = requireActivity()
+        val intent = activity.intent
+        if (intent.action == Intent.ACTION_SEARCH &&
+            intent.hasExtra(RecognizerIntent.EXTRA_RESULTS)
+        ) {
+            val query: String = requireNotNull(intent.getStringExtra(SearchManager.QUERY))
+            val searchView: SearchView? =
+                menu?.findItem(R.id.search_view)?.actionView as SearchView?
+            searchView?.setQuery(query, true)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_search_sessions, menu)
+        this.menu = menu
         val searchView = menu.findItem(R.id.search_view).actionView as SearchView
+        val context = requireContext()
+        context.getSystemService<SearchManager>()?.let { searchManager ->
+            searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(requireActivity().componentName)
+            )
+        }
         (searchView.findViewById(AppcompatRId.search_button) as ImageView).setColorFilter(
             AppCompatResources.getColorStateList(
-                requireContext(),
+                context,
                 R.color.search_icon
             ).defaultColor
         )
         (searchView.findViewById(AppcompatRId.search_close_btn) as ImageView).setColorFilter(
             AppCompatResources.getColorStateList(
-                requireContext(),
+                context,
                 R.color.search_close_icon
+            ).defaultColor
+        )
+        val searchVoiceButton = searchView.findViewById(AppcompatRId.search_voice_btn) as ImageView
+        searchVoiceButton.setImageResource(R.drawable.ic_keyboard_voice_24px)
+        searchVoiceButton.setColorFilter(
+            AppCompatResources.getColorStateList(
+                context,
+                R.color.search_voice_icon
             ).defaultColor
         )
         searchView.isIconified = false

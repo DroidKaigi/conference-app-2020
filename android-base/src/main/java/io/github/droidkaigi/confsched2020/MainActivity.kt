@@ -349,6 +349,11 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         }
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+    }
+
     companion object {
         const val ENTIRE_SURVEY =
             "https://docs.google.com/forms/d/e/1FAIpQLSfQHIwT0lf-20tx5xgUFSm7PPy_EjD5lI8SHuxV3DHN4D9pkA/viewform" // ktlint-disable max-line-length
