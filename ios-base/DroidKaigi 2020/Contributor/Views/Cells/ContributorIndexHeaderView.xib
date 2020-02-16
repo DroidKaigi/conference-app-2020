@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" id="MS2-Pl-Bnq" customClass="ContributorIndexHeaderView" customModule="DroidKaigi_2020" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Index" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nYb-Wy-GsV">
+                    <rect key="frame" x="0.0" y="13" width="64" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="64" id="hEY-ky-5gG"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="nYb-Wy-GsV" firstAttribute="centerY" secondItem="MS2-Pl-Bnq" secondAttribute="centerY" id="78v-fg-w4J"/>
+                <constraint firstItem="nYb-Wy-GsV" firstAttribute="leading" secondItem="MS2-Pl-Bnq" secondAttribute="leading" id="Qg0-nE-Jfg"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Krf-79-VA4"/>
+            <connections>
+                <outlet property="indexLabel" destination="nYb-Wy-GsV" id="KPW-RM-xEv"/>
+            </connections>
+            <point key="canvasLocation" x="107" y="40"/>
+        </collectionReusableView>
+    </objects>
+</document>

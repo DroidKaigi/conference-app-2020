@@ -48,6 +48,9 @@ class MainSessionsFragment : Fragment(R.layout.fragment_main_sessions), HasAndro
 
     @Inject
     lateinit var sessionItemFactory: SessionItem.Factory
+    private val args: MainSessionsFragmentArgs by lazy {
+        MainSessionsFragmentArgs.fromBundle(arguments ?: Bundle())
+    }
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
@@ -105,6 +108,10 @@ class MainSessionsFragment : Fragment(R.layout.fragment_main_sessions), HasAndro
         val jstNow = DateTime.now().toOffset(defaultTimeZoneOffset())
         if (jstNow.yearInt == 2020 && jstNow.month1 == 2 && jstNow.dayOfMonth == 21) {
             binding.sessionsViewpager.currentItem = 1
+        }
+        // Switch the tab to be displayed when an argument is specified in args
+        if (args.tabIndex > 0) {
+            binding.sessionsViewpager.currentItem = args.tabIndex
         }
 
         tabLayoutMediator.attach()

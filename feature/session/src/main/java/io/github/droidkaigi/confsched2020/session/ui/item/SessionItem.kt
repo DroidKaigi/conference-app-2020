@@ -80,14 +80,15 @@ class SessionItem @AssistedInject constructor(
                         actionSessionToSessionDetail(
                             session.id,
                             TRANSITION_NAME_SUFFIX,
-                            searchQuery),
+                            searchQuery
+                        ),
                         extra
                     )
             }
             itemRoot.transitionName = "${session.id}-$TRANSITION_NAME_SUFFIX"
             live.isVisible = session.isOnGoing
             bindSessionMessage(session, viewBinding)
-            title.text = session.title.ja
+            title.text = session.title.currentLangString
             title.setSearchHighlight()
             room.text = session.minutesRoom(defaultLang())
             imageRequestDisposables.clear()
@@ -169,7 +170,8 @@ class SessionItem @AssistedInject constructor(
                     actionSessionToSpeaker(
                         speaker.id,
                         TRANSITION_NAME_SUFFIX,
-                        null),
+                        null
+                    ),
                     extras
                 )
             }
@@ -217,10 +219,13 @@ class SessionItem @AssistedInject constructor(
                 BackgroundColorSpan(highlightColor),
                 matcher.start(),
                 matcher.end(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
         }
         text = spannableStringBuilder
     }
+
+    fun startSessionDate(): String = session.startDayText
 
     fun startSessionTime(): String = session.startTimeText
 

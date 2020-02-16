@@ -1,9 +1,9 @@
-import ios_combined
+import ioscombined
 import RxCocoa
 import RxSwift
 import UIKit
 
-final class AnnouncementsViewController: UIViewController {
+final class AnnouncementsViewController: ContentViewController {
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.tableFooterView = UIView()
@@ -30,33 +30,11 @@ final class AnnouncementsViewController: UIViewController {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
+        title = L10n.announcements
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
-        navigationController?.navigationBar.barTintColor = ApplicationScheme.shared.colorScheme.backgroundColor
-        navigationController?.navigationBar.tintColor = ApplicationScheme.shared.colorScheme.onBackgroundColor
-
-        let templateMenuImage = Asset.icMenu.image.withRenderingMode(.alwaysTemplate)
-        let menuItem = UIBarButtonItem(image: templateMenuImage,
-                                       style: .plain,
-                                       target: self,
-                                       action: nil)
-        let titleItem = UIBarButtonItem(title: L10n.announcements,
-                                        style: .plain,
-                                        target: nil,
-                                        action: nil)
-        titleItem.setTitleTextAttributes([.foregroundColor: UIColor.black], for: .disabled)
-        titleItem.isEnabled = false
-        navigationItem.leftBarButtonItems = [menuItem, titleItem]
-
-        menuItem.rx.tap
-            .bind(to: Binder(self) { target, _ in
-                target.navigationDrawerController?.toggleLeftView()
-            })
-            .disposed(by: disposeBag)
 
         let dataSource = AnnouncementsDataSource()
 

@@ -1,6 +1,37 @@
 name: DroidKaigi 2020
 settings:
-    PRODUCT_BUNDLE_IDENTIFIER: io.github.droidkaigi.confsched2020.DroidKaigi-2020
+    PRODUCT_BUNDLE_IDENTIFIER: io.github.droidkaigi.confsched2020.DroidKaigi2020
+schemes:
+  DroidKaigi 2020-Debug:
+    build:
+      targets:
+        DroidKaigi 2020: all
+        DroidKaigi 2020UITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+    profile: 
+      config: Debug
+    analyze:
+      config: Debug
+    archive: 
+      config: Debug
+  DroidKaigi 2020-Release:
+    build:
+      targets:
+        DroidKaigi 2020: all
+        DroidKaigi 2020UITests: [test]
+    run:
+      config: Release
+    test:
+      config: Release
+    profile: 
+      config: Release
+    analyze:
+      config: Release
+    archive: 
+      config: Release
 targets:
     DroidKaigi 2020:
         type: application
@@ -11,7 +42,7 @@ targets:
             Debug: Configs/DroidKaigi 2020-Debug.xcconfig
             Release: Configs/DroidKaigi 2020-Release.xcconfig
         dependencies:
-            - framework: build/ios_combined.framework
+            - framework: build/ioscombined.framework
         preBuildScripts:
             - path: scripts/build_kotlin_modules.sh
               name: Build Kotlin Modules
@@ -28,7 +59,7 @@ targets:
         deploymentTarget: "12.0"
         sources: DroidKaigi 2020Tests
         dependencies:
-            - framework: build/ios_combined.framework
+            - framework: build/ioscombined.framework
             - target: DroidKaigi 2020
         settings:
             INFOPLIST_FILE: DroidKaigi 2020Tests/info.plist

@@ -1,7 +1,7 @@
 package io.github.droidkaigi.confsched2020.util
 
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
 import io.github.droidkaigi.confsched2020.widget.component.R
 

@@ -1,4 +1,6 @@
-# ![DroidKaigi Logo](corecomponent/androidcomponent/src/main/res/drawable-xxhdpi/ic_logo.png)DroidKaigi 2020 official Android app ![GitHub Actions](https://github.com/DroidKaigi/conference-app-2020/workflows/.github/workflows/on_release_branch.yml/badge.svg)
+# ![DroidKaigi Logo](corecomponent/androidcomponent/src/main/res/drawable-xxhdpi/ic_logo.png)DroidKaigi 2020 official Android app
+
+[![GitHub Actions](https://github.com/DroidKaigi/conference-app-2020/workflows/On%20release%20branch/badge.svg)](https://github.com/DroidKaigi/conference-app-2020/actions?query=workflow%3A%22On+release+branch%22)
 
 We are currently working on the event. We are looking for contributors!
 
@@ -243,4 +245,6 @@ This project uses some modern Android libraries and source codes.
 * [Material](https://github.com/CosmicMind/Material)
 * [Nuke](https://github.com/kean/Nuke)
 * [SwiftGen](https://github.com/SwiftGen/SwiftGen)
+* [RealmSwift](https://github.com/realm/realm-cocoa)
 * [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing)
+* [RxRealm](https://github.com/RxSwiftCommunity/RxRealm)

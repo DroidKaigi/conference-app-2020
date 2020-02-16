@@ -1,5 +1,5 @@
 import Foundation
-import ios_combined
+import ioscombined
 import Nuke
 import UIKit
 
@@ -15,6 +15,11 @@ final class SpeakerViewController: UIViewController {
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var tagLabel: UILabel!
     @IBOutlet weak var biographyLabel: UILabel!
+    @IBOutlet weak var sessionSectionLabel: UILabel! {
+        didSet {
+            sessionSectionLabel.text = L10n.sessions
+        }
+    }
 
     private var speaker: Speaker!
     private var sessions: [Session]!
@@ -28,7 +33,6 @@ final class SpeakerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupUI()
     }
 
@@ -51,8 +55,8 @@ final class SpeakerViewController: UIViewController {
 
         sessions.forEach { session in
             let sessionView = SpeakerSessionView.instantiate()
-            sessionView.sessionTitleLabel.text = session.title.ja
-            sessionView.sessionDateLabel.text = session.timeSummary(lang: Lang.ja, timezoneOffset: TimeZoneOffsetKt.defaultTimeZoneOffset())
+            sessionView.sessionTitleLabel.text = session.title.currentLangString
+            sessionView.sessionDateLabel.text = session.currentLangShortSummary
             stackView.insertArrangedSubview(sessionView, at: stackView.arrangedSubviews.count)
         }
     }

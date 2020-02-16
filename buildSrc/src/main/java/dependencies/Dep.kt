@@ -52,7 +52,7 @@ object Dep {
         val preference = "androidx.preference:preference:1.1.0"
         val browser = "androidx.browser:browser:1.2.0"
         val activityKtx = "androidx.activity:activity-ktx:1.1.0"
-        val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.0"
+        val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.1"
 
         val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:2.2.0"
         val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0"
@@ -66,7 +66,7 @@ object Dep {
         }
 
         object Navigation {
-            val version = "2.2.0"
+            val version = "2.2.1"
             val runtimeKtx = "androidx.navigation:navigation-runtime-ktx:$version"
             val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
             val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
@@ -75,7 +75,7 @@ object Dep {
         }
 
         object Work {
-            val version = "2.3.0"
+            val version = "2.3.1"
             val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
         }
     }
@@ -144,7 +144,7 @@ object Dep {
     }
 
     object Ktor {
-        val version = "1.3.0"
+        val version = "1.3.1"
         val clientCommon = "io.ktor:ktor-client-core:$version"
         val clientAndroid = "io.ktor:ktor-client-okhttp:$version"
         val clientIos = "io.ktor:ktor-client-ios:$version"
@@ -181,7 +181,7 @@ object Dep {
     }
 
     object Hyperion {
-        val version = "0.9.25"
+        val version = "0.9.27"
         val hyperionPlugins = listOf(
             "com.willowtreeapps.hyperion:hyperion-core:$version",
             "com.willowtreeapps.hyperion:hyperion-attr:$version",
@@ -204,7 +204,7 @@ object Dep {
     }
 
     object Coil {
-        val version = "0.8.0"
+        val version = "0.9.5"
         val coil = "io.coil-kt:coil:$version"
     }
 
