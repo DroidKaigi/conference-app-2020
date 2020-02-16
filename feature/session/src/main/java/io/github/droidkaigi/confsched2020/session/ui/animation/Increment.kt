@@ -11,8 +11,7 @@ import io.github.droidkaigi.confsched2020.ext.awaitNextLayout
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-private const val POP_UP_DURATION: Long = 100
-
+// The view is shown with fade-in and move-up animation.
 internal fun View.popUp(lifecycleCoroutineScope: LifecycleCoroutineScope) {
     val target = this
 
@@ -42,7 +41,7 @@ internal fun View.popUp(lifecycleCoroutineScope: LifecycleCoroutineScope) {
                 -popupHeight
             ).run {
                 interpolator = DecelerateInterpolator()
-                duration = POP_UP_DURATION
+                duration = UP_DOWN_DURATION
                 start()
                 awaitEnd()
             }
@@ -53,6 +52,7 @@ internal fun View.popUp(lifecycleCoroutineScope: LifecycleCoroutineScope) {
     }
 }
 
+// The view is hidden with fade-out and move-down animation.
 internal fun View.dropOut(lifecycleCoroutineScope: LifecycleCoroutineScope) {
     val target = this
 
@@ -79,7 +79,7 @@ internal fun View.dropOut(lifecycleCoroutineScope: LifecycleCoroutineScope) {
                 dropOutHeight
             ).run {
                 interpolator = AccelerateInterpolator()
-                duration = POP_UP_DURATION
+                duration = UP_DOWN_DURATION
                 start()
                 awaitEnd()
             }
@@ -91,3 +91,60 @@ internal fun View.dropOut(lifecycleCoroutineScope: LifecycleCoroutineScope) {
     }
 }
 
+// The view is scale up and down at current position.
+internal fun View.pop(lifecycleCoroutineScope: LifecycleCoroutineScope) {
+    val target = this
+    target.scaleX
+    val scaleValue = 0.2f
+    val scaleXAnimator = { x: Float ->
+        ObjectAnimator
+            .ofFloat(target, View.SCALE_X, x)
+            .also {
+                it.interpolator = DecelerateInterpolator()
+                it.duration = SCALE_DURATION
+            }
+    }
+    val scaleYAnimator = { y: Float ->
+        ObjectAnimator
+            .ofFloat(target, View.SCALE_Y, y)
+            .also {
+                it.interpolator = DecelerateInterpolator()
+                it.duration = SCALE_DURATION
+            }
+    }
+
+    lifecycleCoroutineScope.launch {
+        val scaleXUp = async {
+            scaleXAnimator(1f + scaleValue).run {
+                start()
+                awaitEnd()
+            }
+        }
+        val scaleYUp = async {
+            scaleYAnimator(1f + scaleValue).run {
+                start()
+                awaitEnd()
+            }
+        }
+        scaleXUp.await()
+        scaleYUp.await()
+
+        val scaleXDown = async {
+            scaleXAnimator(1f - scaleValue).run {
+                start()
+                awaitEnd()
+            }
+        }
+        val scaleYDown = async {
+            scaleYAnimator(1f - scaleValue).run {
+                start()
+                awaitEnd()
+            }
+        }
+        scaleXDown.await()
+        scaleYDown.await()
+    }
+}
+
+private const val UP_DOWN_DURATION: Long = 100
+private const val SCALE_DURATION: Long = 100

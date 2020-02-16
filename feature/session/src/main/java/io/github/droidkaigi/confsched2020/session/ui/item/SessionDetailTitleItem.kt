@@ -20,6 +20,7 @@ import io.github.droidkaigi.confsched2020.model.defaultLang
 import io.github.droidkaigi.confsched2020.session.R
 import io.github.droidkaigi.confsched2020.session.databinding.ItemSessionDetailTitleBinding
 import io.github.droidkaigi.confsched2020.session.ui.animation.dropOut
+import io.github.droidkaigi.confsched2020.session.ui.animation.pop
 import io.github.droidkaigi.confsched2020.session.ui.animation.popUp
 import java.util.regex.Pattern
 
@@ -87,16 +88,22 @@ class SessionDetailTitleItem @AssistedInject constructor(
             binding.thumbsUpCount = thumbsUpCount
             if (!thumbsUpCount.incrementedUpdated) {
                 return
-            } else if (thumbsUpCount.incremented > 0) {
-                val context = binding.incrementedThumbsUpCount.context
-                @Suppress("USELESS_CAST")
-                binding.incrementedThumbsUpCount.text = context.getString(
-                    R.string.thumbs_up_increment_label,
-                    thumbsUpCount.incremented as Int // Need to specify a type for lintDebug task
-                )
-                binding.incrementedThumbsUpCount.popUp(lifecycleCoroutineScope)
-            } else {
-                binding.incrementedThumbsUpCount.dropOut(lifecycleCoroutineScope)
+            }
+
+            when(thumbsUpCount.incremented) {
+                0 -> binding.incrementedThumbsUpCount.dropOut(lifecycleCoroutineScope)
+                1 -> {
+                    binding.incrementedThumbsUpCount.setIncrementedText(
+                        count = thumbsUpCount.incremented
+                    )
+                    binding.incrementedThumbsUpCount.popUp(lifecycleCoroutineScope)
+                }
+                else -> {
+                    binding.incrementedThumbsUpCount.setIncrementedText(
+                        count = thumbsUpCount.incremented
+                    )
+                    binding.incrementedThumbsUpCount.pop(lifecycleCoroutineScope)
+                }
             }
         }
     }
@@ -118,6 +125,14 @@ class SessionDetailTitleItem @AssistedInject constructor(
             }
             text = spannableStringBuilder
         }
+    }
+
+    private fun TextView.setIncrementedText(count: Int) {
+        @Suppress("USELESS_CAST")
+        text = context.getString(
+            R.string.thumbs_up_increment_label,
+            count as Int // Need to specify a type for lintDebug task
+        )
     }
 
     @AssistedInject.Factory
