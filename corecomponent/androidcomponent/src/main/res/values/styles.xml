@@ -14,7 +14,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:color">?colorSecondary</item>
         <item name="clearIconTint">@color/filter_chip_clear_icon_selector</item>
-        <item name="selectedTextColor">?colorPrimary</item>
+        <item name="selectedTextColor">?attr/colorSurface</item>
         <item name="backgroundColor">@color/indigo_400</item>
     </style>
 
