@@ -81,7 +81,6 @@ final class SessionCell: UICollectionViewCell {
             ImageCache.shared.countLimit = 100
             ImageCache.shared.ttl = 120 // Invalidate image after 120 sec
 
-            ImageLoadingOptions.shared.failureImage = Asset.logo.image // The set image is applied when reading from the server fails
             ImageLoadingOptions.shared.transition = .fadeIn(duration: 0.3)
             
             let request = ImageRequest(
@@ -97,7 +96,7 @@ final class SessionCell: UICollectionViewCell {
                         ImageCache.shared[request] = response.image // Set cache
                         speakerIconView.image = ImageCache.shared[request]
                     case .failure:
-                        speakerIconView.image = ImageLoadingOptions.shared.failureImage
+                        speakerIconView.backgroundColor = UIColor.white
                     }
                 }
             }
