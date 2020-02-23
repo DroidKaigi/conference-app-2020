@@ -40,11 +40,11 @@ class SessionDetailSpeakerItem @AssistedInject constructor(
     override fun bind(binding: ItemSessionDetailSpeakerBinding, position: Int) {
         val speakerNameView = binding.speaker
         val speakerImageView = binding.speakerImage
-        speakerImageView.transitionName =
+        binding.root.transitionName =
             "${speaker.id}-${SessionDetailFragment.TRANSITION_NAME_SUFFIX}"
         binding.root.setOnClickListener {
             val extras = FragmentNavigatorExtras(
-                speakerImageView to speakerImageView.transitionName
+                binding.root to binding.root.transitionName
             )
             onClick(extras)
         }

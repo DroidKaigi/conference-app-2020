@@ -48,7 +48,7 @@ class SpeakerItem @AssistedInject constructor(
     override fun bind(viewBinding: ItemSpeakerBinding, position: Int) {
         viewBinding.root.setOnClickListener {
             val extras = FragmentNavigatorExtras(
-                viewBinding.image to viewBinding.image.transitionName
+                viewBinding.root to viewBinding.root.transitionName
             )
             viewBinding.root.findNavController().navigate(
                 actionSessionToSpeaker(
@@ -60,7 +60,7 @@ class SpeakerItem @AssistedInject constructor(
         }
         viewBinding.name.text = speaker.name
         viewBinding.name.setSearchHighlight()
-        viewBinding.image.transitionName = "${speaker.id}-$TRANSITION_NAME_SUFFIX"
+        viewBinding.root.transitionName = "${speaker.id}-$TRANSITION_NAME_SUFFIX"
 
         imageRequestDisposables.clear()
         val imageUrl = speaker.imageUrl
