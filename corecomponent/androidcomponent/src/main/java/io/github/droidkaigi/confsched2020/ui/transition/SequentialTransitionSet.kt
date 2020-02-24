@@ -17,8 +17,8 @@
 package io.github.droidkaigi.confsched2020.ui.transition
 
 import android.animation.TimeInterpolator
-import androidx.transition.Transition
-import androidx.transition.TransitionSet
+import android.transition.Transition
+import android.transition.TransitionSet
 import io.github.droidkaigi.confsched2020.ui.animation.SegmentInterpolator
 
 // This file is copied from https://github.com/android/animation-samples/tree/master/Motion

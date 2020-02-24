@@ -48,7 +48,6 @@ class SpeakerDetailItem @AssistedInject constructor(
         viewBinding.speakerTagLine.setSearchHighlight()
         viewBinding.speakerDescription.movementMethod = LinkMovementMethod.getInstance()
         viewBinding.speakerDescription.setSearchHighlight()
-        viewBinding.speakerImage.transitionName = "${speaker.id}-$transitionNameSuffix"
 
         speaker.imageUrl ?: onImageLoadedCallback()
 
