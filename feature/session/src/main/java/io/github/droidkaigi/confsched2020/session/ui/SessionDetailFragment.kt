@@ -91,7 +91,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         sharedElementEnterTransition = fadeThrough().apply {
             duration = MEDIUM_EXPAND_DURATION
         }
-        exitTransition =  Hold()
+        exitTransition = Hold()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -131,8 +131,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                             uiModel.thumbsUpCount
                         )
                     }
-            uiModel.error?.let { systemViewModel.onError(it) }
-        }
+                uiModel.error?.let { systemViewModel.onError(it) }
+            }
 
         binding.bottomAppBar.run {
             doOnNextLayout {

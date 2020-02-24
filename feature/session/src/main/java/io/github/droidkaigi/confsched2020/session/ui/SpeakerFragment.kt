@@ -2,7 +2,6 @@ package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -25,7 +24,6 @@ import io.github.droidkaigi.confsched2020.session.databinding.FragmentSpeakerBin
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerDetailItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerSessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SpeakerViewModel
-import io.github.droidkaigi.confsched2020.util.AndroidRTransition
 import javax.inject.Inject
 
 class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
