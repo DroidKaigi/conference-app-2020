@@ -81,12 +81,10 @@ final class SessionCell: UICollectionViewCell {
             ImageCache.shared.countLimit = 100
             ImageCache.shared.ttl = 120 // Invalidate image after 120 sec
 
-            ImageLoadingOptions.shared.transition = .fadeIn(duration: 0.3)
-            
             let request = ImageRequest(
                 url: imageURL
             )
-            
+
             if let cachedImage = ImageCache.shared[request] {
                 speakerIconView.image = cachedImage
             } else {

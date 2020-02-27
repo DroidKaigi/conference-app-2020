@@ -31,13 +31,6 @@ final class FloorMapViewController: ContentViewController {
 private extension FloorMapViewController {
     /// This method caches the floor map image in LRU memory when loading from server.
     func loadMap() {
-        // Configure cache
-        ImageCache.shared.costLimit = 1024 * 1024 * 50 // 50 MB
-        ImageCache.shared.countLimit = 50
-        ImageCache.shared.ttl = 120 // Invalidate image after 120 sec
-
-        ImageLoadingOptions.shared.failureImage = Asset.map.image // The set image is applied when reading from the server fails
-
         let urlString: String = "https://api.droidkaigi.jp/images/2020/map.png"
         if let url = URL(string: urlString) {
             let width = imageView.image?.size.width
@@ -57,7 +50,7 @@ private extension FloorMapViewController {
                         ImageCache.shared[request] = response.image // Set cache
                         self.imageView.image = ImageCache.shared[request]
                     case .failure:
-                        self.imageView.image = ImageLoadingOptions.shared.failureImage
+                        self.imageView.image = Asset.map.image // The set image is applied when reading from the server fails
                     }
                 }
             }
