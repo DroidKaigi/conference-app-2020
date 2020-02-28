@@ -92,7 +92,11 @@ final class SessionCell: UICollectionViewCell {
                     switch result {
                     case let .success(response):
                         ImageCache.shared[request] = response.image // Set cache
-                        speakerIconView.image = ImageCache.shared[request]
+                        UIView.transition(with: speakerIconView,
+                                          duration: 0.3,
+                                          options: .transitionCrossDissolve,
+                                          animations: { speakerIconView.image = ImageCache.shared[request] },
+                                          completion: nil)
                     case .failure:
                         speakerIconView.backgroundColor = UIColor.white
                     }
