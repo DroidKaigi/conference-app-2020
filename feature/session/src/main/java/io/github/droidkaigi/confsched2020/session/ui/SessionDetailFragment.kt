@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.material.transition.Hold
 import com.xwray.groupie.Group
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.GroupieViewHolder
@@ -90,6 +91,7 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
         sharedElementEnterTransition = fadeThrough().apply {
             duration = MEDIUM_EXPAND_DURATION
         }
+        exitTransition = Hold()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -129,8 +131,8 @@ class SessionDetailFragment : Fragment(R.layout.fragment_session_detail), Inject
                             uiModel.thumbsUpCount
                         )
                     }
-            uiModel.error?.let { systemViewModel.onError(it) }
-        }
+                uiModel.error?.let { systemViewModel.onError(it) }
+            }
 
         binding.bottomAppBar.run {
             doOnNextLayout {

@@ -2,7 +2,6 @@ package io.github.droidkaigi.confsched2020.session.ui
 
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -10,7 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
-import androidx.transition.TransitionInflater
+import com.google.android.material.transition.MaterialContainerTransform
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
@@ -25,7 +24,6 @@ import io.github.droidkaigi.confsched2020.session.databinding.FragmentSpeakerBin
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerDetailItem
 import io.github.droidkaigi.confsched2020.session.ui.item.SpeakerSessionItem
 import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SpeakerViewModel
-import io.github.droidkaigi.confsched2020.util.AndroidRTransition
 import javax.inject.Inject
 
 class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
@@ -42,15 +40,15 @@ class SpeakerFragment : Fragment(R.layout.fragment_speaker), Injectable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedElementEnterTransition = TransitionInflater.from(requireContext())
-            .inflateTransition(AndroidRTransition.move).apply {
-                interpolator = AccelerateDecelerateInterpolator()
-            }
+        sharedElementEnterTransition = MaterialContainerTransform(requireContext()).apply {
+            drawingViewId = R.id.speaker_root
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentSpeakerBinding.bind(view)
+        binding.speakerRoot.transitionName = "${navArgs.speakerId}-${navArgs.transitionNameSuffix}"
         postponeEnterTransition()
         binding.progressBar.show()
 

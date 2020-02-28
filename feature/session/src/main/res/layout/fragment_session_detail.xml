@@ -31,19 +31,12 @@
             android:layout_gravity="center"
             />
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/session_detail_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            >
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/session_detail_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:splitMotionEvents="false"
-                />
-
-        </androidx.core.widget.NestedScrollView>
+            android:splitMotionEvents="false"
+            />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_app_bar"

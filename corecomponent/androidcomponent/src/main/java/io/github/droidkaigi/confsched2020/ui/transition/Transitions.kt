@@ -16,10 +16,10 @@
 
 package io.github.droidkaigi.confsched2020.ui.transition
 
-import androidx.transition.ChangeBounds
-import androidx.transition.Fade
-import androidx.transition.Transition
-import androidx.transition.TransitionSet
+import android.transition.ChangeBounds
+import android.transition.Fade
+import android.transition.Transition
+import android.transition.TransitionSet
 import io.github.droidkaigi.confsched2020.ui.animation.FAST_OUT_SLOW_IN
 
 // This file is copied from https://github.com/android/animation-samples/tree/master/Motion
