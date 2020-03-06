@@ -38,10 +38,6 @@ allprojects {
         google()
         jcenter()
 
-        maven {
-            // https://issuetracker.google.com/issues/148316337#comment5
-            url "https://ci.android.com/builds/submitted/6167672/androidx_snapshot/latest/repository/"
-        }
         maven { url 'https://dl.bintray.com/kotlin/kotlin-dev' }
         maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
         maven { url "https://dl.bintray.com/soywiz/soywiz" }

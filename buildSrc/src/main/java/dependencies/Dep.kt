@@ -66,12 +66,11 @@ object Dep {
         }
 
         object Navigation {
-            val version = "2.2.1"
+            val version = "2.3.0-alpha03"
             val runtimeKtx = "androidx.navigation:navigation-runtime-ktx:$version"
             val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
-            val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
-            val dynamicFeaturesFragment = "androidx.navigation:navigation-dynamic-features-fragment:2.3.0-SNAPSHOT"
-            val dynamicFeaturesRuntime = "androidx.navigation:navigation-dynamic-features-runtime:2.3.0-SNAPSHOT"
+            val uiKtx = "androidx.navigation:navigation-ui-ktx:2.3.0-alpha03"
+            val dynamicFeaturesFragment = "androidx.navigation:navigation-dynamic-features-fragment:$version"
         }
 
         object Work {
