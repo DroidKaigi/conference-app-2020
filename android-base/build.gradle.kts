@@ -6,7 +6,9 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
-    id("com.google.firebase.crashlytics")
+    // AGP 4.1-alpha01 is not compatible with crashlytics
+    // https://issuetracker.google.com/issues/150397894
+    // id("com.google.firebase.crashlytics")
     id("com.google.android.gms.oss-licenses-plugin")
     id("com.releaseshub.gradle.plugin")
 }
@@ -20,7 +22,7 @@ android {
         versionCode = Versions.androidVersionCode
         versionName = Versions.androidVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments = mapOf("clearPackageData" to "true")
+        testInstrumentationRunnerArguments = mutableMapOf("clearPackageData" to "true")
     }
     signingConfigs {
         getByName("debug") {
@@ -114,7 +116,7 @@ dependencies {
     implementation(Dep.AndroidX.activityKtx)
     implementation(Dep.AndroidX.Work.runtimeKtx)
     implementation(Dep.Firebase.firestoreKtx)
-    implementation(Dep.Firebase.crashlytics)
+//    implementation(Dep.Firebase.crashlytics)
     implementation(Dep.Firebase.analytics)
     implementation(Dep.AndroidX.emoji)
 
@@ -153,4 +155,4 @@ releasesHub {
     gitHubUserEmail = "takam.dev@gmail.com"
 }
 
-apply(mapOf("plugin" to "com.google.gms.google-services"))
+apply(mutableMapOf("plugin" to "com.google.gms.google-services"))
