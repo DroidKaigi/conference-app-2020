@@ -9,6 +9,7 @@ jobs:
       (github.event_name == 'schedule')
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - name: run auto update
         run: ./gradlew android-base:upgradeDependencies
       env:
