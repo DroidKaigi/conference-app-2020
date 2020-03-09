@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: run auto update
-        run: |
-          ./gradlew android-base:upgradeDependencies
+        run: ./gradlew android-base:upgradeDependencies
       env:
         gitHubWriteToken: ${{ secrets.GITHUB_TOKEN }}
