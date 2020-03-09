@@ -8,6 +8,7 @@ plugins {
     kotlin("kapt")
     id("com.google.firebase.crashlytics")
     id("com.google.android.gms.oss-licenses-plugin")
+    id("com.releaseshub.gradle.plugin")
 }
 
 android {
@@ -140,6 +141,11 @@ dependencies {
     debugImplementation(Dep.Stetho.stetho)
     debugImplementation(Dep.LeakCanary.leakCanary)
     kapt(Dep.Google.autoservice)
+}
+releasesHub {
+    dependenciesBasePath = "buildSrc/src/main/java/dependencies/"
+    dependenciesClassNames = listOf("Dep.kt")
+    pullRequestEnabled = true
 }
 
 apply(mapOf("plugin" to "com.google.gms.google-services"))
