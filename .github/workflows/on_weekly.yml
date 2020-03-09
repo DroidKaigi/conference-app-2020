@@ -12,5 +12,5 @@ jobs:
       - uses: actions/checkout@v1
       - name: run auto update
         run: ./gradlew android-base:upgradeDependencies
-      env:
-        gitHubWriteToken: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          gitHubWriteToken: ${{ secrets.GITHUB_TOKEN }}
