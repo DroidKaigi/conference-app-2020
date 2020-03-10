@@ -1,0 +1,16 @@
+name: Run auto update
+on:
+  repository_dispatch:
+  schedule:
+    - cron:  '0 19 * * 2'
+jobs:
+  update_dependencies:
+    if: (github.event_name == 'repository_dispatch' && github.event.action == 'update_dependencies') ||
+      (github.event_name == 'schedule')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: run auto update
+        run: ./gradlew android-base:upgradeDependencies
+        env:
+          gitHubWriteToken: ${{ secrets.GITHUB_TOKEN }}
