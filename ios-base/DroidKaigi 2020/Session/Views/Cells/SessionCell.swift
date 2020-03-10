@@ -76,11 +76,6 @@ final class SessionCell: UICollectionViewCell {
         let view = UIControl()
         let speakerIconView = UIImageView()
         if let imageURL = imageURL {
-            // Configure cache
-            ImageCache.shared.costLimit = 1024 * 1024 * 50 // 50 MB
-            ImageCache.shared.countLimit = 100
-            ImageCache.shared.ttl = 120 // Invalidate image after 120 sec
-
             let request = ImageRequest(
                 url: imageURL
             )

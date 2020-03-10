@@ -1,4 +1,5 @@
 import Material
+import Nuke
 import UIKit
 
 @UIApplicationMain
@@ -23,6 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window.rootViewController = root
             self.window = window
             self.window?.makeKeyAndVisible()
+
+            // Configure cache
+            ImageCache.shared.costLimit = 1024 * 1024 * 50 // 50 MB
+            ImageCache.shared.countLimit = 100
+            ImageCache.shared.ttl = 120 // Invalidate image after 120 sec
         }
 
         return true
