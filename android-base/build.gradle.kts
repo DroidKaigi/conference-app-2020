@@ -149,6 +149,8 @@ releasesHub {
     gitHubRepositoryOwner = "droidkaigi"
     gitHubRepositoryName = "conference-app-2020"
     pullRequestsMax = 2
+    gitHubUserName = "takahirom"
+    gitHubUserEmail = "takam.dev@gmail.com"
 }
 
 apply(mapOf("plugin" to "com.google.gms.google-services"))
