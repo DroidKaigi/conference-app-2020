@@ -62,7 +62,7 @@ object Dep {
         object Room {
             val compiler = "androidx.room:room-compiler:2.2.4"
             val runtime = "androidx.room:room-runtime:2.2.3"
-            val coroutine = "androidx.room:room-ktx:2.2.3"
+            val coroutine = "androidx.room:room-ktx:2.2.4"
         }
 
         object Navigation {
