@@ -146,6 +146,9 @@ releasesHub {
     dependenciesBasePath = "buildSrc/src/main/java/dependencies/"
     dependenciesClassNames = listOf("Dep.kt")
     pullRequestEnabled = true
+    gitHubRepositoryOwner = "droidkaigi"
+    gitHubRepositoryName = "conference-app-2020"
+    pullRequestsMax = 2
 }
 
 apply(mapOf("plugin" to "com.google.gms.google-services"))
