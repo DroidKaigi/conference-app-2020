@@ -52,7 +52,7 @@ jobs:
     steps:
       - checkout
       - restore_and_save_gradle_cache
-      - run: ./gradlew android-base:assembleDebug --offline
+      - run: ./gradlew android-base:assembleDebug
       - store_artifacts:
           path: android-base/build/outputs
       - run: .circleci/android/deploy-to-deploygate.bash
