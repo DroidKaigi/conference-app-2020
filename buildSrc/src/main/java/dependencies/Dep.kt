@@ -58,6 +58,7 @@ object Dep {
         val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:2.2.0"
         val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0"
         val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+        val lifecycleCommon = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
 
         object Room {
             val compiler = "androidx.room:room-compiler:2.2.4"
@@ -75,6 +76,17 @@ object Dep {
         object Work {
             val runtimeKtx = "androidx.work:work-runtime-ktx:2.3.1"
         }
+    }
+
+    object Compose {
+        val composeReleaseVersion = "dev06"
+        val composeVersion = "0.1.0-$composeReleaseVersion"
+        val composeCompilerExtensionVersion = "0.1.0-$composeReleaseVersion"
+        val compose = "androidx.compose:compose-runtime:$composeVersion"
+        val framework = "androidx.ui:ui-framework:$composeVersion"
+        val layout = "androidx.ui:ui-layout:$composeVersion"
+        val material = "androidx.ui:ui-material:$composeVersion"
+        val tooling = "androidx.ui:ui-tooling:$composeVersion"
     }
 
     object Kotlin {

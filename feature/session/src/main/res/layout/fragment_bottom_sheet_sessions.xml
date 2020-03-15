@@ -74,6 +74,19 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
+
+        <FrameLayout
+            android:id="@+id/compose_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="8dp"
+            android:padding="16dp"
+            android:src="@drawable/ic_expand_less_12dp"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="@id/start_filter"
+            />
+
         <ImageView
             android:id="@+id/expand_less"
             android:layout_width="wrap_content"

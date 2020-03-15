@@ -32,6 +32,7 @@ import io.github.droidkaigi.confsched2020.session.ui.viewmodel.SessionsViewModel
 import io.github.droidkaigi.confsched2020.session.ui.widget.SessionsItemDecoration
 import io.github.droidkaigi.confsched2020.system.ui.viewmodel.SystemViewModel
 import io.github.droidkaigi.confsched2020.ui.widget.BottomGestureSpace
+import io.github.droidkaigi.confsched2020.widget.compose.setGreetingContentWithLifecycle
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import javax.inject.Provider
@@ -67,6 +68,7 @@ class BottomSheetSessionsFragment : Fragment(R.layout.fragment_bottom_sheet_sess
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentBottomSheetSessionsBinding.bind(view)
+        binding.composeContainer.setGreetingContentWithLifecycle(viewLifecycleOwner)
         binding.isEmptyFavoritePage = false
         val groupAdapter = GroupAdapter<GroupieViewHolder<*>>()
         binding.sessionRecycler.adapter = groupAdapter

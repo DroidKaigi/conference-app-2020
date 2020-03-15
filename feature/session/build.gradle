@@ -6,7 +6,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 apply from: rootProject.file('gradle/android.gradle')
-android.dataBinding.enabled = true
+android.buildFeatures.dataBinding = true
 
 dependencies {
     implementation project(':feature:system')
@@ -14,6 +14,7 @@ dependencies {
     implementation project(":data:repository")
 
     implementation project(':corecomponent:androidcomponent')
+    implementation project(':corecomponent:composecomponent')
     implementation project(':ext:log')
 
     implementation Dep.Kotlin.stdlibJvm
