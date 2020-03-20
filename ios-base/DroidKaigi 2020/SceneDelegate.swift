@@ -1,4 +1,5 @@
 import Material
+import Nuke
 import UIKit
 
 @available(iOS 13.0, *)
@@ -25,6 +26,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = root
         self.window = window
         self.window?.makeKeyAndVisible()
+        
+        // Configure cache
+        ImageCache.shared.costLimit = 1024 * 1024 * 50 // 50 MB
+        ImageCache.shared.countLimit = 100
+        ImageCache.shared.ttl = 120 // Invalidate image after 120 sec
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
