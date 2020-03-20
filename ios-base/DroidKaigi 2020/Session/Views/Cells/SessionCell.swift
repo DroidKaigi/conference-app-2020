@@ -76,8 +76,27 @@ final class SessionCell: UICollectionViewCell {
         let view = UIControl()
         let speakerIconView = UIImageView()
         if let imageURL = imageURL {
-            let options = ImageLoadingOptions(transition: .fadeIn(duration: 0.3))
-            Nuke.loadImage(with: imageURL, options: options, into: speakerIconView)
+            let request = ImageRequest(
+                url: imageURL
+            )
+
+            if let cachedImage = ImageCache.shared[request] {
+                speakerIconView.image = cachedImage
+            } else {
+                ImagePipeline.shared.loadImage(with: imageURL) { result in
+                    switch result {
+                    case let .success(response):
+                        ImageCache.shared[request] = response.image // Set cache
+                        UIView.transition(with: speakerIconView,
+                                          duration: 0.3,
+                                          options: .transitionCrossDissolve,
+                                          animations: { speakerIconView.image = ImageCache.shared[request] },
+                                          completion: nil)
+                    case .failure:
+                        speakerIconView.backgroundColor = UIColor.white
+                    }
+                }
+            }
         }
         view.addSubview(speakerIconView)
         speakerIconView.translatesAutoresizingMaskIntoConstraints = false
