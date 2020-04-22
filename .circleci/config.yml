@@ -57,7 +57,7 @@ jobs:
           path: android-base/build/outputs
       - run: .circleci/android/deploy-to-deploygate.bash
       - restore_and_save_bundler_cache
-      - run: .circleci/android/try-it.bash
+#       - run: .circleci/android/try-it.bash
 
   test_android:
     executor: android
@@ -74,7 +74,7 @@ jobs:
       - store_artifacts:
           path: ktlint-reports
       - restore_and_save_bundler_cache
-      - run: .circleci/android/danger.bash
+#       - run: .circleci/android/danger.bash
 
 filters:
   disable_on_internal: &disable_on_internal
