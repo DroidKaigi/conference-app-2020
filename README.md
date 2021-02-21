@@ -2,9 +2,7 @@
 
 [![GitHub Actions](https://github.com/DroidKaigi/conference-app-2020/workflows/On%20release%20branch/badge.svg)](https://github.com/DroidKaigi/conference-app-2020/actions?query=workflow%3A%22On+release+branch%22)
 
-We are currently working on the event. We are looking for contributors!
-
-DroidKaigi 2020 is a conference tailored for developers on 20th and 21st February 2020.  
+The [DroidKaigi 2020](https://droidkaigi.jp/2020/) event has been canceled and development is inactive, but we'd love to hear from you if you have any improvements.
 
 You can install the production app via Get it on Google Play.
 
