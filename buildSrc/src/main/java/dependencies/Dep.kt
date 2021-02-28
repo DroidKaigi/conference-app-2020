@@ -53,7 +53,7 @@ object Dep {
         val preference = "androidx.preference:preference:1.1.0"
         val browser = "androidx.browser:browser:1.2.0"
         val activityKtx = "androidx.activity:activity-ktx:1.1.0"
-        val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.2"
+        val fragmentKtx = "androidx.fragment:fragment-ktx:1.2.4"
 
         val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:2.2.0"
         val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0"
