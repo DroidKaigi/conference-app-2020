@@ -73,7 +73,7 @@ object Dep {
         }
 
         object Work {
-            val runtimeKtx = "androidx.work:work-runtime-ktx:2.3.1"
+            val runtimeKtx = "androidx.work:work-runtime-ktx:2.3.3"
         }
     }
 
