@@ -13,6 +13,7 @@
     <string name="description_filter_not_applied">フィルター%1$sを解除</string>
     <string name="staffs_label">スタッフリスト</string>
     <string name="licenses_label">ライセンス</string>
+    <string name="wifi_label">WiFi</string>
     <!-- Speaker -->
     <string name="speaker_label">スピーカー</string>
     <!-- Notification -->

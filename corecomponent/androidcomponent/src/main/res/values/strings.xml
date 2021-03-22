@@ -18,6 +18,8 @@
     <string name="survey_label">Entire survey</string>
     <string name="ellipsis_label">more</string>
     <string name="session_survey_label">Session survey</string>
+    <string name="wifi_label">WiFi</string>
+
     <!-- Search -->
     <string name="search_label" translatable="false">Search</string>
     <!-- Contributor -->

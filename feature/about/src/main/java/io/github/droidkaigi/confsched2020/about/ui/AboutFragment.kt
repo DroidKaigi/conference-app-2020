@@ -6,8 +6,8 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.databinding.GroupieViewHolder
 import dagger.Module
@@ -17,6 +17,7 @@ import io.github.droidkaigi.confsched2020.about.R
 import io.github.droidkaigi.confsched2020.about.databinding.FragmentAboutBinding
 import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentDirections.Companion.actionAboutToChrome
 import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentDirections.Companion.actionAboutToStaffs
+import io.github.droidkaigi.confsched2020.about.ui.AboutFragmentDirections.Companion.actionAboutToWifi
 import io.github.droidkaigi.confsched2020.about.ui.item.AboutHeaderItem
 import io.github.droidkaigi.confsched2020.about.ui.item.AboutItem
 import io.github.droidkaigi.confsched2020.about.ui.item.AboutLaunchItem
@@ -92,6 +93,11 @@ class AboutFragment : Fragment(R.layout.fragment_about), Injectable {
                     getString(R.string.about_item_access)
                 ) {
                     systemViewModel.navigateToAccessMap(requireActivity())
+                },
+                aboutItemFactory.create(
+                    getString(R.string.about_item_wifi)
+                ) {
+                    findNavController().navigate(actionAboutToWifi())
                 },
                 aboutItemFactory.create(
                     getString(R.string.about_item_staff)

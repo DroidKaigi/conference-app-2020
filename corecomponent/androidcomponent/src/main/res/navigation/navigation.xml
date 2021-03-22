@@ -257,6 +257,13 @@
                 app:argType="string"
                 app:nullable="false" />
         </action>
+        <action
+            android:id="@+id/action_about_to_wifi"
+            app:destination="@id/wifi_setting"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/floormap"
@@ -285,6 +292,14 @@
             app:argType="io.github.droidkaigi.confsched2020.model.SessionId"
             />
     </fragment>
+    <fragment
+        android:id="@+id/wifi_setting"
+        android:name="io.github.droidkaigi.confsched2020.wifi.WifiSetingFragment"
+        android:label="@string/wifi_label"
+        >
+        <!-- TBD -->
+    </fragment>
+
     <fragment
         android:id="@+id/setting"
         android:name="io.github.droidkaigi.confsched2020.preference.ui.PreferencesFragment"
