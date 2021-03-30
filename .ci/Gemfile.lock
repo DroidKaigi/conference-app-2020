@@ -43,7 +43,7 @@ GEM
     faraday-http-cache (2.0.0)
       faraday (~> 0.8)
     git (1.5.0)
-    kramdown (2.3.0)
+    kramdown (2.3.1)
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
