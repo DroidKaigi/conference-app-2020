@@ -3,7 +3,7 @@ package dependencies
 @Suppress("unused", "MayBeConstant")
 object Dep {
     object GradlePlugin {
-        val android = "com.android.tools.build:gradle:3.6.0-rc03"
+        val android = "com.android.tools.build:gradle:3.6.1"
         val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61"
         val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:1.3.61"
         val playServices = "com.google.gms:google-services:4.3.3"
